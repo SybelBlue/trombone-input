@@ -27,9 +27,9 @@ public class MainController : MonoBehaviour
     public RectTransform indicatorRect;
 
     /// <summary>
-    /// The Text component that should store the layout name
+    /// The place where typed guesses go
     /// </summary>
-    public Text layoutNameDisplay;
+    public Text outputDisplay;
 
     /// <summary>
     /// True if no input is provided
@@ -40,6 +40,11 @@ public class MainController : MonoBehaviour
         return Input.touchCount == 0 && !Input.GetMouseButton(0);
     }
 
+    public void Start()
+    {
+        outputDisplay.text = "";
+    }
+
     /// <summary>
     /// The most up-to-date value reported by the InputFieldController
     /// </summary>
@@ -48,9 +53,6 @@ public class MainController : MonoBehaviour
     public void Update()
     {
         indicatorRect.gameObject.SetActive(!NoInput());
-
-        layoutNameDisplay.text = layout?.layoutName ?? "Layout Missing!";
-
         layout?.SetHighlightedKey(NoInput() ? null : lastReportedValue);
     }
 
@@ -82,7 +84,12 @@ public class MainController : MonoBehaviour
             return;
         }
 
-        Debug.Log($"Pressed [{displayData(currentItem)}] @ {displayData(exactItem)}");
+        var (typed, certain) = layout.GetKeypressFor(value) ?? ('-', false);
+
+        Debug.Log($"Pressed [{displayData(currentItem)}] @ {displayData(exactItem)} => {(typed, certain)}");
+
+        outputDisplay.text += typed;
+
         lastReportedValue = null;
     }
 

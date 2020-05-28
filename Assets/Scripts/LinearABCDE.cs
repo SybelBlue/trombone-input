@@ -48,6 +48,13 @@ namespace CustomInput
             }
         }
 
+        public override (char, bool)? GetKeypressFor(int index)
+        {
+            var s = CharsFor(index);
+            if (s == null || s.Length != 1) return null;
+            return (s.ToCharArray()[0], true);
+        }
+
         // Auto-generated 
         protected override LayoutKey[] FillKeys()
         {

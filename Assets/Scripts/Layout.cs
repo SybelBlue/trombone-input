@@ -115,6 +115,8 @@ namespace CustomInput
         /// <returns>The largest key containing the smallest key containing index</returns>
         public abstract (LayoutKey, SimpleKey)? KeysAt(int index);
 
+        public abstract (char, bool)? GetKeypressFor(int index);
+
         /// <summary>
         /// The name of the layout
         /// </summary>

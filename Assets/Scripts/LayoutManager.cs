@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public enum LayoutOption
@@ -12,6 +14,8 @@ public enum LayoutOption
 public class LayoutManager : MonoBehaviour
 {
     public LayoutOption layout;
+
+    public Dropdown dropdown;
 
     [SerializeField]
     private CustomInput.SquashedQWERTY squashedQWERTY;
@@ -34,6 +38,15 @@ public class LayoutManager : MonoBehaviour
 
         throw new ArgumentException($"unknown layout option: {option.ToString()} in fromOption");
     }
+
+    public void Start()
+    {
+        dropdown.ClearOptions();
+        dropdown.AddOptions(new List<string>(Enum.GetNames(typeof(LayoutOption))));
+        dropdown.value = 0;
+    }
+
+    public void DropdownValueSelected(int index) => layout = (LayoutOption)index;
 
     private void Update()
     {
