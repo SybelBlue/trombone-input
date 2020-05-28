@@ -42,15 +42,8 @@ public class MainController : MonoBehaviour
         if (NoTouches()) return;
 
         var currentHover = displayController.ChildAt((int)inputPanel.value);
-
-        if (!currentHover) return;
-
-        var currentController = currentHover.GetComponent<BlockDisplayItemController>();
-
-        if (!currentController) return;
-
-        currentController.SetHighlight(true);
-
+        var currentController = currentHover?.GetComponent<BlockDisplayItemController>();
+        currentController?.SetHighlight(true);
     }
 
     /// <summary>
@@ -65,17 +58,32 @@ public class MainController : MonoBehaviour
         indicatorRect.position = pos;
     }
 
+    /// <summary>
+    /// Callback for when the InputFieldController register a completed gesture
+    /// </summary>
+    /// <param name="value">the new value</param>
     public void OnInputEnd(int value)
     {
         Debug.Log("end");
         var currentHover = displayController.ChildAt((int)inputPanel.value);
 
-        if (!currentHover) return;
+        if (!currentHover)
+        {
+            Debug.Log("Ended gesture in empty zone");
+            return;
+        }
 
         LayoutItem currentItem = currentHover.GetComponent<AbstractDisplayItemController>()?.item;
 
         BasicLayoutItem exactItem = displayController.ExactItemAt((int)inputPanel.value);
 
-        Debug.Log($"[{currentItem?.data ?? "<not found>"}]: {exactItem.data}");
+        Debug.Log($"[{displayData(currentItem)}]: {displayData(exactItem)}");
     }
+
+    /// <summary>
+    /// Helper function for displaying layout items in the log
+    /// </summary>
+    /// <param name="item">LayoutItem to get data from</param>
+    /// <returns>string representation of data</returns>
+    private string displayData(LayoutItem item) => item?.data ?? "<not found>";
 }

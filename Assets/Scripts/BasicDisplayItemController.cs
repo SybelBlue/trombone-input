@@ -13,6 +13,9 @@ public class BasicDisplayItemController : AbstractDisplayItemController
     public RectTransform rectTransform;
     public Text childText;
 
+    [SerializeField]
+    private char symbol;
+
     public override float Resize(float unitWidth)
     {
         var width = unitWidth * item.size();
@@ -37,6 +40,7 @@ public class BasicDisplayItemController : AbstractDisplayItemController
     }
     public void setSymbol(char c)
     {
+        symbol = c;
         childText.text = c + "";
     }
 }

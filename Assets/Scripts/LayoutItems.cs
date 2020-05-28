@@ -11,7 +11,7 @@ public abstract class LayoutItem : ScriptableObject
 
     public abstract BasicLayoutItem ItemAt(int index);
 
-    public abstract string data { get; protected set; }
+    public abstract string data { get; }
 }
 
 public class BasicLayoutItem : LayoutItem
@@ -22,18 +22,13 @@ public class BasicLayoutItem : LayoutItem
     public override string data
     {
         get => c + "";
-        protected set
-        {
-            Assert.IsTrue(value.Length == 1);
-            c = data.ToCharArray()[0];
-        }
     }
 
     private int SIZE;
 
     public void init(char data, int size)
     {
-        this.data = data + "";
+        this.c = data;
         this.SIZE = size;
     }
 
@@ -61,7 +56,6 @@ public class BlockLayoutItem : LayoutItem
     public override string data
     {
         get => items?.Select(i => i.data).Aggregate((a, b) => a + b);
-        protected set => throw new InvalidOperationException("cannot set");
     }
 
     private BasicLayoutItem[] items;
