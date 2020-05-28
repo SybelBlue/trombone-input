@@ -31,7 +31,7 @@ namespace CustomInput
             {
                 var newChild = item.representation(transform, blockItem, basicItem);
 
-                var blockController = newChild.GetComponent<BlockDisplayItemController>();
+                var blockController = newChild.GetComponent<AbstractDisplayItemController>();
 
                 if (blockController)
                 {
