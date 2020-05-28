@@ -48,7 +48,7 @@ namespace CustomInput
             }
         }
 
-        public override (char, bool)? GetKeypressFor(int index)
+        public override (char, bool)? GetLetterFor(string _, int index)
         {
             var s = CharsFor(index);
             if (s == null || s.Length != 1) return null;

@@ -84,7 +84,7 @@ public class MainController : MonoBehaviour
             return;
         }
 
-        var (typed, certain) = layout.GetKeypressFor(value) ?? ('-', false);
+        var (typed, certain) = layout.GetLetterFor(outputDisplay.text, value) ?? ('-', false);
 
         Debug.Log($"Pressed [{displayData(currentItem)}] @ {displayData(exactItem)} => {(typed, certain)}");
 

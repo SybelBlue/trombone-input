@@ -42,15 +42,12 @@ namespace CustomInput
             return null;
         }
 
-        char lastLookup = ' ';
-
-        public override (char, bool)? GetKeypressFor(int index)
+        public override (char, bool)? GetLetterFor(string context, int index)
         {
             var s = CharsFor(index);
             if (s == null) return null;
-
-            var c = naive[lastLookup][s];
-            lastLookup = c;
+            if (context == null || context.Length == 0) context = " ";
+            var c = naive[context.ToCharArray()[context.Length - 1]][s];
             return (c, false);
         }
 
