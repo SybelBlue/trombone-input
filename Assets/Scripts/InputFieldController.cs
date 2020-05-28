@@ -4,110 +4,116 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[Serializable]
-public class InputFieldEvent : UnityEvent<int> { }
-
-/// <summary>
-/// Class ripped from Slider.cs and hacked to pieces, then abstracted
-/// </summary>
-public abstract class InputFieldController : Selectable, IDragHandler, IInitializePotentialDragHandler, ICanvasElement
+namespace CustomInput
 {
+    /// <summary>
+    /// A class for events issued by InputFieldControllers
+    /// </summary>
+    [Serializable]
+    public class InputFieldEvent : UnityEvent<int> { }
 
     /// <summary>
-    /// The output value of the input controller in [minValue, maxValue]
+    /// Class ripped from Slider.cs and hacked to pieces, then abstracted
     /// </summary>
-    /// <value>integer output</value>
-    public abstract int value { get; set; }
-
-    /// <summary>
-    /// The normalized output value of the input controller (in [0.0f, 1.0f])
-    /// </summary>
-    /// <value>ratio output</value>
-    public abstract float normalizedValue { get; set; }
-
-
-    /// <summary>
-    /// The minimum output for the potentiometer
-    /// </summary>
-    public int minValue;
-
-    /// <summary>
-    /// The maximum output for the potentiometer
-    /// </summary>
-    public int maxValue;
-
-    /// <summary>
-    /// Clamps the value into range [minValue, maxValue] then rounds to nearest int
-    /// </summary>
-    /// <returns></returns>
-    protected int ClampValue(float input) => (int)Mathf.Round(Mathf.Clamp(input, minValue, maxValue));
-
-
-    /// <summary>
-    /// Called whenever the value is changed
-    /// </summary>
-    [SerializeField]
-    public InputFieldEvent OnValueChanged;
-
-    /// <summary>
-    /// Returns wether or not this item can be dragged by the pointer event
-    /// </summary>
-    /// <param name="eventData">pointer event data</param>
-    /// <returns>can drag</returns>
-    protected bool MayDrag(PointerEventData eventData)
+    public abstract class InputFieldController : Selectable, IDragHandler, IInitializePotentialDragHandler, ICanvasElement
     {
-        return IsActive() && IsInteractable() && eventData.button == PointerEventData.InputButton.Left;
-    }
 
-    /// <inheritdoc/>
-    public override void OnPointerDown(PointerEventData eventData)
-    {
-        if (!MayDrag(eventData))
-            return;
+        /// <summary>
+        /// The output value of the input controller in [minValue, maxValue]
+        /// </summary>
+        /// <value>integer output</value>
+        public abstract int value { get; set; }
 
-        base.OnPointerDown(eventData);
+        /// <summary>
+        /// The normalized output value of the input controller (in [0.0f, 1.0f])
+        /// </summary>
+        /// <value>ratio output</value>
+        public abstract float normalizedValue { get; set; }
 
-        UpdateDrag(eventData, eventData.pressEventCamera);
-    }
+
+        /// <summary>
+        /// The minimum output for the potentiometer
+        /// </summary>
+        public int minValue;
+
+        /// <summary>
+        /// The maximum output for the potentiometer
+        /// </summary>
+        public int maxValue;
+
+        /// <summary>
+        /// Clamps the value into range [minValue, maxValue] then rounds to nearest int
+        /// </summary>
+        /// <returns></returns>
+        protected int ClampValue(float input) => (int)Mathf.Round(Mathf.Clamp(input, minValue, maxValue));
 
 
-    /// <inheritdoc/>
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (!MayDrag(eventData))
-            return;
+        /// <summary>
+        /// Called whenever the value is changed
+        /// </summary>
+        [SerializeField]
+        public InputFieldEvent OnValueChanged;
 
-        UpdateDrag(eventData, eventData.pressEventCamera);
-    }
+        /// <summary>
+        /// Returns wether or not this item can be dragged by the pointer event
+        /// </summary>
+        /// <param name="eventData">pointer event data</param>
+        /// <returns>can drag</returns>
+        protected bool MayDrag(PointerEventData eventData)
+        {
+            return IsActive() && IsInteractable() && eventData.button == PointerEventData.InputButton.Left;
+        }
 
-    /// <summary>
-    /// Defines the behavior of the input controller when a valid drag is registered
-    /// </summary>
-    /// <param name="eventData">drag data</param>
-    /// <param name="cam">camera the data was registered on</param>
-    protected abstract void UpdateDrag(PointerEventData eventData, Camera cam);
+        /// <inheritdoc/>
+        public override void OnPointerDown(PointerEventData eventData)
+        {
+            if (!MayDrag(eventData))
+                return;
 
-    /// <inheritdoc/>
-    public virtual void OnInitializePotentialDrag(PointerEventData eventData)
-    {
-        eventData.useDragThreshold = false;
-    }
+            base.OnPointerDown(eventData);
 
-    /// <inheritdoc/>
-    public void Rebuild(CanvasUpdate executing)
-    {
+            UpdateDrag(eventData, eventData.pressEventCamera);
+        }
+
+
+        /// <inheritdoc/>
+        public void OnDrag(PointerEventData eventData)
+        {
+            if (!MayDrag(eventData))
+                return;
+
+            UpdateDrag(eventData, eventData.pressEventCamera);
+        }
+
+        /// <summary>
+        /// Defines the behavior of the input controller when a valid drag is registered
+        /// </summary>
+        /// <param name="eventData">drag data</param>
+        /// <param name="cam">camera the data was registered on</param>
+        protected abstract void UpdateDrag(PointerEventData eventData, Camera cam);
+
+        /// <inheritdoc/>
+        public virtual void OnInitializePotentialDrag(PointerEventData eventData)
+        {
+            eventData.useDragThreshold = false;
+        }
+
+        /// <inheritdoc/>
+        public void Rebuild(CanvasUpdate executing)
+        {
 
 #if UNITY_EDITOR
-        if (executing == CanvasUpdate.Prelayout)
-            OnValueChanged.Invoke(value);
+            if (executing == CanvasUpdate.Prelayout)
+                OnValueChanged.Invoke(value);
 #endif
+        }
+
+        /// <inheritdoc/>
+        public void LayoutComplete()
+        { }
+
+        /// <inheritdoc/>
+        public void GraphicUpdateComplete()
+        { }
     }
-
-    /// <inheritdoc/>
-    public void LayoutComplete()
-    { }
-
-    /// <inheritdoc/>
-    public void GraphicUpdateComplete()
-    { }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using CustomInput;
 
 public class MainController : MonoBehaviour
 {
