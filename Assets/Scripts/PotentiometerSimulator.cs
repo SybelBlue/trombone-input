@@ -26,7 +26,9 @@ namespace CustomInput
         /// <summary>
         /// Potentiometer is only used horizontally
         /// </summary>
-        private const Axis axis = Axis.Horizontal;
+        public Axis axis;
+
+        public bool reversed;
 
         /// <inheritdoc/>
         public override int value
@@ -141,7 +143,8 @@ namespace CustomInput
                     return;
                 localCursor -= clickRect.rect.position;
 
-                normalizedValue = Mathf.Clamp01(localCursor[(int)axis] / clickRect.rect.size[(int)axis]);
+                var ratio = Mathf.Clamp01(localCursor[(int)axis] / clickRect.rect.size[(int)axis]); ;
+                normalizedValue = reversed ? 1 - ratio : ratio;
             }
         }
     }
