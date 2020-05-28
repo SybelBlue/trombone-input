@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CustomInput;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class MainController : MonoBehaviour
@@ -6,12 +7,12 @@ public class MainController : MonoBehaviour
     /// <summary>
     /// The DisplayController that is in charge of loading the layout
     /// </summary>
-    public CustomInput.Layout layout;
+    public Layout layout;
 
     /// <summary>
     /// The main input source
     /// </summary>
-    public CustomInput.InputFieldController inputPanel;
+    public InputFieldController inputPanel;
 
     /// <summary>
     /// The transform of the layout display
