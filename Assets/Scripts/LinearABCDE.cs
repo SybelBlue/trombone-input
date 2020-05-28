@@ -22,43 +22,22 @@ namespace CustomInput
 
         public override (LayoutKey, SimpleKey)? KeysAt(int index)
         {
-            Assert.IsFalse(index < 0);
-
-            int remaining = index;
-            foreach (LayoutKey item in items)
-            {
-                if (remaining < item.size())
-                {
-                    return (item, item.ItemAt(remaining));
-                }
-                else
-                {
-                    remaining -= item.size();
-                }
-            }
-
-            return null;
+            var lKey = LayoutKeyAt(index);
+            return (lKey, (SimpleKey)lKey);
         }
-
-        public override string CharsFor(int index) => ChildAt(index)?.GetComponent<LayoutKey>()?.data ?? "";
-
-        public GameObject ChildAt(int index) => childMap.Count <= index ? null : childMap[index];
 
         public override void SetHighlightedKey(int? index)
         {
-            foreach (var cont in gameObject.GetComponentsInChildren<AbstractDisplayItemController>())
-            {
-                cont.SetHighlight(false);
-            }
+            UnhighlightAll();
 
             if (index.HasValue)
             {
-                ChildAt(index.Value)?.GetComponent<BlockDisplayItemController>()?.SetHighlight(true);
+                ChildAt(index.Value)?.GetComponent<AbstractDisplayItemController>()?.SetHighlight(true);
             }
         }
 
         // Auto-generated 
-        protected override LayoutKey[] FillItems()
+        protected override LayoutKey[] FillKeys()
         {
             var basicItem0 = ScriptableObject.CreateInstance<SimpleKey>();
             basicItem0.init('A', 3);

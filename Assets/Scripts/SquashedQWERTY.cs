@@ -25,7 +25,7 @@ namespace CustomInput
             Assert.IsFalse(index < 0);
 
             int remaining = index;
-            foreach (LayoutKey item in items)
+            foreach (LayoutKey item in keys)
             {
                 if (remaining < item.size())
                 {
@@ -40,16 +40,9 @@ namespace CustomInput
             return null;
         }
 
-        public override string CharsFor(int index) => ChildAt(index)?.GetComponent<LayoutKey>()?.data ?? "";
-
-        public GameObject ChildAt(int index) => childMap.Count <= index ? null : childMap[index];
-
         public override void SetHighlightedKey(int? index)
         {
-            foreach (var cont in gameObject.GetComponentsInChildren<AbstractDisplayItemController>())
-            {
-                cont.SetHighlight(false);
-            }
+            UnhighlightAll();
 
             if (index.HasValue)
             {
@@ -58,7 +51,7 @@ namespace CustomInput
         }
 
         // Auto-generated 
-        protected override LayoutKey[] FillItems()
+        protected override LayoutKey[] FillKeys()
         {
             var basicItem0 = ScriptableObject.CreateInstance<SimpleKey>();
             basicItem0.init('Q', 2);
