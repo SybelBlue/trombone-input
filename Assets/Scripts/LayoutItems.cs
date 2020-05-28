@@ -3,18 +3,18 @@ using System.Linq;
 using UnityEngine.Assertions;
 using System;
 
-public abstract class LayoutItem : ScriptableObject
+public abstract class LayoutKey : ScriptableObject
 {
     public abstract int size();
 
     public abstract GameObject representation(Transform parent, GameObject block, GameObject basic);
 
-    public abstract BasicLayoutItem ItemAt(int index);
+    public abstract SimpleKey ItemAt(int index);
 
     public abstract string data { get; }
 }
 
-public class BasicLayoutItem : LayoutItem
+public class SimpleKey : LayoutKey
 {
 
     private char c;
@@ -44,33 +44,33 @@ public class BasicLayoutItem : LayoutItem
         return SIZE;
     }
 
-    public override BasicLayoutItem ItemAt(int index)
+    public override SimpleKey ItemAt(int index)
     {
         Assert.IsTrue(index < SIZE);
         return this;
     }
 }
 
-public class BlockLayoutItem : LayoutItem
+public class AmbiguousKey : LayoutKey
 {
     public override string data
     {
         get => items?.Select(i => i.data).Aggregate((a, b) => a + b);
     }
 
-    private BasicLayoutItem[] items;
+    private SimpleKey[] items;
     private bool slant;
 
-    public void init(bool slant, params BasicLayoutItem[] subitems)
+    public void init(bool slant, params SimpleKey[] subitems)
     {
         items = subitems;
         this.slant = slant;
     }
 
-    public override BasicLayoutItem ItemAt(int index)
+    public override SimpleKey ItemAt(int index)
     {
         int remaining = index;
-        foreach (BasicLayoutItem item in items)
+        foreach (SimpleKey item in items)
         {
             remaining -= item.size();
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 public abstract class AbstractDisplayItemController : MonoBehaviour
 {
-    public LayoutItem item;
+    public LayoutKey item;
 
     public abstract float Resize(float unitWidth);
 

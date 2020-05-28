@@ -79,9 +79,9 @@ public class MainController : MonoBehaviour
             return;
         }
 
-        LayoutItem currentItem = currentHover.GetComponent<AbstractDisplayItemController>()?.item;
+        LayoutKey currentItem = currentHover.GetComponent<AbstractDisplayItemController>()?.item;
 
-        BasicLayoutItem exactItem = displayController.ExactItemAt(value);
+        SimpleKey exactItem = displayController.ExactItemAt(value);
 
         Debug.Log($"[{displayData(currentItem)}]: {displayData(exactItem)}");
         lastReportedValue = null;
@@ -92,5 +92,5 @@ public class MainController : MonoBehaviour
     /// </summary>
     /// <param name="item">LayoutItem to get data from</param>
     /// <returns>string representation of data</returns>
-    private string displayData(LayoutItem item) => item?.data ?? "<not found>";
+    private string displayData(LayoutKey item) => item?.data ?? "<not found>";
 }
