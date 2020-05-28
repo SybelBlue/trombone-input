@@ -22,6 +22,8 @@ namespace CustomInput
 
         public override (LayoutKey, SimpleKey)? KeysAt(int index)
         {
+            if (!gameObject.activeInHierarchy) return null;
+
             Assert.IsFalse(index < 0);
 
             int remaining = index;

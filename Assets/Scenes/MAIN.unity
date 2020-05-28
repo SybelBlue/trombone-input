@@ -523,7 +523,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &826101177
 RectTransform:
   m_ObjectHideFlags: 0
@@ -704,6 +704,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 908259939}
+  - component: {fileID: 908259940}
   m_Layer: 5
   m_Name: DisplayContainer
   m_TagString: Untagged
@@ -734,6 +735,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -133.1}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &908259940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908259938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c54ffec393d2e944e8173ae8e15900c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layout: 1
+  squashedQWERTY: {fileID: 1728482484}
+  linearABCDE: {fileID: 826101178}
 --- !u!1 &1021969725
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,7 +1121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3349d964351cf49b1ef1509e5d7335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layout: {fileID: 1728482484}
+  layoutManager: {fileID: 908259940}
   inputPanel: {fileID: 325495733}
   displayRect: {fileID: 1728482483}
   indicatorRect: {fileID: 1211518876}

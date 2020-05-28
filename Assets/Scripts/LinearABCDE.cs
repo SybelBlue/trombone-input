@@ -9,6 +9,18 @@ namespace CustomInput
 
         public override string layoutName { get => "Linear ABCDE"; }
 
+        protected override void Start()
+        {
+            base.Start();
+
+            foreach (SimpleKeyController cont in GetComponentsInChildren<SimpleKeyController>())
+            {
+                var newColor = cont.background.color;
+                newColor.a = 1.0f;
+                cont.background.color = newColor;
+            }
+        }
+
         public override void ResizeAll()
         {
             var width = gameObject.GetComponent<RectTransform>().rect.width;

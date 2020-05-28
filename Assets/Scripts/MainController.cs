@@ -5,9 +5,11 @@ using UnityEngine.UI;
 public class MainController : MonoBehaviour
 {
     /// <summary>
-    /// The DisplayController that is in charge of loading the layout
+    /// The LayoutManager that is in charge of loading the layout
     /// </summary>
-    public Layout layout;
+    public LayoutManager layoutManager;
+
+    public Layout layout { get => layoutManager?.currentLayout(); }
 
     /// <summary>
     /// The main input source
@@ -76,7 +78,7 @@ public class MainController : MonoBehaviour
 
         if (!currentItem)
         {
-            Debug.LogWarning("Ended gesture in empty zone");
+            Debug.LogWarning("Ended gesture in empty zone: " + value);
             return;
         }
 

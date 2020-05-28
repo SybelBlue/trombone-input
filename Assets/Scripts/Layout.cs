@@ -23,7 +23,7 @@ namespace CustomInput
         /// <returns></returns>
         protected readonly List<GameObject> childMap = new List<GameObject>(64);
 
-        protected void Start()
+        protected virtual void Start()
         {
             keys = FillKeys();
 
@@ -88,13 +88,14 @@ namespace CustomInput
         /// </summary>
         /// <typeparam name="LayoutKey"></typeparam>
         /// <returns>LayoutKey at index</returns>
-        public LayoutKey LayoutKeyAt(int index) => ChildAt(index)?.GetComponent<LayoutKey>();
+        public LayoutKey LayoutKeyAt(int index) => ChildAt(index)?.GetComponent<AbstractKeyController>().item;
 
         /// <summary>
         /// The chars for the key at index
         /// </summary>
         /// <returns>string of key chars</returns>
         public string CharsFor(int index) => LayoutKeyAt(index)?.data ?? "";
+
 
         /// <summary>
         /// Resize all child GameObjects to fit within this and to scale
