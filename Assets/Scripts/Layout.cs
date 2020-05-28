@@ -31,7 +31,7 @@ namespace CustomInput
             {
                 var newChild = item.representation(transform, blockItem, basicItem);
 
-                var blockController = newChild.GetComponent<AbstractDisplayItemController>();
+                var blockController = newChild.GetComponent<AbstractKeyController>();
 
                 if (blockController)
                 {
@@ -67,7 +67,7 @@ namespace CustomInput
         /// </summary>
         protected void UnhighlightAll()
         {
-            foreach (var cont in gameObject.GetComponentsInChildren<AbstractDisplayItemController>())
+            foreach (var cont in gameObject.GetComponentsInChildren<AbstractKeyController>())
             {
                 cont.SetHighlight(false);
             }

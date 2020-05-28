@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using static UnityEngine.RectTransform;
 
-public class BasicDisplayItemController : AbstractDisplayItemController
+public class SimpleKeyController : AbstractKeyController
 {
     public Color highlightColor;
 

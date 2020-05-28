@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using static UnityEngine.RectTransform;
 
-public class BlockDisplayItemController : AbstractDisplayItemController
+public class AmbiguousKeyController : AbstractKeyController
 {
 
     public Color highlightColor;
@@ -48,32 +48,32 @@ public class BlockDisplayItemController : AbstractDisplayItemController
 
         if (forward)
         {
-            var item = transform.GetChild(0).GetComponent<BasicDisplayItemController>();
+            var item = transform.GetChild(0).GetComponent<SimpleKeyController>();
             item.childText.alignment = TextAnchor.UpperCenter;
 
             if (transform.childCount == 1) return;
 
-            item = transform.GetChild(1).GetComponent<BasicDisplayItemController>();
+            item = transform.GetChild(1).GetComponent<SimpleKeyController>();
             item.childText.alignment = TextAnchor.MiddleCenter;
 
             if (transform.childCount == 2) return;
 
-            item = transform.GetChild(2).GetComponent<BasicDisplayItemController>();
+            item = transform.GetChild(2).GetComponent<SimpleKeyController>();
             item.childText.alignment = TextAnchor.LowerCenter;
         }
         else
         {
-            var item = transform.GetChild(0).GetComponent<BasicDisplayItemController>();
+            var item = transform.GetChild(0).GetComponent<SimpleKeyController>();
             item.childText.alignment = TextAnchor.LowerCenter;
 
             if (transform.childCount == 1) return;
 
-            item = transform.GetChild(1).GetComponent<BasicDisplayItemController>();
+            item = transform.GetChild(1).GetComponent<SimpleKeyController>();
             item.childText.alignment = TextAnchor.MiddleCenter;
 
             if (transform.childCount == 2) return;
 
-            item = transform.GetChild(2).GetComponent<BasicDisplayItemController>();
+            item = transform.GetChild(2).GetComponent<SimpleKeyController>();
             item.childText.alignment = TextAnchor.UpperCenter;
         }
     }

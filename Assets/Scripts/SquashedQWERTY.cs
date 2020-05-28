@@ -14,7 +14,7 @@ namespace CustomInput
             var width = gameObject.GetComponent<RectTransform>().rect.width;
             var unitWidth = width / 64.0f;
 
-            foreach (var child in gameObject.GetComponentsInChildren<AbstractDisplayItemController>())
+            foreach (var child in gameObject.GetComponentsInChildren<AbstractKeyController>())
             {
                 child.Resize(unitWidth);
             }
@@ -46,7 +46,7 @@ namespace CustomInput
 
             if (index.HasValue)
             {
-                ChildAt(index.Value)?.GetComponent<BlockDisplayItemController>()?.SetHighlight(true);
+                ChildAt(index.Value)?.GetComponent<AmbiguousKeyController>()?.SetHighlight(true);
             }
         }
 

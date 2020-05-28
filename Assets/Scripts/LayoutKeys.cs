@@ -41,7 +41,7 @@ namespace CustomInput
         public override GameObject representation(Transform parent, GameObject block, GameObject basic)
         {
             var newItem = Instantiate(basic, parent);
-            newItem.GetComponent<BasicDisplayItemController>().setSymbol(c);
+            newItem.GetComponent<SimpleKeyController>().setSymbol(c);
             return newItem;
         }
 
@@ -94,12 +94,12 @@ namespace CustomInput
         public override GameObject representation(Transform parent, GameObject block, GameObject basic)
         {
             var newItem = Instantiate(block, parent);
-            var controller = newItem.GetComponent<BlockDisplayItemController>();
+            var controller = newItem.GetComponent<AmbiguousKeyController>();
             foreach (var i in items)
             {
                 var newChild = i.representation(parent, block, basic);
 
-                newChild.GetComponent<BasicDisplayItemController>().item = i;
+                newChild.GetComponent<SimpleKeyController>().item = i;
 
                 controller.AddChild(newChild);
             }

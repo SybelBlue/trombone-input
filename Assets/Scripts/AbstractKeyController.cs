@@ -1,5 +1,5 @@
 using UnityEngine;
-public abstract class AbstractDisplayItemController : MonoBehaviour
+public abstract class AbstractKeyController : MonoBehaviour
 {
     public CustomInput.LayoutKey item;
 
