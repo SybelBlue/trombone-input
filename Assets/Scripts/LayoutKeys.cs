@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine.Assertions;
 using System;
 
+// cannot be an assetmenu item
 public abstract class LayoutKey : ScriptableObject
 {
     public abstract int size();
@@ -14,6 +15,9 @@ public abstract class LayoutKey : ScriptableObject
     public abstract string data { get; }
 }
 
+
+// needs to be put in file with same name as class
+// [CreateAssetMenu(fileName = "SimpleKey", menuName = "trombone-input/SimpleKey", order = 0)]
 public class SimpleKey : LayoutKey
 {
 
@@ -51,6 +55,8 @@ public class SimpleKey : LayoutKey
     }
 }
 
+// needs to be put in file with same name as class
+// [CreateAssetMenu(fileName = "AmbiguousKey", menuName = "trombone-input/AmbiguousKey", order = 0)]
 public class AmbiguousKey : LayoutKey
 {
     public override string data

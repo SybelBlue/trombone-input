@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class MainController : MonoBehaviour
 {
     /// <summary>
     /// The DisplayController that is in charge of loading the layout
     /// </summary>
-    public DisplayController displayController;
+    public CustomInput.Layout layout;
 
     /// <summary>
     /// The main input source
@@ -21,6 +22,11 @@ public class MainController : MonoBehaviour
     /// The transform of the indicator
     /// </summary>
     public RectTransform indicatorRect;
+
+    /// <summary>
+    /// The Text component that should store the layout name
+    /// </summary>
+    public Text layoutNameDisplay;
 
     /// <summary>
     /// True if no touch input is provided
@@ -39,16 +45,10 @@ public class MainController : MonoBehaviour
     public void Update()
     {
         indicatorRect.gameObject.SetActive(!NoTouches());
-        foreach (var cont in displayController.gameObject.GetComponentsInChildren<AbstractDisplayItemController>())
-        {
-            cont.SetHighlight(false);
-        }
 
-        if (NoTouches() || !lastReportedValue.HasValue) return;
+        layoutNameDisplay.text = layout?.layoutName ?? "Layout Missing!";
 
-        var currentHover = displayController.ChildAt(lastReportedValue.Value);
-        var currentController = currentHover?.GetComponent<BlockDisplayItemController>();
-        currentController?.SetHighlight(true);
+        layout?.SetHighlightedKey(NoTouches() ? null : lastReportedValue);
     }
 
     /// <summary>
@@ -71,19 +71,15 @@ public class MainController : MonoBehaviour
     public void OnInputEnd(int value)
     {
         lastReportedValue = value;
-        var currentHover = displayController.ChildAt(value);
+        var (currentItem, exactItem) = layout.KeysAt(value) ?? (null, null);
 
-        if (!currentHover)
+        if (!currentItem)
         {
             Debug.LogWarning("Ended gesture in empty zone");
             return;
         }
 
-        LayoutKey currentItem = currentHover.GetComponent<AbstractDisplayItemController>()?.item;
-
-        SimpleKey exactItem = displayController.ExactItemAt(value);
-
-        Debug.Log($"[{displayData(currentItem)}]: {displayData(exactItem)}");
+        Debug.Log($"Pressed [{displayData(currentItem)}] @ {displayData(exactItem)}");
         lastReportedValue = null;
     }
 

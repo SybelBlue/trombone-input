@@ -2,8 +2,11 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class DisplayController : MonoBehaviour
+public class SquashedQWERTY : CustomInput.Layout
 {
+
+    public override string layoutName { get => "Squashed QWERTY"; }
+
     public GameObject basicItem, blockItem;
 
     readonly List<GameObject> childMap = new List<GameObject>(64);
@@ -43,7 +46,7 @@ public class DisplayController : MonoBehaviour
         ResizeAll();
     }
 
-    private void ResizeAll()
+    public override void ResizeAll()
     {
         var width = gameObject.GetComponent<RectTransform>().rect.width;
         var unitWidth = width / 64.0f;
@@ -54,7 +57,7 @@ public class DisplayController : MonoBehaviour
         }
     }
 
-    public SimpleKey ExactItemAt(int index)
+    public override (LayoutKey, SimpleKey)? KeysAt(int index)
     {
         Assert.IsFalse(index < 0);
 
@@ -63,7 +66,7 @@ public class DisplayController : MonoBehaviour
         {
             if (remaining < item.size())
             {
-                return item.ItemAt(remaining);
+                return (item, item.ItemAt(remaining));
             }
             else
             {
@@ -74,9 +77,21 @@ public class DisplayController : MonoBehaviour
         return null;
     }
 
-    public GameObject ChildAt(int index)
+    public override string CharsFor(int index) => ChildAt(index)?.GetComponent<LayoutKey>()?.data ?? "";
+
+    public GameObject ChildAt(int index) => childMap.Count <= index ? null : childMap[index];
+
+    public override void SetHighlightedKey(int? index)
     {
-        return childMap.Count <= index ? null : childMap[index];
+        foreach (var cont in gameObject.GetComponentsInChildren<AbstractDisplayItemController>())
+        {
+            cont.SetHighlight(false);
+        }
+
+        if (index.HasValue)
+        {
+            ChildAt(index.Value)?.GetComponent<BlockDisplayItemController>()?.SetHighlight(true);
+        }
     }
 
     // Auto-generated 
