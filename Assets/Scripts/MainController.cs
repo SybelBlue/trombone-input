@@ -31,6 +31,11 @@ public class MainController : MonoBehaviour
         return Input.touchCount == 0;
     }
 
+    /// <summary>
+    /// The most up-to-date value reported by the InputFieldController
+    /// </summary>
+    private int? lastReportedValue;
+
     public void Update()
     {
         indicatorRect.gameObject.SetActive(!NoTouches());
@@ -39,9 +44,9 @@ public class MainController : MonoBehaviour
             cont.SetHighlight(false);
         }
 
-        if (NoTouches()) return;
+        if (NoTouches() || !lastReportedValue.HasValue) return;
 
-        var currentHover = displayController.ChildAt((int)inputPanel.value);
+        var currentHover = displayController.ChildAt(lastReportedValue.Value);
         var currentController = currentHover?.GetComponent<BlockDisplayItemController>();
         currentController?.SetHighlight(true);
     }
@@ -52,6 +57,7 @@ public class MainController : MonoBehaviour
     /// <param name="value">the new value</param>
     public void OnInputValueChange(int value)
     {
+        lastReportedValue = value;
         float width = displayRect.rect.width;
         var pos = indicatorRect.position;
         pos.x = value * width / (float)inputPanel.maxValue;
@@ -64,20 +70,21 @@ public class MainController : MonoBehaviour
     /// <param name="value">the new value</param>
     public void OnInputEnd(int value)
     {
-        Debug.Log("end");
-        var currentHover = displayController.ChildAt((int)inputPanel.value);
+        lastReportedValue = value;
+        var currentHover = displayController.ChildAt(value);
 
         if (!currentHover)
         {
-            Debug.Log("Ended gesture in empty zone");
+            Debug.LogWarning("Ended gesture in empty zone");
             return;
         }
 
         LayoutItem currentItem = currentHover.GetComponent<AbstractDisplayItemController>()?.item;
 
-        BasicLayoutItem exactItem = displayController.ExactItemAt((int)inputPanel.value);
+        BasicLayoutItem exactItem = displayController.ExactItemAt(value);
 
         Debug.Log($"[{displayData(currentItem)}]: {displayData(exactItem)}");
+        lastReportedValue = null;
     }
 
     /// <summary>
