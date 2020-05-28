@@ -32,13 +32,13 @@ public class DisplayController : MonoBehaviour
         ResizeAll();
     }
 
-    float? lastWidth = null;
+    float lastWidth = -1;
 
     private void Update()
     {
         var width = gameObject.GetComponent<RectTransform>().rect.width;
 
-        if ((lastWidth ?? -1) == width) return;
+        if (lastWidth == width) return;
 
         ResizeAll();
     }

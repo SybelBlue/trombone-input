@@ -17,7 +17,6 @@ namespace CustomInput
     /// </summary>
     public abstract class InputFieldController : Selectable, IDragHandler, IInitializePotentialDragHandler, ICanvasElement
     {
-
         /// <summary>
         /// The output value of the input controller in [minValue, maxValue]
         /// </summary>
@@ -55,6 +54,12 @@ namespace CustomInput
         public InputFieldEvent OnValueChanged;
 
         /// <summary>
+        /// Called whenever the input is finished
+        /// </summary>
+        [SerializeField]
+        public InputFieldEvent OnInputEnd;
+
+        /// <summary>
         /// Returns wether or not this item can be dragged by the pointer event
         /// </summary>
         /// <param name="eventData">pointer event data</param>
@@ -83,6 +88,19 @@ namespace CustomInput
                 return;
 
             UpdateDrag(eventData, eventData.pressEventCamera);
+        }
+
+        /// <inheritdoc/>
+        public override void OnPointerUp(PointerEventData eventData)
+        {
+            base.OnPointerUp(eventData);
+
+            if (MayDrag(eventData))
+            {
+                UpdateDrag(eventData, eventData.pressEventCamera);
+            }
+
+            OnInputEnd.Invoke(value);
         }
 
         /// <summary>

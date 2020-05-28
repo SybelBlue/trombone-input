@@ -10,23 +10,37 @@ public abstract class LayoutItem : ScriptableObject
     public abstract GameObject representation(Transform parent, GameObject block, GameObject basic);
 
     public abstract BasicLayoutItem ItemAt(int index);
+
+    public abstract string data { get; protected set; }
 }
 
 public class BasicLayoutItem : LayoutItem
 {
-    public char data { get; private set; }
+
+    private char c;
+
+    public override string data
+    {
+        get => c + "";
+        protected set
+        {
+            Assert.IsTrue(value.Length == 1);
+            c = data.ToCharArray()[0];
+        }
+    }
+
     private int SIZE;
 
     public void init(char data, int size)
     {
-        this.data = data;
+        this.data = data + "";
         this.SIZE = size;
     }
 
     public override GameObject representation(Transform parent, GameObject block, GameObject basic)
     {
         var newItem = Instantiate(basic, parent);
-        newItem.GetComponent<BasicDisplayItemController>().setSymbol(data);
+        newItem.GetComponent<BasicDisplayItemController>().setSymbol(c);
         return newItem;
     }
 
@@ -44,6 +58,12 @@ public class BasicLayoutItem : LayoutItem
 
 public class BlockLayoutItem : LayoutItem
 {
+    public override string data
+    {
+        get => items?.Select(i => i.data).Aggregate((a, b) => a + b);
+        protected set => throw new InvalidOperationException("cannot set");
+    }
+
     private BasicLayoutItem[] items;
     private bool slant;
 
@@ -51,11 +71,6 @@ public class BlockLayoutItem : LayoutItem
     {
         items = subitems;
         this.slant = slant;
-    }
-
-    public char[] data()
-    {
-        return items?.Select(i => i.data).ToArray();
     }
 
     public override BasicLayoutItem ItemAt(int index)
