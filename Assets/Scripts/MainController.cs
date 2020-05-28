@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class MainController : MonoBehaviour
 {
     public DisplayController displayController;
-    public InputFieldController inputPanel;
+    public PotentiometerSimulator inputPanel;
     public RectTransform displayRect, indicatorRect;
 
     public static bool NoTouches()
@@ -49,11 +49,6 @@ public class MainController : MonoBehaviour
     }
     public void OnSliderValueChange(int value)
     {
-        foreach (var t in Input.touches)
-        {
-            Debug.DrawLine(Vector3.zero, t.position);
-        }
-
         float width = displayRect.rect.width;
         var pos = indicatorRect.position;
         pos.x = value * width / (float)inputPanel.maxValue;
