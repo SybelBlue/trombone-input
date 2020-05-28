@@ -1,8 +1,5 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using static UnityEngine.RectTransform;
 
 /// <summary>
@@ -17,16 +14,6 @@ public class PotentiometerSimulator : InputFieldController
     /// Used in determining the touch boundaries
     /// </summary>
     private RectTransform rectTransform;
-
-    /// <summary>
-    /// The minimum output for the potentiometer
-    /// </summary>
-    public int minValue;
-
-    /// <summary>
-    /// The maximum output for the potentiometer
-    /// </summary>
-    public int maxValue;
 
     /// <summary>
     /// The raw floating-point value of the last input position
@@ -124,12 +111,6 @@ public class PotentiometerSimulator : InputFieldController
     /// </summary>
     /// <returns>least recently used noise value index</returns>
     private int incrNoiseIndex() => noiseIndex++ % noiseValues.Length;
-
-    /// <summary>
-    /// Clamps the value into range [minValue, maxValue] then rounds to nearest int
-    /// </summary>
-    /// <returns></returns>
-    int ClampValue(float input) => (int)Mathf.Round(Mathf.Clamp(input, minValue, maxValue));
 
     /// <inheritdoc/>
     public override void OnPointerDown(PointerEventData eventData)

@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class MainController : MonoBehaviour
 {
     public DisplayController displayController;
-    public PotentiometerSimulator inputPanel;
+    public InputFieldController inputPanel;
     public RectTransform displayRect, indicatorRect;
 
     public static bool NoTouches()

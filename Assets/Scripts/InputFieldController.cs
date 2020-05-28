@@ -27,6 +27,23 @@ public abstract class InputFieldController : Selectable, IDragHandler, IInitiali
 
 
     /// <summary>
+    /// The minimum output for the potentiometer
+    /// </summary>
+    public int minValue;
+
+    /// <summary>
+    /// The maximum output for the potentiometer
+    /// </summary>
+    public int maxValue;
+
+    /// <summary>
+    /// Clamps the value into range [minValue, maxValue] then rounds to nearest int
+    /// </summary>
+    /// <returns></returns>
+    protected int ClampValue(float input) => (int)Mathf.Round(Mathf.Clamp(input, minValue, maxValue));
+
+
+    /// <summary>
     /// Called whenever the value is changed
     /// </summary>
     [SerializeField]
