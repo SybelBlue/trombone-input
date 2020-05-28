@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 325495734}
   - component: {fileID: 325495733}
   m_Layer: 5
-  m_Name: InputField
+  m_Name: Potentiometer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,10 +213,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  rectTransform: {fileID: 325495732}
   minValue: 0
   maxValue: 63
   rawValue: 0
+  simulateNoise: 1
+  maxAbsoluteNoise: 0
 --- !u!114 &325495734
 MonoBehaviour:
   m_ObjectHideFlags: 0

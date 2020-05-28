@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.RectTransform;
 
 /// <summary>
 /// Adapted from Unity's Slider.cs
@@ -11,18 +12,34 @@ using UnityEngine.UI;
 public class PotentiometerSimulator : InputFieldController
 {
 
-    public RectTransform rectTransform;
+    /// <summary>
+    /// The RectTransform belonging to this.gameObject
+    /// Used in determining the touch boundaries
+    /// </summary>
+    private RectTransform rectTransform;
 
+    /// <summary>
+    /// The minimum output for the potentiometer
+    /// </summary>
     public int minValue;
 
+    /// <summary>
+    /// The maximum output for the potentiometer
+    /// </summary>
     public int maxValue;
 
+    /// <summary>
+    /// The raw floating-point value of the last input position
+    /// </summary>
     [SerializeField]
     private float rawValue;
 
-    private const int axis = 0;
-    private const bool reverseValue = false;
+    /// <summary>
+    /// Potentiometer is only used horizontally
+    /// </summary>
+    private const Axis axis = Axis.Horizontal;
 
+    /// <inheritdoc/>
     public override int value
     {
         get => ClampValue(rawValue + noise);
@@ -34,6 +51,7 @@ public class PotentiometerSimulator : InputFieldController
         }
     }
 
+    /// <inheritdoc/>
     public override float normalizedValue
     {
         get => Mathf.InverseLerp(minValue, maxValue, value);
@@ -45,23 +63,47 @@ public class PotentiometerSimulator : InputFieldController
         }
     }
 
-    private float[] noiseValues = new float[300];
+    /// <summary>
+    /// Container for randomly generated noise values
+    /// </summary>
+    private readonly float[] noiseValues = new float[300];
 
+    /// <summary>
+    /// The current level of noise (updates on read), or 0 if !simulateNoise
+    /// </summary>
+    /// <value> current noise </value>
     private float noise
     {
         get => simulateNoise ? noiseValues[incrNoiseIndex()] : 0;
     }
 
+    /// <summary>
+    /// When true, the potentiometer will have random noise in its value
+    /// up to +/- maxAbsoluteNoise
+    /// </summary>
     public bool simulateNoise = true;
 
+    /// <summary>
+    /// Maximum absolute value noise deviation from the input
+    /// </summary>
     public float maxAbsoluteNoise;
 
-    private int noiseIndex = 0;
+    /// <summary>
+    /// Tracker for least recently used noise value
+    /// </summary>
+    private int noiseIndex;
 
     protected override void Start()
     {
         base.Start();
 
+        rectTransform = GetComponent<RectTransform>();
+
+        FillNoise();
+    }
+
+    private void FillNoise()
+    {
         for (int i = 0; i < noiseValues.Length; i += 2)
         {
             var vec = UnityEngine.Random.insideUnitCircle;
@@ -76,10 +118,20 @@ public class PotentiometerSimulator : InputFieldController
         noiseIndex = 0;
     }
 
+    /// <summary>
+    /// Returns the current noise value index, then increments cyclicly, never 
+    /// exceeding noiseValues.length
+    /// </summary>
+    /// <returns>least recently used noise value index</returns>
     private int incrNoiseIndex() => noiseIndex++ % noiseValues.Length;
 
+    /// <summary>
+    /// Clamps the value into range [minValue, maxValue] then rounds to nearest int
+    /// </summary>
+    /// <returns></returns>
     int ClampValue(float input) => (int)Mathf.Round(Mathf.Clamp(input, minValue, maxValue));
 
+    /// <inheritdoc/>
     public override void OnPointerDown(PointerEventData eventData)
     {
         if (!MayDrag(eventData))
@@ -91,6 +143,7 @@ public class PotentiometerSimulator : InputFieldController
     }
 
 
+    /// <inheritdoc>
     protected override void UpdateDrag(PointerEventData eventData, Camera cam)
     {
         RectTransform clickRect = rectTransform;
@@ -102,8 +155,7 @@ public class PotentiometerSimulator : InputFieldController
                 return;
             localCursor -= clickRect.rect.position;
 
-            float val = Mathf.Clamp01(localCursor[(int)axis] / clickRect.rect.size[(int)axis]);
-            normalizedValue = (reverseValue ? 1f - val : val);
+            normalizedValue = Mathf.Clamp01(localCursor[(int)axis] / clickRect.rect.size[(int)axis]);
         }
     }
 }

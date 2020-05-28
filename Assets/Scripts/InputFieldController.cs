@@ -12,19 +12,37 @@ public class InputFieldEvent : UnityEvent<int> { }
 /// </summary>
 public abstract class InputFieldController : Selectable, IDragHandler, IInitializePotentialDragHandler, ICanvasElement
 {
+
+    /// <summary>
+    /// The output value of the input controller in [minValue, maxValue]
+    /// </summary>
+    /// <value>integer output</value>
     public abstract int value { get; set; }
 
+    /// <summary>
+    /// The normalized output value of the input controller (in [0.0f, 1.0f])
+    /// </summary>
+    /// <value>ratio output</value>
     public abstract float normalizedValue { get; set; }
 
 
+    /// <summary>
+    /// Called whenever the value is changed
+    /// </summary>
     [SerializeField]
     public InputFieldEvent OnValueChanged;
 
+    /// <summary>
+    /// Returns wether or not this item can be dragged by the pointer event
+    /// </summary>
+    /// <param name="eventData">pointer event data</param>
+    /// <returns>can drag</returns>
     protected bool MayDrag(PointerEventData eventData)
     {
         return IsActive() && IsInteractable() && eventData.button == PointerEventData.InputButton.Left;
     }
 
+    /// <inheritdoc/>
     public override void OnPointerDown(PointerEventData eventData)
     {
         if (!MayDrag(eventData))
@@ -36,20 +54,29 @@ public abstract class InputFieldController : Selectable, IDragHandler, IInitiali
     }
 
 
-    public virtual void OnDrag(PointerEventData eventData)
+    /// <inheritdoc/>
+    public void OnDrag(PointerEventData eventData)
     {
         if (!MayDrag(eventData))
             return;
+
         UpdateDrag(eventData, eventData.pressEventCamera);
     }
 
+    /// <summary>
+    /// Defines the behavior of the input controller when a valid drag is registered
+    /// </summary>
+    /// <param name="eventData">drag data</param>
+    /// <param name="cam">camera the data was registered on</param>
     protected abstract void UpdateDrag(PointerEventData eventData, Camera cam);
 
+    /// <inheritdoc/>
     public virtual void OnInitializePotentialDrag(PointerEventData eventData)
     {
         eventData.useDragThreshold = false;
     }
 
+    /// <inheritdoc/>
     public void Rebuild(CanvasUpdate executing)
     {
 
@@ -59,9 +86,11 @@ public abstract class InputFieldController : Selectable, IDragHandler, IInitiali
 #endif
     }
 
+    /// <inheritdoc/>
     public void LayoutComplete()
     { }
 
+    /// <inheritdoc/>
     public void GraphicUpdateComplete()
     { }
 }
