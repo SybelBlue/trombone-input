@@ -31,7 +31,7 @@ namespace CustomInput
             {
                 var newChild = item.representation(transform, blockItem, basicItem);
 
-                var blockController = newChild.GetComponent<AbstractKeyController>();
+                var blockController = newChild.GetComponent<KeyController>();
 
                 if (blockController)
                 {
@@ -67,7 +67,7 @@ namespace CustomInput
         /// </summary>
         protected void UnhighlightAll()
         {
-            foreach (var cont in gameObject.GetComponentsInChildren<AbstractKeyController>())
+            foreach (var cont in gameObject.GetComponentsInChildren<KeyController>())
             {
                 cont.SetHighlight(false);
             }
@@ -88,7 +88,7 @@ namespace CustomInput
         /// </summary>
         /// <typeparam name="LayoutKey"></typeparam>
         /// <returns>LayoutKey at index</returns>
-        public LayoutKey LayoutKeyAt(int index) => ChildAt(index)?.GetComponent<AbstractKeyController>().item;
+        public LayoutKey LayoutKeyAt(int index) => ChildAt(index)?.GetComponent<KeyController>().item;
 
         /// <summary>
         /// The chars for the key at index

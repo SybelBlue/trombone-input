@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using static UnityEngine.RectTransform;
 
-public class AmbiguousKeyController : AbstractKeyController
+public class AmbiguousKeyController : KeyController
 {
 
     public Color highlightColor;

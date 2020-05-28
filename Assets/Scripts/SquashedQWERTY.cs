@@ -14,7 +14,7 @@ namespace CustomInput
             var width = gameObject.GetComponent<RectTransform>().rect.width;
             var unitWidth = width / 64.0f;
 
-            foreach (var child in gameObject.GetComponentsInChildren<AbstractKeyController>())
+            foreach (var child in gameObject.GetComponentsInChildren<KeyController>())
             {
                 child.Resize(unitWidth);
             }
