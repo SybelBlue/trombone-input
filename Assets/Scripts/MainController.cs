@@ -32,12 +32,12 @@ public class MainController : MonoBehaviour
     public Text layoutNameDisplay;
 
     /// <summary>
-    /// True if no touch input is provided
+    /// True if no input is provided
     /// </summary>
-    /// <returns>no touch input</returns>
-    public static bool NoTouches()
+    /// <returns>no input</returns>
+    public static bool NoInput()
     {
-        return Input.touchCount == 0;
+        return Input.touchCount == 0 && !Input.GetMouseButton(0);
     }
 
     /// <summary>
@@ -47,11 +47,11 @@ public class MainController : MonoBehaviour
 
     public void Update()
     {
-        indicatorRect.gameObject.SetActive(!NoTouches());
+        indicatorRect.gameObject.SetActive(!NoInput());
 
         layoutNameDisplay.text = layout?.layoutName ?? "Layout Missing!";
 
-        layout?.SetHighlightedKey(NoTouches() ? null : lastReportedValue);
+        layout?.SetHighlightedKey(NoInput() ? null : lastReportedValue);
     }
 
     /// <summary>
