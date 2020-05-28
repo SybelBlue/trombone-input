@@ -199,11 +199,13 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 325495734}
+  minValue: 0
+  maxValue: 63
   OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1820553255}
-        m_MethodName: OnSliderValueChange
+        m_MethodName: OnInputValueChange
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -213,8 +215,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  minValue: 0
-  maxValue: 63
   rawValue: 0
   simulateNoise: 1
   maxAbsoluteNoise: 0
