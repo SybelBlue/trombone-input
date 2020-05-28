@@ -1,7 +1,9 @@
 using UnityEngine;
-public abstract class AbstractDisplayItemController : MonoBehaviour 
+public abstract class AbstractDisplayItemController : MonoBehaviour
 {
-    public abstract float Resize (float unitWidth);
+    public LayoutItem item;
 
-    public abstract void SetHighlight (bool highlight);
+    public abstract float Resize(float unitWidth);
+
+    public abstract void SetHighlight(bool highlight);
 }

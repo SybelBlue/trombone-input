@@ -13,8 +13,6 @@ public class BasicDisplayItemController : AbstractDisplayItemController
     public RectTransform rectTransform;
     public Text childText;
 
-    public LayoutItem item;
-
     public override float Resize(float unitWidth)
     {
         var width = unitWidth * item.size();

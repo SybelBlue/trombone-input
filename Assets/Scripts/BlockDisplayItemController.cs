@@ -11,7 +11,6 @@ public class BlockDisplayItemController : AbstractDisplayItemController
     private bool highlighting = false;
     public RectTransform rectTransform;
     public Image background;
-    public LayoutItem item;
 
     public override float Resize(float unitWidth)
     {

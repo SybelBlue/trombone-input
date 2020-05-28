@@ -72,20 +72,10 @@ public class MainController : MonoBehaviour
 
         if (!currentHover) return;
 
-        var currentController = currentHover.GetComponent<BlockDisplayItemController>();
-
-        if (!currentController) return;
-
-        LayoutItem currentItem = currentController.item;
+        LayoutItem currentItem = currentHover.GetComponent<AbstractDisplayItemController>()?.item;
 
         BasicLayoutItem exactItem = displayController.ExactItemAt((int)inputPanel.value);
 
-        string groupText = "";
-        if (currentItem is BlockLayoutItem)
-        {
-            groupText = new string((currentItem as BlockLayoutItem).data()) + ": ";
-        }
-
-        Debug.Log(groupText + exactItem.data);
+        Debug.Log($"[{currentItem?.data ?? "<not found>"}]: {exactItem.data}");
     }
 }
