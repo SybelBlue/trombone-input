@@ -35,6 +35,7 @@ using System.Text.RegularExpressions;
 public class SymSpell
 {
     /// <summary>Controls the closeness/quantity of returned spelling suggestions.</summary>
+    [Serializable]
     public enum Verbosity
     {
         /// <summary>Top suggestion with the highest term frequency of the suggestions of smallest edit distance found.</summary>
@@ -46,12 +47,12 @@ public class SymSpell
         All
     };
 
-    const int defaultMaxEditDistance = 2;
-    const int defaultPrefixLength = 7;
-    const int defaultCountThreshold = 1;
-    const int defaultInitialCapacity = 16;
-    const int defaultCompactLevel = 5;
-    const char[] defaultSeparatorChars = (char[])null;
+    public const int defaultMaxEditDistance = 2;
+    public const int defaultPrefixLength = 7;
+    public const int defaultCountThreshold = 1;
+    public const int defaultInitialCapacity = 16;
+    public const int defaultCompactLevel = 5;
+    public const char[] defaultSeparatorChars = (char[])null;
 
     private readonly int initialCapacity;
     private readonly int maxDictionaryEditDistance;
@@ -294,7 +295,7 @@ public class SymSpell
                 if (lineParts.Length >= 3)
                 {
                     //if default (whitespace) is defined as separator take 2 term parts, otherwise take only one
-                    string key = (separatorChars == defaultSeparatorChars) ? lineParts[termIndex] + " " + lineParts[termIndex + 1]: lineParts[termIndex];
+                    string key = (separatorChars == defaultSeparatorChars) ? lineParts[termIndex] + " " + lineParts[termIndex + 1] : lineParts[termIndex];
                     //Int64 count;
                     if (Int64.TryParse(lineParts[countIndex], out Int64 count))
                     {
@@ -306,7 +307,7 @@ public class SymSpell
                     }
                 }
             }
-            
+
         }
         return true;
     }
@@ -425,8 +426,8 @@ public class SymSpell
     {
         return Lookup(input, verbosity, this.maxDictionaryEditDistance, false);
     }
-	
-	/// <summary>Find suggested spellings for a given input word, using the maximum
+
+    /// <summary>Find suggested spellings for a given input word, using the maximum
     /// edit distance specified during construction of the SymSpell dictionary.</summary>
     /// <param name="input">The word being spell checked.</param>
     /// <param name="verbosity">The value controlling the quantity/closeness of the retuned suggestions.</param>
@@ -475,9 +476,9 @@ public class SymSpell
         // deletes we've considered already
         HashSet<string> hashset1 = new HashSet<string>();
         // suggestions we've considered already
-        HashSet<string> hashset2 = new HashSet<string>();		
-		// we considered the input already in the word.TryGetValue above		
-        hashset2.Add(input); 
+        HashSet<string> hashset2 = new HashSet<string>();
+        // we considered the input already in the word.TryGetValue above		
+        hashset2.Add(input);
 
         int maxEditDistance2 = maxEditDistance;
         int candidatePointer = 0;
@@ -623,10 +624,10 @@ public class SymSpell
 
         //sort by ascending edit distance, then by descending word frequency
         if (suggestions.Count > 1) suggestions.Sort();
-		end: if (includeUnknown && (suggestions.Count == 0)) suggestions.Add(new SuggestItem(input, maxEditDistance + 1, 0));																															 
+        end: if (includeUnknown && (suggestions.Count == 0)) suggestions.Add(new SuggestItem(input, maxEditDistance + 1, 0));
         return suggestions;
     }//end if         
-	
+
 
     /// <summary>An intentionally opacque class used to temporarily stage
     /// dictionary data during the adding of many words. By staging the
@@ -1078,7 +1079,7 @@ public class SymSpell
     public (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum) WordSegmentation(string input, int maxEditDistance, int maxSegmentationWordLength)
     {
         int arraySize = Math.Min(maxSegmentationWordLength, input.Length);
-        (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)[] compositions = new(string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)[arraySize];
+        (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)[] compositions = new (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)[arraySize];
         int circularIndex = -1;
 
         //outer loop (column): all possible part start positions
