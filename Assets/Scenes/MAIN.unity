@@ -321,7 +321,7 @@ MonoBehaviour:
   rawValue: 0
   axis: 1
   reversed: 1
-  simulateNoise: 0
+  simulateNoise: 1
   maxAbsoluteNoise: 0.75
 --- !u!114 &34584220
 MonoBehaviour:
@@ -768,7 +768,7 @@ MonoBehaviour:
   axis: 0
   reversed: 0
   simulateNoise: 1
-  maxAbsoluteNoise: 0.75
+  maxAbsoluteNoise: 2.5
 --- !u!114 &325495734
 MonoBehaviour:
   m_ObjectHideFlags: 0

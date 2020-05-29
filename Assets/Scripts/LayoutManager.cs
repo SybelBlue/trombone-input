@@ -11,6 +11,7 @@ public enum LayoutOption
     LinearABCDE,
 }
 
+# pragma warning disable 649
 public class LayoutManager : MonoBehaviour
 {
     public LayoutOption layout;

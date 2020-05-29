@@ -29,7 +29,7 @@ public class MainController : MonoBehaviour
     /// <summary>
     /// The place where typed guesses go
     /// </summary>
-    public Text outputDisplay;
+    public TextOutputController outputController;
 
     /// <summary>
     /// True if no input is provided
@@ -42,7 +42,7 @@ public class MainController : MonoBehaviour
 
     public void Start()
     {
-        outputDisplay.text = "";
+        outputController.text = "";
     }
 
     /// <summary>
@@ -84,11 +84,11 @@ public class MainController : MonoBehaviour
             return;
         }
 
-        var (typed, certain) = layout.GetLetterFor(outputDisplay.text, value) ?? ('-', false);
+        var (typed, certain) = layout.GetLetterFor(outputController.text, value) ?? ('-', false);
 
         Debug.Log($"Pressed [{displayData(currentItem)}] @ {displayData(exactItem)} => {(typed, certain)}");
 
-        outputDisplay.text += typed;
+        outputController.text += typed;
 
         lastReportedValue = null;
     }
