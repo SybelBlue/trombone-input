@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.UI;
-
 using Loader = System.Func<System.IO.Stream, int, int, char[], bool>;
 // using AsyncLoader = System.Func<System.IO.Stream, int, int, System.Threading.Tasks.Task<bool>>;
 
@@ -18,7 +16,9 @@ public enum DictionarySize
 
 public class TextOutputController : MonoBehaviour
 {
-    public Text outputDisplay;
+    public Text rawOutput;
+
+    public Text[] suggested;
 
     public TextAsset dict824765, dict243342;
 
@@ -28,14 +28,19 @@ public class TextOutputController : MonoBehaviour
 
     public string text
     {
-        get => outputDisplay.text;
+        get => rawOutput.text;
         set
         {
-            outputDisplay.text = value;
+            rawOutput.text = value;
 
             if (dictionaryLoaded)
             {
                 suggestions = Suggestions(value);
+
+                for (int i = 0; i < suggested.Length; i++)
+                {
+                    suggested[i].text = (i >= suggestions.Count) ? "" : suggestions[i];
+                }
             }
         }
     }
@@ -123,18 +128,21 @@ public class TextOutputController : MonoBehaviour
         }
     }
 
-    private List<SymSpell.SuggestItem> Lookup(string inputTerm, int maxEditDistanceLookup, SymSpell.Verbosity verbosity)
+    private List<SymSpell.SuggestItem> Lookup(string inputTerm)
     {
-        Assert.IsTrue(maxEditDistanceLookup <= MAX_EDIT_DISTANCE_DICT);
+        int maxEditDistanceLookup = Mathf.Min(inputTerm.Length, MAX_EDIT_DISTANCE_DICT);
+        // Assert.IsTrue(maxEditDistanceLookup <= MAX_EDIT_DISTANCE_DICT);
         if (inputTerm.Length == 0) return new List<SymSpell.SuggestItem>();
 
         // use LookupCompound?
-        return symSpell.Lookup(inputTerm, verbosity, maxEditDistanceLookup);
+        return symSpell.LookupCompound(inputTerm, maxEditDistanceLookup).Union(symSpell.Lookup(inputTerm, verbosity, maxEditDistanceLookup).Take(5)).ToList();
     }
 
     private List<string> Suggestions(string inputTerm)
     {
-        var suggestItems = Lookup(inputTerm, Mathf.Min(inputTerm.Length, MAX_EDIT_DISTANCE_DICT), verbosity);
+        Debug.Log("lookup");
+
+        var suggestItems = Lookup(inputTerm);
 
         foreach (var item in suggestItems)
         {
