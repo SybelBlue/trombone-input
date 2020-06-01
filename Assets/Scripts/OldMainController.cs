@@ -1,7 +1,7 @@
-using CustomInput;
+﻿using CustomInput;
 using UnityEngine;
 
-public class MainController : MonoBehaviour
+public class OldMainController : MonoBehaviour
 {
     /// <summary>
     /// The LayoutManager that is in charge of loading the layout
@@ -30,18 +30,17 @@ public class MainController : MonoBehaviour
     /// </summary>
     public TextOutputController outputController;
 
-    public GameObject handObject;
-
     /// <summary>
     /// True if no input is provided
     /// </summary>
     /// <returns>no input</returns>
     public static bool NoInput()
-        => Input.touchCount == 0 && !Input.GetMouseButton(0);
+    {
+        return Input.touchCount == 0 && !Input.GetMouseButton(0);
+    }
 
     public void Start()
     {
-        MinVR.VRMain.Instance.AddOnVRAnalogUpdateCallback("BlueStylusAnalog", AnalogUpdate);
         outputController.text = "";
     }
 
@@ -55,7 +54,7 @@ public class MainController : MonoBehaviour
         indicatorRect.gameObject.SetActive(!NoInput());
         layout?.SetHighlightedKey(NoInput() ? null : lastReportedValue);
 
-        if (Input.GetMouseButtonDown(1) && outputController.text.Length > 0)
+        if (Input.GetMouseButtonDown(1))
         {
             outputController.text = outputController.text.Substring(0, outputController.text.Length - 1);
         }
@@ -96,12 +95,6 @@ public class MainController : MonoBehaviour
         outputController.text += typed;
 
         lastReportedValue = null;
-    }
-
-    private void AnalogUpdate(float value)
-    {
-        Debug.Log("From Hardware: " + value);
-        OnInputValueChange(Mathf.FloorToInt(value));
     }
 
     /// <summary>

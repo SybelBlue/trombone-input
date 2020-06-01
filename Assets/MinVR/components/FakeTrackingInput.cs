@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace MinVR {
+namespace MinVR
+{
     /**
 	 * Genertates fake VREvents for non-Unity built-in inputs (like the events from Optitrak or the buttons on the stylus).
 	 * This is only for use during debugging on your laptop. Make sure to not to use the script when you deploy your app!
@@ -12,7 +13,8 @@ namespace MinVR {
 	 * moving the mouse vertically to change the 3D depth. Hold 'x', 'y', or 'z' while moving the mouse horizontally
 	 * to rotate the tracker around the X, Y, or Z axis. 
 	 */
-    public class FakeTrackingInput : MonoBehaviour, VREventGenerator {
+    public class FakeTrackingInput : MonoBehaviour, VREventGenerator
+    {
         [Tooltip("Fake head tracking with arrow keys. 'up' moves forward, 'down' moves backward, 'left' rotates left, 'right' rotates right.")]
         public string fakeHeadTrackerEvent = "Head_Move";
 
@@ -43,7 +45,8 @@ namespace MinVR {
         private float lasty = float.NaN;
 
 
-        void Start() {
+        void Start()
+        {
             VRMain.Instance.AddEventGenerator(this);
 
             headTrackerPos = initialHeadPos;
@@ -54,22 +57,40 @@ namespace MinVR {
             tracker2Rot = Quaternion.Euler(initialTracker1Rot);
         }
 
-        public void AddEventsSinceLastFrame(ref List<VREvent> eventList) {
+        public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
+        {
             AddHeadTrackerEvent(ref eventList);
             AddTrackerEvents(ref eventList);
         }
 
-        private void AddHeadTrackerEvent(ref List<VREvent> eventList) {
-            if (Input.GetKey("up")) {
+        private void AddHeadTrackerEvent(ref List<VREvent> eventList)
+        {
+            // if (Input.GetKey(KeyCode.LeftShift))
+            // {
+            //     if (Input.GetKey(KeyCode.DownArrow))
+            //     {
+            //         headTrackerRot *= Quaternion.AngleAxis(-1.0f, new Vector3(1f, 0f, 0f));
+            //     }
+            //     else if (Input.GetKey(KeyCode.UpArrow))
+            //     {
+            //         headTrackerRot *= Quaternion.AngleAxis(1.0f, new Vector3(1f, 0f, 0f));
+            //     }
+            // }
+            // else 
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
                 headTrackerPos += 0.1f * Camera.main.transform.forward;
             }
-            else if (Input.GetKey("down")) {
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
                 headTrackerPos -= 0.1f * Camera.main.transform.forward;
             }
-            else if (Input.GetKey("left")) {
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
                 headTrackerRot *= Quaternion.AngleAxis(-1.0f, new Vector3(0f, 1f, 0f));
             }
-            else if (Input.GetKey("right")) {
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
                 headTrackerRot *= Quaternion.AngleAxis(1.0f, new Vector3(0f, 1f, 0f));
             }
 
@@ -82,72 +103,93 @@ namespace MinVR {
         }
 
 
-        private void AddTrackerEvents(ref List<VREvent> eventList) {
+        private void AddTrackerEvents(ref List<VREvent> eventList)
+        {
             float x = Input.mousePosition.x;
             float y = Input.mousePosition.y;
             // first time through
-            if (float.IsNaN(lastx)) {
+            if (float.IsNaN(lastx))
+            {
                 lastx = x;
                 lasty = y;
                 return;
             }
 
-            if (Input.GetKeyDown("1")) {
+            if (Input.GetKeyDown("1"))
+            {
                 curTracker = 0;
             }
-            else if (Input.GetKeyDown("2")) {
+            else if (Input.GetKeyDown("2"))
+            {
                 curTracker = 1;
             }
 
-            if (Input.GetKey("x")) {
+            if (Input.GetKey("x"))
+            {
                 float angle = 0.1f * (x - lastx);
-                if (curTracker == 0) {
+                if (curTracker == 0)
+                {
                     tracker1Rot = Quaternion.AngleAxis(angle, new Vector3(1f, 0f, 0f)) * tracker1Rot;
                 }
-                else if (curTracker == 1) {
+                else if (curTracker == 1)
+                {
                     tracker2Rot = Quaternion.AngleAxis(angle, new Vector3(1f, 0f, 0f)) * tracker2Rot;
                 }
             }
-            else if (Input.GetKey("y")) {
+            else if (Input.GetKey("y"))
+            {
                 float angle = 0.1f * (x - lastx);
-                if (curTracker == 0) {
+                if (curTracker == 0)
+                {
                     tracker1Rot = Quaternion.AngleAxis(angle, new Vector3(0f, 1f, 0f)) * tracker1Rot;
                 }
-                else if (curTracker == 1) {
+                else if (curTracker == 1)
+                {
                     tracker2Rot = Quaternion.AngleAxis(angle, new Vector3(0f, 1f, 0f)) * tracker2Rot;
                 }
             }
-            else if (Input.GetKey("z")) {
+            else if (Input.GetKey("z"))
+            {
                 float angle = 0.1f * (x - lastx);
-                if (curTracker == 0) {
+                if (curTracker == 0)
+                {
                     tracker1Rot = Quaternion.AngleAxis(angle, new Vector3(0f, 0f, 1f)) * tracker1Rot;
                 }
-                else if (curTracker == 1) {
+                else if (curTracker == 1)
+                {
                     tracker2Rot = Quaternion.AngleAxis(angle, new Vector3(0f, 0f, 1f)) * tracker2Rot;
                 }
             }
-            else if (Input.GetKey("left shift")) {
+            else if (Input.GetKey("left shift"))
+            {
                 float depth = 0.005f * (y - lasty);
-                if (curTracker == 0) {
+                if (curTracker == 0)
+                {
                     tracker1Pos += depth * Camera.main.transform.forward;
                 }
-                else if (curTracker == 1) {
+                else if (curTracker == 1)
+                {
                     tracker2Pos += depth * Camera.main.transform.forward;
                 }
             }
-            else {
+            else
+            {
                 Ray ray = Camera.main.ScreenPointToRay(new Vector3(x, y, 0f));
                 Plane p = new Plane();
                 float dist = 0.0f;
-                if (curTracker == 0) {
+                if (curTracker == 0)
+                {
                     p.SetNormalAndPosition(-Camera.main.transform.forward, tracker1Pos);
-                    if (p.Raycast(ray, out dist)) {
+                    if (p.Raycast(ray, out dist))
+                    {
                         tracker1Pos = ray.GetPoint(dist);
                     }
                 }
-                else if (curTracker == 1) {
+                else if (curTracker == 1)
+                {
                     p.SetNormalAndPosition(-Camera.main.transform.forward, tracker2Pos);
-                    if (p.Raycast(ray, out dist)) {
+                    if (p.Raycast(ray, out dist))
+                    {
                         tracker2Pos = ray.GetPoint(dist);
                     }
                 }

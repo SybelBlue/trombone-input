@@ -10,6 +10,7 @@ using Loader = System.Func<System.IO.Stream, int, int, char[], bool>;
 [Serializable]
 public enum DictionarySize
 {
+    None,
     Dict82765,
     Dict243342,
 }
@@ -19,6 +20,7 @@ public class TextOutputController : MonoBehaviour
     public Text rawOutput;
 
     public Text[] suggested;
+
 
     public TextAsset dict824765, dict243342;
 
@@ -60,7 +62,7 @@ public class TextOutputController : MonoBehaviour
     // ///////////////////////// SYMSPELL //////////////////////////////
 
     private const int INIT_CAPACITY = 82765;
-    private const int MAX_EDIT_DISTANCE_DICT = 4;
+    private const int MAX_EDIT_DISTANCE_DICT = 2;
 
     private readonly SymSpell symSpell = new SymSpell(INIT_CAPACITY, MAX_EDIT_DISTANCE_DICT);
 
@@ -112,6 +114,8 @@ public class TextOutputController : MonoBehaviour
     private void InitDictionary(DictionarySize size)
     {
         dictionaryLoaded = false;
+
+        if (size == DictionarySize.None) return;
 
         // must load basic first or else error...
         if (size != DictionarySize.Dict82765)
