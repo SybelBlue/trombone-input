@@ -6,16 +6,27 @@ public class FixedFollow : MonoBehaviour
 
     public Vector3 followOffset;
 
-    // public bool followRotation;
+    public bool followRotation;
 
     void Update()
     {
         if (followParent is null) return;
 
-        var nextPos = Vector3.Slerp(transform.position, followParent.transform.position + followOffset, 0.15f);
-        // var nextRot = followRotation ? Quaternion.Slerp(transform.rotation, followParent.transform.rotation, 0.05f) : transform.rotation;
+        Vector3 nextPos;
+        Quaternion nextRot;
 
-        // transform.SetPositionAndRotation(nextPos, nextRot);
-        transform.position = nextPos;
+        if (followRotation)
+        {
+            nextRot = Quaternion.Slerp(transform.rotation, followParent.transform.rotation, 0.15f);
+            var target = followParent.transform.position + nextRot * followOffset;
+            nextPos = Vector3.Slerp(transform.position, target, 0.15f); ;
+        }
+        else
+        {
+            nextPos = Vector3.Slerp(transform.position, followParent.transform.position + followOffset, 0.15f);
+            nextRot = transform.rotation;
+        }
+
+        transform.SetPositionAndRotation(nextPos, nextRot);
     }
 }
