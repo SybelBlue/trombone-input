@@ -54,6 +54,11 @@ public class MainController : MonoBehaviour
     {
         indicatorRect.gameObject.SetActive(!NoInput());
         layout?.SetHighlightedKey(NoInput() ? null : lastReportedValue);
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            outputController.text = outputController.text.Substring(0, outputController.text.Length - 1);
+        }
     }
 
     /// <summary>

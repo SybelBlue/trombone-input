@@ -49,13 +49,18 @@ public class TextOutputController : MonoBehaviour
 
     public void Start()
     {
-        InitDictionary();
+        InitDictionary(dictionarySize);
+
+        foreach (var suggestedText in suggested)
+        {
+            suggestedText.GetComponent<Button>().onClick.AddListener(() => text = suggestedText.text.ToUpper());
+        }
     }
 
     // ///////////////////////// SYMSPELL //////////////////////////////
 
     private const int INIT_CAPACITY = 82765;
-    private const int MAX_EDIT_DISTANCE_DICT = 2;
+    private const int MAX_EDIT_DISTANCE_DICT = 4;
 
     private readonly SymSpell symSpell = new SymSpell(INIT_CAPACITY, MAX_EDIT_DISTANCE_DICT);
 
@@ -104,17 +109,23 @@ public class TextOutputController : MonoBehaviour
 
     public bool dictionaryLoaded = false;
 
-    private void InitDictionary()
+    private void InitDictionary(DictionarySize size)
     {
         dictionaryLoaded = false;
 
+        // must load basic first or else error...
+        if (size != DictionarySize.Dict82765)
+        {
+            InitDictionary(DictionarySize.Dict82765);
+        }
+
         Debug.Log("Starting...");
 
-        Loader loader = DictionaryLoader(dictionarySize);
+        Loader loader = DictionaryLoader(size);
 
-        var (termIndex, countIndex) = DictionaryTermAndCountIndices(dictionarySize);
+        var (termIndex, countIndex) = DictionaryTermAndCountIndices(size);
 
-        using (Stream corpusStream = new MemoryStream(DictionaryTextAsset(dictionarySize).bytes))
+        using (Stream corpusStream = new MemoryStream(DictionaryTextAsset(size).bytes))
         {
             if (!loader(corpusStream, termIndex, countIndex, SymSpell.defaultSeparatorChars))
             {
@@ -136,6 +147,7 @@ public class TextOutputController : MonoBehaviour
 
         // use LookupCompound?
         return symSpell.LookupCompound(inputTerm, maxEditDistanceLookup).Union(symSpell.Lookup(inputTerm, verbosity, maxEditDistanceLookup).Take(5)).ToList();
+        // return symSpell.Lookup(inputTerm, verbosity, maxEditDistanceLookup);
     }
 
     private List<string> Suggestions(string inputTerm)
@@ -149,7 +161,7 @@ public class TextOutputController : MonoBehaviour
             Debug.Log(item.ToString());
         }
 
-        return suggestItems.Select(suggestion => suggestion.term).ToList();
+        return suggestItems.Select(suggestion => suggestion.term).Where(s => !s.ToUpper().Equals(inputTerm)).ToList();
     }
 
     // private static AsyncLoader AsynchronizeLoader(Loader loader) =>
