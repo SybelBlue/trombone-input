@@ -10,7 +10,7 @@ namespace CustomInput
     {
         public abstract int size();
 
-        public abstract GameObject representation(Transform parent, GameObject block, GameObject basic);
+        public abstract GameObject representation(Transform parent, GameObject ambiguousPrefab, GameObject simplePrefab);
 
         public abstract SimpleKey ItemAt(int index);
 
@@ -18,8 +18,6 @@ namespace CustomInput
     }
 
 
-    // needs to be put in file with same name as class
-    // [CreateAssetMenu(fileName = "SimpleKey", menuName = "trombone-input/SimpleKey", order = 0)]
     public class SimpleKey : LayoutKey
     {
 
@@ -27,7 +25,7 @@ namespace CustomInput
 
         public override string data
         {
-            get => c + "";
+            get => new string(new char[] { c });
         }
 
         private int SIZE;
@@ -38,9 +36,9 @@ namespace CustomInput
             this.SIZE = size;
         }
 
-        public override GameObject representation(Transform parent, GameObject block, GameObject basic)
+        public override GameObject representation(Transform parent, GameObject ambiguousPrefab, GameObject simplePrefab)
         {
-            var newItem = Instantiate(basic, parent);
+            var newItem = Instantiate(simplePrefab, parent);
             newItem.GetComponent<SimpleKeyController>().setSymbol(c);
             return newItem;
         }
@@ -57,8 +55,6 @@ namespace CustomInput
         }
     }
 
-    // needs to be put in file with same name as class
-    // [CreateAssetMenu(fileName = "AmbiguousKey", menuName = "trombone-input/AmbiguousKey", order = 0)]
     public class AmbiguousKey : LayoutKey
     {
         public override string data
@@ -91,13 +87,13 @@ namespace CustomInput
             throw new ArgumentException("index to large");
         }
 
-        public override GameObject representation(Transform parent, GameObject block, GameObject basic)
+        public override GameObject representation(Transform parent, GameObject ambiguousPrefab, GameObject simplePrefab)
         {
-            var newItem = Instantiate(block, parent);
+            var newItem = Instantiate(ambiguousPrefab, parent);
             var controller = newItem.GetComponent<AmbiguousKeyController>();
             foreach (var i in items)
             {
-                var newChild = i.representation(parent, block, basic);
+                var newChild = i.representation(parent, ambiguousPrefab, simplePrefab);
 
                 newChild.GetComponent<SimpleKeyController>().item = i;
 

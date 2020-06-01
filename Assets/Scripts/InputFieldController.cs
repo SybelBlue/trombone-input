@@ -6,91 +6,62 @@ using UnityEngine.UI;
 
 namespace CustomInput
 {
-    /// <summary>
-    /// A class for events issued by InputFieldControllers
-    /// </summary>
+    // A class for events issued by InputFieldControllers
     [Serializable]
     public class InputFieldEvent : UnityEvent<int> { }
 
-    /// <summary>
-    /// Class ripped from Slider.cs and hacked to pieces, then abstracted
-    /// </summary>
+    // Class ripped from Slider.cs and hacked to pieces, then abstracted
     public abstract class InputFieldController : Selectable, IDragHandler, IInitializePotentialDragHandler, ICanvasElement
     {
-        /// <summary>
-        /// The output value of the input controller in [minValue, maxValue]
-        /// </summary>
-        /// <value>integer output</value>
+        // The output value of the input controller in [minValue, maxValue]
         public abstract int value { get; set; }
 
-        /// <summary>
-        /// The normalized output value of the input controller (in [0.0f, 1.0f])
-        /// </summary>
-        /// <value>ratio output</value>
+        // The normalized output value of the input controller (in [0.0f, 1.0f])
         public abstract float normalizedValue { get; set; }
 
 
-        /// <summary>
-        /// The minimum output for the potentiometer
-        /// </summary>
+        // The minimum output for the potentiometer
         public int minValue;
 
-        /// <summary>
-        /// The maximum output for the potentiometer
-        /// </summary>
+        // The maximum output for the potentiometer
         public int maxValue;
 
-        /// <summary>
-        /// Clamps the value into range [minValue, maxValue] then rounds to nearest int
-        /// </summary>
-        /// <returns></returns>
-        protected int ClampValue(float input) => (int)Mathf.Round(Mathf.Clamp(input, minValue, maxValue));
+        // Clamps the value into range [minValue, maxValue] then rounds to nearest int
+        protected int ClampValue(float input)
+            => Mathf.FloorToInt(Mathf.Clamp(input, minValue, maxValue));
 
 
-        /// <summary>
-        /// Called whenever the value is changed
-        /// </summary>
-        [SerializeField]
+        // Called whenever the value is changed
+        [Tooltip("Called when the value of this input field changes")]
         public InputFieldEvent OnValueChanged;
 
-        /// <summary>
-        /// Called whenever the input is finished
-        /// </summary>
-        [SerializeField]
+        // Called whenever the input is finished
+        [Tooltip("Called when a gesture ends")]
         public InputFieldEvent OnInputEnd;
 
-        /// <summary>
-        /// Returns wether or not this item can be dragged by the pointer event
-        /// </summary>
-        /// <param name="eventData">pointer event data</param>
-        /// <returns>can drag</returns>
+        // Returns wether or not this item can be dragged by the pointer event
         protected bool MayDrag(PointerEventData eventData)
-        {
-            return IsActive() && IsInteractable() && eventData.button == PointerEventData.InputButton.Left;
-        }
+            => IsActive() && IsInteractable() && eventData.button == PointerEventData.InputButton.Left;
 
-        /// <inheritdoc/>
         public override void OnPointerDown(PointerEventData eventData)
         {
-            if (!MayDrag(eventData))
-                return;
+            if (MayDrag(eventData))
+            {
+                base.OnPointerDown(eventData);
 
-            base.OnPointerDown(eventData);
-
-            UpdateDrag(eventData, eventData.pressEventCamera);
+                UpdateDrag(eventData, eventData.pressEventCamera);
+            }
         }
 
 
-        /// <inheritdoc/>
         public void OnDrag(PointerEventData eventData)
         {
-            if (!MayDrag(eventData))
-                return;
-
-            UpdateDrag(eventData, eventData.pressEventCamera);
+            if (MayDrag(eventData))
+            {
+                UpdateDrag(eventData, eventData.pressEventCamera);
+            }
         }
 
-        /// <inheritdoc/>
         public override void OnPointerUp(PointerEventData eventData)
         {
             base.OnPointerUp(eventData);
@@ -103,20 +74,14 @@ namespace CustomInput
             OnInputEnd.Invoke(value);
         }
 
-        /// <summary>
-        /// Defines the behavior of the input controller when a valid drag is registered
-        /// </summary>
-        /// <param name="eventData">drag data</param>
-        /// <param name="cam">camera the data was registered on</param>
+        // Defines the behavior of the input controller when a valid drag is registered
         protected abstract void UpdateDrag(PointerEventData eventData, Camera cam);
 
-        /// <inheritdoc/>
         public virtual void OnInitializePotentialDrag(PointerEventData eventData)
         {
             eventData.useDragThreshold = false;
         }
 
-        /// <inheritdoc/>
         public void Rebuild(CanvasUpdate executing)
         {
 
@@ -126,11 +91,9 @@ namespace CustomInput
 #endif
         }
 
-        /// <inheritdoc/>
         public void LayoutComplete()
         { }
 
-        /// <inheritdoc/>
         public void GraphicUpdateComplete()
         { }
     }

@@ -9,7 +9,9 @@ namespace CustomInput
         /// <summary>
         /// Prefabs for the basic layout key and basic block key
         /// </summary>
-        public GameObject basicItem, blockItem;
+        public GameObject simpleKeyPrefab;
+
+        public GameObject ambiguousKeyPrefab;
 
         /// <summary>
         /// All of the keys in this layout
@@ -29,7 +31,7 @@ namespace CustomInput
 
             foreach (var item in keys)
             {
-                var newChild = item.representation(transform, blockItem, basicItem);
+                var newChild = item.representation(transform, ambiguousKeyPrefab, simpleKeyPrefab);
 
                 var blockController = newChild.GetComponent<KeyController>();
 
