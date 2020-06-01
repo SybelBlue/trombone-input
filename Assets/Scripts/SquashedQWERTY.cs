@@ -63,7 +63,7 @@ namespace CustomInput
         }
 
 
-        public static List<string> Suggestions(List<string> keypresses)
+        public static List<string> Disambiguated(List<string> keypresses)
         {
             return GenerateScores(keypresses).Select(t => t.Item1).ToList();
         }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CustomInput;
 using UnityEngine;
 
@@ -93,10 +94,18 @@ public class MainController : MonoBehaviour
 
         Debug.Log($"Pressed [{displayData(currentItem)}] @ {displayData(exactItem)} => {(typed, certain)}");
 
+        keypresses.Add(currentItem?.data ?? " ");
+
+        disambiguated = CustomInput.SquashedQWERTY.Disambiguated(keypresses);
+
         outputController.text += typed;
 
         lastReportedValue = null;
     }
+
+    public List<string> keypresses = new List<string>();
+
+    public List<string> disambiguated;
 
     private void AnalogUpdate(float value)
     {
