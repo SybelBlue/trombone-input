@@ -7,6 +7,8 @@ public class MainController : MonoBehaviour
     // The LayoutManager that is in charge of loading the layout
     public LayoutManager layoutManager;
 
+    public StylusModelController modelController;
+
     // The manager's current layout, or null if no manager exists
     private Layout layout { get => layoutManager?.currentLayout(); }
 
@@ -40,7 +42,7 @@ public class MainController : MonoBehaviour
         indicatorRect.gameObject.SetActive(!NoInput());
         layout?.SetHighlightedKey(NoInput() ? null : lastReportedValue);
 
-        if (Input.GetMouseButtonDown(1) && outputController.text.Length > 0)
+        if (Input.GetKeyDown(KeyCode.Backspace) && outputController.text.Length > 0)
         {
             outputController.text = outputController.text.Substring(0, outputController.text.Length - 1);
         }
@@ -52,8 +54,13 @@ public class MainController : MonoBehaviour
         lastReportedValue = value;
         float width = displayRect.rect.width;
         var pos = indicatorRect.position;
-        pos.x = value * width / (float)inputPanel.maxValue;
+
+        var normalized = value / (float)inputPanel.maxValue;
+        pos.x = width * normalized;
+
         indicatorRect.position = pos;
+
+        modelController.normalizedValue = normalized;
     }
 
     // Callback for when the InputFieldController register a completed gesture
@@ -77,6 +84,8 @@ public class MainController : MonoBehaviour
         disambiguated = SpellingAssist.Disambiguator.Disambiguated(keypresses);
 
         outputController.text += typed;
+
+        modelController.normalizedValue = null;
 
         lastReportedValue = null;
     }
