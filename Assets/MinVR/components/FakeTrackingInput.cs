@@ -172,6 +172,28 @@ namespace MinVR
                     tracker2Pos += depth * Camera.main.transform.forward;
                 }
             }
+            else if (Input.GetKey(KeyCode.LeftControl))
+            {
+                float angle = 0.1f * (x - lastx);
+                if (curTracker == 0)
+                {
+                    tracker1Rot = Quaternion.AngleAxis(angle, new Vector3(0f, 0f, 1f)) * tracker1Rot;
+                }
+                else if (curTracker == 1)
+                {
+                    tracker2Rot = Quaternion.AngleAxis(angle, new Vector3(0f, 0f, 1f)) * tracker2Rot;
+                }
+
+                angle = 0.1f * (y - lasty);
+                if (curTracker == 0)
+                {
+                    tracker1Rot = Quaternion.AngleAxis(angle, new Vector3(1f, 0f, 0f)) * tracker1Rot;
+                }
+                else if (curTracker == 1)
+                {
+                    tracker2Rot = Quaternion.AngleAxis(angle, new Vector3(1f, 0f, 0f)) * tracker2Rot;
+                }
+            }
             else
             {
                 Ray ray = Camera.main.ScreenPointToRay(new Vector3(x, y, 0f));
