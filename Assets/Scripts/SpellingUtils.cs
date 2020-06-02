@@ -122,7 +122,7 @@ namespace SpellingAssist
             }
 
             // if dict loaded and key present
-            if (value >= 0) return int.MaxValue > value ? (int)value : int.MaxValue;
+            if (value > 0) return int.MaxValue > value ? (int)value : int.MaxValue;
 
             return null;
         }
