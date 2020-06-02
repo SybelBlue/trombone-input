@@ -4,33 +4,23 @@ using static UnityEngine.RectTransform;
 
 namespace CustomInput
 {
-    /// <summary>
-    /// Adapted from Unity's Slider.cs
-    /// Simulates a Potentiometer strip with adjustable noise and value range
-    /// </summary>
+    // Adapted from Unity's Slider.cs
+    // Simulates a Potentiometer strip with adjustable noise and value range
     public class PotentiometerSimulator : InputFieldController
     {
 
-        /// <summary>
-        /// The RectTransform belonging to this.gameObject
-        /// Used in determining the touch boundaries
-        /// </summary>
+        // The RectTransform belonging to this.gameObject used in determining the touch boundaries
         private RectTransform rectTransform;
 
-        /// <summary>
-        /// The raw floating-point value of the last input position
-        /// </summary>
+        // The raw floating-point value of the last input position
         [SerializeField]
         private float rawValue;
 
-        /// <summary>
-        /// Potentiometer is only used horizontally
-        /// </summary>
+        // Potentiometer orientation
         public Axis axis;
 
         public bool reversed;
 
-        /// <inheritdoc/>
         public override int value
         {
             get => ClampValue(rawValue + noise);
@@ -42,7 +32,6 @@ namespace CustomInput
             }
         }
 
-        /// <inheritdoc/>
         public override float normalizedValue
         {
             get => Mathf.InverseLerp(minValue, maxValue, value);
@@ -54,34 +43,22 @@ namespace CustomInput
             }
         }
 
-        /// <summary>
-        /// Container for randomly generated noise values
-        /// </summary>
+        // Container for randomly generated noise values
         private readonly float[] noiseValues = new float[300];
 
-        /// <summary>
-        /// The current level of noise (updates on read), or 0 if !simulateNoise
-        /// </summary>
-        /// <value> current noise </value>
+        // The current level of noise (updates on read), or 0 if !simulateNoise
         private float noise
         {
             get => simulateNoise ? noiseValues[incrNoiseIndex()] : 0;
         }
 
-        /// <summary>
-        /// When true, the potentiometer will have random noise in its value
-        /// up to +/- maxAbsoluteNoise
-        /// </summary>
+        // When true, the potentiometer will have random noise in its value up to +/- maxAbsoluteNoise
         public bool simulateNoise = true;
 
-        /// <summary>
-        /// Maximum absolute value noise deviation from the input
-        /// </summary>
+        // Maximum absolute value noise deviation from the input
         public float maxAbsoluteNoise;
 
-        /// <summary>
-        /// Tracker for least recently used noise value
-        /// </summary>
+        // Tracker for least recently used noise value
         private int noiseIndex;
 
         protected override void Start()
@@ -93,9 +70,7 @@ namespace CustomInput
             FillNoise();
         }
 
-        /// <summary>
-        /// Fills noiseValues with new entries and resets noiseIndex
-        /// </summary>
+        // Fills noiseValues with new entries and resets noiseIndex
         private void FillNoise()
         {
             for (int i = 0; i < noiseValues.Length; i += 2)
@@ -112,14 +87,9 @@ namespace CustomInput
             noiseIndex = 0;
         }
 
-        /// <summary>
-        /// Returns the current noise value index, then increments cyclicly, never 
-        /// exceeding noiseValues.length
-        /// </summary>
-        /// <returns>least recently used noise value index</returns>
+        // Returns the current noise value index, then increments cyclicly, never exceeding noiseValues.length
         private int incrNoiseIndex() => noiseIndex++ % noiseValues.Length;
 
-        /// <inheritdoc/>
         public override void OnPointerDown(PointerEventData eventData)
         {
             if (!MayDrag(eventData))
@@ -131,7 +101,6 @@ namespace CustomInput
         }
 
 
-        /// <inheritdoc>
         protected override void UpdateDrag(PointerEventData eventData, Camera cam)
         {
             RectTransform clickRect = rectTransform;

@@ -6,23 +6,15 @@ namespace CustomInput
 
     public abstract class Layout : MonoBehaviour
     {
-        /// <summary>
-        /// Prefabs for the basic layout key and basic block key
-        /// </summary>
+        // Prefabs for the basic layout key and basic block key
         public GameObject simpleKeyPrefab;
 
         public GameObject ambiguousKeyPrefab;
 
-        /// <summary>
-        /// All of the keys in this layout
-        /// </summary>
+        // All of the keys in this layout
         protected LayoutKey[] keys;
 
-        /// <summary>
-        /// Map of value to GameObject
-        /// </summary>
-        /// <typeparam name="GameObject"></typeparam>
-        /// <returns></returns>
+        // Map of value to GameObject
         protected readonly List<GameObject> childMap = new List<GameObject>(64);
 
         protected virtual void Start()
@@ -50,9 +42,7 @@ namespace CustomInput
 
         }
 
-        /// <summary>
-        /// Last width of this item
-        /// </summary>
+        // Last width of this item
         protected float lastWidth = -1;
 
         private void Update()
@@ -64,9 +54,7 @@ namespace CustomInput
             ResizeAll();
         }
 
-        /// <summary>
-        /// SetHighlight(false) on all AbstractDisplayItemControllers
-        /// </summary>
+        // SetHighlight(false) on all AbstractDisplayItemControllers
         protected void UnhighlightAll()
         {
             foreach (var cont in gameObject.GetComponentsInChildren<KeyController>())
@@ -75,60 +63,35 @@ namespace CustomInput
             }
         }
 
-        /// <summary>
-        /// Returns the GameObject at value index
-        /// </summary>
-        /// <param name="index">key</param>
-        /// <returns>value at index</returns>
+        // Returns the GameObject at value index
         public GameObject ChildAt(int index) => childMap.Count <= index ? null : childMap[index];
 
-        /// <summary>
-        /// <example>
-        /// <code>
-        /// Equivalent to ChildAt(index)?.GetComponent<LayoutKey>()
-        /// </example>
-        /// </summary>
-        /// <typeparam name="LayoutKey"></typeparam>
-        /// <returns>LayoutKey at index</returns>
+        // Equivalent to 
+        // ```ChildAt(index)?.GetComponent<LayoutKey>()```
         public LayoutKey LayoutKeyAt(int index) => ChildAt(index)?.GetComponent<KeyController>().item;
 
-        /// <summary>
-        /// The chars for the key at index
-        /// </summary>
-        /// <returns>string of key chars</returns>
+        // The chars for the key at index
         public string CharsFor(int index) => LayoutKeyAt(index)?.data ?? "";
 
 
-        /// <summary>
-        /// Resize all child GameObjects to fit within this and to scale
-        /// </summary>
+        // Resize all child GameObjects to fit within this and to scale
         public abstract void ResizeAll();
 
-        /// <summary>
-        /// Sets the item at index (or no item if null) to be highlighted and all others to be unhiglighted
-        /// </summary>
-        /// <param name="index">index of item to highlight</param>
+        // Sets the item at index (or no item if null) to be highlighted and all others to be unhiglighted
         public abstract void SetHighlightedKey(int? index);
 
-        /// <summary>
-        /// Gets the largest key and smallest key that are situated at index
-        /// </summary>
-        /// <param name="index">index of the keys to find</param>
-        /// <returns>The largest key containing the smallest key containing index</returns>
+        // Gets the largest key and smallest key that are situated at index, or null if the index is out of bounds
+        // (if this is not an ambiguous key, then the tuple items should be equal)
         public abstract (LayoutKey, SimpleKey)? KeysAt(int index);
 
+        // Gets the letter for the keypress at index, given the context, and a boolean representing
+        // certainty, or null if the index is out of bounds
         public abstract (char, bool)? GetLetterFor(string context, int index);
 
-        /// <summary>
-        /// The name of the layout
-        /// </summary>
-        /// <value></value>
+        // The name of the layout
         public abstract string layoutName { get; }
 
-        /// <summary>
-        /// The method to fill the keys field on this, called in Start
-        /// </summary>
-        /// <returns>Array of all keys in this layout</returns>
+        // The method to fill the keys field on this, called in Start
         protected abstract LayoutKey[] FillKeys();
     }
 }

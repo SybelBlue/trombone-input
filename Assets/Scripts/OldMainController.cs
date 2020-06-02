@@ -3,37 +3,24 @@ using UnityEngine;
 
 public class OldMainController : MonoBehaviour
 {
-    /// <summary>
-    /// The LayoutManager that is in charge of loading the layout
-    /// </summary>
+    // The LayoutManager that is in charge of loading the layout
     public LayoutManager layoutManager;
 
     public Layout layout { get => layoutManager?.currentLayout(); }
 
-    /// <summary>
-    /// The main input source
-    /// </summary>
+    // The main input source
     public InputFieldController inputPanel;
 
-    /// <summary>
-    /// The transform of the layout display
-    /// </summary>
+    // The transform of the layout display
     public RectTransform displayRect;
 
-    /// <summary>
-    /// The transform of the indicator
-    /// </summary>
+    // The transform of the indicator
     public RectTransform indicatorRect;
 
-    /// <summary>
-    /// The place where typed guesses go
-    /// </summary>
+    // The place where typed guesses go
     public TextOutputController outputController;
 
-    /// <summary>
-    /// True if no input is provided
-    /// </summary>
-    /// <returns>no input</returns>
+    // True if no input is provided
     public static bool NoInput()
     {
         return Input.touchCount == 0 && !Input.GetMouseButton(0);
@@ -44,9 +31,7 @@ public class OldMainController : MonoBehaviour
         outputController.text = "";
     }
 
-    /// <summary>
-    /// The most up-to-date value reported by the InputFieldController
-    /// </summary>
+    // The most up-to-date value reported by the InputFieldController
     private int? lastReportedValue;
 
     public void Update()
@@ -60,10 +45,7 @@ public class OldMainController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Callback for when the InputFieldController value changes due to user input
-    /// </summary>
-    /// <param name="value">the new value</param>
+    // Callback for when the InputFieldController value changes due to user input
     public void OnInputValueChange(int value)
     {
         lastReportedValue = value;
@@ -73,10 +55,7 @@ public class OldMainController : MonoBehaviour
         indicatorRect.position = pos;
     }
 
-    /// <summary>
-    /// Callback for when the InputFieldController register a completed gesture
-    /// </summary>
-    /// <param name="value">the new value</param>
+    // Callback for when the InputFieldController register a completed gesture
     public void OnInputEnd(int value)
     {
         lastReportedValue = value;
@@ -97,10 +76,6 @@ public class OldMainController : MonoBehaviour
         lastReportedValue = null;
     }
 
-    /// <summary>
-    /// Helper function for displaying layout items in the log
-    /// </summary>
-    /// <param name="item">LayoutItem to get data from</param>
-    /// <returns>string representation of data</returns>
+    // Helper function for displaying layout items in the log
     private string displayData(LayoutKey item) => item?.data ?? "<not found>";
 }

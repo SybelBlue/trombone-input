@@ -4,39 +4,25 @@ using UnityEngine;
 
 public class MainController : MonoBehaviour
 {
-    /// <summary>
-    /// The LayoutManager that is in charge of loading the layout
-    /// </summary>
+    // The LayoutManager that is in charge of loading the layout
     public LayoutManager layoutManager;
 
-    public Layout layout { get => layoutManager?.currentLayout(); }
+    // The manager's current layout, or null if no manager exists
+    private Layout layout { get => layoutManager?.currentLayout(); }
 
-    /// <summary>
-    /// The main input source
-    /// </summary>
+    // The main input source
     public InputFieldController inputPanel;
 
-    /// <summary>
-    /// The transform of the layout display
-    /// </summary>
+    // The transform of the layout display
     public RectTransform displayRect;
 
-    /// <summary>
-    /// The transform of the indicator
-    /// </summary>
+    // The transform of the indicator
     public RectTransform indicatorRect;
 
-    /// <summary>
-    /// The place where typed guesses go
-    /// </summary>
+    // The place where typed guesses go
     public TextOutputController outputController;
 
-    public GameObject handObject;
-
-    /// <summary>
-    /// True if no input is provided
-    /// </summary>
-    /// <returns>no input</returns>
+    // True if no input is provided
     public static bool NoInput()
         => Input.touchCount == 0 && !Input.GetMouseButton(0);
 
@@ -46,9 +32,7 @@ public class MainController : MonoBehaviour
         outputController.text = "";
     }
 
-    /// <summary>
-    /// The most up-to-date value reported by the InputFieldController
-    /// </summary>
+    // The most up-to-date value reported by the InputFieldController
     private int? lastReportedValue;
 
     public void Update()
@@ -62,10 +46,7 @@ public class MainController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Callback for when the InputFieldController value changes due to user input
-    /// </summary>
-    /// <param name="value">the new value</param>
+    // Callback for when the InputFieldController value changes due to user input
     public void OnInputValueChange(int value)
     {
         lastReportedValue = value;
@@ -75,10 +56,7 @@ public class MainController : MonoBehaviour
         indicatorRect.position = pos;
     }
 
-    /// <summary>
-    /// Callback for when the InputFieldController register a completed gesture
-    /// </summary>
-    /// <param name="value">the new value</param>
+    // Callback for when the InputFieldController register a completed gesture
     public void OnInputEnd(int value)
     {
         lastReportedValue = value;
@@ -103,9 +81,11 @@ public class MainController : MonoBehaviour
         lastReportedValue = null;
     }
 
+    // TODO: put this somewhere else?
     public List<string> keypresses = new List<string>();
 
-    public List<string> disambiguated;
+    // The disambiguated options for keypresses
+    public List<string> disambiguated = new List<string>();
 
     private void AnalogUpdate(float value)
     {
@@ -113,10 +93,6 @@ public class MainController : MonoBehaviour
         OnInputValueChange(Mathf.FloorToInt(value));
     }
 
-    /// <summary>
-    /// Helper function for displaying layout items in the log
-    /// </summary>
-    /// <param name="item">LayoutItem to get data from</param>
-    /// <returns>string representation of data</returns>
+    // Helper function for displaying layout items in the log
     private string displayData(LayoutKey item) => item?.data ?? "<not found>";
 }
