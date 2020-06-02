@@ -96,7 +96,7 @@ public class MainController : MonoBehaviour
 
         keypresses.Add(currentItem?.data ?? " ");
 
-        disambiguated = CustomInput.SquashedQWERTY.Disambiguated(keypresses);
+        disambiguated = SpellingAssist.Disambiguator.Disambiguated(keypresses);
 
         outputController.text += typed;
 

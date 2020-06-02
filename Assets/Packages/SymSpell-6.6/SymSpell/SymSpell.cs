@@ -68,7 +68,7 @@ public class SymSpell
     // A list of suggestions might have a single suggestion, or multiple suggestions. 
     private Dictionary<int, string[]> deletes;
     // Dictionary of unique correct spelling words, and the frequency count for each word.
-    private readonly Dictionary<string, Int64> words;
+    public readonly Dictionary<string, Int64> words;
     // Dictionary of unique words that are below the count threshold for being considered correct spellings.
     private Dictionary<string, Int64> belowThresholdWords = new Dictionary<string, long>();
 
