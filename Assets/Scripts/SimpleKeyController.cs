@@ -18,7 +18,7 @@ public class SimpleKeyController : KeyController
 
     public override float Resize(float unitWidth)
     {
-        var width = unitWidth * item.size();
+        var width = unitWidth * item.size;
         rectTransform.SetSizeWithCurrentAnchors(Axis.Horizontal, width);
         return width;
     }

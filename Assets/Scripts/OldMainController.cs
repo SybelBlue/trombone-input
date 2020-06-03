@@ -61,7 +61,7 @@ public class OldMainController : MonoBehaviour
         lastReportedValue = value;
         var (currentItem, exactItem) = layout.KeysAt(value) ?? (null, null);
 
-        if (!currentItem)
+        if (currentItem != null)
         {
             Debug.LogWarning("Ended gesture in empty zone: " + value);
             return;

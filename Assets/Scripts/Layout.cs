@@ -32,7 +32,7 @@ namespace CustomInput
                     blockController.item = item;
                 }
 
-                for (int i = 0; i < item.size(); i++)
+                for (int i = 0; i < item.size; i++)
                 {
                     childMap.Add(newChild);
                 }

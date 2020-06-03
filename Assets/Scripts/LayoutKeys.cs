@@ -6,31 +6,34 @@ using System;
 namespace CustomInput
 {
     // cannot be an assetmenu item
-    public abstract class LayoutKey : ScriptableObject
+    public abstract class LayoutKey
     {
-        public abstract int size();
-
-        public abstract GameObject representation(Transform parent, GameObject ambiguousPrefab, GameObject simplePrefab);
-
-        public abstract SimpleKey ItemAt(int index);
+        public abstract int size { get; }
 
         public abstract string data { get; }
+        public abstract SimpleKey ItemAt(int index);
+
+        public abstract GameObject representation(Transform parent, GameObject ambiguousPrefab, GameObject simplePrefab);
     }
 
 
     public class SimpleKey : LayoutKey
     {
 
-        private char c;
+        private readonly char c;
 
         public override string data
         {
             get => new string(new char[] { c });
         }
 
-        private int SIZE;
+        private readonly int SIZE;
+        public override int size
+        {
+            get => SIZE;
+        }
 
-        public void init(char data, int size)
+        public SimpleKey(char data, int size)
         {
             this.c = data;
             this.SIZE = size;
@@ -38,14 +41,9 @@ namespace CustomInput
 
         public override GameObject representation(Transform parent, GameObject ambiguousPrefab, GameObject simplePrefab)
         {
-            var newItem = Instantiate(simplePrefab, parent);
+            var newItem = GameObject.Instantiate(simplePrefab, parent);
             newItem.GetComponent<SimpleKeyController>().setSymbol(c);
             return newItem;
-        }
-
-        public override int size()
-        {
-            return SIZE;
         }
 
         public override SimpleKey ItemAt(int index)
@@ -59,16 +57,28 @@ namespace CustomInput
     {
         public override string data
         {
-            get => items?.Select(i => i.data).Aggregate((a, b) => a + b);
+            get => DATA;
+        }
+        public override int size
+        {
+            get => SIZE;
         }
 
-        private SimpleKey[] items;
-        private bool slant;
+        private readonly string DATA;
+        private readonly int SIZE;
 
-        public void init(bool slant, params SimpleKey[] subitems)
+
+        private readonly SimpleKey[] items;
+        private readonly bool slant;
+
+        public AmbiguousKey(bool slant, params SimpleKey[] subitems)
         {
             items = subitems;
             this.slant = slant;
+
+            DATA = items?.Select(i => i.data).Aggregate((a, b) => a + b);
+
+            SIZE = items?.Select(i => i.size).Sum() ?? 0;
         }
 
         public override SimpleKey ItemAt(int index)
@@ -76,7 +86,7 @@ namespace CustomInput
             int remaining = index;
             foreach (SimpleKey item in items)
             {
-                remaining -= item.size();
+                remaining -= item.size;
 
                 if (0 > remaining)
                 {
@@ -89,7 +99,7 @@ namespace CustomInput
 
         public override GameObject representation(Transform parent, GameObject ambiguousPrefab, GameObject simplePrefab)
         {
-            var newItem = Instantiate(ambiguousPrefab, parent);
+            var newItem = GameObject.Instantiate(ambiguousPrefab, parent);
             var controller = newItem.GetComponent<AmbiguousKeyController>();
             foreach (var i in items)
             {
@@ -101,11 +111,6 @@ namespace CustomInput
             }
             controller.SetSlant(slant);
             return newItem;
-        }
-
-        public override int size()
-        {
-            return items?.Select(i => i.size()).Sum() ?? 0;
         }
     }
 }

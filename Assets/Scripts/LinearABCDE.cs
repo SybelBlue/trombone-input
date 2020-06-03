@@ -58,108 +58,82 @@ namespace CustomInput
         // Auto-generated 
         protected override LayoutKey[] FillKeys()
         {
-            var basicItem0 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem0.init('A', 3);
+            var basicItem0 = new SimpleKey('A', 3);
 
 
-            var basicItem1 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem1.init('B', 2);
+            var basicItem1 = new SimpleKey('B', 2);
 
 
-            var basicItem2 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem2.init('C', 2);
+            var basicItem2 = new SimpleKey('C', 2);
 
 
-            var basicItem3 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem3.init('D', 2);
+            var basicItem3 = new SimpleKey('D', 2);
 
 
-            var basicItem4 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem4.init('E', 3);
+            var basicItem4 = new SimpleKey('E', 3);
 
 
-            var basicItem5 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem5.init('F', 2);
+            var basicItem5 = new SimpleKey('F', 2);
 
 
-            var basicItem6 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem6.init('G', 2);
+            var basicItem6 = new SimpleKey('G', 2);
 
 
-            var basicItem7 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem7.init('H', 2);
+            var basicItem7 = new SimpleKey('H', 2);
 
 
-            var basicItem8 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem8.init('I', 3);
+            var basicItem8 = new SimpleKey('I', 3);
 
 
-            var basicItem9 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem9.init('J', 2);
+            var basicItem9 = new SimpleKey('J', 2);
 
 
-            var basicItem10 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem10.init('K', 2);
+            var basicItem10 = new SimpleKey('K', 2);
 
 
-            var basicItem11 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem11.init('L', 2);
+            var basicItem11 = new SimpleKey('L', 2);
 
 
-            var basicItem12 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem12.init('M', 2);
+            var basicItem12 = new SimpleKey('M', 2);
 
 
-            var basicItem13 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem13.init('N', 3);
+            var basicItem13 = new SimpleKey('N', 3);
 
 
-            var basicItem14 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem14.init('O', 3);
+            var basicItem14 = new SimpleKey('O', 3);
 
 
-            var basicItem15 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem15.init('P', 2);
+            var basicItem15 = new SimpleKey('P', 2);
 
 
-            var basicItem16 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem16.init('Q', 2);
+            var basicItem16 = new SimpleKey('Q', 2);
 
 
-            var basicItem17 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem17.init('R', 3);
+            var basicItem17 = new SimpleKey('R', 3);
 
 
-            var basicItem18 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem18.init('S', 2);
+            var basicItem18 = new SimpleKey('S', 2);
 
 
-            var basicItem19 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem19.init('T', 3);
+            var basicItem19 = new SimpleKey('T', 3);
 
 
-            var basicItem20 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem20.init('U', 2);
+            var basicItem20 = new SimpleKey('U', 2);
 
 
-            var basicItem21 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem21.init('V', 2);
+            var basicItem21 = new SimpleKey('V', 2);
 
 
-            var basicItem22 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem22.init('W', 2);
+            var basicItem22 = new SimpleKey('W', 2);
 
 
-            var basicItem23 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem23.init('X', 2);
+            var basicItem23 = new SimpleKey('X', 2);
 
 
-            var basicItem24 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem24.init('Y', 2);
+            var basicItem24 = new SimpleKey('Y', 2);
 
 
-            var basicItem25 = ScriptableObject.CreateInstance<SimpleKey>();
-            basicItem25.init('Z', 2);
+            var basicItem25 = new SimpleKey('Z', 2);
             return new LayoutKey[] {
                         basicItem0,
                         basicItem1,

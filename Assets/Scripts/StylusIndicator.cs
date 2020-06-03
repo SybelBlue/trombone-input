@@ -5,6 +5,7 @@ public class StylusIndicator : MonoBehaviour
 {
     public Slider xSlider, zSlider;
 
+
     public Vector2Int xEulerBounds, zEulerBounds;
 
     public (int, int, bool) bound1;
