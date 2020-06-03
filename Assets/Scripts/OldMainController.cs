@@ -6,7 +6,8 @@ public class OldMainController : MonoBehaviour
     // The LayoutManager that is in charge of loading the layout
     public LayoutManager layoutManager;
 
-    public Layout layout { get => layoutManager?.currentLayout(); }
+    public Layout layout
+        => layoutManager?.currentLayout();
 
     // The main input source
     public InputFieldController inputPanel;

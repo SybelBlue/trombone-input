@@ -33,15 +33,10 @@ namespace CustomInput
         private readonly char c;
 
         public override string data
-        {
-            get => new string(new char[] { c });
-        }
+            => new string(new char[] { c });
 
         private readonly int SIZE;
-        public override int size
-        {
-            get => SIZE;
-        }
+        public override int size => SIZE;
 
         public SimpleKey(char data, int size)
         {
@@ -65,14 +60,8 @@ namespace CustomInput
 
     public class AmbiguousKey : LayoutKey
     {
-        public override string data
-        {
-            get => DATA;
-        }
-        public override int size
-        {
-            get => SIZE;
-        }
+        public override string data => DATA;
+        public override int size => SIZE;
 
         private readonly string DATA;
         private readonly int SIZE;
@@ -121,6 +110,23 @@ namespace CustomInput
             }
             controller.SetSlant(slant);
             return newItem;
+        }
+    }
+
+    public class StylusKey : LayoutKey
+    {
+        public override int size => throw new NotImplementedException();
+
+        public override string data => throw new NotImplementedException();
+
+        public override SimpleKey ItemAt(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override GameObject representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
+        {
+            throw new NotImplementedException();
         }
     }
 }

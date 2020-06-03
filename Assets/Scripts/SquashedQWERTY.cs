@@ -8,7 +8,7 @@ namespace CustomInput
     public class SquashedQWERTY : Layout
     {
 
-        public override string layoutName { get => "Squashed QWERTY"; }
+        public override string layoutName => "Squashed QWERTY";
 
         public override void ResizeAll()
         {

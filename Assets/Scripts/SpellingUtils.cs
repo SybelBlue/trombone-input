@@ -24,9 +24,7 @@ namespace SpellingAssist
             => _instance = this;
 
         public static Autocorrect Instance
-        {
-            get => _instance == null ? new Autocorrect() : _instance;
-        }
+            => _instance == null ? new Autocorrect() : _instance;
 
         private const int INIT_CAPACITY = 82765;
         private const int MAX_EDIT_DISTANCE_DICT = 2;
@@ -77,13 +75,11 @@ namespace SpellingAssist
 
         private delegate bool AsyncLoaderCaller(Stream s, int x, int y, char[] seperatorChars);
 
-        private bool _loaded = false;
-
-        public bool dictionaryLoaded { get => _loaded; }
+        public bool dictionaryLoaded { get; protected set; }
 
         public void InitDictionary(DictionarySize size, params TextAsset[] dicts)
         {
-            _loaded = false;
+            dictionaryLoaded = false;
 
             if (size == DictionarySize.None) return;
 
@@ -108,7 +104,7 @@ namespace SpellingAssist
                 else
                 {
                     Debug.LogWarning("Dictionary Loaded!");
-                    _loaded = true;
+                    dictionaryLoaded = true;
                 }
             }
         }

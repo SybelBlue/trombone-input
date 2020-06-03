@@ -7,7 +7,7 @@ namespace CustomInput
     public class LinearABCDE : Layout
     {
 
-        public override string layoutName { get => "Linear ABCDE"; }
+        public override string layoutName => "Linear ABCDE";
 
         protected override void Start()
         {

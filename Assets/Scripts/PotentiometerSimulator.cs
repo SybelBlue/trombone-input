@@ -48,9 +48,7 @@ namespace CustomInput
 
         // The current level of noise (updates on read), or 0 if !simulateNoise
         private float noise
-        {
-            get => simulateNoise ? noiseValues[incrNoiseIndex()] : 0;
-        }
+            => simulateNoise ? noiseValues[incrNoiseIndex()] : 0;
 
         // When true, the potentiometer will have random noise in its value up to +/- maxAbsoluteNoise
         public bool simulateNoise = true;

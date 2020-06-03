@@ -10,7 +10,8 @@ public class MainController : MonoBehaviour
     public StylusModelController modelController;
 
     // The manager's current layout, or null if no manager exists
-    private Layout layout { get => layoutManager?.currentLayout(); }
+    private Layout layout
+        => layoutManager?.currentLayout();
 
     // The main input source
     public InputFieldController inputPanel;
