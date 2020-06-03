@@ -14,7 +14,17 @@ public class SimpleKeyController : KeyController
     public Text childText;
 
     [SerializeField]
-    private char symbol;
+    private char _symbol;
+
+    public char symbol
+    {
+        get => _symbol;
+        set
+        {
+            _symbol = value;
+            childText.text = new string(new char[] { value });
+        }
+    }
 
     public override float Resize(float unitWidth)
     {
@@ -37,10 +47,5 @@ public class SimpleKeyController : KeyController
         }
 
         highlighting = h;
-    }
-    public void setSymbol(char c)
-    {
-        symbol = c;
-        childText.text = c + "";
     }
 }

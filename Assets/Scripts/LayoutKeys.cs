@@ -23,7 +23,7 @@ namespace CustomInput
         public abstract string data { get; }
         public abstract SimpleKey ItemAt(int index);
 
-        public abstract GameObject representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict);
+        public abstract GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict);
     }
 
 
@@ -44,10 +44,13 @@ namespace CustomInput
             this.SIZE = size;
         }
 
-        public override GameObject representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
+        public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
+            => RepresentationUsing(parent, objectDict[LayoutObjectType.SimpleKeyPrefab]);
+
+        protected GameObject RepresentationUsing(Transform parent, GameObject simpleKeyPrefab)
         {
-            var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.SimpleKeyPrefab], parent);
-            newItem.GetComponent<SimpleKeyController>().setSymbol(c);
+            var newItem = GameObject.Instantiate(simpleKeyPrefab, parent);
+            newItem.GetComponent<SimpleKeyController>().symbol = c;
             return newItem;
         }
 
@@ -96,13 +99,13 @@ namespace CustomInput
             throw new ArgumentException("index to large");
         }
 
-        public override GameObject representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
+        public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
             var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.AmbiguousKeyPrefab], parent);
             var controller = newItem.GetComponent<AmbiguousKeyController>();
             foreach (var i in items)
             {
-                var newChild = i.representation(parent, objectDict);
+                var newChild = i.Representation(parent, objectDict);
 
                 newChild.GetComponent<SimpleKeyController>().item = i;
 
@@ -113,20 +116,12 @@ namespace CustomInput
         }
     }
 
-    public class StylusKey : LayoutKey
+    public class StylusKey : SimpleKey
     {
-        public override int size => throw new NotImplementedException();
+        public StylusKey(char data, int size) : base(data, size)
+        { }
 
-        public override string data => throw new NotImplementedException();
-
-        public override SimpleKey ItemAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override GameObject representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
-        {
-            throw new NotImplementedException();
-        }
+        public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
+            => RepresentationUsing(parent, objectDict[LayoutObjectType.StylusKeyPrefab]);
     }
 }

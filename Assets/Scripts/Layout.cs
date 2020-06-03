@@ -30,7 +30,7 @@ namespace CustomInput
 
             foreach (var item in keys)
             {
-                var newChild = item.representation(transform, objectDict);
+                var newChild = item.Representation(transform, objectDict);
 
                 var blockController = newChild.GetComponent<KeyController>();
 
