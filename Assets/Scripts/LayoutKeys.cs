@@ -2,9 +2,19 @@
 using System.Linq;
 using UnityEngine.Assertions;
 using System;
+using System.Collections.Generic;
 
 namespace CustomInput
 {
+
+    public enum LayoutObjectType
+    {
+        SimpleKeyPrefab,
+        AmbiguousKeyPrefab,
+        StylusKeyPrefab,
+        StylusAmbiguousPrefab,
+    }
+
     // cannot be an assetmenu item
     public abstract class LayoutKey
     {
@@ -13,7 +23,7 @@ namespace CustomInput
         public abstract string data { get; }
         public abstract SimpleKey ItemAt(int index);
 
-        public abstract GameObject representation(Transform parent, GameObject ambiguousPrefab, GameObject simplePrefab);
+        public abstract GameObject representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict);
     }
 
 
@@ -39,9 +49,9 @@ namespace CustomInput
             this.SIZE = size;
         }
 
-        public override GameObject representation(Transform parent, GameObject ambiguousPrefab, GameObject simplePrefab)
+        public override GameObject representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
-            var newItem = GameObject.Instantiate(simplePrefab, parent);
+            var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.SimpleKeyPrefab], parent);
             newItem.GetComponent<SimpleKeyController>().setSymbol(c);
             return newItem;
         }
@@ -97,13 +107,13 @@ namespace CustomInput
             throw new ArgumentException("index to large");
         }
 
-        public override GameObject representation(Transform parent, GameObject ambiguousPrefab, GameObject simplePrefab)
+        public override GameObject representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
-            var newItem = GameObject.Instantiate(ambiguousPrefab, parent);
+            var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.AmbiguousKeyPrefab], parent);
             var controller = newItem.GetComponent<AmbiguousKeyController>();
             foreach (var i in items)
             {
-                var newChild = i.representation(parent, ambiguousPrefab, simplePrefab);
+                var newChild = i.representation(parent, objectDict);
 
                 newChild.GetComponent<SimpleKeyController>().item = i;
 

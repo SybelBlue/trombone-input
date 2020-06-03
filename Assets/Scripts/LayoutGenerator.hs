@@ -2,9 +2,9 @@
 
 import Data.List (intercalate)
 
-type Layout = [LayoutItem]
+type Layout = [LayoutKey]
 
-data LayoutItem = Newline | Backspace | Item Char Size | Block [ LayoutItem ] deriving Show
+data LayoutKey = Newline | Backspace | Simple Char Size | Ambiguous [ LayoutKey ] deriving Show
 
 data Size = Small | Medium deriving Show
 
@@ -15,67 +15,47 @@ sizeToBarWidth =
       Medium -> 3
 
 qwerty :: Layout
-qwerty = map tripletIntoBlock $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ]
+qwerty = map tripletIntoAmbiguous $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ]
 
-cmdRow :: LayoutItem
+cmdRow :: LayoutKey
 cmdRow = 
-    Block [ Backspace, Item ' ' Medium, Newline ]
+    Ambiguous [ Backspace, Simple ' ' Medium, Newline ]
 
-tripletIntoBlock :: String -> LayoutItem
-tripletIntoBlock [ a, b, c ] = Block [ Item a Small, Item b Medium, Item c Small ]
-tripletIntoBlock _ = error "unexpected input"
+tripletIntoAmbiguous :: String -> LayoutKey
+tripletIntoAmbiguous [ a, b, c ] = Ambiguous [ Simple a Small, Simple b Medium, Simple c Small ]
+tripletIntoAmbiguous _ = error "unexpected input"
 
 layoutSize :: Layout -> Int
 layoutSize = sum . map itemSize
 
-itemSize :: LayoutItem -> Int
-itemSize (Item _ s) = sizeToBarWidth s
-itemSize (Block xs) = layoutSize xs
+itemSize :: LayoutKey -> Int
+itemSize (Simple _ s) = sizeToBarWidth s
+itemSize (Ambiguous xs) = layoutSize xs
 itemSize _ = sizeToBarWidth Small
 
 abcde :: Layout
 abcde = map makeItem ['A'..'Z']
-  where makeItem x = Item x $ if commonLetter x then Medium else Small
+  where makeItem x = Simple x $ if commonLetter x then Medium else Small
 
 commonLetter :: Char -> Bool
 commonLetter x = elem x "ERIOTAN"
 
 makeInitMethod :: Layout -> String
 makeInitMethod layout = "\t// Auto-generated \n\tprivate override LayoutKey[] FillKeys() {\n\t\t"
-  ++ (intercalate "\n\t\t" $ drop 1 lines)
-  ++ "\n\t\treturn new LayoutKey[] {\n\t\t\t"
-  ++ intercalate ",\n\t\t\t" names
-  ++ "\n\t\t};\n\t}\n"
-  where (_, lines, names) = foldl itemConstructorFolder (0, [], []) layout
+  ++ "\n\t\treturn new LayoutKey[] {\n"
+  ++ (intercalate ",\n" $ foldl (++) [] $ map (map deformat . makeConstructorLineFor) layout)
+  ++ "\n\t\t\t};\n\t}"
 
-itemConstructorFolder :: (Int, [ String ], [ String ]) -> LayoutItem -> (Int, [ String ], [ String ])
-itemConstructorFolder (prev, prevItems, prevNames) item =
-    (next, prevItems ++ ["\n"] ++ nextItems, prevNames ++ nextNames)
-    where (next, nextItems, nextNames) = makeItemConstructor (prev, item)
 
-makeItemConstructor :: (Int, LayoutItem) -> (Int, [ String ], [ String ])
-makeItemConstructor (n, (Item c s)) =
-    ( n + 1
-    , [ "var " ++ itemName ++ " = ScriptableObject.CreateInstance<SimpleKey>();"
-      , itemName ++ ".init('" ++ [c] ++ "', " ++ show (sizeToBarWidth s) ++ ");"
-      ]
-    , [ itemName ]
-    )
-    where itemName = "basicItem" ++ show n
-makeItemConstructor (n, (Block xs)) =
-  ( next + 1
-  , previous ++ 
-    [ "var " ++ itemName ++ " = ScriptableObject.CreateInstance<AmbiguousKey>();"
-    , itemName ++ ".init(" ++ (intercalate ", " (slant : names)) ++ ");"
-    ]
-  , [ itemName ]
-  )
-  where 
-      slant = if (next < 20) then "true" else "false"
-      itemName = "blockItem" ++ show next
-      (next, previous, names) = foldl foldFn (n, [], []) xs
-      foldFn (pn, plines, pnames) item = 
-          (innern, plines ++ innerlines, pnames ++ innernames)
-          where (innern, innerlines, innernames) = makeItemConstructor (pn, item)
+type Formatted = (Int, String)
 
-main = putStr $ makeInitMethod abcde
+deformat :: Formatted -> String
+deformat (n, s) = (take n $ cycle "\t") ++ s
+
+makeConstructorLineFor :: LayoutKey -> [Formatted]
+makeConstructorLineFor (Simple c s) = [(4, "new SimpleKey('" ++ [c, '\'', ',', ' '] ++ show (sizeToBarWidth s) ++ ")")]
+makeConstructorLineFor (Ambiguous items) = (4, "new AmbiguousKey(true") : inner ++ [(4, ")")]
+  where inner = map (\(n, s) -> (n + 1, s)) $ foldl (++) [] $ map makeConstructorLineFor items
+  
+
+main = putStr $ makeInitMethod qwerty

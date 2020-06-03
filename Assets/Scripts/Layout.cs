@@ -21,9 +21,16 @@ namespace CustomInput
         {
             keys = FillKeys();
 
+            var objectDict = new Dictionary<LayoutObjectType, GameObject>
+                { { LayoutObjectType.AmbiguousKeyPrefab, ambiguousKeyPrefab }
+                , { LayoutObjectType.SimpleKeyPrefab, simpleKeyPrefab }
+                , { LayoutObjectType.StylusKeyPrefab, null }
+                , { LayoutObjectType.StylusAmbiguousPrefab, null }
+                };
+
             foreach (var item in keys)
             {
-                var newChild = item.representation(transform, ambiguousKeyPrefab, simpleKeyPrefab);
+                var newChild = item.representation(transform, objectDict);
 
                 var blockController = newChild.GetComponent<KeyController>();
 
