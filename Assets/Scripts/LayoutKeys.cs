@@ -15,7 +15,6 @@ namespace CustomInput
         StylusAmbiguousPrefab,
     }
 
-    // cannot be an assetmenu item
     public abstract class LayoutKey
     {
         public abstract int size { get; }
@@ -29,7 +28,6 @@ namespace CustomInput
 
     public class SimpleKey : LayoutKey
     {
-
         private readonly char c;
 
         public override string data
@@ -70,8 +68,8 @@ namespace CustomInput
         private readonly int SIZE;
 
 
-        private readonly SimpleKey[] items;
-        private readonly bool slant;
+        protected readonly SimpleKey[] items;
+        protected readonly bool slant;
 
         public AmbiguousKey(bool slant, params SimpleKey[] subitems)
         {
@@ -123,5 +121,26 @@ namespace CustomInput
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
             => RepresentationUsing(parent, objectDict[LayoutObjectType.StylusKeyPrefab]);
+    }
+
+    public class StylusAmbiguousKey : AmbiguousKey
+    {
+        public StylusAmbiguousKey(bool slant, params SimpleKey[] subitems) : base(slant, subitems)
+        { }
+
+        public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
+        {
+            var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.StylusAmbiguousPrefab], parent);
+            var controller = newItem.GetComponent<AmbiguousKeyController>();
+            foreach (var i in items)
+            {
+                var newChild = i.Representation(parent, objectDict);
+
+                newChild.GetComponent<SimpleKeyController>().item = i;
+
+                controller.AddChild(newChild);
+            }
+            return newItem;
+        }
     }
 }
