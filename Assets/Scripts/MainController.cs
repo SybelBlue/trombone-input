@@ -26,7 +26,7 @@ public class MainController : MonoBehaviour
 
     // True if no input is provided
     public static bool NoInput()
-        => Input.touchCount == 0 && !Input.GetMouseButton(0);
+        => Input.touchCount == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1);
 
     public void Start()
     {
@@ -45,6 +45,30 @@ public class MainController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Backspace) && outputController.text.Length > 0)
         {
             outputController.text = outputController.text.Substring(0, outputController.text.Length - 1);
+        }
+
+        CaptureMouseWheelInput();
+    }
+
+    private void CaptureMouseWheelInput()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            OnInputValueChange(lastReportedValue ?? inputPanel.maxValue / 2);
+            return;
+        }
+
+        float delta = Input.mouseScrollDelta.y * 4;
+        int rawNext = Mathf.RoundToInt(lastReportedValue + delta ?? 0);
+        int next = Mathf.Clamp(rawNext, 0, inputPanel.maxValue);
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            OnInputEnd(next);
+        }
+        else if (Input.GetMouseButton(1) && delta != 0)
+        {
+            OnInputValueChange(next);
         }
     }
 

@@ -26,20 +26,18 @@ public class StylusModelController : MonoBehaviour
         {
             if (!value.HasValue)
             {
-                Debug.Log("valueless");
                 indicatorSphere.SetActive(false);
+                return;
             }
-            else
-            {
-                if (!indicatorSphere.activeInHierarchy)
-                {
-                    indicatorSphere.SetActive(true);
-                }
 
-                var pos = indicatorSphere.transform.localPosition;
-                pos.y = Mathf.Lerp(ymin, ymax, value.Value);
-                indicatorSphere.transform.localPosition = pos;
+            if (!indicatorSphere.activeInHierarchy)
+            {
+                indicatorSphere.SetActive(true);
             }
+
+            var pos = indicatorSphere.transform.localPosition;
+            pos.y = Mathf.Lerp(ymin, ymax, value.Value);
+            indicatorSphere.transform.localPosition = pos;
         }
     }
 
