@@ -22,6 +22,7 @@ namespace CustomInput
         public abstract int size { get; }
 
         public abstract string label { get; }
+
         public abstract SimpleKey ItemAt(int index);
 
         public abstract GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict);
