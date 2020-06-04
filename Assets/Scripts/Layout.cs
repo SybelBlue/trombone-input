@@ -122,7 +122,7 @@ namespace CustomInput
         public LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<KeyController>().item;
 
         // The chars for the key at index
-        public string CharsFor(InputData data) => LayoutKeyFor(data)?.data ?? "";
+        public string CharsFor(InputData data) => LayoutKeyFor(data)?.label ?? "";
 
         // Sets the item at index (or no item if null) to be highlighted and all others to be unhiglighted
         public abstract void SetHighlightedKey(InputData data);

@@ -106,7 +106,7 @@ public class MainController : MonoBehaviour
 
         Debug.Log($"Pressed {currentItem} @ {exactItem} => {(typed, certain)}");
 
-        keypresses.Add(currentItem?.data ?? " ");
+        keypresses.Add(currentItem?.label ?? " ");
 
         disambiguated = SpellingAssist.Disambiguator.Disambiguated(keypresses);
 

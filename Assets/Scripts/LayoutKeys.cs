@@ -21,13 +21,13 @@ namespace CustomInput
 
         public abstract int size { get; }
 
-        public abstract string data { get; }
+        public abstract string label { get; }
         public abstract SimpleKey ItemAt(int index);
 
         public abstract GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict);
 
         public override string ToString()
-            => $"{name} [{data}]";
+            => $"{name} [{label}]";
     }
 
 
@@ -37,7 +37,7 @@ namespace CustomInput
 
         public readonly char c;
 
-        public override string data
+        public override string label
             => new string(new char[] { c });
 
         private readonly int SIZE;
@@ -71,7 +71,7 @@ namespace CustomInput
     {
         public override string name => "AmbiguousKey";
 
-        public override string data => DATA;
+        public override string label => DATA;
         public override int size => SIZE;
 
         private readonly string DATA;
@@ -86,7 +86,7 @@ namespace CustomInput
             items = subitems;
             this.slant = slant;
 
-            DATA = items?.Select(i => i.data).Aggregate((a, b) => a + b);
+            DATA = items?.Select(i => i.label).Aggregate((a, b) => a + b);
 
             SIZE = items?.Select(i => i.size).Sum() ?? 0;
         }

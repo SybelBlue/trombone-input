@@ -12,7 +12,7 @@ public static class Utils
         return (value - min) % window + min;
     }
 
-    public static string DisplayKeyData(CustomInput.LayoutKey item) => item?.data ?? "<not found>";
+    public static string DisplayKeyData(CustomInput.LayoutKey item) => item?.label ?? "<not found>";
 
     public static int NormalizedAsIndex(float normalized, int length)
         => Mathf.FloorToInt(Mathf.LerpUnclamped(0, length - 1, normalized));

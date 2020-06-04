@@ -35,7 +35,7 @@ namespace CustomInput
         public override (char, bool)? GetLetterFor(InputData data)
         {
             var (parent, inner) = FetchInnerKey(data);
-            return inner == null ? (parent.data[0], false) : (inner.c, true);
+            return inner == null ? (parent.label[0], false) : (inner.c, true);
         }
 
         public override void SetHighlightedKey(InputData data)
