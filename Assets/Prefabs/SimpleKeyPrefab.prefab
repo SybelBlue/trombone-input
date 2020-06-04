@@ -91,8 +91,8 @@ MonoBehaviour:
   highlightColor: {r: 0, g: 0, b: 0, a: 0}
   background: {fileID: 5675352932016053869}
   rectTransform: {fileID: 6836077109866914339}
-  childText: {fileID: 6502903404274746746}
   _symbol: 0
+  childText: {fileID: 6502903404274746746}
 --- !u!1 &7110081515583249879
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,4 +170,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Q
+  m_Text: 

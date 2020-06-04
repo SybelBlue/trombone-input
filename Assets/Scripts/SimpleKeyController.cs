@@ -14,6 +14,6 @@ public class SimpleKeyController : AbstractSimpleKeyController
     public override string text
     {
         get => childText.text;
-        set => childText.text = text;
+        set => childText.text = value;
     }
 }
