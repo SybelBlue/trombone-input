@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using CustomInput;
 using UnityEngine;
-using static Utils;
 
 public class MainController : MonoBehaviour
 {
     // The LayoutManager that is in charge of loading the layout
-    public LayoutManager layoutManager;
+    public LayoutController layoutManager;
 
     public StylusModelController modelController;
 
