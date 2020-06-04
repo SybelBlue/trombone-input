@@ -171,16 +171,7 @@ namespace SpellingAssist
         }
 
         public List<string> Suggestions(string inputTerm, SymSpell.Verbosity verbosity)
-        {
-            var suggestItems = Lookup(inputTerm, verbosity);
-
-            // foreach (var item in suggestItems)
-            // {
-            //     Debug.Log(item.ToString());
-            // }
-
-            return suggestItems.Select(suggestion => suggestion.term).Where(s => !s.ToUpper().Equals(inputTerm)).ToList();
-        }
+            => Lookup(inputTerm, verbosity).Select(suggestion => suggestion.term).Where(s => !s.ToUpper().Equals(inputTerm)).ToList();
     }
 
     public class Disambiguator

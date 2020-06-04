@@ -1557,12 +1557,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicatorSphere: {fileID: 1634427602}
-  ymin: 0
-  ymax: 0.5
-  xMax: 45
-  xMin: -45
-  zMin: -60
-  zMax: 30
+  min: {x: -45, y: 0, z: 60}
+  max: {x: 45, y: 0.5, z: -30}
 --- !u!1 &997093839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1620,7 +1616,7 @@ MonoBehaviour:
     type: 3}
   stylusKeyPrefab: {fileID: 2312528965249368717, guid: 6e7a01433d87b5a488fadd46abeb1f44,
     type: 3}
-  stylusAmbiguousPrefab: {fileID: 7355011700996924773, guid: 2b25e3e9417a75649b092c7658293832,
+  stylusBinnedPrefab: {fileID: 7355011700996924773, guid: 2b25e3e9417a75649b092c7658293832,
     type: 3}
 --- !u!114 &997093842
 MonoBehaviour:
@@ -2580,7 +2576,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1562118213}
   m_FillRect: {fileID: 0}
   m_HandleRect: {fileID: 1562118211}
-  m_Direction: 1
+  m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -2740,7 +2736,7 @@ MonoBehaviour:
     type: 3}
   stylusKeyPrefab: {fileID: 2312528965249368717, guid: 6e7a01433d87b5a488fadd46abeb1f44,
     type: 3}
-  stylusAmbiguousPrefab: {fileID: 7355011700996924773, guid: 2b25e3e9417a75649b092c7658293832,
+  stylusBinnedPrefab: {fileID: 7355011700996924773, guid: 2b25e3e9417a75649b092c7658293832,
     type: 3}
 --- !u!114 &1280636849
 MonoBehaviour:
@@ -5377,7 +5373,7 @@ MonoBehaviour:
     type: 3}
   stylusKeyPrefab: {fileID: 2312528965249368717, guid: 6e7a01433d87b5a488fadd46abeb1f44,
     type: 3}
-  stylusAmbiguousPrefab: {fileID: 7355011700996924773, guid: 2b25e3e9417a75649b092c7658293832,
+  stylusBinnedPrefab: {fileID: 7355011700996924773, guid: 2b25e3e9417a75649b092c7658293832,
     type: 3}
 --- !u!222 &2096338479
 CanvasRenderer:

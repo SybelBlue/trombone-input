@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3227009954255684772}
   - component: {fileID: 4923626679934637529}
   m_Layer: 0
-  m_Name: StylusAmbiguousPrefab
+  m_Name: StylusBinnedPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7355011700996924773}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37458f673902bf6429a48b0243b53646, type: 3}
+  m_Script: {fileID: 11500000, guid: dbdd8c5ba6fa0ad4a870b5ca190a88c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   highlightColor: {r: 0, g: 0, b: 0, a: 0}

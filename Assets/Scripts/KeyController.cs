@@ -4,11 +4,19 @@ using static UnityEngine.RectTransform;
 
 public abstract class KeyController : MonoBehaviour
 {
+    [SerializeField]
+    protected RectTransform rectTransform;
+
     public CustomInput.LayoutKey item;
 
-    public abstract float Resize(float unitWidth);
-
     public abstract void SetHighlight(bool highlight);
+
+    public virtual float Resize(float unitWidth)
+    {
+        var width = unitWidth * item.size;
+        rectTransform.SetSizeWithCurrentAnchors(Axis.Horizontal, width);
+        return width;
+    }
 }
 
 public abstract class AbstractSimpleKeyController : KeyController
@@ -19,7 +27,6 @@ public abstract class AbstractSimpleKeyController : KeyController
     private bool highlighting = false;
 
     public Image background;
-    public RectTransform rectTransform;
 
     public abstract string text { get; set; }
 
@@ -34,13 +41,6 @@ public abstract class AbstractSimpleKeyController : KeyController
             _symbol = value;
             text = new string(new char[] { value });
         }
-    }
-
-    public override float Resize(float unitWidth)
-    {
-        var width = unitWidth * item.size;
-        rectTransform.SetSizeWithCurrentAnchors(Axis.Horizontal, width);
-        return width;
     }
 
     public override void SetHighlight(bool h)

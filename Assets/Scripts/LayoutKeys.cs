@@ -12,7 +12,7 @@ namespace CustomInput
         SimpleKeyPrefab,
         AmbiguousKeyPrefab,
         StylusKeyPrefab,
-        StylusAmbiguousPrefab,
+        StylusBinnedPrefab,
     }
 
     public abstract class LayoutKey
@@ -35,7 +35,7 @@ namespace CustomInput
     {
         public override string name => "SimpleKey";
 
-        private readonly char c;
+        public readonly char c;
 
         public override string data
             => new string(new char[] { c });
@@ -135,16 +135,16 @@ namespace CustomInput
             => RepresentationUsing<StylusKeyController>(parent, objectDict[LayoutObjectType.StylusKeyPrefab]);
     }
 
-    public class StylusAmbiguousKey : AmbiguousKey
+    public class StylusBinnedKey : AmbiguousKey
     {
-        public override string name => "StylusAmbiguousKey";
+        public override string name => "StylusBinnedKey";
 
-        public StylusAmbiguousKey(bool slant, params SimpleKey[] subitems) : base(slant, subitems)
+        public StylusBinnedKey(bool slant, params SimpleKey[] subitems) : base(slant, subitems)
         { }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
-            var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.StylusAmbiguousPrefab], parent);
+            var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.StylusBinnedPrefab], parent);
             var controller = newItem.GetComponent<AmbiguousKeyController>();
             foreach (var i in items)
             {

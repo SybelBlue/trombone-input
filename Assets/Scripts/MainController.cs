@@ -28,7 +28,7 @@ public class MainController : MonoBehaviour
 
     // True if no input is provided
     public static bool inputThisFrame
-        => Input.touchCount > 0 || Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetKeyDown(KeyCode.LeftControl);
+        => Input.touchCount > 0 || Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetKey(KeyCode.LeftControl);
 
     public void Start()
     {
@@ -49,6 +49,8 @@ public class MainController : MonoBehaviour
         }
 
         CaptureMouseWheelInput();
+
+        layout.UpdateState(currentInputData);
     }
 
     private void CaptureMouseWheelInput()
@@ -86,15 +88,13 @@ public class MainController : MonoBehaviour
         indicatorRect.position = pos;
 
         modelController.normalizedSlider = normalized;
-
-        layout.UpdateState(currentInputData);
     }
 
     // Callback for when the InputFieldController register a completed gesture
     public void OnInputEnd(int value)
     {
         lastReportedValue = value;
-        var (currentItem, exactItem) = layout.KeysAt(value) ?? (null, null);
+        var (currentItem, exactItem) = layout.KeysFor(currentInputData) ?? (null, null);
 
         if (currentItem == null)
         {
@@ -104,7 +104,7 @@ public class MainController : MonoBehaviour
 
         var (typed, certain) = currentLetter ?? ('-', false);
 
-        Debug.Log($"Pressed [{DisplayKeyData(currentItem)}] @ {DisplayKeyData(exactItem)} => {(typed, certain)}");
+        Debug.Log($"Pressed {currentItem} @ {exactItem} => {(typed, certain)}");
 
         keypresses.Add(currentItem?.data ?? " ");
 
@@ -123,7 +123,7 @@ public class MainController : MonoBehaviour
     private InputData currentInputData
         => new InputData
             (outputController.text
-            , lastReportedValue.Value
+            , lastReportedValue
             , modelController.normalizedX
             , modelController.normalizedZ
             , modelController.normalizedSlider

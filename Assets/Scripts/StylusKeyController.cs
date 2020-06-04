@@ -1,4 +1,5 @@
-﻿public class StylusKeyController : AbstractSimpleKeyController
+﻿#pragma warning disable 649
+public class StylusKeyController : AbstractSimpleKeyController
 {
     [UnityEngine.SerializeField]
     private TMPro.TMP_Text textMeshPro;

@@ -10,24 +10,14 @@ namespace CustomInput
 
         public override string layoutName => "Squashed QWERTY";
 
-        public override void ResizeAll()
-        {
-            var width = gameObject.GetComponent<RectTransform>().rect.width;
-            var unitWidth = width / 64.0f;
-
-            foreach (var child in gameObject.GetComponentsInChildren<KeyController>())
-            {
-                child.Resize(unitWidth);
-            }
-        }
-
-        public override (LayoutKey, SimpleKey)? KeysAt(int index)
+        public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
         {
             if (!gameObject.activeInHierarchy) return null;
 
-            Assert.IsFalse(index < 0);
+            var index = data.rawValue;
+            Assert.IsTrue(index.HasValue && index >= 0);
 
-            int remaining = index;
+            int remaining = index.Value;
             foreach (LayoutKey item in keys)
             {
                 if (remaining < item.size)
@@ -45,22 +35,22 @@ namespace CustomInput
 
         public override (char, bool)? GetLetterFor(InputData data)
         {
-            var s = CharsFor(data.rawValue);
+            var s = CharsFor(data);
             if (s == null) return null;
             string context = data.context;
-            char last = context == null || context.Length == 0 ? context.ToCharArray()[context.Length - 1] : ' ';
+            char last = context == null || context.Length == 0 ? ' ' : context.ToCharArray()[context.Length - 1];
             var inner = naive[last];
             var c = inner[s];
             return (c, false);
         }
 
-        public override void SetHighlightedKey(int? index)
+        public override void SetHighlightedKey(InputData data)
         {
             UnhighlightAll();
 
-            if (index.HasValue)
+            if (MainController.inputThisFrame)
             {
-                ChildAt(index.Value)?.GetComponent<AmbiguousKeyController>()?.SetHighlight(true);
+                ChildFor(data)?.GetComponent<AmbiguousKeyController>()?.SetHighlight(true);
             }
         }
 

@@ -19,37 +19,25 @@ namespace CustomInput
             }
         }
 
-        public override void ResizeAll()
+        public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
         {
-            var width = gameObject.GetComponent<RectTransform>().rect.width;
-            var unitWidth = width / 64.0f;
-
-            foreach (var child in gameObject.GetComponentsInChildren<KeyController>())
-            {
-                child.Resize(unitWidth);
-            }
-        }
-
-        public override (LayoutKey, SimpleKey)? KeysAt(int index)
-        {
-            var lKey = LayoutKeyAt(index);
-            Debug.Log(lKey);
+            var lKey = LayoutKeyFor(data);
             return (lKey, (SimpleKey)lKey);
         }
 
-        public override void SetHighlightedKey(int? index)
+        public override void SetHighlightedKey(InputData data)
         {
             UnhighlightAll();
 
-            if (index.HasValue)
+            if (MainController.inputThisFrame)
             {
-                ChildAt(index.Value)?.GetComponent<KeyController>()?.SetHighlight(true);
+                ChildFor(data)?.GetComponent<KeyController>()?.SetHighlight(true);
             }
         }
 
         public override (char, bool)? GetLetterFor(InputData data)
         {
-            var s = CharsFor(data.rawValue);
+            var s = CharsFor(data);
             if (s == null || s.Length != 1) return null;
             return (s.ToCharArray()[0], true);
         }

@@ -12,15 +12,15 @@ namespace CustomInput
 
         public readonly float? normalizedX, normalizedZ, normalizedPotentiometer;
 
-        public readonly int rawValue;
+        public readonly int? rawValue;
 
-        public InputData(int raw) : this(null, raw)
+        public InputData(int? raw) : this(null, raw)
         { }
 
-        public InputData(string context, int raw) : this(context, raw, null, null, null)
+        public InputData(string context, int? raw) : this(context, raw, null, null, null)
         { }
 
-        public InputData(string context, int raw, float? normalizedX, float? normalizedZ, float? normalizedPotentiometer)
+        public InputData(string context, int? raw, float? normalizedX, float? normalizedZ, float? normalizedPotentiometer)
         {
             rawValue = raw;
             this.context = context;
@@ -33,7 +33,7 @@ namespace CustomInput
     public abstract class Layout : MonoBehaviour
     {
         // Prefabs for the basic layout key and basic block key
-        public GameObject simpleKeyPrefab, ambiguousKeyPrefab, stylusKeyPrefab, stylusAmbiguousPrefab;
+        public GameObject simpleKeyPrefab, ambiguousKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab;
 
         // All of the keys in this layout
         protected LayoutKey[] keys;
@@ -49,7 +49,7 @@ namespace CustomInput
                 { { LayoutObjectType.AmbiguousKeyPrefab, ambiguousKeyPrefab }
                 , { LayoutObjectType.SimpleKeyPrefab, simpleKeyPrefab }
                 , { LayoutObjectType.StylusKeyPrefab, stylusKeyPrefab }
-                , { LayoutObjectType.StylusAmbiguousPrefab, stylusAmbiguousPrefab }
+                , { LayoutObjectType.StylusBinnedPrefab, stylusBinnedPrefab }
                 };
 
             foreach (var item in keys)
@@ -73,7 +73,7 @@ namespace CustomInput
         }
 
         public virtual void UpdateState(InputData data)
-            => SetHighlightedKey(MainController.inputThisFrame ? (int?)data.rawValue : null);
+            => SetHighlightedKey(data);
 
         // Last width of this item
         protected float lastWidth = -1;
@@ -96,26 +96,41 @@ namespace CustomInput
             }
         }
 
+        // Resize all child GameObjects to fit within this and to scale
+        public virtual void ResizeAll()
+        {
+            var width = gameObject.GetComponent<RectTransform>().rect.width;
+            var unitWidth = width / 64.0f;
+
+            foreach (var child in gameObject.GetComponentsInChildren<KeyController>())
+            {
+                child.Resize(unitWidth);
+            }
+        }
+
         // Returns the GameObject at value index
-        public GameObject ChildAt(int index) => childMap.Count <= index ? null : childMap[index];
+        public GameObject ChildFor(InputData data)
+        {
+            var index = ChildIndexFor(data);
+            return childMap.Count <= index || index < 0 ? null : childMap[index];
+        }
+
+        public virtual int ChildIndexFor(InputData data)
+            => data.rawValue ?? -1;
 
         // Equivalent to 
         // ```ChildAt(index)?.GetComponent<LayoutKey>()```
-        public LayoutKey LayoutKeyAt(int index) => ChildAt(index)?.GetComponent<KeyController>().item;
+        public LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<KeyController>().item;
 
         // The chars for the key at index
-        public string CharsFor(int index) => LayoutKeyAt(index)?.data ?? "";
-
-
-        // Resize all child GameObjects to fit within this and to scale
-        public abstract void ResizeAll();
+        public string CharsFor(InputData data) => LayoutKeyFor(data)?.data ?? "";
 
         // Sets the item at index (or no item if null) to be highlighted and all others to be unhiglighted
-        public abstract void SetHighlightedKey(int? index);
+        public abstract void SetHighlightedKey(InputData data);
 
         // Gets the largest key and smallest key that are situated at index, or null if the index is out of bounds
         // (if this is not an ambiguous key, then the tuple items should be equal)
-        public abstract (LayoutKey, SimpleKey)? KeysAt(int index);
+        public abstract (LayoutKey, SimpleKey)? KeysFor(InputData data);
 
         // Gets the letter for the keypress at index, given the context, and a boolean representing
         // certainty, or null if the index is out of bounds
