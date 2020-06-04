@@ -1,7 +1,15 @@
-﻿public class SimpleKeyController : AbstractSimpleKeyController
+﻿using UnityEngine;
+
+public class SimpleKeyController : AbstractSimpleKeyController
 {
-    [UnityEngine.SerializeField]
+    [SerializeField]
     private UnityEngine.UI.Text childText;
+
+    public TextAnchor alignment
+    {
+        get => childText.alignment;
+        set => childText.alignment = value;
+    }
 
     public override string text
     {

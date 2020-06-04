@@ -49,32 +49,32 @@ public class AmbiguousKeyController : KeyController
         if (forward)
         {
             var item = transform.GetChild(0).GetComponent<SimpleKeyController>();
-            item.childText.alignment = TextAnchor.UpperCenter;
+            item.alignment = TextAnchor.UpperCenter;
 
             if (transform.childCount == 1) return;
 
             item = transform.GetChild(1).GetComponent<SimpleKeyController>();
-            item.childText.alignment = TextAnchor.MiddleCenter;
+            item.alignment = TextAnchor.MiddleCenter;
 
             if (transform.childCount == 2) return;
 
             item = transform.GetChild(2).GetComponent<SimpleKeyController>();
-            item.childText.alignment = TextAnchor.LowerCenter;
+            item.alignment = TextAnchor.LowerCenter;
         }
         else
         {
             var item = transform.GetChild(0).GetComponent<SimpleKeyController>();
-            item.childText.alignment = TextAnchor.LowerCenter;
+            item.alignment = TextAnchor.LowerCenter;
 
             if (transform.childCount == 1) return;
 
             item = transform.GetChild(1).GetComponent<SimpleKeyController>();
-            item.childText.alignment = TextAnchor.MiddleCenter;
+            item.alignment = TextAnchor.MiddleCenter;
 
             if (transform.childCount == 2) return;
 
             item = transform.GetChild(2).GetComponent<SimpleKeyController>();
-            item.childText.alignment = TextAnchor.UpperCenter;
+            item.alignment = TextAnchor.UpperCenter;
         }
     }
 }

@@ -43,12 +43,13 @@ namespace CustomInput
         }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
-            => RepresentationUsing(parent, objectDict[LayoutObjectType.SimpleKeyPrefab]);
+            => RepresentationUsing<SimpleKeyController>(parent, objectDict[LayoutObjectType.SimpleKeyPrefab]);
 
-        protected GameObject RepresentationUsing(Transform parent, GameObject simpleKeyPrefab)
+        protected GameObject RepresentationUsing<T>(Transform parent, GameObject simpleKeyPrefab)
+            where T : AbstractSimpleKeyController
         {
             var newItem = GameObject.Instantiate(simpleKeyPrefab, parent);
-            newItem.GetComponent<SimpleKeyController>().symbol = c;
+            newItem.GetComponent<T>().symbol = c;
             return newItem;
         }
 
@@ -120,7 +121,7 @@ namespace CustomInput
         { }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
-            => RepresentationUsing(parent, objectDict[LayoutObjectType.StylusKeyPrefab]);
+            => RepresentationUsing<StylusKeyController>(parent, objectDict[LayoutObjectType.StylusKeyPrefab]);
     }
 
     public class StylusAmbiguousKey : AmbiguousKey
@@ -136,7 +137,7 @@ namespace CustomInput
             {
                 var newChild = i.Representation(parent, objectDict);
 
-                newChild.GetComponent<SimpleKeyController>().item = i;
+                newChild.GetComponent<StylusKeyController>().item = i;
 
                 controller.AddChild(newChild);
             }
