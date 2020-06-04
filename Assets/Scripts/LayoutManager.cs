@@ -51,7 +51,7 @@ public class LayoutManager : MonoBehaviour
     {
         dropdown.ClearOptions();
         dropdown.AddOptions(new List<string>(Enum.GetNames(typeof(LayoutOption))));
-        dropdown.value = 0;
+        dropdown.value = (int)layout;
     }
 
     public void DropdownValueSelected(int index) => layout = (LayoutOption)index;

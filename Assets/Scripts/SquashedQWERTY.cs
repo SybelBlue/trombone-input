@@ -67,47 +67,47 @@ namespace CustomInput
         protected override LayoutKey[] FillKeys()
         {
             return new LayoutKey[] {
-                    new AmbiguousKey(false,
+                    new AmbiguousKey(true,
                             new SimpleKey('Q', 2),
                             new SimpleKey('A', 3),
                             new SimpleKey('Z', 2)
                     ),
-                    new AmbiguousKey(false,
+                    new AmbiguousKey(true,
                             new SimpleKey('W', 2),
                             new SimpleKey('S', 3),
                             new SimpleKey('X', 2)
                     ),
-                    new AmbiguousKey(false,
+                    new AmbiguousKey(true,
                             new SimpleKey('E', 2),
                             new SimpleKey('D', 3),
                             new SimpleKey('C', 2)
                     ),
-                    new AmbiguousKey(false,
+                    new AmbiguousKey(true,
                             new SimpleKey('R', 2),
                             new SimpleKey('F', 3),
                             new SimpleKey('V', 2)
                     ),
-                    new AmbiguousKey(false,
+                    new AmbiguousKey(true,
                             new SimpleKey('T', 2),
                             new SimpleKey('G', 3),
                             new SimpleKey('B', 2)
                     ),
-                    new AmbiguousKey(true,
+                    new AmbiguousKey(false,
                             new SimpleKey('U', 2),
                             new SimpleKey('H', 3),
                             new SimpleKey('Y', 2)
                     ),
-                    new AmbiguousKey(true,
+                    new AmbiguousKey(false,
                             new SimpleKey('N', 2),
                             new SimpleKey('J', 3),
                             new SimpleKey('I', 2)
                     ),
-                    new AmbiguousKey(true,
+                    new AmbiguousKey(false,
                             new SimpleKey('M', 2),
                             new SimpleKey('K', 3),
                             new SimpleKey('O', 2)
                     ),
-                    new AmbiguousKey(true,
+                    new AmbiguousKey(false,
                             new SimpleKey('L', 3),
                             new SimpleKey('P', 2)
                     )
