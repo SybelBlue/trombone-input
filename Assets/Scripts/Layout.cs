@@ -115,8 +115,7 @@ namespace CustomInput
             return childMap.Count <= index || index < 0 ? null : childMap[index];
         }
 
-        public virtual int ChildIndexFor(InputData data)
-            => data.rawValue ?? -1;
+        public abstract int ChildIndexFor(InputData data);
 
         // Equivalent to 
         // ```ChildAt(index)?.GetComponent<LayoutKey>()```

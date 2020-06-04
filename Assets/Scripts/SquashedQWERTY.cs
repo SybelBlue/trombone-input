@@ -44,6 +44,9 @@ namespace CustomInput
             return (c, false);
         }
 
+        public override int ChildIndexFor(InputData data)
+            => data.rawValue ?? -1;
+
         public override void SetHighlightedKey(InputData data)
         {
             UnhighlightAll();

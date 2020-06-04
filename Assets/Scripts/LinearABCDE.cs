@@ -35,6 +35,9 @@ namespace CustomInput
             }
         }
 
+        public override int ChildIndexFor(InputData data)
+            => data.rawValue ?? -1;
+
         public override (char, bool)? GetLetterFor(InputData data)
         {
             var s = CharsFor(data);

@@ -7,14 +7,19 @@ namespace CustomInput
     {
         public override string layoutName => "Stylus ABCDE";
 
+        private int InnerIndex(InputData data, int parentSize)
+            => Utils.NormalizedAsIndex(1 - data.normalizedPotentiometer.Value, parentSize);
+
+        public override int ChildIndexFor(InputData data)
+            => Utils.NormalizedAsIndex(data.normalizedZ.Value, childMap.Count);
+
         private (LayoutKey, SimpleKey) FetchInnerKey(InputData data)
         {
             StylusBinnedKey parent = (StylusBinnedKey)LayoutKeyFor(data);
 
             if (!data.normalizedPotentiometer.HasValue || parent.size == 0) return (parent, null);
 
-            var innerIndex = Utils.NormalizedAsIndex(data.normalizedPotentiometer.Value, parent.size);
-            return (parent, parent.ItemAt(innerIndex));
+            return (parent, parent.ItemAt(InnerIndex(data, parent.size)));
         }
 
         public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
@@ -33,9 +38,6 @@ namespace CustomInput
             return inner == null ? (parent.data[0], false) : (inner.c, true);
         }
 
-        public override int ChildIndexFor(InputData data)
-            => Utils.NormalizedAsIndex(data.normalizedZ.Value, childMap.Count);
-
         public override void SetHighlightedKey(InputData data)
         {
             if (!data.normalizedZ.HasValue) return;
@@ -50,7 +52,7 @@ namespace CustomInput
             if (!data.normalizedPotentiometer.HasValue || binnedKey == null) return;
 
             var controllers = binnedKey.GetComponentsInChildren<AbstractSimpleKeyController>();
-            int inner = Utils.NormalizedAsIndex(1 - data.normalizedPotentiometer.Value, controllers.Length);
+            int inner = InnerIndex(data, controllers.Length);
             for (int i = 0; i < controllers.Length; i++)
             {
                 controllers[i].SetHighlight(i == inner);
