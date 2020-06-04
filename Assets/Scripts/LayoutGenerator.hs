@@ -37,11 +37,22 @@ abcde :: Layout
 abcde = map makeItem ['A'..'Z']
   where makeItem x = Simple x $ if commonLetter x then Medium else Small
 
+binnedAbcde :: Layout
+binnedAbcde = map makeItem $ splitEvery 4 ['A'..'Z']
+  where makeItem = Ambiguous . map (\c -> Simple c Small)
+
+-- https://stackoverflow.com/questions/8680888/subdividing-a-list-in-haskell
+splitEvery :: Int -> [a] -> [[a]]
+splitEvery _ [] = []
+splitEvery n list = first : (splitEvery n rest)
+  where
+    (first,rest) = splitAt n list
+
 commonLetter :: Char -> Bool
 commonLetter x = elem x "ERIOTAN"
 
 makeInitMethod :: Layout -> String
-makeInitMethod layout = "\t// Auto-generated \n\tprivate override LayoutKey[] FillKeys() {\n\t\t"
+makeInitMethod layout = "\t// Auto-generated \n\tprotected override LayoutKey[] FillKeys() {\n\t\t"
   ++ "\n\t\treturn new LayoutKey[] {\n"
   ++ (intercalate ",\n" $ foldl (++) [] $ map (map deformat . makeConstructorLineFor) layout)
   ++ "\n\t\t\t};\n\t}"
@@ -58,4 +69,4 @@ makeConstructorLineFor (Ambiguous items) = (4, "new AmbiguousKey(true") : inner 
   where inner = map (\(n, s) -> (n + 1, s)) $ foldl (++) [] $ map makeConstructorLineFor items
   
 
-main = putStr $ makeInitMethod qwerty
+main = putStr $ makeInitMethod binnedAbcde

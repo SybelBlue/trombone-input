@@ -6,6 +6,8 @@ namespace CustomInput
 
     public readonly struct InputData
     {
+        public const int MAX_RAW_VALUE = 64;
+
         public readonly string context;
 
         public readonly float? normalizedX, normalizedZ, normalizedPotentiometer;
@@ -71,7 +73,7 @@ namespace CustomInput
         }
 
         public virtual void UpdateState(InputData data)
-        { }
+            => SetHighlightedKey(MainController.inputThisFrame ? (int?)data.rawValue : null);
 
         // Last width of this item
         protected float lastWidth = -1;

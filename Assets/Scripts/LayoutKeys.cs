@@ -17,17 +17,24 @@ namespace CustomInput
 
     public abstract class LayoutKey
     {
+        public abstract string name { get; }
+
         public abstract int size { get; }
 
         public abstract string data { get; }
         public abstract SimpleKey ItemAt(int index);
 
         public abstract GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict);
+
+        public override string ToString()
+            => $"{name} [{data}]";
     }
 
 
     public class SimpleKey : LayoutKey
     {
+        public override string name => "SimpleKey";
+
         private readonly char c;
 
         public override string data
@@ -62,6 +69,8 @@ namespace CustomInput
 
     public class AmbiguousKey : LayoutKey
     {
+        public override string name => "AmbiguousKey";
+
         public override string data => DATA;
         public override int size => SIZE;
 
@@ -117,6 +126,8 @@ namespace CustomInput
 
     public class StylusKey : SimpleKey
     {
+        public override string name => "StylusKey";
+
         public StylusKey(char data, int size) : base(data, size)
         { }
 
@@ -126,6 +137,8 @@ namespace CustomInput
 
     public class StylusAmbiguousKey : AmbiguousKey
     {
+        public override string name => "StylusAmbiguousKey";
+
         public StylusAmbiguousKey(bool slant, params SimpleKey[] subitems) : base(slant, subitems)
         { }
 

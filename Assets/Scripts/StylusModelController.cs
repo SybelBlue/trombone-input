@@ -52,19 +52,9 @@ public class StylusModelController : MonoBehaviour
     void Update()
     {
         Vector3 euler = transform.rotation.eulerAngles;
-        var x = ModIntoRange(euler.x, -180, 180);
-        var z = ModIntoRange(euler.z, -180, 180);
+        var x = Utils.ModIntoRange(euler.x, -180, 180);
+        var z = Utils.ModIntoRange(euler.z, -180, 180);
         normalizedX = Mathf.InverseLerp(xMin, xMax, x);
         normalizedZ = Mathf.InverseLerp(zMin, zMax, z);
-    }
-
-    private static float ModIntoRange(float value, float min, float max)
-    {
-        float window = max - min;
-        if (min > value)
-        {
-            value += Mathf.FloorToInt((min - value) / window) * window + window;
-        }
-        return (value - min) % window + min;
     }
 }

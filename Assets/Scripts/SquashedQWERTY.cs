@@ -48,8 +48,9 @@ namespace CustomInput
             var s = CharsFor(data.rawValue);
             if (s == null) return null;
             string context = data.context;
-            if (context == null || context.Length == 0) context = " ";
-            var c = naive[context.ToCharArray()[context.Length - 1]][s];
+            char last = context == null || context.Length == 0 ? context.ToCharArray()[context.Length - 1] : ' ';
+            var inner = naive[last];
+            var c = inner[s];
             return (c, false);
         }
 

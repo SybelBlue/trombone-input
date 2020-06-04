@@ -33,6 +33,7 @@ namespace CustomInput
         public override (LayoutKey, SimpleKey)? KeysAt(int index)
         {
             var lKey = LayoutKeyAt(index);
+            Debug.Log(lKey);
             return (lKey, (SimpleKey)lKey);
         }
 

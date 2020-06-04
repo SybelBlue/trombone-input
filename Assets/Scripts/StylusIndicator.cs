@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-public class StylusIndicator : MonoBehaviour
+﻿public class StylusIndicator : UnityEngine.MonoBehaviour
 {
-    public Slider xSlider, zSlider;
+    public UnityEngine.UI.Slider xSlider, zSlider;
 
     public StylusModelController modelController;
 

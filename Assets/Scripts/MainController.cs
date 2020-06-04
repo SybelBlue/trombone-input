@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CustomInput;
 using UnityEngine;
+using static Utils;
 
 public class MainController : MonoBehaviour
 {
@@ -26,8 +27,8 @@ public class MainController : MonoBehaviour
     public TextOutputController outputController;
 
     // True if no input is provided
-    public static bool NoInput()
-        => Input.touchCount == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1);
+    public static bool inputThisFrame
+        => Input.touchCount > 0 || Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetKeyDown(KeyCode.LeftControl);
 
     public void Start()
     {
@@ -40,8 +41,7 @@ public class MainController : MonoBehaviour
 
     public void Update()
     {
-        indicatorRect.gameObject.SetActive(!NoInput());
-        layout?.SetHighlightedKey(NoInput() ? null : lastReportedValue);
+        indicatorRect.gameObject.SetActive(inputThisFrame);
 
         if (Input.GetKeyDown(KeyCode.Backspace) && outputController.text.Length > 0)
         {
@@ -96,7 +96,7 @@ public class MainController : MonoBehaviour
         lastReportedValue = value;
         var (currentItem, exactItem) = layout.KeysAt(value) ?? (null, null);
 
-        if (currentItem != null)
+        if (currentItem == null)
         {
             Debug.LogWarning("Ended gesture in empty zone: " + value);
             return;
@@ -104,7 +104,7 @@ public class MainController : MonoBehaviour
 
         var (typed, certain) = currentLetter ?? ('-', false);
 
-        Debug.Log($"Pressed [{displayData(currentItem)}] @ {displayData(exactItem)} => {(typed, certain)}");
+        Debug.Log($"Pressed [{DisplayKeyData(currentItem)}] @ {DisplayKeyData(exactItem)} => {(typed, certain)}");
 
         keypresses.Add(currentItem?.data ?? " ");
 
@@ -124,8 +124,8 @@ public class MainController : MonoBehaviour
         => new InputData
             (outputController.text
             , lastReportedValue.Value
-            , null
-            , null
+            , modelController.normalizedX
+            , modelController.normalizedZ
             , modelController.normalizedSlider
             );
 
@@ -140,7 +140,4 @@ public class MainController : MonoBehaviour
         Debug.Log("From Hardware: " + value);
         OnInputValueChange(Mathf.FloorToInt(value));
     }
-
-    // Helper function for displaying layout items in the log
-    private string displayData(LayoutKey item) => item?.data ?? "<not found>";
 }
