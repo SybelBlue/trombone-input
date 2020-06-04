@@ -13,7 +13,7 @@ public class MainController : MonoBehaviour
     private Layout layout
         => layoutManager?.currentLayout();
 
-    // The main input source
+    // The simulated potentiometer input source
     public InputFieldController inputPanel;
 
     // The transform of the layout display
@@ -85,7 +85,9 @@ public class MainController : MonoBehaviour
 
         indicatorRect.position = pos;
 
-        modelController.normalizedValue = normalized;
+        modelController.normalizedSlider = normalized;
+
+        layout.UpdateState(currentInputData);
     }
 
     // Callback for when the InputFieldController register a completed gesture
@@ -100,7 +102,7 @@ public class MainController : MonoBehaviour
             return;
         }
 
-        var (typed, certain) = layout.GetLetterFor(outputController.text, value) ?? ('-', false);
+        var (typed, certain) = currentLetter ?? ('-', false);
 
         Debug.Log($"Pressed [{displayData(currentItem)}] @ {displayData(exactItem)} => {(typed, certain)}");
 
@@ -110,10 +112,22 @@ public class MainController : MonoBehaviour
 
         outputController.text += typed;
 
-        modelController.normalizedValue = null;
+        modelController.normalizedSlider = null;
 
         lastReportedValue = null;
     }
+
+    public (char, bool)? currentLetter
+        => layout.GetLetterFor(currentInputData);
+
+    private InputData currentInputData
+        => new InputData
+            (outputController.text
+            , lastReportedValue.Value
+            , null
+            , null
+            , modelController.normalizedSlider
+            );
 
     // TODO: put this somewhere else?
     public List<string> keypresses = new List<string>();

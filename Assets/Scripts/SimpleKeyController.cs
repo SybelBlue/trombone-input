@@ -1,51 +1,11 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.RectTransform;
-
-public class SimpleKeyController : KeyController
+﻿public class SimpleKeyController : AbstractSimpleKeyController
 {
-    public Color highlightColor;
+    [UnityEngine.SerializeField]
+    private UnityEngine.UI.Text childText;
 
-    private Color normalColor;
-    private bool highlighting = false;
-
-    public Image background;
-    public RectTransform rectTransform;
-    public Text childText;
-
-    [SerializeField]
-    private char _symbol;
-
-    public char symbol
+    public override string text
     {
-        get => _symbol;
-        set
-        {
-            _symbol = value;
-            childText.text = new string(new char[] { value });
-        }
-    }
-
-    public override float Resize(float unitWidth)
-    {
-        var width = unitWidth * item.size;
-        rectTransform.SetSizeWithCurrentAnchors(Axis.Horizontal, width);
-        return width;
-    }
-
-    public override void SetHighlight(bool h)
-    {
-        if (h)
-        {
-            normalColor = background.color;
-
-            background.color = highlightColor;
-        }
-        else if (highlighting)
-        {
-            background.color = normalColor;
-        }
-
-        highlighting = h;
+        get => childText.text;
+        set => childText.text = text;
     }
 }

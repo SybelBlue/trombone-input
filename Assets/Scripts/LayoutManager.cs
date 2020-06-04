@@ -9,6 +9,7 @@ public enum LayoutOption
 {
     SquashedQWERTY,
     LinearABCDE,
+    StylusBinnedABCDE,
 }
 
 # pragma warning disable 649
@@ -24,6 +25,9 @@ public class LayoutManager : MonoBehaviour
     [SerializeField]
     private CustomInput.LinearABCDE linearABCDE;
 
+    [SerializeField]
+    private CustomInput.StylusBinnedABCDE stylusBinnedABCDE;
+
     public CustomInput.Layout currentLayout() => fromOption(layout);
 
     public CustomInput.Layout fromOption(LayoutOption option)
@@ -35,6 +39,9 @@ public class LayoutManager : MonoBehaviour
 
             case LayoutOption.LinearABCDE:
                 return linearABCDE;
+
+            case LayoutOption.StylusBinnedABCDE:
+                return stylusBinnedABCDE;
         }
 
         throw new ArgumentException($"unknown layout option: {option.ToString()} in fromOption");
@@ -51,9 +58,13 @@ public class LayoutManager : MonoBehaviour
 
     private void Update()
     {
-        foreach (var layout in GetComponentsInChildren<CustomInput.Layout>().Where(layout => layout.gameObject.activeInHierarchy))
+        foreach (var layoutOption in System.Enum.GetValues(typeof(LayoutOption)))
         {
-            layout.gameObject.SetActive(false);
+            var layout = fromOption((LayoutOption)layoutOption);
+            if (layout.gameObject.activeInHierarchy)
+            {
+                layout.gameObject.SetActive(false);
+            }
         }
 
         var current = currentLayout();

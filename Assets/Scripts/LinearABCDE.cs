@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Assertions;
+﻿using UnityEngine;
 
 namespace CustomInput
 {
@@ -48,9 +46,9 @@ namespace CustomInput
             }
         }
 
-        public override (char, bool)? GetLetterFor(string _, int index)
+        public override (char, bool)? GetLetterFor(InputData data)
         {
-            var s = CharsFor(index);
+            var s = CharsFor(data.rawValue);
             if (s == null || s.Length != 1) return null;
             return (s.ToCharArray()[0], true);
         }

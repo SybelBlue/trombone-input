@@ -7,8 +7,8 @@ public class AmbiguousKeyController : KeyController
 
     public Color highlightColor;
 
-    private Color normalColor;
-    private bool highlighting = false;
+    protected Color normalColor;
+    protected bool highlighting = false;
     public RectTransform rectTransform;
     public Image background;
 
@@ -42,7 +42,7 @@ public class AmbiguousKeyController : KeyController
         g.transform.SetParent(transform);
     }
 
-    public void SetSlant(bool forward)
+    public virtual void SetSlant(bool forward)
     {
         if (transform.childCount == 0) return;
 

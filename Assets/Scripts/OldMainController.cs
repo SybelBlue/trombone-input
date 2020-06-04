@@ -68,7 +68,7 @@ public class OldMainController : MonoBehaviour
             return;
         }
 
-        var (typed, certain) = layout.GetLetterFor(outputController.text, value) ?? ('-', false);
+        var (typed, certain) = layout.GetLetterFor(new InputData(outputController.text, value)) ?? ('-', false);
 
         Debug.Log($"Pressed [{displayData(currentItem)}] @ {displayData(exactItem)} => {(typed, certain)}");
 

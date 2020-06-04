@@ -43,10 +43,11 @@ namespace CustomInput
             return null;
         }
 
-        public override (char, bool)? GetLetterFor(string context, int index)
+        public override (char, bool)? GetLetterFor(InputData data)
         {
-            var s = CharsFor(index);
+            var s = CharsFor(data.rawValue);
             if (s == null) return null;
+            string context = data.context;
             if (context == null || context.Length == 0) context = " ";
             var c = naive[context.ToCharArray()[context.Length - 1]][s];
             return (c, false);

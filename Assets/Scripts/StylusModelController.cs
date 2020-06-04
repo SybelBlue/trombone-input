@@ -11,7 +11,12 @@ public class StylusModelController : MonoBehaviour
     [SerializeField]
     private float ymax;
 
-    public float? normalizedValue
+    public float xMax, xMin, zMin, zMax;
+
+    public float normalizedX { get; private set; }
+    public float normalizedZ { get; private set; }
+
+    public float? normalizedSlider
     {
         get
         {
@@ -42,5 +47,24 @@ public class StylusModelController : MonoBehaviour
     }
 
     private void Start()
-        => normalizedValue = null;
+        => normalizedSlider = null;
+
+    void Update()
+    {
+        Vector3 euler = transform.rotation.eulerAngles;
+        var x = ModIntoRange(euler.x, -180, 180);
+        var z = ModIntoRange(euler.z, -180, 180);
+        normalizedX = Mathf.InverseLerp(xMin, xMax, x);
+        normalizedZ = Mathf.InverseLerp(zMin, zMax, z);
+    }
+
+    private static float ModIntoRange(float value, float min, float max)
+    {
+        float window = max - min;
+        if (min > value)
+        {
+            value += Mathf.FloorToInt((min - value) / window) * window + window;
+        }
+        return (value - min) % window + min;
+    }
 }

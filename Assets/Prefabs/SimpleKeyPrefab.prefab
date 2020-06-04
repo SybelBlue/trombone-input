@@ -88,12 +88,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6478f28ff783814fa479f3914acdb8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
   highlightColor: {r: 0, g: 0, b: 0, a: 0}
   background: {fileID: 5675352932016053869}
   rectTransform: {fileID: 6836077109866914339}
   childText: {fileID: 6502903404274746746}
-  symbol: 0
+  _symbol: 0
 --- !u!1 &7110081515583249879
 GameObject:
   m_ObjectHideFlags: 0

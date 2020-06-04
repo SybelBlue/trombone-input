@@ -4,12 +4,34 @@ using UnityEngine;
 namespace CustomInput
 {
 
+    public readonly struct InputData
+    {
+        public readonly string context;
+
+        public readonly float? normalizedX, normalizedZ, normalizedPotentiometer;
+
+        public readonly int rawValue;
+
+        public InputData(int raw) : this(null, raw)
+        { }
+
+        public InputData(string context, int raw) : this(context, raw, null, null, null)
+        { }
+
+        public InputData(string context, int raw, float? normalizedX, float? normalizedZ, float? normalizedPotentiometer)
+        {
+            rawValue = raw;
+            this.context = context;
+            this.normalizedX = normalizedX;
+            this.normalizedZ = normalizedZ;
+            this.normalizedPotentiometer = normalizedPotentiometer;
+        }
+    }
+
     public abstract class Layout : MonoBehaviour
     {
         // Prefabs for the basic layout key and basic block key
-        public GameObject simpleKeyPrefab;
-
-        public GameObject ambiguousKeyPrefab;
+        public GameObject simpleKeyPrefab, ambiguousKeyPrefab, stylusKeyPrefab, stylusAmbiguousPrefab;
 
         // All of the keys in this layout
         protected LayoutKey[] keys;
@@ -24,8 +46,8 @@ namespace CustomInput
             var objectDict = new Dictionary<LayoutObjectType, GameObject>
                 { { LayoutObjectType.AmbiguousKeyPrefab, ambiguousKeyPrefab }
                 , { LayoutObjectType.SimpleKeyPrefab, simpleKeyPrefab }
-                , { LayoutObjectType.StylusKeyPrefab, null }
-                , { LayoutObjectType.StylusAmbiguousPrefab, null }
+                , { LayoutObjectType.StylusKeyPrefab, stylusKeyPrefab }
+                , { LayoutObjectType.StylusAmbiguousPrefab, stylusAmbiguousPrefab }
                 };
 
             foreach (var item in keys)
@@ -46,8 +68,10 @@ namespace CustomInput
             }
 
             ResizeAll();
-
         }
+
+        public virtual void UpdateState(InputData data)
+        { }
 
         // Last width of this item
         protected float lastWidth = -1;
@@ -93,7 +117,7 @@ namespace CustomInput
 
         // Gets the letter for the keypress at index, given the context, and a boolean representing
         // certainty, or null if the index is out of bounds
-        public abstract (char, bool)? GetLetterFor(string context, int index);
+        public abstract (char, bool)? GetLetterFor(InputData data);
 
         // The name of the layout
         public abstract string layoutName { get; }
