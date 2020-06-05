@@ -399,7 +399,7 @@ GameObject:
   - component: {fileID: 168735321}
   - component: {fileID: 168735320}
   m_Layer: 0
-  m_Name: BinnedABCDE (1)
+  m_Name: RotBinnedABCDE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4688,11 +4688,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9e7e15bed46f249b6039a625a27bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layout: 2
+  layout: 3
   dropdown: {fileID: 970785287}
   squashedQWERTY: {fileID: 1280636848}
   linearABCDE: {fileID: 997093841}
   stylusBinnedABCDE: {fileID: 2096338478}
+  twoRotBinnedABCDE: {fileID: 168735320}
 --- !u!1 &1946906083
 GameObject:
   m_ObjectHideFlags: 0
