@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-namespace SpellingAssist
+namespace AutoCorrect
 {
     using Loader = System.Func<Stream, int, int, char[], bool>;
 

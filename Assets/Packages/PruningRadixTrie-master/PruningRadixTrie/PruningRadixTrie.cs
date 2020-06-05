@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace SpellingAssist
+namespace AutoComplete
 {
 
     /// <summary>

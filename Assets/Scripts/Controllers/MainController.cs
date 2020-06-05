@@ -107,7 +107,7 @@ public class MainController : MonoBehaviour
 
         keypresses.Add(parentKey?.label ?? " ");
 
-        disambiguated = SpellingAssist.Disambiguator.Disambiguated(keypresses);
+        disambiguated = AutoCorrect.Disambiguator.Disambiguated(keypresses);
 
         outputController.text += typed;
 

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using SpellingAssist;
+using AutoCorrect;
 using UnityEngine;
 using UnityEngine.UI;
 
