@@ -1537,7 +1537,7 @@ GameObject:
   - component: {fileID: 971101860}
   - component: {fileID: 971101859}
   - component: {fileID: 971101864}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Stylus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3035,7 +3035,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &1287128852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3783,7 +3783,7 @@ GameObject:
   - component: {fileID: 1634427606}
   - component: {fileID: 1634427605}
   - component: {fileID: 1634427604}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PotentiometerIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5144,7 +5144,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &2028389076
 MonoBehaviour:
   m_ObjectHideFlags: 0
