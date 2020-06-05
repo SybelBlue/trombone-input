@@ -12,6 +12,7 @@ namespace CustomInput
         SquashedQWERTY,
         LinearABCDE,
         StylusBinnedABCDE,
+        TwoRotBinnedABCDE,
     }
 
 #pragma warning disable 649
@@ -30,6 +31,9 @@ namespace CustomInput
         [SerializeField]
         private StylusBinnedABCDE stylusBinnedABCDE;
 
+        [SerializeField]
+        private TwoRotBinnedABCDE twoRotBinnedABCDE;
+
         public Layout currentLayout() => fromOption(layout);
 
         public Layout fromOption(LayoutOption option)
@@ -44,6 +48,9 @@ namespace CustomInput
 
                 case LayoutOption.StylusBinnedABCDE:
                     return stylusBinnedABCDE;
+
+                case LayoutOption.TwoRotBinnedABCDE:
+                    return twoRotBinnedABCDE;
             }
 
             throw new ArgumentException($"unknown layout option: {option.ToString()} in fromOption");

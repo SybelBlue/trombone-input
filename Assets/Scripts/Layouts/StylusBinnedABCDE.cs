@@ -4,19 +4,25 @@ namespace CustomInput
     {
         public override string layoutName => "Stylus ABCDE";
 
-        private int InnerIndex(InputData data, int parentSize)
-            => Utils.NormalizedIntoIndex(1 - data.normalizedPotentiometer.Value, parentSize);
+        protected virtual int? InnerIndex(InputData data, int parentSize)
+            => data.normalizedPotentiometer.HasValue ?
+                (int?)Utils.NormalizedIntoIndex(1 - data.normalizedPotentiometer.Value, parentSize) :
+                null;
 
         public override int ChildIndexFor(InputData data)
-            => Utils.NormalizedIntoIndex(data.normalizedZ.Value, childMap.Count);
+            => data.normalizedZ.HasValue ?
+                Utils.NormalizedIntoIndex(data.normalizedZ.Value, childMap.Count) :
+                -1;
 
         private (LayoutKey, SimpleKey) FetchInnerKey(InputData data)
         {
             StylusBinnedKey parent = (StylusBinnedKey)LayoutKeyFor(data);
 
-            if (!data.normalizedPotentiometer.HasValue || parent.size == 0) return (parent, null);
+            var inner = InnerIndex(data, parent.size);
 
-            return (parent, parent.ItemAt(InnerIndex(data, parent.size)));
+            if (!inner.HasValue || parent.size == 0) return (parent, null);
+
+            return (parent, parent.ItemAt(inner.Value));
         }
 
         public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
@@ -37,19 +43,18 @@ namespace CustomInput
 
         public override void SetHighlightedKey(InputData data)
         {
-            if (!data.normalizedZ.HasValue) return;
-
             UnhighlightAll();
 
-            if (!MainController.inputThisFrame) return;
-
             var binnedKey = ChildFor(data)?.GetComponent<AmbiguousKeyController>();
-            binnedKey?.SetHighlight(true);
 
-            if (!data.normalizedPotentiometer.HasValue || binnedKey == null) return;
+            if (binnedKey == null) return;
 
+            binnedKey.SetHighlight(true);
             var controllers = binnedKey.GetComponentsInChildren<AbstractSimpleKeyController>();
-            int inner = InnerIndex(data, controllers.Length);
+            var inner = InnerIndex(data, controllers.Length);
+
+            if (!inner.HasValue) return;
+
             for (int i = 0; i < controllers.Length; i++)
             {
                 controllers[i].SetHighlight(i == inner);
