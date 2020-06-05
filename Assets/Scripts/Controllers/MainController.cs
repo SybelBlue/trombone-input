@@ -60,7 +60,7 @@ public class MainController : MonoBehaviour
             return;
         }
 
-        float delta = Input.mouseScrollDelta.y * 4;
+        float delta = Input.mouseScrollDelta.y * 8;
         int rawNext = Mathf.RoundToInt(lastReportedValue + delta ?? 0);
         int next = Mathf.Clamp(rawNext, 0, inputPanel.maxValue);
 
