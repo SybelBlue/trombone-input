@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Diagnostics;
 using System.Collections.Generic;
 
@@ -9,7 +8,7 @@ namespace PruningRadixTrie
     /// <summary>
     /// Summary description for Trie
     /// </summary>
-    public class PruningRadixtrie
+    public class PruningRadixTrie
     {
         public long termCount = 0;
         public long termCountLoaded = 0;
@@ -33,7 +32,7 @@ namespace PruningRadixTrie
         //The trie
         private readonly Node trie;
 
-        public PruningRadixtrie()
+        public PruningRadixTrie()
         {
             trie = new Node(0);
         }
@@ -245,32 +244,13 @@ namespace PruningRadixTrie
                 Console.WriteLine("Could not find file " + path);
                 return false;
             }
+
             try
             {
-                Stopwatch sw1 = Stopwatch.StartNew();
                 using (System.IO.Stream corpusStream = System.IO.File.OpenRead(path))
                 {
-                    using (System.IO.StreamReader sr = new System.IO.StreamReader(corpusStream, System.Text.Encoding.UTF8, false))
-                    {
-                        String line;
-
-                        //process a single line at a time only for memory efficiency
-                        while ((line = sr.ReadLine()) != null)
-                        {
-                            string[] lineParts = line.Split('\t');
-                            if (lineParts.Length == 2)
-                            {
-                                if (Int64.TryParse(lineParts[1], out Int64 count))
-                                {
-                                    this.AddTerm(lineParts[0], count);
-                                }
-                            }
-                        }
-
-                    }
+                    ReadTermsFromStream(corpusStream);
                 }
-                termCountLoaded = termCount;
-                Console.WriteLine(termCount.ToString("N0") + " terms loaded in " + sw1.ElapsedMilliseconds.ToString("N0") + " ms");
             }
             catch (Exception e)
             {
@@ -278,6 +258,34 @@ namespace PruningRadixTrie
             }
 
             return true;
+        }
+
+        // ripped from ReadTermsFromFile(string) by Logan to allow Unity Resource Manager to provide stream
+        public void ReadTermsFromStream(System.IO.Stream corpusStream)
+        {
+            Stopwatch sw1 = Stopwatch.StartNew();
+
+            using (System.IO.StreamReader sr = new System.IO.StreamReader(corpusStream, System.Text.Encoding.UTF8, false))
+            {
+                String line;
+
+                //process a single line at a time only for memory efficiency
+                while ((line = sr.ReadLine()) != null)
+                {
+                    string[] lineParts = line.Split('\t');
+                    if (lineParts.Length == 2)
+                    {
+                        if (Int64.TryParse(lineParts[1], out Int64 count))
+                        {
+                            this.AddTerm(lineParts[0], count);
+                        }
+                    }
+                }
+
+            }
+
+            termCountLoaded = termCount;
+            Console.WriteLine($"{termCount.ToString("N0")} terms loaded in {sw1.ElapsedMilliseconds.ToString("N0")} ms");
         }
 
         public class BinarySearchComparer : IComparer<(string term, long termFrequencyCount)>
@@ -311,7 +319,7 @@ namespace PruningRadixTrie
         public static void Benchmark()
         {
             Console.WriteLine("Load dictionary & create trie ...");
-            PruningRadixtrie pruningRadixTrie = new PruningRadixtrie();
+            PruningRadixTrie pruningRadixTrie = new PruningRadixTrie();
             pruningRadixTrie.ReadTermsFromFile("terms.txt");
 
             Console.WriteLine("Benchmark started ...");
