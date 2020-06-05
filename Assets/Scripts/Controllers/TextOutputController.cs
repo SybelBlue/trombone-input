@@ -23,9 +23,9 @@ public class TextOutputController : MonoBehaviour
         {
             rawOutput.text = value;
 
-            if (Autocorrect.Instance.dictionaryLoaded)
+            if (AutoCorrect.AutoCorrect.Instance.dictionaryLoaded)
             {
-                suggestions = Autocorrect.Instance.Suggestions(value, verbosity);
+                suggestions = AutoCorrect.AutoCorrect.Instance.Suggestions(value, verbosity);
 
                 for (int i = 0; i < suggested.Length; i++)
                 {
@@ -39,7 +39,12 @@ public class TextOutputController : MonoBehaviour
 
     public void Start()
     {
-        Autocorrect.Instance.InitDictionary(dictionarySize, dict824765, dict243342);
+        AutoCorrect.AutoCorrect.Instance.InitDictionary(dictionarySize, dict824765, dict243342);
+
+        if (dictionarySize != DictionarySize.None)
+        {
+            AutoComplete.AutoComplete.Instance.InitDictionary(dict824765, ' ');
+        }
 
         foreach (var suggestedText in suggested)
         {

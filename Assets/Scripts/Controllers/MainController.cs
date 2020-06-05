@@ -111,12 +111,22 @@ public class MainController : MonoBehaviour
 
         outputController.text += typed;
 
+        var completions = AutoComplete.AutoComplete.Instance.Completions(outputController.text);
+        if (completions != null)
+        {
+            Debug.Log(completions.Count);
+            foreach (var c in completions)
+            {
+                Debug.Log(c);
+            }
+        }
+
         modelController.normalizedSlider = null;
 
         lastReportedValue = null;
     }
 
-    public (char, bool)? currentLetter
+    public (char letter, bool certain)? currentLetter
         => layout.GetLetterFor(currentInputData);
 
     private InputData currentInputData

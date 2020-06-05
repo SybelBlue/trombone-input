@@ -237,7 +237,7 @@ namespace AutoComplete
             }
         }
 
-        public bool ReadTermsFromFile(string path)
+        public bool ReadTermsFromFrequencyDictionary(string path)
         {
             if (!System.IO.File.Exists(path))
             {
@@ -249,7 +249,7 @@ namespace AutoComplete
             {
                 using (System.IO.Stream corpusStream = System.IO.File.OpenRead(path))
                 {
-                    ReadTermsFromStream(corpusStream);
+                    ReadTermsFromStream(corpusStream, '\t');
                 }
             }
             catch (Exception e)
@@ -260,8 +260,9 @@ namespace AutoComplete
             return true;
         }
 
-        // ripped from ReadTermsFromFile(string) by Logan to allow Unity Resource Manager to provide stream
-        public void ReadTermsFromStream(System.IO.Stream corpusStream)
+        // ripped from ReadTermsFromFrequencyDictionary(string) by Logan to allow Unity Resource Manager to provide stream
+        // requires the format (.*?)<seperator>(\d+\s*)\n for valid lines, running AddTerm($1, Int64.TryParse($2))
+        public void ReadTermsFromStream(System.IO.Stream corpusStream, char separator)
         {
             Stopwatch sw1 = Stopwatch.StartNew();
 
@@ -272,7 +273,7 @@ namespace AutoComplete
                 //process a single line at a time only for memory efficiency
                 while ((line = sr.ReadLine()) != null)
                 {
-                    string[] lineParts = line.Split('\t');
+                    string[] lineParts = line.Split(separator);
                     if (lineParts.Length == 2)
                     {
                         if (Int64.TryParse(lineParts[1], out Int64 count))

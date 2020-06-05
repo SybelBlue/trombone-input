@@ -3857,7 +3857,7 @@ MonoBehaviour:
   - {fileID: 1833183329}
   dict824765: {fileID: 4900000, guid: 4b1ac01248eaf0044a2df83df7098e17, type: 3}
   dict243342: {fileID: 4900000, guid: 0097bfaadfd0ee8439cb206c6b430d48, type: 3}
-  dictionarySize: 0
+  dictionarySize: 1
   verbosity: 0
   suggestions: []
 --- !u!224 &1708648836
@@ -4562,7 +4562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9e7e15bed46f249b6039a625a27bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layout: 3
+  layout: 2
   dropdown: {fileID: 970785287}
   squashedQWERTY: {fileID: 1280636848}
   linearABCDE: {fileID: 997093841}

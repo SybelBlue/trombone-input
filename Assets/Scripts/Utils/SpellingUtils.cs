@@ -4,6 +4,40 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
+namespace AutoComplete
+{
+    public class AutoComplete
+    {
+        private static readonly int _completion_count = 5;
+        private static AutoComplete _instance;
+
+        private AutoComplete()
+            => _instance = this;
+
+        public static AutoComplete Instance
+            => _instance == null ? new AutoComplete() : _instance;
+
+        private PruningRadixTrie trie;
+
+        public void InitDictionary(TextAsset frequencyDict, char separator)
+        {
+            trie = new PruningRadixTrie();
+            using (Stream corpusStream = Utils.StreamFromTextAsset(frequencyDict))
+            {
+                trie.ReadTermsFromStream(corpusStream, separator);
+            }
+            Debug.LogWarning($"Trie Loaded! ({trie.termCountLoaded} nodes)");
+        }
+
+        // TODO: figure out why I'm broken
+        public List<string> Completions(string prefix)
+        {
+            return trie?.GetTopkTermsForPrefix(prefix, _completion_count, out long termFreqCountPrefix)
+                .Select(t => t.term).ToList();
+        }
+    }
+}
+
 namespace AutoCorrect
 {
     using Loader = System.Func<Stream, int, int, char[], bool>;
@@ -16,15 +50,15 @@ namespace AutoCorrect
         Dict243342,
     }
 
-    public class Autocorrect
+    public class AutoCorrect
     {
-        private static Autocorrect _instance;
+        private static AutoCorrect _instance;
 
-        private Autocorrect()
+        private AutoCorrect()
             => _instance = this;
 
-        public static Autocorrect Instance
-            => _instance == null ? new Autocorrect() : _instance;
+        public static AutoCorrect Instance
+            => _instance == null ? new AutoCorrect() : _instance;
 
         private const int INIT_CAPACITY = 82765;
         private const int MAX_EDIT_DISTANCE_DICT = 2;
@@ -73,8 +107,6 @@ namespace AutoCorrect
             throw new ArgumentException("Unknown size");
         }
 
-        private delegate bool AsyncLoaderCaller(Stream s, int x, int y, char[] seperatorChars);
-
         public bool dictionaryLoaded { get; protected set; }
 
         public void InitDictionary(DictionarySize size, params TextAsset[] dicts)
@@ -89,13 +121,11 @@ namespace AutoCorrect
                 InitDictionary(DictionarySize.Dict82765);
             }
 
-            Debug.Log("Starting...");
-
             Loader loader = DictionaryLoader(size);
 
             var (termIndex, countIndex) = DictionaryTermAndCountIndices(size);
 
-            using (Stream corpusStream = new MemoryStream(DictionaryTextAsset(size, dicts).bytes))
+            using (Stream corpusStream = Utils.StreamFromTextAsset(DictionaryTextAsset(size, dicts)))
             {
                 if (!loader(corpusStream, termIndex, countIndex, SymSpell.defaultSeparatorChars))
                 {
@@ -103,7 +133,7 @@ namespace AutoCorrect
                 }
                 else
                 {
-                    Debug.LogWarning("Dictionary Loaded!");
+                    Debug.LogWarning($"Dictionary Loaded! ({symSpell.EntryCount} entries)");
                     dictionaryLoaded = true;
                 }
             }
@@ -123,42 +153,6 @@ namespace AutoCorrect
             return null;
         }
 
-        // public void InitDictionaryAsync(DictionarySize size, params TextAsset[] dicts)
-        // {
-        //     _loaded = false;
-
-        //     if (size == DictionarySize.None) return;
-
-        //     // must load basic first or else error...
-        //     if (size != DictionarySize.Dict82765)
-        //     {
-        //         InitDictionaryAsync(DictionarySize.Dict82765);
-        //     }
-
-        //     Debug.Log("Starting...");
-
-        //     AsyncLoaderCaller loader = new AsyncLoaderCaller(DictionaryLoader(size));
-
-        //     var (termIndex, countIndex) = DictionaryTermAndCountIndices(size);
-
-        //     using (Stream corpusStream = new MemoryStream(DictionaryTextAsset(size, dicts).bytes))
-        //     {
-        //         loader.BeginInvoke(corpusStream, termIndex, countIndex, SymSpell.defaultSeparatorChars,
-        //         (result) =>
-        //         {
-        //             if (!loader(corpusStream, termIndex, countIndex, SymSpell.defaultSeparatorChars))
-        //             {
-        //                 throw new Exception("Could not load dictionary!");
-        //             }
-        //             else
-        //             {
-        //                 Debug.LogWarning("Dictionary Loaded!");
-        //                 _loaded = true;
-        //             }
-        //         }
-        //     }
-        // }
-
         public List<SymSpell.SuggestItem> Lookup(string inputTerm, SymSpell.Verbosity verbosity)
         {
             int maxEditDistanceLookup = Mathf.Min(inputTerm.Length, MAX_EDIT_DISTANCE_DICT);
@@ -174,7 +168,7 @@ namespace AutoCorrect
             => Lookup(inputTerm, verbosity).Select(suggestion => suggestion.term).Where(s => !s.ToUpper().Equals(inputTerm)).ToList();
     }
 
-    public class Disambiguator
+    public static class Disambiguator
     {
         public static List<string> Disambiguated(List<string> keypresses)
         {
@@ -217,7 +211,7 @@ namespace AutoCorrect
 
             return intermediate
                     .Select(t => t.Item2)
-                    .OrderByDescending(t => Autocorrect.DictionaryValue(t.Item1) ?? t.Item2)
+                    .OrderByDescending(t => AutoCorrect.DictionaryValue(t.Item1) ?? t.Item2)
                     .Take(maximum);
         }
 
