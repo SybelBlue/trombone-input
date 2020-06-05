@@ -93,19 +93,19 @@ public class MainController : MonoBehaviour
     public void OnInputEnd(int value)
     {
         lastReportedValue = value;
-        var (currentItem, exactItem) = layout.KeysFor(currentInputData) ?? (null, null);
+        (LayoutKey parentKey, SimpleKey simpleKey) = layout.KeysFor(currentInputData) ?? (null, null);
 
-        if (currentItem == null)
+        if (parentKey == null)
         {
             Debug.LogWarning("Ended gesture in empty zone: " + value);
             return;
         }
 
-        var (typed, certain) = currentLetter ?? ('-', false);
+        (char typed, bool certain) = currentLetter ?? ('-', false);
 
-        Debug.Log($"Pressed {currentItem} @ {exactItem} => {(typed, certain)}");
+        Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
 
-        keypresses.Add(currentItem?.label ?? " ");
+        keypresses.Add(parentKey?.label ?? " ");
 
         disambiguated = SpellingAssist.Disambiguator.Disambiguated(keypresses);
 
