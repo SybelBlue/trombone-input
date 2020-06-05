@@ -60,7 +60,7 @@ namespace CustomInput
 
                 if (blockController)
                 {
-                    blockController.item = item;
+                    blockController.data = item;
                 }
 
                 for (int i = 0; i < item.size; i++)
@@ -119,7 +119,7 @@ namespace CustomInput
 
         // Equivalent to 
         // ```ChildAt(index)?.GetComponent<LayoutKey>()```
-        public LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<KeyController>().item;
+        public LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<KeyController>().data;
 
         // The chars for the key at index
         public string CharsFor(InputData data) => LayoutKeyFor(data)?.label ?? "";
