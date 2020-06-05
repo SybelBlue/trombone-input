@@ -12,11 +12,15 @@ public static class Utils
         return (value - min) % window + min;
     }
 
-    public static string DisplayKeyData(CustomInput.LayoutKey item) => item?.label ?? "<not found>";
+    public static string DisplayKeyData(CustomInput.LayoutKey item)
+        => item?.label ?? "<not found>";
 
-    public static int NormalizedAsIndex(float normalized, int length)
-        => Mathf.FloorToInt(Mathf.LerpUnclamped(0, length - 1, normalized));
+    public static int NormalizedIntoIndex(float normalized, int length)
+        => Mathf.FloorToInt(Mathf.LerpUnclamped(0, Mathf.Max(0, length - 1), normalized));
 
-    public static int NormalizedIndex(this System.Object[] array, float normalized)
-        => NormalizedAsIndex(normalized, array.Length);
+    public static T NormalizedIndex<T>(this T[] array, float normalized)
+        => array[NormalizedIntoIndex(normalized, array.Length)];
+
+    public static T GetNormalized<T>(this System.Collections.Generic.List<T> list, float normalized)
+        => list[NormalizedIntoIndex(normalized, list.Count)];
 }

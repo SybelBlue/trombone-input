@@ -1,6 +1,3 @@
-
-using UnityEngine;
-
 namespace CustomInput
 {
     public class StylusBinnedABCDE : Layout
@@ -8,10 +5,10 @@ namespace CustomInput
         public override string layoutName => "Stylus ABCDE";
 
         private int InnerIndex(InputData data, int parentSize)
-            => Utils.NormalizedAsIndex(1 - data.normalizedPotentiometer.Value, parentSize);
+            => Utils.NormalizedIntoIndex(1 - data.normalizedPotentiometer.Value, parentSize);
 
         public override int ChildIndexFor(InputData data)
-            => Utils.NormalizedAsIndex(data.normalizedZ.Value, childMap.Count);
+            => Utils.NormalizedIntoIndex(data.normalizedZ.Value, childMap.Count);
 
         private (LayoutKey, SimpleKey) FetchInnerKey(InputData data)
         {
