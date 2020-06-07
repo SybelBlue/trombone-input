@@ -5365,13 +5365,14 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
+    m_Top: 3
     m_Bottom: 0
   m_ChildAlignment: 4
   fDistance: 15
   MinAngle: 0
   MaxAngle: 259
   StartAngle: 0
+  OnlyLayoutVisible: 0
 --- !u!1 &2131946946
 GameObject:
   m_ObjectHideFlags: 0
