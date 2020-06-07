@@ -23,4 +23,7 @@ public static class Utils
 
     public static T GetNormalized<T>(this System.Collections.Generic.List<T> list, float normalized)
         => list[NormalizedIntoIndex(normalized, list.Count)];
+
+    public static System.IO.MemoryStream StreamFromTextAsset(TextAsset asset)
+        => new System.IO.MemoryStream(asset.bytes);
 }

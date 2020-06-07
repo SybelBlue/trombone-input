@@ -93,30 +93,40 @@ public class MainController : MonoBehaviour
     public void OnInputEnd(int value)
     {
         lastReportedValue = value;
-        var (currentItem, exactItem) = layout.KeysFor(currentInputData) ?? (null, null);
+        (LayoutKey parentKey, SimpleKey simpleKey) = layout.KeysFor(currentInputData) ?? (null, null);
 
-        if (currentItem == null)
+        if (parentKey == null)
         {
             Debug.LogWarning("Ended gesture in empty zone: " + value);
             return;
         }
 
-        var (typed, certain) = currentLetter ?? ('-', false);
+        (char typed, bool certain) = currentLetter ?? ('-', false);
 
-        Debug.Log($"Pressed {currentItem} @ {exactItem} => {(typed, certain)}");
+        Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
 
-        keypresses.Add(currentItem?.label ?? " ");
+        keypresses.Add(parentKey?.label ?? " ");
 
-        disambiguated = SpellingAssist.Disambiguator.Disambiguated(keypresses);
+        disambiguated = AutoCorrect.Disambiguator.Disambiguated(keypresses);
 
         outputController.text += typed;
+
+        var completions = AutoComplete.AutoComplete.Instance.Completions(outputController.text);
+        if (completions != null)
+        {
+            Debug.Log(completions.Count);
+            foreach (var c in completions)
+            {
+                Debug.Log(c);
+            }
+        }
 
         modelController.normalizedSlider = null;
 
         lastReportedValue = null;
     }
 
-    public (char, bool)? currentLetter
+    public (char letter, bool certain)? currentLetter
         => layout.GetLetterFor(currentInputData);
 
     private InputData currentInputData
