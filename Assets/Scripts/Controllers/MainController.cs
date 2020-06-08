@@ -52,7 +52,7 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public void Update()
     {
-        indicatorRect.gameObject.SetActive(inputThisFrame);
+        indicatorRect.gameObject.SetActive(layout.usesSlider && inputThisFrame);
 
         if (outputController.text.Length > 0)
         {
@@ -143,7 +143,8 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     // If Right click is held and the mouse wheel is scrolled to emulate potentiometer,
     // will be less sensitive if either Shift key is held.
-    // If tab is hit or Right click is released then it emulates the forward button down.
+    // If tab is hit or Right click is released when the layout accepts potentiometer input,
+    // then it emulates the forward button down.
     private void CaptureEmulatedPotentiometerInput(ref List<VREvent> eventList)
     {
         if (Input.GetMouseButtonDown(1))
@@ -167,9 +168,20 @@ public class MainController : MonoBehaviour, VREventGenerator
             eventList.Add(MakePotentiometerEvent(next));
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab) || Input.GetMouseButtonUp(1))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             eventList.Add(MakeEvent(_front_button_event_name, "ButtonDown"));
+        }
+        else if (Input.GetMouseButtonUp(1))
+        {
+            if (layout.usesSlider)
+            {
+                eventList.Add(MakeEvent(_front_button_event_name, "ButtonDown"));
+            }
+            else
+            {
+                modelController.normalizedSlider = null;
+            }
         }
     }
 

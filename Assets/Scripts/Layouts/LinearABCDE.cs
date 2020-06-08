@@ -7,6 +7,8 @@ namespace CustomInput
 
         public override string layoutName => "Linear ABCDE";
 
+        public override bool usesSlider => true;
+
         protected override void Start()
         {
             base.Start();

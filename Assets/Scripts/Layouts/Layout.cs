@@ -140,5 +140,7 @@ namespace CustomInput
 
         // The method to fill the keys field on this, called in Start
         protected abstract LayoutKey[] FillKeys();
+
+        public abstract bool usesSlider { get; }
     }
 }

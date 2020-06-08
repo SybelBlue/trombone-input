@@ -10,6 +10,8 @@ namespace CustomInput
 
         public override string layoutName => "Squashed QWERTY";
 
+        public override bool usesSlider => true;
+
         public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
         {
             if (!gameObject.activeInHierarchy) return null;
