@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1413226910124037582}
   - component: {fileID: 2968197465382743393}
   - component: {fileID: 8637429803362563309}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: AmbiguousKeyPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,6 +113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf8ba733ef506de44aed4f9b252573cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightColor: {r: 0, g: 0, b: 0, a: 0}
   rectTransform: {fileID: 252398282426640768}
+  highlightColor: {r: 0, g: 0, b: 0, a: 0}
   background: {fileID: 1413226910124037582}

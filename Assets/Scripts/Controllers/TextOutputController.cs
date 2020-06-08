@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TextOutputController : MonoBehaviour
 {
     [SerializeField]
-    private Text rawOutput;
+    private TMPro.TMP_Text rawOutput;
 
     [SerializeField]
     private GameObject suggestionsContainer;

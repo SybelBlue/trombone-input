@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7061026003237257659}
   - component: {fileID: 3227009954255684772}
   - component: {fileID: 4923626679934637529}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: StylusBinnedPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,6 +113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbdd8c5ba6fa0ad4a870b5ca190a88c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightColor: {r: 0, g: 0, b: 0, a: 0}
   rectTransform: {fileID: 5743589248142595269}
+  highlightColor: {r: 0, g: 0, b: 0, a: 0}
   background: {fileID: 7061026003237257659}

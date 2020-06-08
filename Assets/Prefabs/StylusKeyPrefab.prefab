@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2312528965249368712}
   - component: {fileID: 2312528965249368715}
   - component: {fileID: 5882584758358543049}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: StylusKeyPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,9 +88,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fb1b44545ef70c49a037eb735514cc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rectTransform: {fileID: 2312528965249368714}
   highlightColor: {r: 0.8537736, g: 1, b: 0.97488594, a: 0.34901962}
   background: {fileID: 2312528965249368715}
-  rectTransform: {fileID: 2312528965249368714}
   _symbol: 0
   textMeshPro: {fileID: 2510543507103869357}
 --- !u!1 &8801634729886730350
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 885009641560274541}
   - component: {fileID: 3210457121123375354}
   - component: {fileID: 2510543507103869357}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
