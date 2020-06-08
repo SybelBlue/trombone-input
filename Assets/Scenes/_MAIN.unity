@@ -6985,6 +6985,7 @@ GameObject:
   - component: {fileID: 2096338477}
   - component: {fileID: 2096338479}
   - component: {fileID: 2096338478}
+  - component: {fileID: 2096338480}
   m_Layer: 2
   m_Name: BinnedABCDE
   m_TagString: Untagged
@@ -7039,6 +7040,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2096338476}
   m_CullTransparentMesh: 0
+--- !u!114 &2096338480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096338476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07403113100000000050311310000000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  fDistance: 15
+  MinAngle: 0
+  MaxAngle: 180
+  StartAngle: 0
+  OnlyLayoutVisible: 0
 --- !u!1001 &2112465617
 PrefabInstance:
   m_ObjectHideFlags: 0
