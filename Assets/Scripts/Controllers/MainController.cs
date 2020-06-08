@@ -43,7 +43,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     {
         VRMain.Instance.AddEventGenerator(this);
         VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, AnalogUpdate);
-        VRMain.Instance.AddOnVRButtonDownCallback(_front_button_event_name, OnBlueStylusFrontButtonDown);
+        VRMain.Instance.AddOnVRButtonDownCallback(_front_button_event_name, FrontButtonDown);
         outputController.text = "";
     }
 
@@ -69,12 +69,6 @@ public class MainController : MonoBehaviour, VREventGenerator
         layout.UpdateState(currentInputData);
     }
 
-    public void OnBlueStylusFrontButtonDown()
-    {
-        Debug.LogWarning($"Button Down from Hardware, using last reported value: ({lastReportedValue})");
-        OnInputEnd(lastReportedValue ?? 0);
-    }
-
     // Callback for when the InputFieldController value changes due to user input
     public void OnInputValueChange(int value)
     {
@@ -90,8 +84,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         modelController.normalizedSlider = normalized;
     }
 
-    // Callback for when the InputFieldController register a completed gesture
-    public void OnInputEnd(int value)
+    private void OnInputEnd(int? value)
     {
         lastReportedValue = value;
         (LayoutKey parentKey, SimpleKey simpleKey) = layout.KeysFor(currentInputData) ?? (null, null);
@@ -117,6 +110,10 @@ public class MainController : MonoBehaviour, VREventGenerator
         lastReportedValue = null;
     }
 
+    // Callback for when the InputFieldController register a completed gesture
+    public void OnSimulatedFingerUp(int value)
+        => OnInputEnd(value);
+
     public (char letter, bool certain)? currentLetter
         => layout.GetLetterFor(currentInputData);
 
@@ -136,7 +133,13 @@ public class MainController : MonoBehaviour, VREventGenerator
     public List<string> disambiguated = new List<string>();
 
     private void AnalogUpdate(float value)
-        => OnInputValueChange(Mathf.FloorToInt(value));
+        => OnInputValueChange(Mathf.RoundToInt(value));
+
+    public void FrontButtonDown()
+    {
+        Debug.Log($"Button Down from Hardware, using last reported value: ({lastReportedValue})");
+        OnInputEnd(lastReportedValue);
+    }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
         => CaptureEmulatedPotentiometerInput(ref eventList);
