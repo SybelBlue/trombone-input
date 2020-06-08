@@ -43,9 +43,16 @@ public class MainController : MonoBehaviour
     {
         indicatorRect.gameObject.SetActive(inputThisFrame);
 
-        if (Input.GetKeyDown(KeyCode.Backspace) && outputController.text.Length > 0)
+        if (outputController.text.Length > 0)
         {
-            outputController.text = outputController.text.Substring(0, outputController.text.Length - 1);
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                outputController.text = outputController.text.Substring(0, outputController.text.Length - 1);
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                outputController.text += ' ';
+            }
         }
 
         CaptureMouseWheelInput();
@@ -86,12 +93,12 @@ public class MainController : MonoBehaviour
     {
         lastReportedValue = value;
         float width = displayRect.rect.width;
-        var pos = indicatorRect.position;
+        var pos = indicatorRect.localPosition;
 
-        var normalized = value / (float)inputPanel.maxValue;
-        pos.x = width * normalized;
+        float normalized = value / (float)inputPanel.maxValue;
+        pos.x = width * (normalized - 0.5f);
 
-        indicatorRect.position = pos;
+        indicatorRect.localPosition = pos;
 
         modelController.normalizedSlider = normalized;
     }
