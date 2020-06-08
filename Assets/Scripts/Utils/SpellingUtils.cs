@@ -31,10 +31,8 @@ namespace AutoComplete
 
         // TODO: figure out why I'm broken
         public List<string> Completions(string prefix)
-        {
-            return trie?.GetTopkTermsForPrefix(prefix, _completion_count, out long termFreqCountPrefix)
-                .Select(t => t.term).ToList();
-        }
+            => trie?.GetTopkTermsForPrefix(prefix.ToLower(), _completion_count, out long termFreqCountPrefix).Select(t => t.term).ToList();
+
     }
 }
 

@@ -76,7 +76,10 @@ public class MainController : MonoBehaviour
     }
 
     public void OnBlueStylusFrontButtonDown()
-        => OnInputEnd(lastReportedValue ?? 0);
+    {
+        Debug.LogWarning("Button Down from Hardware, using last reported value: " + lastReportedValue);
+        OnInputEnd(lastReportedValue ?? 0);
+    }
 
     // Callback for when the InputFieldController value changes due to user input
     public void OnInputValueChange(int value)
