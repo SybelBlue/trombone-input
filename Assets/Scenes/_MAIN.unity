@@ -1462,7 +1462,7 @@ GameObject:
   - component: {fileID: 517897975}
   - component: {fileID: 517897977}
   - component: {fileID: 517897976}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1536,7 +1536,7 @@ GameObject:
   - component: {fileID: 533772719}
   - component: {fileID: 533772721}
   - component: {fileID: 533772720}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1938,7 +1938,7 @@ GameObject:
   - component: {fileID: 691298044}
   - component: {fileID: 691298046}
   - component: {fileID: 691298045}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3105,7 +3105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1114118696}
   - component: {fileID: 1114118697}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: XSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4066,7 +4066,7 @@ GameObject:
   - component: {fileID: 1287128851}
   - component: {fileID: 1287128850}
   - component: {fileID: 1287128855}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: StylusSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6013,7 +6013,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1900849224}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6218,7 +6218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1951232743}
   - component: {fileID: 1951232744}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
