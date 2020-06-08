@@ -13,7 +13,7 @@ public class TextOutputController : MonoBehaviour
     private GameObject suggestionsContainer;
 
     [SerializeField]
-    private Text[] suggested;
+    private TMPro.TMP_Text[] suggested;
 
 
     public TextAsset dict824765, dict243342;
@@ -43,12 +43,21 @@ public class TextOutputController : MonoBehaviour
             AutoComplete.AutoComplete.Instance.InitDictionary(dict824765, ' ');
         }
 
-        suggested = suggestionsContainer.GetComponentsInChildren<Text>();
+        suggested = suggestionsContainer.GetComponentsInChildren<TMPro.TMP_Text>();
 
         foreach (var suggestedText in suggested)
         {
-            suggestedText.GetComponent<Button>().onClick.AddListener(() => text = suggestedText.text.ToUpper());
+            suggestedText.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                var sugText = suggestedText.text.ToUpper();
+                if (sugText.Length > 0)
+                {
+                    text = sugText;
+                }
+            });
         }
+
+        RefreshSuggestionsPanel("");
     }
 
     private void RefreshSuggestionsPanel(string value)
