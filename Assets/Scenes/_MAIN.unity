@@ -279,6 +279,54 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &116590957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 116590959}
+  - component: {fileID: 116590958}
+  m_Layer: 0
+  m_Name: VRPNInputs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &116590958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116590957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b19b943b9796bd47924ff8284509c09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  analogInputs: []
+  buttonInputs: []
+  trackerInputs: []
+--- !u!4 &116590959
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116590957}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 20}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 858238971}
+  - {fileID: 352863809}
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &155906026
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,6 +525,124 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168735318}
   m_CullTransparentMesh: 0
+--- !u!1 &352863808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 352863809}
+  - component: {fileID: 352863813}
+  - component: {fileID: 352863812}
+  - component: {fileID: 352863811}
+  - component: {fileID: 352863810}
+  m_Layer: 0
+  m_Name: Blue Stylus Input
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &352863809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352863808}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 116590959}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &352863810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352863808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30ec83bd6298fea4f94444216ce174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  device: stylusLeft
+  server: 127.0.0.1:3884
+  sensor: 0
+  eventName: BlueStylus_Move
+  origin: {fileID: 0}
+  applyUpdatesToGameObject: 0
+  trackingMode: 0
+  reportType: 0
+  threadingMode: 1
+  positionAdjustment: {x: 0, y: 0, z: 0}
+  rotationAdjustment: {x: 0, y: 0, z: 0}
+  scaleAdjustment: {x: 3.28084, y: 3.28084, z: 3.28084}
+--- !u!114 &352863811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352863808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70f22451c395acd4db75dfc8612d74d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  device: OVRStylusLeft
+  server: 127.0.0.1:3883
+  button: 1
+  eventName: BlueStylusFrontBtn
+  applyUpdatesToGameObject: 0
+  movementType: 0
+  axis: 0
+  speed: 1
+--- !u!114 &352863812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352863808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70f22451c395acd4db75dfc8612d74d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  device: OVRStylusLeft
+  server: 127.0.0.1:3883
+  button: 0
+  eventName: BlueStylusBackBtn
+  applyUpdatesToGameObject: 0
+  movementType: 0
+  axis: 0
+  speed: 1
+--- !u!114 &352863813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352863808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf6e1b7d6b3c434ca325cfba644913d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  device: OVRStylusLeft
+  server: 127.0.0.1:3883
+  channel: 0
+  eventName: BlueStylusAnalog
+  applyUpdatesToGameObject: 0
+  movementType: 0
+  axis: 0
+  speed: 1
 --- !u!1 &439026945
 GameObject:
   m_ObjectHideFlags: 0
@@ -1262,6 +1428,61 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &858238970
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 858238971}
+  - component: {fileID: 858238972}
+  m_Layer: 0
+  m_Name: Head Tracking Input
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &858238971
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858238970}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 116590959}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &858238972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858238970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30ec83bd6298fea4f94444216ce174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  device: head
+  server: 127.0.0.1:3884
+  sensor: 0
+  eventName: Head_Move
+  origin: {fileID: 0}
+  applyUpdatesToGameObject: 0
+  trackingMode: 0
+  reportType: 0
+  threadingMode: 1
+  positionAdjustment: {x: 0, y: 0, z: 0}
+  rotationAdjustment: {x: 0, y: 0, z: 0}
+  scaleAdjustment: {x: 3.28084, y: 3.28084, z: 3.28084}
 --- !u!1 &915215190
 GameObject:
   m_ObjectHideFlags: 0
@@ -1522,9 +1743,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff7e8d25a6434459881d2b8f92712c5d, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  trackingEvent: Hand_Move
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackingEvent: BlueStylus_Move
   translationalOffset: {x: 0, y: 0, z: 0}
   rotationalOffset: {x: 0, y: 0, z: 0}
   trackedObjects: []
