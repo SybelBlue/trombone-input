@@ -1,9 +1,13 @@
 using System.Collections.Generic;
 using CustomInput;
+using MinVR;
 using UnityEngine;
 
-public class MainController : MonoBehaviour
+public class MainController : MonoBehaviour, VREventGenerator
 {
+    public const string _potentiometer_event_name = "BlueStylusAnalog";
+    public const string _front_button_event_name = "BlueStylusFrontBtn";
+
     // The LayoutManager that is in charge of loading the layout
     public LayoutController layoutManager;
 
@@ -31,8 +35,9 @@ public class MainController : MonoBehaviour
 
     public void Start()
     {
-        MinVR.VRMain.Instance.AddOnVRAnalogUpdateCallback("BlueStylusAnalog", AnalogUpdate);
-        MinVR.VRMain.Instance.AddOnVRButtonDownCallback("BlueStylusFrontBtn", OnBlueStylusFrontButtonDown);
+        MinVR.VRMain.Instance.AddEventGenerator(this);
+        MinVR.VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, AnalogUpdate);
+        MinVR.VRMain.Instance.AddOnVRButtonDownCallback(_front_button_event_name, OnBlueStylusFrontButtonDown);
         outputController.text = "";
     }
 
@@ -55,42 +60,7 @@ public class MainController : MonoBehaviour
             }
         }
 
-        CaptureMouseWheelInput();
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            Debug.Log("Forced Stylus Front Button");
-            OnBlueStylusFrontButtonDown();
-        }
-
         layout.UpdateState(currentInputData);
-    }
-
-    private void CaptureMouseWheelInput()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            OnInputValueChange(lastReportedValue ?? inputPanel.maxValue / 2);
-            return;
-        }
-
-        float delta = Input.mouseScrollDelta.y * 2;
-        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
-        {
-            delta *= 4;
-        }
-
-        int rawNext = Mathf.RoundToInt(lastReportedValue + delta ?? 0);
-        int next = Mathf.Clamp(rawNext, 0, inputPanel.maxValue);
-
-        if (Input.GetMouseButtonUp(1))
-        {
-            OnInputEnd(next);
-        }
-        else if (Input.GetMouseButton(1) && delta != 0)
-        {
-            OnInputValueChange(next);
-        }
     }
 
     public void OnBlueStylusFrontButtonDown()
@@ -160,8 +130,49 @@ public class MainController : MonoBehaviour
     public List<string> disambiguated = new List<string>();
 
     private void AnalogUpdate(float value)
+        => OnInputValueChange(Mathf.FloorToInt(value));
+
+    public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
+        => CaptureEmulatedPotentiometerInput(ref eventList);
+
+    // If Right click is held and the mouse wheel is scrolled to emulate potentiometer,
+    // will be less sensitive if either Shift key is held.
+    // If tab is hit or Right click is released then it emulates the forward button down.
+    private void CaptureEmulatedPotentiometerInput(ref List<VREvent> eventList)
     {
-        Debug.Log("From Hardware: " + value);
-        OnInputValueChange(Mathf.FloorToInt(value));
+        if (Input.GetMouseButtonDown(1))
+        {
+            float value = (float)(lastReportedValue ?? inputPanel.maxValue / 2.0f);
+            eventList.Add(MakeEvent(_potentiometer_event_name, "AnalogUpdate", value));
+            return;
+        }
+
+        float delta = Input.mouseScrollDelta.y * 2;
+        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
+        {
+            delta *= 4;
+        }
+
+        int rawNext = Mathf.RoundToInt(lastReportedValue + delta ?? 0);
+        int next = Mathf.Clamp(rawNext, 0, inputPanel.maxValue);
+
+        if (Input.GetMouseButton(1) && delta != 0)
+        {
+            eventList.Add(MakeEvent(_potentiometer_event_name, "AnalogUpdate", next));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab) || Input.GetMouseButtonUp(1))
+        {
+            eventList.Add(MakeEvent(_front_button_event_name, "ButtonDown", next));
+        }
     }
+
+    private static VREvent MakeEvent(string name, string type, float analogValue)
+    {
+        VREvent e = new VREvent(name);
+        e.AddData("EventType", type);
+        e.AddData("AnalogValue", analogValue);
+        return e;
+    }
+
 }
