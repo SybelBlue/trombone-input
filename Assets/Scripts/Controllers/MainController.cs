@@ -68,7 +68,12 @@ public class MainController : MonoBehaviour
             return;
         }
 
-        float delta = Input.mouseScrollDelta.y * 8;
+        float delta = Input.mouseScrollDelta.y * 2;
+        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
+        {
+            delta *= 4;
+        }
+
         int rawNext = Mathf.RoundToInt(lastReportedValue + delta ?? 0);
         int next = Mathf.Clamp(rawNext, 0, inputPanel.maxValue);
 
