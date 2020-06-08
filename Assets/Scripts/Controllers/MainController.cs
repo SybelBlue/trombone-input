@@ -31,13 +31,19 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     // True if no input is provided
     public static bool inputThisFrame
-        => Input.touchCount > 0 || Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetKey(KeyCode.LeftControl);
+        => Input.touchCount > 0
+        || Input.GetMouseButton(0)
+        || Input.GetMouseButton(1)
+        || Input.GetKey(KeyCode.LeftControl)
+        || Input.GetKey(KeyCode.Space)
+        || Input.GetKey(KeyCode.Backspace)
+        || Input.GetKey(KeyCode.Tab);
 
     public void Start()
     {
-        MinVR.VRMain.Instance.AddEventGenerator(this);
-        MinVR.VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, AnalogUpdate);
-        MinVR.VRMain.Instance.AddOnVRButtonDownCallback(_front_button_event_name, OnBlueStylusFrontButtonDown);
+        VRMain.Instance.AddEventGenerator(this);
+        VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, AnalogUpdate);
+        VRMain.Instance.AddOnVRButtonDownCallback(_front_button_event_name, OnBlueStylusFrontButtonDown);
         outputController.text = "";
     }
 
@@ -142,8 +148,8 @@ public class MainController : MonoBehaviour, VREventGenerator
     {
         if (Input.GetMouseButtonDown(1))
         {
-            float value = (float)(lastReportedValue ?? inputPanel.maxValue / 2.0f);
-            eventList.Add(MakeEvent(_potentiometer_event_name, "AnalogUpdate", value));
+            int value = lastReportedValue ?? inputPanel.maxValue / 2;
+            eventList.Add(MakePotentiometerEvent(value));
             return;
         }
 
@@ -158,20 +164,28 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         if (Input.GetMouseButton(1) && delta != 0)
         {
-            eventList.Add(MakeEvent(_potentiometer_event_name, "AnalogUpdate", next));
+            eventList.Add(MakePotentiometerEvent(next));
         }
 
         if (Input.GetKeyDown(KeyCode.Tab) || Input.GetMouseButtonUp(1))
         {
-            eventList.Add(MakeEvent(_front_button_event_name, "ButtonDown", next));
+            eventList.Add(MakeEvent(_front_button_event_name, "ButtonDown"));
         }
     }
 
-    private static VREvent MakeEvent(string name, string type, float analogValue)
+    private static VREvent MakePotentiometerEvent(float analogValue)
+        => MakeEvent(_potentiometer_event_name, "AnalogUpdate", analogValue);
+
+    private static VREvent MakeEvent(string name, string type, float? analogValue = null)
     {
         VREvent e = new VREvent(name);
         e.AddData("EventType", type);
-        e.AddData("AnalogValue", analogValue);
+
+        if (analogValue.HasValue)
+        {
+            e.AddData("AnalogValue", analogValue.Value);
+        }
+
         return e;
     }
 
