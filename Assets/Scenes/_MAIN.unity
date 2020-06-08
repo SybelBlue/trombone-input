@@ -398,7 +398,7 @@ GameObject:
   - component: {fileID: 168735322}
   - component: {fileID: 168735321}
   - component: {fileID: 168735320}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RotBinnedABCDE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2586,7 +2586,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1229484911}
   - component: {fileID: 1229484910}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ZSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3167,7 +3167,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1317042933}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3564,7 +3564,7 @@ GameObject:
   - component: {fileID: 1562118211}
   - component: {fileID: 1562118212}
   - component: {fileID: 1562118213}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4851,7 +4851,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1988662893}
   - component: {fileID: 1988662894}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4896,7 +4896,7 @@ GameObject:
   - component: {fileID: 2002943643}
   - component: {fileID: 2002943645}
   - component: {fileID: 2002943644}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4972,7 +4972,7 @@ GameObject:
   - component: {fileID: 2028389076}
   - component: {fileID: 2028389075}
   - component: {fileID: 2028389078}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: StylusBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5296,7 +5296,7 @@ GameObject:
   - component: {fileID: 2096338479}
   - component: {fileID: 2096338478}
   - component: {fileID: 2096338480}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BinnedABCDE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
