@@ -32,6 +32,7 @@ public class MainController : MonoBehaviour
     public void Start()
     {
         MinVR.VRMain.Instance.AddOnVRAnalogUpdateCallback("BlueStylusAnalog", AnalogUpdate);
+        MinVR.VRMain.Instance.AddOnVRButtonDownCallback("BlueStylusFrontBtn", OnBlueStylusFrontButtonDown);
         outputController.text = "";
     }
 
@@ -73,6 +74,9 @@ public class MainController : MonoBehaviour
             OnInputValueChange(next);
         }
     }
+
+    public void OnBlueStylusFrontButtonDown()
+        => OnInputEnd(lastReportedValue ?? 0);
 
     // Callback for when the InputFieldController value changes due to user input
     public void OnInputValueChange(int value)
