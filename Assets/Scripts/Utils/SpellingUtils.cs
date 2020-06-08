@@ -31,7 +31,6 @@ namespace AutoComplete
             Debug.LogWarning($"Trie Loaded! ({trie.termCountLoaded} nodes)");
         }
 
-        // TODO: figure out why I'm broken
         public List<string> Completions(string prefix)
             => trie?.GetTopkTermsForPrefix(prefix.ToLower(), _completion_count, out long termFreqCountPrefix).Select(t => t.term).ToList();
 

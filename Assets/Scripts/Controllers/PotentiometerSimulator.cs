@@ -76,7 +76,7 @@ namespace CustomInput
                 var vec = UnityEngine.Random.insideUnitCircle;
 
                 noiseValues[i] = maxAbsoluteNoise * vec.x;
-                if (noiseValues.Length % 2 == 0)
+                if (i + 1 < noiseValues.Length)
                 {
                     noiseValues[i + 1] = maxAbsoluteNoise * vec.y;
                 }
