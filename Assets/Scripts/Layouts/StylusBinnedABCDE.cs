@@ -51,13 +51,15 @@ namespace CustomInput
 
             binnedKey.SetHighlight(true);
             var controllers = binnedKey.GetComponentsInChildren<AbstractSimpleKeyController>();
-            var inner = InnerIndex(data, controllers.Length);
+            var inner = InnerIndex(data, binnedKey.data.size);
 
             if (!inner.HasValue) return;
 
-            for (int i = 0; i < controllers.Length; i++)
+            var highlightedData = binnedKey.data.ItemAt(inner.Value);
+
+            foreach (var cont in controllers)
             {
-                controllers[i].SetHighlight(i == inner);
+                cont.SetHighlight(cont.data.label == highlightedData.label);
             }
         }
 
