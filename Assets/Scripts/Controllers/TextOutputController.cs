@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class TextOutputController : MonoBehaviour
 {
-    public Text rawOutput;
+    [SerializeField]
+    private Text rawOutput;
 
-    public Text[] suggested;
+    [SerializeField]
+    private Text[] suggested;
 
 
     public TextAsset dict824765, dict243342;
@@ -22,16 +24,7 @@ public class TextOutputController : MonoBehaviour
         set
         {
             rawOutput.text = value;
-
-            if (AutoCorrect.AutoCorrect.Instance.dictionaryLoaded)
-            {
-                suggestions = AutoCorrect.AutoCorrect.Instance.Suggestions(value, verbosity);
-
-                for (int i = 0; i < suggested.Length; i++)
-                {
-                    suggested[i].text = (i >= suggestions.Count) ? "" : suggestions[i];
-                }
-            }
+            RefreshSuggestionsPanel(value);
         }
     }
 
@@ -49,6 +42,28 @@ public class TextOutputController : MonoBehaviour
         foreach (var suggestedText in suggested)
         {
             suggestedText.GetComponent<Button>().onClick.AddListener(() => text = suggestedText.text.ToUpper());
+        }
+    }
+
+    private void RefreshSuggestionsPanel(string value)
+    {
+        suggestions = new List<string>();
+
+        if (AutoCorrect.AutoCorrect.Instance.dictionaryLoaded)
+        {
+            suggestions = AutoCorrect.AutoCorrect.Instance.Suggestions(value, verbosity);
+        }
+
+        if (AutoComplete.AutoComplete.Instance.dictionaryLoaded)
+        {
+            string lastWord = value.Split(' ').Last();
+            suggestions.AddRange(AutoComplete.AutoComplete.Instance.Completions(lastWord));
+        }
+
+
+        for (int i = 0; i < suggested.Length; i++)
+        {
+            suggested[i].text = (i >= suggestions.Count) ? "" : suggestions[i];
         }
     }
 

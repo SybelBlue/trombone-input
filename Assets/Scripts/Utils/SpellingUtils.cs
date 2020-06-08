@@ -19,6 +19,8 @@ namespace AutoComplete
 
         private PruningRadixTrie trie;
 
+        public bool dictionaryLoaded => trie != null;
+
         public void InitDictionary(TextAsset frequencyDict, char separator)
         {
             trie = new PruningRadixTrie();

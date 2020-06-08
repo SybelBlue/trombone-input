@@ -24,6 +24,9 @@ public static class Utils
     public static T GetNormalized<T>(this System.Collections.Generic.List<T> list, float normalized)
         => list[NormalizedIntoIndex(normalized, list.Count)];
 
+    public static T Last<T>(this T[] array)
+        => array[Mathf.Max(0, array.Length - 1)];
+
     public static System.IO.MemoryStream StreamFromTextAsset(TextAsset asset)
         => new System.IO.MemoryStream(asset.bytes);
 }
