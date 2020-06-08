@@ -57,6 +57,12 @@ public class MainController : MonoBehaviour
 
         CaptureMouseWheelInput();
 
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            Debug.Log("Forced Stylus Front Button");
+            OnBlueStylusFrontButtonDown();
+        }
+
         layout.UpdateState(currentInputData);
     }
 
@@ -89,7 +95,7 @@ public class MainController : MonoBehaviour
 
     public void OnBlueStylusFrontButtonDown()
     {
-        Debug.LogWarning("Button Down from Hardware, using last reported value: " + lastReportedValue);
+        Debug.LogWarning($"Button Down from Hardware, using last reported value: ({lastReportedValue})");
         OnInputEnd(lastReportedValue ?? 0);
     }
 
