@@ -8,7 +8,7 @@ namespace AutoComplete
 {
     public class AutoComplete
     {
-        private static readonly int _completion_count = 5;
+        public static readonly int _completion_count = 16;
         private static AutoComplete _instance;
 
         private AutoComplete()

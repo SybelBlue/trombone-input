@@ -9,6 +9,9 @@ public class TextOutputController : MonoBehaviour
     private Text rawOutput;
 
     [SerializeField]
+    private GameObject suggestionsContainer;
+
+    [SerializeField]
     private Text[] suggested;
 
 
@@ -38,6 +41,8 @@ public class TextOutputController : MonoBehaviour
         {
             AutoComplete.AutoComplete.Instance.InitDictionary(dict824765, ' ');
         }
+
+        suggested = suggestionsContainer.GetComponentsInChildren<Text>();
 
         foreach (var suggestedText in suggested)
         {
