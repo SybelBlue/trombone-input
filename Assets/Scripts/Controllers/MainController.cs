@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CustomInput;
 using MinVR;
 using UnityEngine;
+using static UnityEngine.Input;
 
 public class MainController : MonoBehaviour, VREventGenerator
 {
@@ -32,13 +33,13 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     // True if no input is provided
     public static bool inputThisFrame
-        => Input.touchCount > 0
-        || Input.GetMouseButton(0)
-        || Input.GetMouseButton(1)
-        || Input.GetKey(KeyCode.LeftControl)
-        || Input.GetKey(KeyCode.Space)
-        || Input.GetKey(KeyCode.Backspace)
-        || Input.GetKey(KeyCode.Tab);
+        => touchCount > 0
+        || GetMouseButton(0)
+        || GetMouseButton(1)
+        || GetKey(KeyCode.LeftControl)
+        || GetKey(KeyCode.Space)
+        || GetKey(KeyCode.Backspace)
+        || GetKey(KeyCode.Tab);
 
     public void Start()
     {
@@ -58,11 +59,11 @@ public class MainController : MonoBehaviour, VREventGenerator
         // TODO: Map to stylus events
         if (outputController.text.Length > 0)
         {
-            if (Input.GetKeyDown(KeyCode.Backspace))
+            if (GetKeyDown(KeyCode.Backspace))
             {
                 outputController.text = outputController.text.Substring(0, outputController.text.Length - 1);
             }
-            else if (Input.GetKeyDown(KeyCode.Space))
+            else if (GetKeyDown(KeyCode.Space))
             {
                 outputController.text += ' ';
             }
@@ -144,23 +145,23 @@ public class MainController : MonoBehaviour, VREventGenerator
     }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
-        => CaptureEmulatedPotentiometerInput(ref eventList);
+        => CaptureEmulatedInput(ref eventList);
 
     // If Right click is held and the mouse wheel is scrolled to emulate potentiometer,
     // will be less sensitive if either Shift key is held.
     // If tab is hit or Right click is released when the layout accepts potentiometer input,
     // then it emulates the forward button down.
-    private void CaptureEmulatedPotentiometerInput(ref List<VREvent> eventList)
+    private void CaptureEmulatedInput(ref List<VREvent> eventList)
     {
-        if (Input.GetMouseButtonDown(1))
+        if (GetMouseButtonDown(1))
         {
             int value = lastReportedValue ?? inputPanel.maxValue / 2;
             eventList.Add(MakePotentiometerEvent(value));
             return;
         }
 
-        float delta = Input.mouseScrollDelta.y * 2;
-        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
+        float delta = mouseScrollDelta.y * 2;
+        if (!GetKey(KeyCode.LeftShift) && !GetKey(KeyCode.RightShift))
         {
             delta *= 4;
         }
@@ -168,16 +169,16 @@ public class MainController : MonoBehaviour, VREventGenerator
         int rawNext = Mathf.RoundToInt(lastReportedValue + delta ?? 0);
         int next = Mathf.Clamp(rawNext, 0, inputPanel.maxValue);
 
-        if (Input.GetMouseButton(1) && delta != 0)
+        if (GetMouseButton(1) && delta != 0)
         {
             eventList.Add(MakePotentiometerEvent(next));
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (GetKeyDown(KeyCode.Tab))
         {
             eventList.Add(MakeFrontButtonEvent());
         }
-        else if (Input.GetMouseButtonUp(1))
+        else if (GetMouseButtonUp(1))
         {
             if (layout.usesSlider)
             {
