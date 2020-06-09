@@ -67,6 +67,8 @@ namespace CustomInput
 
         private void Update()
         {
+            dropdown.value = (int)layout;
+
             foreach (var layoutOption in System.Enum.GetValues(typeof(LayoutOption)))
             {
                 var layout = fromOption((LayoutOption)layoutOption);
