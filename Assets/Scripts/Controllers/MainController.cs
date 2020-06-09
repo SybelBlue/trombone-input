@@ -8,8 +8,9 @@ public class MainController : MonoBehaviour, VREventGenerator
 {
     public const string _potentiometer_event_name = "BlueStylusAnalog";
     public const string _front_button_event_name = "BlueStylusFrontBtn";
-    public const string _button_down_event_data = "ButtonDown";
-    public const string _button_up_event_data = "ButtonUp";
+    public const string _back_button_event_name = "BlueStylusBackBtn";
+    public const string _button_down_event_type = "ButtonDown";
+    public const string _button_up_event_type = "ButtonUp";
 
     // The LayoutManager that is in charge of loading the layout
     public LayoutController layoutManager;
@@ -45,9 +46,15 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void Start()
     {
         VRMain.Instance.AddEventGenerator(this);
+
         VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, AnalogUpdate);
+
         VRMain.Instance.AddOnVRButtonDownCallback(_front_button_event_name, FrontButtonDown);
         VRMain.Instance.AddOnVRButtonUpCallback(_front_button_event_name, FrontButtonUp);
+
+        VRMain.Instance.AddOnVRButtonDownCallback(_back_button_event_name, BackButtonDown);
+        VRMain.Instance.AddOnVRButtonUpCallback(_back_button_event_name, BackButtonUp);
+
         outputController.text = "";
     }
 
@@ -59,16 +66,9 @@ public class MainController : MonoBehaviour, VREventGenerator
         indicatorRect.gameObject.SetActive(layout.usesSlider && inputThisFrame);
 
         // TODO: Map to stylus events
-        if (outputController.text.Length > 0)
+        if (outputController.text.Length > 0 && GetKeyDown(KeyCode.Space))
         {
-            if (GetKeyDown(KeyCode.Backspace))
-            {
-                outputController.text = outputController.text.Substring(0, outputController.text.Length - 1);
-            }
-            else if (GetKeyDown(KeyCode.Space))
-            {
-                outputController.text += ' ';
-            }
+            outputController.text += ' ';
         }
 
         layout.UpdateState(currentInputData);
@@ -97,18 +97,19 @@ public class MainController : MonoBehaviour, VREventGenerator
         if (parentKey == null)
         {
             Debug.LogWarning("Ended gesture in empty zone: " + value);
-            return;
         }
+        else
+        {
+            (char typed, bool certain) = currentLetter ?? ('-', false);
 
-        (char typed, bool certain) = currentLetter ?? ('-', false);
+            Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
 
-        Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
+            keypresses.Add(parentKey?.label ?? " ");
 
-        keypresses.Add(parentKey?.label ?? " ");
+            disambiguated = AutoCorrect.Disambiguator.Disambiguated(keypresses);
 
-        disambiguated = AutoCorrect.Disambiguator.Disambiguated(keypresses);
-
-        outputController.text += typed;
+            outputController.text += typed;
+        }
 
         stylusModel.normalizedSlider = null;
 
@@ -150,6 +151,19 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void FrontButtonUp()
         => stylusModel.frontButtonDown = false;
 
+    public void BackButtonDown()
+    {
+        stylusModel.backButtonDown = true;
+
+        if (outputController.text.Length > 0)
+        {
+            outputController.text = outputController.text.Substring(0, outputController.text.Length - 1);
+        }
+    }
+
+    public void BackButtonUp()
+        => stylusModel.backButtonDown = false;
+
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
         => CaptureEmulatedInput(ref eventList);
 
@@ -184,26 +198,29 @@ public class MainController : MonoBehaviour, VREventGenerator
         {
             eventList.Add(MakeFrontDownEvent());
         }
-        else if (GetMouseButtonUp(1))
+        else if (GetMouseButtonUp(1) && layout.usesSlider)
         {
-            if (layout.usesSlider)
-            {
-                eventList.Add(MakeFrontDownEvent());
-            }
-            else
-            {
-                stylusModel.normalizedSlider = null;
-            }
+            eventList.Add(MakeFrontDownEvent());
         }
 
         if (GetKeyUp(KeyCode.Tab))
         {
-            eventList.Add(MakeEvent(_front_button_event_name, _button_up_event_data));
+            eventList.Add(MakeEvent(_front_button_event_name, _button_up_event_type));
+        }
+
+        if (GetKeyDown(KeyCode.Backspace))
+        {
+            eventList.Add(MakeEvent(_back_button_event_name, _button_down_event_type));
+        }
+
+        if (GetKeyUp(KeyCode.Backspace))
+        {
+            eventList.Add(MakeEvent(_back_button_event_name, _button_up_event_type));
         }
     }
 
     private static VREvent MakeFrontDownEvent()
-        => MakeEvent(_front_button_event_name, _button_down_event_data);
+        => MakeEvent(_front_button_event_name, _button_down_event_type);
 
     private static VREvent MakePotentiometerEvent(float analogValue)
         => MakeEvent(_potentiometer_event_name, "AnalogUpdate", analogValue);

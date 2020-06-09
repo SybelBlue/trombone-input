@@ -69,11 +69,10 @@ public class StylusModelController : MonoBehaviour
         set
         {
             highlightingBack = value;
-            frontButtonRenderer.material =
+            backButtonRenderer.material =
                 value ?
                     highlightMaterial :
                     defaultMaterial;
-            Debug.Log(value);
         }
     }
 
