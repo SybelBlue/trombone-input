@@ -4,7 +4,7 @@
 public class StylusModelController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject indicatorSphere;
+    private GameObject potentiometerIndicator, frontButtonIndicator, backButtonIndicator;
 
     [SerializeField]
     private Vector3 min, max;
@@ -16,9 +16,9 @@ public class StylusModelController : MonoBehaviour
     {
         get
         {
-            if (indicatorSphere.activeInHierarchy)
+            if (potentiometerIndicator.activeInHierarchy)
             {
-                return Mathf.InverseLerp(min.y, max.y, indicatorSphere.transform.localPosition.y);
+                return Mathf.InverseLerp(min.y, max.y, potentiometerIndicator.transform.localPosition.y);
             }
             return null;
         }
@@ -27,23 +27,39 @@ public class StylusModelController : MonoBehaviour
         {
             if (!value.HasValue)
             {
-                indicatorSphere.SetActive(false);
+                potentiometerIndicator.SetActive(false);
                 return;
             }
 
-            if (!indicatorSphere.activeInHierarchy)
+            if (!potentiometerIndicator.activeInHierarchy)
             {
-                indicatorSphere.SetActive(true);
+                potentiometerIndicator.SetActive(true);
             }
 
-            var pos = indicatorSphere.transform.localPosition;
+            var pos = potentiometerIndicator.transform.localPosition;
             pos.y = Mathf.Lerp(min.y, max.y, value.Value);
-            indicatorSphere.transform.localPosition = pos;
+            potentiometerIndicator.transform.localPosition = pos;
         }
     }
 
+    public bool frontButtonDown
+    {
+        get => frontButtonIndicator.activeInHierarchy;
+        set => frontButtonIndicator.SetActive(value);
+    }
+
+    public bool backButtonDown
+    {
+        get => backButtonIndicator.activeInHierarchy;
+        set => backButtonIndicator.SetActive(value);
+    }
+
     private void Start()
-        => normalizedSlider = null;
+    {
+        normalizedSlider = null;
+        frontButtonDown = false;
+        backButtonDown = false;
+    }
 
     void Update()
     {
