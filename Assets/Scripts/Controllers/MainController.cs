@@ -7,6 +7,7 @@ public class MainController : MonoBehaviour, VREventGenerator
 {
     public const string _potentiometer_event_name = "BlueStylusAnalog";
     public const string _front_button_event_name = "BlueStylusFrontBtn";
+    public const string _button_down_event_data = "ButtonDown";
 
     // The LayoutManager that is in charge of loading the layout
     public LayoutController layoutManager;
@@ -54,6 +55,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     {
         indicatorRect.gameObject.SetActive(layout.usesSlider && inputThisFrame);
 
+        // TODO: Map to stylus events
         if (outputController.text.Length > 0)
         {
             if (Input.GetKeyDown(KeyCode.Backspace))
@@ -173,13 +175,13 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            eventList.Add(MakeEvent(_front_button_event_name, "ButtonDown"));
+            eventList.Add(MakeFrontButtonEvent());
         }
         else if (Input.GetMouseButtonUp(1))
         {
             if (layout.usesSlider)
             {
-                eventList.Add(MakeEvent(_front_button_event_name, "ButtonDown"));
+                eventList.Add(MakeFrontButtonEvent());
             }
             else
             {
@@ -187,6 +189,9 @@ public class MainController : MonoBehaviour, VREventGenerator
             }
         }
     }
+
+    private static VREvent MakeFrontButtonEvent()
+        => MakeEvent(_front_button_event_name, _button_down_event_data);
 
     private static VREvent MakePotentiometerEvent(float analogValue)
         => MakeEvent(_potentiometer_event_name, "AnalogUpdate", analogValue);
