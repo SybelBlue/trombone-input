@@ -4,7 +4,7 @@ namespace CustomInput
     {
         public override string layoutName => "Stylus ABCDE";
 
-        public override bool usesSlider => false;
+        public override bool usesSlider => true;
 
         protected virtual int? InnerIndex(InputData data, int parentSize)
             => data.normalizedPotentiometer.HasValue ?
