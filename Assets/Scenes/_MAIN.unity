@@ -265,7 +265,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ea5906402a6b7fb40a9b9f4d8af4ff17, type: 2}
+  - {fileID: 2100000, guid: 7ff72e74ddb75334a966aadc768d4de0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1060,7 +1060,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ea5906402a6b7fb40a9b9f4d8af4ff17, type: 2}
+  - {fileID: 2100000, guid: 7ff72e74ddb75334a966aadc768d4de0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3038,8 +3038,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   potentiometerIndicator: {fileID: 1634427602}
-  frontButtonIndicator: {fileID: 64718941}
-  backButtonIndicator: {fileID: 281251434}
+  frontButtonRenderer: {fileID: 64718944}
+  backButtonRenderer: {fileID: 281251436}
+  highlightMaterial: {fileID: 2100000, guid: ea5906402a6b7fb40a9b9f4d8af4ff17, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 7ff72e74ddb75334a966aadc768d4de0, type: 2}
   min: {x: -45, y: 0, z: 60}
   max: {x: 45, y: 0.5, z: -30}
 --- !u!1 &997093839
@@ -4644,7 +4646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutManager: {fileID: 1903087916}
-  modelController: {fileID: 971101864}
+  stylusModel: {fileID: 971101864}
   inputPanel: {fileID: 1125104903}
   displayRect: {fileID: 1280636847}
   indicatorRect: {fileID: 2053574479}

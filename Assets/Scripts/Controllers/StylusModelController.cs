@@ -4,7 +4,15 @@
 public class StylusModelController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject potentiometerIndicator, frontButtonIndicator, backButtonIndicator;
+    private GameObject potentiometerIndicator;
+
+    [SerializeField]
+    private MeshRenderer frontButtonRenderer, backButtonRenderer;
+
+    private bool highlightingFront, highlightingBack;
+
+    [SerializeField]
+    private Material highlightMaterial, defaultMaterial;
 
     [SerializeField]
     private Vector3 min, max;
@@ -44,14 +52,29 @@ public class StylusModelController : MonoBehaviour
 
     public bool frontButtonDown
     {
-        get => frontButtonIndicator.activeInHierarchy;
-        set => frontButtonIndicator.SetActive(value);
+        get => highlightingFront;
+        set
+        {
+            highlightingFront = value;
+            frontButtonRenderer.material =
+                value ?
+                    highlightMaterial :
+                    defaultMaterial;
+        }
     }
 
     public bool backButtonDown
     {
-        get => backButtonIndicator.activeInHierarchy;
-        set => backButtonIndicator.SetActive(value);
+        get => highlightingBack;
+        set
+        {
+            highlightingBack = value;
+            frontButtonRenderer.material =
+                value ?
+                    highlightMaterial :
+                    defaultMaterial;
+            Debug.Log(value);
+        }
     }
 
     private void Start()

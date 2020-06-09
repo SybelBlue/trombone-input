@@ -9,11 +9,12 @@ public class MainController : MonoBehaviour, VREventGenerator
     public const string _potentiometer_event_name = "BlueStylusAnalog";
     public const string _front_button_event_name = "BlueStylusFrontBtn";
     public const string _button_down_event_data = "ButtonDown";
+    public const string _button_up_event_data = "ButtonUp";
 
     // The LayoutManager that is in charge of loading the layout
     public LayoutController layoutManager;
 
-    public StylusModelController modelController;
+    public StylusModelController stylusModel;
 
     // The manager's current layout, or null if no manager exists
     private Layout layout
@@ -46,6 +47,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         VRMain.Instance.AddEventGenerator(this);
         VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, AnalogUpdate);
         VRMain.Instance.AddOnVRButtonDownCallback(_front_button_event_name, FrontButtonDown);
+        VRMain.Instance.AddOnVRButtonUpCallback(_front_button_event_name, FrontButtonUp);
         outputController.text = "";
     }
 
@@ -84,7 +86,7 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         indicatorRect.localPosition = pos;
 
-        modelController.normalizedSlider = normalized;
+        stylusModel.normalizedSlider = normalized;
     }
 
     private void OnInputEnd(int? value)
@@ -108,7 +110,7 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         outputController.text += typed;
 
-        modelController.normalizedSlider = null;
+        stylusModel.normalizedSlider = null;
 
         lastReportedValue = null;
     }
@@ -124,9 +126,9 @@ public class MainController : MonoBehaviour, VREventGenerator
         => new InputData
             (outputController.text
             , lastReportedValue
-            , modelController.normalizedX
-            , modelController.normalizedZ
-            , modelController.normalizedSlider
+            , stylusModel.normalizedX
+            , stylusModel.normalizedZ
+            , stylusModel.normalizedSlider
             );
 
     // TODO: put this somewhere else?
@@ -141,8 +143,12 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void FrontButtonDown()
     {
         Debug.Log($"Button Down from Hardware, using last reported value: ({lastReportedValue})");
+        stylusModel.frontButtonDown = true;
         OnInputEnd(lastReportedValue);
     }
+
+    public void FrontButtonUp()
+        => stylusModel.frontButtonDown = false;
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
         => CaptureEmulatedInput(ref eventList);
@@ -176,22 +182,27 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         if (GetKeyDown(KeyCode.Tab))
         {
-            eventList.Add(MakeFrontButtonEvent());
+            eventList.Add(MakeFrontDownEvent());
         }
         else if (GetMouseButtonUp(1))
         {
             if (layout.usesSlider)
             {
-                eventList.Add(MakeFrontButtonEvent());
+                eventList.Add(MakeFrontDownEvent());
             }
             else
             {
-                modelController.normalizedSlider = null;
+                stylusModel.normalizedSlider = null;
             }
+        }
+
+        if (GetKeyUp(KeyCode.Tab))
+        {
+            eventList.Add(MakeEvent(_front_button_event_name, _button_up_event_data));
         }
     }
 
-    private static VREvent MakeFrontButtonEvent()
+    private static VREvent MakeFrontDownEvent()
         => MakeEvent(_front_button_event_name, _button_down_event_data);
 
     private static VREvent MakePotentiometerEvent(float analogValue)
