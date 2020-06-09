@@ -7251,10 +7251,10 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
-  fDistance: 15
+  m_ChildAlignment: 4
+  fDistance: 50
   MinAngle: 0
-  MaxAngle: 180
+  MaxAngle: 300
   StartAngle: 0
   OnlyLayoutVisible: 0
 --- !u!1001 &2112465617
