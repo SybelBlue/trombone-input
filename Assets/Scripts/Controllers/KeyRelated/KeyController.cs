@@ -19,7 +19,7 @@ public abstract class KeyController : MonoBehaviour
     public abstract void SetHighlight(bool highlight);
 
     // defines the behavior of this.gameObject when it recieves a new
-    // sensor width in Unity-units. Note that the potentiometer is 
+    // sensor width in Unity-units. Note that the potentiometer is
     // 64 sensors long, so sensorWidth generally equals the width of
     // the parent container divided by 64.
     public virtual float Resize(float sensorWidth)
@@ -27,6 +27,12 @@ public abstract class KeyController : MonoBehaviour
         var width = sensorWidth * data.size;
         rectTransform.SetSizeWithCurrentAnchors(Axis.Horizontal, width);
         return width;
+    }
+    public virtual float ResizeHeight(float sensorHeight)
+    {
+      var height = sensorHeight * data.size;
+      rectTransform.SetSizeWithCurrentAnchors(Axis.Vertical, height);
+      return height;
     }
 }
 
