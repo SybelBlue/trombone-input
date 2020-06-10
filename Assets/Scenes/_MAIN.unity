@@ -7255,7 +7255,7 @@ MonoBehaviour:
   fDistance: 60
   MinAngle: 230
   MaxAngle: 120
-  StartAngle: 180
+  StartAngle: 90
   OnlyLayoutVisible: 0
 --- !u!1001 &2112465617
 PrefabInstance:
