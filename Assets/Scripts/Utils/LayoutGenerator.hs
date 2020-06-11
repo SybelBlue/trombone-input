@@ -4,7 +4,7 @@ import Data.List (intercalate)
 
 type Layout = [LayoutKey]
 
-data LayoutKey = Newline | Backspace | Simple Char Size | Ambiguous [ LayoutKey ] deriving Show
+data LayoutKey = Simple Char Size | Ambiguous [ LayoutKey ] deriving Show
 
 data Size = Small | Medium deriving Show
 
@@ -16,10 +16,6 @@ sizeToBarWidth =
 
 qwerty :: Layout
 qwerty = map tripletIntoAmbiguous $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ]
-
-cmdRow :: LayoutKey
-cmdRow = 
-    Ambiguous [ Backspace, Simple ' ' Medium, Newline ]
 
 tripletIntoAmbiguous :: String -> LayoutKey
 tripletIntoAmbiguous [ a, b, c ] = Ambiguous [ Simple a Small, Simple b Medium, Simple c Small ]
@@ -69,4 +65,4 @@ makeConstructorLineFor (Ambiguous items) = (4, "new AmbiguousKey(true") : inner 
   where inner = map (\(n, s) -> (n + 1, s)) $ foldl (++) [] $ map makeConstructorLineFor items
   
 
-main = putStr $ makeInitMethod abcde
+main = putStr $ makeInitMethod binnedAbcde

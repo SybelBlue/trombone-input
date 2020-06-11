@@ -121,14 +121,14 @@ public class MainController : MonoBehaviour, VREventGenerator
         => OnInputEnd(value);
 
     private InputData currentInputData
-        => new InputData
-            (outputController.text
-            , lastReportedValue
-            , stylusModel.normalizedX
-            , stylusModel.normalizedZ
-            , stylusModel.normalizedSlider
-            , stylusModel.frontButtonDown
-            , stylusModel.backButtonDown
+        => new InputData(
+                outputController.text,
+                lastReportedValue,
+                stylusModel.normalizedX,
+                stylusModel.normalizedZ,
+                stylusModel.normalizedSlider,
+                stylusModel.frontButtonDown,
+                stylusModel.backButtonDown
             );
 
     // TODO: put this somewhere else?

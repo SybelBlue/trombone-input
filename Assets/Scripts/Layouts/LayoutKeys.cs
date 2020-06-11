@@ -50,16 +50,19 @@ namespace CustomInput
         // the char this key represents
         public readonly char c;
 
+        public readonly char? alt;
+
         public override string label
             => new string(new char[] { c });
 
         private readonly int _size;
         public override int size => _size;
 
-        public SimpleKey(char data, int size)
+        public SimpleKey(char data, int size, char? alt = null)
         {
             this.c = data;
             this._size = size;
+            this.alt = alt;
         }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
