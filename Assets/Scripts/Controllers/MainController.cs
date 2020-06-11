@@ -164,13 +164,14 @@ public class MainController : MonoBehaviour, VREventGenerator
         => stylusModel.backButtonDown = false;
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
-        => CaptureEmulatedInput(ref eventList);
+    {
+        CaptureEmulatedSliderInput(ref eventList);
+        CaptureEmulatedButtonInput(ref eventList);
+    }
 
     // If Right click is held and the mouse wheel is scrolled to emulate potentiometer,
     // will be less sensitive if either Shift key is held.
-    // If tab is hit or Right click is released when the layout accepts potentiometer input,
-    // then it emulates the forward button down.
-    private void CaptureEmulatedInput(ref List<VREvent> eventList)
+    private void CaptureEmulatedSliderInput(ref List<VREvent> eventList)
     {
         if (GetMouseButtonDown(1))
         {
@@ -192,7 +193,14 @@ public class MainController : MonoBehaviour, VREventGenerator
         {
             eventList.Add(MakePotentiometerEvent(next));
         }
+    }
 
+
+    // If tab is hit or Right click is released when the layout accepts potentiometer input,
+    // then it emulates the forward button down.
+    // If backspace is hit then it emulates back button down
+    private void CaptureEmulatedButtonInput(ref List<VREvent> eventList)
+    {
         if (GetKeyDown(KeyCode.Tab))
         {
             eventList.Add(MakeFrontDownEvent());
