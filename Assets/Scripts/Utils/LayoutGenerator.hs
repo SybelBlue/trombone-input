@@ -53,7 +53,7 @@ commonLetter x = elem x "ERIOTAN"
 
 makeInitMethod :: Layout -> String
 makeInitMethod layout = "\t// Auto-generated \n\tprotected override LayoutKey[] FillKeys() {\n\t\t"
-  ++ "\n\t\treturn new LayoutKey[] {\n"
+  ++ "\n\t\treturn new LayoutKey[] {"
   ++ (intercalate ",\n" $ foldl (++) [] $ map (map deformat . makeConstructorLineFor) layout)
   ++ "\n\t\t\t};\n\t}"
 
@@ -69,4 +69,4 @@ makeConstructorLineFor (Ambiguous items) = (4, "new AmbiguousKey(true") : inner 
   where inner = map (\(n, s) -> (n + 1, s)) $ foldl (++) [] $ map makeConstructorLineFor items
   
 
-main = putStr $ makeInitMethod binnedAbcde
+main = putStr $ makeInitMethod abcde

@@ -14,19 +14,25 @@ namespace CustomInput
 
         public readonly int? rawValue;
 
-        public InputData(int? raw) : this(null, raw)
-        { }
+        public readonly bool frontButtonDown, backButtonDown;
 
-        public InputData(string context, int? raw) : this(context, raw, null, null, null)
-        { }
-
-        public InputData(string context, int? raw, float? normalizedX, float? normalizedZ, float? normalizedPotentiometer)
+        public InputData(
+            string context,
+            int? rawValue,
+            float? normalizedX,
+            float? normalizedZ,
+            float? normalizedPotentiometer,
+            bool frontButtonDown,
+            bool backButtonDown
+            )
         {
-            rawValue = raw;
+            this.rawValue = rawValue;
             this.context = context;
             this.normalizedX = normalizedX;
             this.normalizedZ = normalizedZ;
             this.normalizedPotentiometer = normalizedPotentiometer;
+            this.frontButtonDown = frontButtonDown;
+            this.backButtonDown = backButtonDown;
         }
     }
 
@@ -102,7 +108,7 @@ namespace CustomInput
             var width = gameObject.GetComponent<RectTransform>().rect.width;
             var height = gameObject.GetComponent<RectTransform>().rect.height;
             var unitWidth = width / 64.0f;
-            var unitHeight = height/22.0f;
+            var unitHeight = height / 22.0f;
 
             foreach (var child in gameObject.GetComponentsInChildren<KeyController>())
             {

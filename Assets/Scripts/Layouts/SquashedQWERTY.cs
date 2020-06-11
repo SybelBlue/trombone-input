@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace CustomInput
@@ -35,15 +33,14 @@ namespace CustomInput
             return null;
         }
 
-        public override (char, bool)? GetLetterFor(InputData data)
+        public override (char letter, bool certain)? GetLetterFor(InputData data)
         {
             var s = CharsFor(data);
             if (s == null) return null;
             string context = data.context;
-            char last = context == null || context.Length == 0 ? ' ' : context.ToCharArray()[context.Length - 1];
+            char last = context == null || context.Length == 0 ? ' ' : context.ToCharArray().Last();
             var inner = naive[last];
-            var c = inner[s];
-            return (c, false);
+            return (inner[s], false);
         }
 
         public override int ChildIndexFor(InputData data)

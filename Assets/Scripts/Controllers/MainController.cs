@@ -100,7 +100,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         }
         else
         {
-            (char typed, bool certain) = currentLetter ?? ('-', false);
+            (char typed, bool certain) = layout.GetLetterFor(currentInputData) ?? ('-', false);
 
             Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
 
@@ -120,9 +120,6 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void OnSimulatedFingerUp(int value)
         => OnInputEnd(value);
 
-    public (char letter, bool certain)? currentLetter
-        => layout.GetLetterFor(currentInputData);
-
     private InputData currentInputData
         => new InputData
             (outputController.text
@@ -130,6 +127,8 @@ public class MainController : MonoBehaviour, VREventGenerator
             , stylusModel.normalizedX
             , stylusModel.normalizedZ
             , stylusModel.normalizedSlider
+            , stylusModel.frontButtonDown
+            , stylusModel.backButtonDown
             );
 
     // TODO: put this somewhere else?
