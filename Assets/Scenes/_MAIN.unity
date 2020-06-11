@@ -7252,10 +7252,10 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  fDistance: 50
-  MinAngle: 0
-  MaxAngle: 300
-  StartAngle: 0
+  fDistance: 60
+  MinAngle: 230
+  MaxAngle: 120
+  StartAngle: 90
   OnlyLayoutVisible: 0
 --- !u!1001 &2112465617
 PrefabInstance:

@@ -85,6 +85,9 @@ public class CircularLayout : LayoutGroup {
                 DrivenTransformProperties.Pivot);
                 Vector3 vPos = new Vector3(Mathf.Cos(fAngle * Mathf.Deg2Rad), Mathf.Sin(fAngle * Mathf.Deg2Rad), 0);
                 child.localPosition = vPos * fDistance;
+                 Quaternion vRot = Quaternion.Euler(0, 0, fAngle-90);
+                // Vector3 vRot = new Vector3(0f,0f,fAngle);
+                child.localRotation = vRot;
                 // Vector3 vScal = new Vector3(0.99f, 1.0f, 0);
                 // child.localScale = vScal;
 

@@ -100,11 +100,14 @@ namespace CustomInput
         public virtual void ResizeAll()
         {
             var width = gameObject.GetComponent<RectTransform>().rect.width;
+            var height = gameObject.GetComponent<RectTransform>().rect.height;
             var unitWidth = width / 64.0f;
+            var unitHeight = height/22.0f;
 
             foreach (var child in gameObject.GetComponentsInChildren<KeyController>())
             {
                 child.Resize(unitWidth);
+                child.ResizeHeight(unitHeight);
             }
         }
 
@@ -117,7 +120,7 @@ namespace CustomInput
 
         public abstract int ChildIndexFor(InputData data);
 
-        // Equivalent to 
+        // Equivalent to
         // ```ChildAt(index)?.GetComponent<LayoutKey>()```
         public LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<KeyController>().data;
 
