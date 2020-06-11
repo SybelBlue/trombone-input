@@ -201,33 +201,32 @@ public class MainController : MonoBehaviour, VREventGenerator
     // If backspace is hit then it emulates back button down
     private void CaptureEmulatedButtonInput(ref List<VREvent> eventList)
     {
-        if (GetKeyDown(KeyCode.Tab))
+        if (GetKeyDown(KeyCode.Tab) || (GetMouseButtonUp(1) && layout.usesSlider))
         {
-            eventList.Add(MakeFrontDownEvent());
-        }
-        else if (GetMouseButtonUp(1) && layout.usesSlider)
-        {
-            eventList.Add(MakeFrontDownEvent());
+            eventList.Add(MakeButtonDownEvent(_front_button_event_name));
         }
 
         if (GetKeyUp(KeyCode.Tab))
         {
-            eventList.Add(MakeEvent(_front_button_event_name, _button_up_event_type));
+            eventList.Add(MakeButtonUpEvent(_front_button_event_name));
         }
 
         if (GetKeyDown(KeyCode.Backspace))
         {
-            eventList.Add(MakeEvent(_back_button_event_name, _button_down_event_type));
+            eventList.Add(MakeButtonDownEvent(_back_button_event_name));
         }
 
         if (GetKeyUp(KeyCode.Backspace))
         {
-            eventList.Add(MakeEvent(_back_button_event_name, _button_up_event_type));
+            eventList.Add(MakeButtonUpEvent(_back_button_event_name));
         }
     }
 
-    private static VREvent MakeFrontDownEvent()
-        => MakeEvent(_front_button_event_name, _button_down_event_type);
+    private static VREvent MakeButtonDownEvent(string name)
+        => MakeEvent(name, _button_down_event_type);
+
+    private static VREvent MakeButtonUpEvent(string name)
+        => MakeEvent(name, _button_up_event_type);
 
     private static VREvent MakePotentiometerEvent(float analogValue)
         => MakeEvent(_potentiometer_event_name, "AnalogUpdate", analogValue);
