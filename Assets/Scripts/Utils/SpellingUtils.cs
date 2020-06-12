@@ -4,18 +4,20 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-namespace AutoComplete
+namespace Auto
 {
-    public class AutoComplete
+    using Loader = System.Func<Stream, int, int, char[], bool>;
+
+    public class Complete
     {
         public static readonly int _completion_count = 16;
-        private static AutoComplete _instance;
+        private static Complete _instance;
 
-        private AutoComplete()
+        private Complete()
             => _instance = this;
 
-        public static AutoComplete Instance
-            => _instance == null ? new AutoComplete() : _instance;
+        public static Complete Instance
+            => _instance == null ? new Complete() : _instance;
 
         private PruningRadixTrie trie;
 
@@ -35,11 +37,6 @@ namespace AutoComplete
             => trie?.GetTopkTermsForPrefix(prefix.ToLower(), _completion_count, out long termFreqCountPrefix).Select(t => t.term).ToList();
 
     }
-}
-
-namespace AutoCorrect
-{
-    using Loader = System.Func<Stream, int, int, char[], bool>;
 
     [Serializable]
     public enum DictionarySize
@@ -49,15 +46,15 @@ namespace AutoCorrect
         Dict243342,
     }
 
-    public class AutoCorrect
+    public class Correct
     {
-        private static AutoCorrect _instance;
+        private static Correct _instance;
 
-        private AutoCorrect()
+        private Correct()
             => _instance = this;
 
-        public static AutoCorrect Instance
-            => _instance == null ? new AutoCorrect() : _instance;
+        public static Correct Instance
+            => _instance == null ? new Correct() : _instance;
 
         private const int INIT_CAPACITY = 82765;
         private const int MAX_EDIT_DISTANCE_DICT = 2;

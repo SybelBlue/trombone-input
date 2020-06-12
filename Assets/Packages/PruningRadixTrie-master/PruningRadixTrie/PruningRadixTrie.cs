@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace AutoComplete
+namespace Auto
 {
 
     /// <summary>
