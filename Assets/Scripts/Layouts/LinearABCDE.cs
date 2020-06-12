@@ -5,9 +5,18 @@ namespace CustomInput
     public class LinearABCDE : Layout
     {
 
-        public override string layoutName => "Linear ABCDE";
-
         public override bool usesSlider => true;
+
+        public override bool useAlternate
+        {
+            set
+            {
+                foreach (var controller in gameObject.GetComponentsInChildren<AbstractSimpleKeyController>())
+                {
+                    controller.useAlternate = value;
+                }
+            }
+        }
 
         protected override void Start()
         {

@@ -71,6 +71,17 @@ public class MainController : MonoBehaviour, VREventGenerator
             outputController.text += ' ';
         }
 
+        if (GetKeyDown(KeyCode.LeftShift))
+        {
+            layout.useAlternate = true;
+        }
+
+        if (GetKeyUp(KeyCode.LeftShift))
+        {
+            Debug.Log("Up");
+            layout.useAlternate = false;
+        }
+
         layout.UpdateState(currentInputData);
     }
 
@@ -142,7 +153,6 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public void FrontButtonDown()
     {
-        Debug.Log($"Button Down from Hardware, using last reported value: ({lastReportedValue})");
         stylusModel.frontButtonDown = true;
         OnInputEnd(lastReportedValue);
     }

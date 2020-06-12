@@ -90,6 +90,7 @@ namespace CustomInput
 
             if (lastWidth == width) return;
 
+            lastWidth = width;
             ResizeAll();
         }
 
@@ -145,12 +146,11 @@ namespace CustomInput
         // May alter state of layout and return null.
         public abstract (char letter, bool certain)? GetSelectedLetter(InputData data);
 
-        // The name of the layout
-        public abstract string layoutName { get; }
-
         // The method to fill the keys field on this, called in Start
         protected abstract LayoutKey[] FillKeys();
 
         public abstract bool usesSlider { get; }
+
+        public abstract bool useAlternate { set; }
     }
 }
