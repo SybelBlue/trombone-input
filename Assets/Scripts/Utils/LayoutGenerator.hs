@@ -35,15 +35,23 @@ abcde = (False, map makeItem ['A'..'Z'])
   where makeItem x = Simple x $ if commonLetter x then Medium else Small
 
 binnedAbcde :: Layout
-binnedAbcde = (True, map Ambiguous . splitEvery 4 . map makeItem $ zip ['A'..'Z'] alt)
+binnedAbcde = (True, map Ambiguous . splitEvery 4 . map makeItem $ zip base alt)
   where 
+    base = ['A'..'Z'] ++ ['.', ' ']
     makeItem (c, a) = Alt c Small a
     alt = map Just . concat . transpose $
-          [ [ '1', '2', '3', '/', '@', '-', '.' ]
-          , [ '4', '5', '6', '%', '\'', '?', ' ' ]
-          , [ '7', '8', '9', '#', '\"', '!' ]
-          , [ '*', '+', '.', '(', ')', ',' ] 
+          [ [ '1', '2', '3', '/', '@', '-', ';' ]
+          , [ '4', '5', '6', '%', '\'', '&', ':' ]
+          , [ '7', '8', '9', '#', '\"', '?', ',' ]
+          , [ '*', '+', '.', '(', ')', '!', '\b' ] 
           ]
+
+charString :: Char -> String
+charString = \case
+  '\b' -> "\\b"
+  '\'' -> "\\'"
+  '\"' -> "\\\""
+  x -> [x]
 
 -- https://stackoverflow.com/questions/8680888/subdividing-a-list-in-haskell
 splitEvery :: Int -> [a] -> [[a]]
@@ -72,15 +80,15 @@ constructorName stylusMode (Ambiguous _) = if stylusMode then "StylusBinnedKey" 
 constructorName stylusMode _ = if stylusMode then "StylusKey" else "SimpleKey"
 
 makeConstructorLineFor :: Bool -> LayoutKey -> [Formatted]
-makeConstructorLineFor stylusMode (Simple c s) = [(2, printf "new %s('%s', %d)" name c (sizeToBarWidth s), True)]
+makeConstructorLineFor stylusMode (Simple c s) = [(2, printf "new %s('%s', %d)" name (charString c) (sizeToBarWidth s), True)]
   where name = constructorName stylusMode $ Simple c s
-makeConstructorLineFor stylusMode (Alt c s x) = [(2, printf "new %s('%s', %d%s)" name c (sizeToBarWidth s) lastArg, True)]
+makeConstructorLineFor stylusMode (Alt c s x) = [(2, printf "new %s('%s', %d%s)" name (charString c) (sizeToBarWidth s) lastArg, True)]
   where
     name = constructorName stylusMode $ Alt c s x
     lastArg = 
       case x of 
           Nothing -> ""
-          Just a -> printf ", '%c'" a
+          Just a -> printf ", '%s'" $ charString a
 makeConstructorLineFor stylusMode (Ambiguous items) = (2, "new " ++ name ++ "(true", True) : inner ++ [(2, ")", True)]
   where 
     name = constructorName stylusMode $ Ambiguous items

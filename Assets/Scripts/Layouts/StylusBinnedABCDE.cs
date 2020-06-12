@@ -109,20 +109,22 @@ namespace CustomInput
                 new StylusBinnedKey(true,
                         new StylusKey('Q', 2, '@'),
                         new StylusKey('R', 2, '\''),
-                        new StylusKey('S', 2, '"'),
+                        new StylusKey('S', 2, '\"'),
                         new StylusKey('T', 2, ')')
                 ),
                 new StylusBinnedKey(true,
                         new StylusKey('U', 2, '-'),
-                        new StylusKey('V', 2, '?'),
-                        new StylusKey('W', 2, '!'),
-                        new StylusKey('X', 2, ',')
+                        new StylusKey('V', 2, '&'),
+                        new StylusKey('W', 2, '?'),
+                        new StylusKey('X', 2, '!')
                 ),
                 new StylusBinnedKey(true,
-                        new StylusKey('Y', 2, '.'),
-                        new StylusKey('Z', 2, ' ')
-                )
-           };
+                        new StylusKey('Y', 2, ';'),
+                        new StylusKey('Z', 2, ':'),
+                        new StylusKey('.', 2, ','),
+                        new StylusKey(' ', 2, '\b')
+                ),
+            };
         }
     }
 }

@@ -107,13 +107,22 @@ public class MainController : MonoBehaviour, VREventGenerator
         {
             (char typed, bool certain) = layout.GetSelectedLetter(currentInputData) ?? ('-', false);
 
-            Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
+            if (typed == '\b' && certain)
+            {
+                Debug.Log("Pressed Backspace");
 
-            keypresses.Add(parentKey?.label ?? " ");
+                PerformBackspace();
+            }
+            else
+            {
+                Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
+
+                keypresses.Add(parentKey?.label ?? " ");
+
+                outputController.text += typed;
+            }
 
             disambiguated = AutoCorrect.Disambiguator.Disambiguated(keypresses);
-
-            outputController.text += typed;
         }
 
         stylusModel.normalizedSlider = null;
@@ -166,7 +175,14 @@ public class MainController : MonoBehaviour, VREventGenerator
     }
 
     private void PerformBackspace()
-        => outputController.text = outputController.text.Substring(0, Mathf.Max(0, outputController.text.Length - 1));
+    {
+        if (keypresses.Count > 0)
+        {
+            keypresses.RemoveAt(keypresses.Count - 1);
+        }
+
+        outputController.text = outputController.text.Substring(0, Mathf.Max(0, outputController.text.Length - 1));
+    }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
     {

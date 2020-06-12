@@ -87,6 +87,8 @@ public abstract class AbstractSimpleKeyController : KeyController<CustomInput.Si
                 return "sym";
             case ' ':
                 return "spc";
+            case '\b':
+                return "bksp";
         }
 
         return new string(new char[] { c });
