@@ -82,6 +82,9 @@ namespace CustomInput
             Assert.IsTrue(0 <= index && index < _size);
             return this;
         }
+
+        public char CharWithAlternate(bool useAlternate)
+            => useAlternate && alt.HasValue ? alt.Value : c;
     }
 
     // The Base class for all keys with binned/ambiguous labeling

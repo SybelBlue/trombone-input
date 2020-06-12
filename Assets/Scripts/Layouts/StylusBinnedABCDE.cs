@@ -4,10 +4,14 @@ namespace CustomInput
     {
         public override bool usesSlider => true;
 
+        private bool _useAlternate;
+
         public override bool useAlternate
         {
+            get => _useAlternate;
             set
             {
+                _useAlternate = value;
                 foreach (var controller in gameObject.GetComponentsInChildren<StylusBinnedController>())
                 {
                     controller.useAlternate = value;
@@ -49,7 +53,7 @@ namespace CustomInput
         public override (char, bool)? GetSelectedLetter(InputData data)
         {
             var (parent, inner) = FetchInnerKey(data);
-            return inner == null ? (parent.label[0], false) : (inner.c, true);
+            return inner == null ? (parent.label[0], false) : (inner.CharWithAlternate(useAlternate), true);
         }
 
         public override void SetHighlightedKey(InputData data)

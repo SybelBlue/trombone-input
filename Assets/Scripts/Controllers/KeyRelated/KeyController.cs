@@ -110,16 +110,6 @@ public abstract class AbstractSimpleKeyController : KeyController<CustomInput.Si
 
     public bool useAlternate
     {
-        set
-        {
-            if (value)
-            {
-                symbol = data.alt ?? data.c;
-            }
-            else
-            {
-                symbol = data.c;
-            }
-        }
+        set => symbol = data.CharWithAlternate(value);
     }
 }

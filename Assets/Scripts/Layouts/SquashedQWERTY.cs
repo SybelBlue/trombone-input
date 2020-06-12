@@ -8,10 +8,14 @@ namespace CustomInput
 
         public override bool usesSlider => true;
 
+        private bool _useAlternate;
+
         public override bool useAlternate
         {
+            get => _useAlternate;
             set
             {
+                _useAlternate = value;
                 foreach (var controller in gameObject.GetComponentsInChildren<AmbiguousKeyController>())
                 {
                     controller.useAlternate = value;

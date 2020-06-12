@@ -151,6 +151,6 @@ namespace CustomInput
 
         public abstract bool usesSlider { get; }
 
-        public abstract bool useAlternate { set; }
+        public abstract bool useAlternate { set; get; }
     }
 }
