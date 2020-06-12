@@ -100,7 +100,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         }
         else
         {
-            (char typed, bool certain) = currentLetter ?? ('-', false);
+            (char typed, bool certain) = layout.GetSelectedLetter(currentInputData) ?? ('-', false);
 
             Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
 
@@ -120,16 +120,15 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void OnSimulatedFingerUp(int value)
         => OnInputEnd(value);
 
-    public (char letter, bool certain)? currentLetter
-        => layout.GetLetterFor(currentInputData);
-
     private InputData currentInputData
-        => new InputData
-            (outputController.text
-            , lastReportedValue
-            , stylusModel.normalizedX
-            , stylusModel.normalizedZ
-            , stylusModel.normalizedSlider
+        => new InputData(
+                outputController.text,
+                lastReportedValue,
+                stylusModel.normalizedX,
+                stylusModel.normalizedZ,
+                stylusModel.normalizedSlider,
+                stylusModel.frontButtonDown,
+                stylusModel.backButtonDown
             );
 
     // TODO: put this somewhere else?
@@ -165,13 +164,14 @@ public class MainController : MonoBehaviour, VREventGenerator
         => stylusModel.backButtonDown = false;
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
-        => CaptureEmulatedInput(ref eventList);
+    {
+        CaptureEmulatedSliderInput(ref eventList);
+        CaptureEmulatedButtonInput(ref eventList);
+    }
 
     // If Right click is held and the mouse wheel is scrolled to emulate potentiometer,
     // will be less sensitive if either Shift key is held.
-    // If tab is hit or Right click is released when the layout accepts potentiometer input,
-    // then it emulates the forward button down.
-    private void CaptureEmulatedInput(ref List<VREvent> eventList)
+    private void CaptureEmulatedSliderInput(ref List<VREvent> eventList)
     {
         if (GetMouseButtonDown(1))
         {
@@ -193,34 +193,40 @@ public class MainController : MonoBehaviour, VREventGenerator
         {
             eventList.Add(MakePotentiometerEvent(next));
         }
+    }
 
-        if (GetKeyDown(KeyCode.Tab))
+
+    // If tab is hit or Right click is released when the layout accepts potentiometer input,
+    // then it emulates the forward button down.
+    // If backspace is hit then it emulates back button down
+    private void CaptureEmulatedButtonInput(ref List<VREvent> eventList)
+    {
+        if (GetKeyDown(KeyCode.Tab) || (GetMouseButtonUp(1) && layout.usesSlider))
         {
-            eventList.Add(MakeFrontDownEvent());
-        }
-        else if (GetMouseButtonUp(1) && layout.usesSlider)
-        {
-            eventList.Add(MakeFrontDownEvent());
+            eventList.Add(MakeButtonDownEvent(_front_button_event_name));
         }
 
         if (GetKeyUp(KeyCode.Tab))
         {
-            eventList.Add(MakeEvent(_front_button_event_name, _button_up_event_type));
+            eventList.Add(MakeButtonUpEvent(_front_button_event_name));
         }
 
         if (GetKeyDown(KeyCode.Backspace))
         {
-            eventList.Add(MakeEvent(_back_button_event_name, _button_down_event_type));
+            eventList.Add(MakeButtonDownEvent(_back_button_event_name));
         }
 
         if (GetKeyUp(KeyCode.Backspace))
         {
-            eventList.Add(MakeEvent(_back_button_event_name, _button_up_event_type));
+            eventList.Add(MakeButtonUpEvent(_back_button_event_name));
         }
     }
 
-    private static VREvent MakeFrontDownEvent()
-        => MakeEvent(_front_button_event_name, _button_down_event_type);
+    private static VREvent MakeButtonDownEvent(string name)
+        => MakeEvent(name, _button_down_event_type);
+
+    private static VREvent MakeButtonUpEvent(string name)
+        => MakeEvent(name, _button_up_event_type);
 
     private static VREvent MakePotentiometerEvent(float analogValue)
         => MakeEvent(_potentiometer_event_name, "AnalogUpdate", analogValue);

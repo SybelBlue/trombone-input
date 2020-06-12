@@ -37,7 +37,7 @@ namespace CustomInput
             return null;
         }
 
-        public override (char, bool)? GetLetterFor(InputData data)
+        public override (char, bool)? GetSelectedLetter(InputData data)
         {
             var (parent, inner) = FetchInnerKey(data);
             return inner == null ? (parent.label[0], false) : (inner.c, true);
@@ -52,7 +52,7 @@ namespace CustomInput
             if (binnedKey == null) return;
 
             binnedKey.SetHighlight(true);
-            var controllers = binnedKey.GetComponentsInChildren<AbstractSimpleKeyController>();
+            var controllers = binnedKey.GetComponentsInChildren<StylusKeyController>();
             var inner = InnerIndex(data, binnedKey.data.size);
 
             if (!inner.HasValue) return;
@@ -65,51 +65,51 @@ namespace CustomInput
             }
         }
 
-        // Auto-generated
+        // Auto-generated 
         protected override LayoutKey[] FillKeys()
         {
             return new LayoutKey[] {
-                    new StylusBinnedKey(true,
-                            new StylusKey('A', 2),
-                            new StylusKey('B', 2),
-                            new StylusKey('C', 2),
-                            new StylusKey('D', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('E', 2),
-                            new StylusKey('F', 2),
-                            new StylusKey('G', 2),
-                            new StylusKey('H', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('I', 2),
-                            new StylusKey('J', 2),
-                            new StylusKey('K', 2),
-                            new StylusKey('L', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('M', 2),
-                            new StylusKey('N', 2),
-                            new StylusKey('O', 2),
-                            new StylusKey('P', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('Q', 2),
-                            new StylusKey('R', 2),
-                            new StylusKey('S', 2),
-                            new StylusKey('T', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('U', 2),
-                            new StylusKey('V', 2),
-                            new StylusKey('W', 2),
-                            new StylusKey('X', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('Y', 2),
-                            new StylusKey('Z', 2)
-                            )
-            };
+                new StylusBinnedKey(true,
+                        new StylusKey('A', 2, '1'),
+                        new StylusKey('B', 2, '4'),
+                        new StylusKey('C', 2, '7'),
+                        new StylusKey('D', 2, '*')
+                ),
+                new StylusBinnedKey(true,
+                        new StylusKey('E', 2, '2'),
+                        new StylusKey('F', 2, '5'),
+                        new StylusKey('G', 2, '8'),
+                        new StylusKey('H', 2, '/')
+                ),
+                new StylusBinnedKey(true,
+                        new StylusKey('I', 2, '3'),
+                        new StylusKey('J', 2, '6'),
+                        new StylusKey('K', 2, '9'),
+                        new StylusKey('L', 2, '.')
+                ),
+                new StylusBinnedKey(true,
+                        new StylusKey('M', 2),
+                        new StylusKey('N', 2),
+                        new StylusKey('O', 2),
+                        new StylusKey('P', 2)
+                ),
+                new StylusBinnedKey(true,
+                        new StylusKey('Q', 2),
+                        new StylusKey('R', 2),
+                        new StylusKey('S', 2),
+                        new StylusKey('T', 2)
+                ),
+                new StylusBinnedKey(true,
+                        new StylusKey('U', 2),
+                        new StylusKey('V', 2),
+                        new StylusKey('W', 2),
+                        new StylusKey('X', 2)
+                ),
+                new StylusBinnedKey(true,
+                        new StylusKey('Y', 2),
+                        new StylusKey('Z', 2)
+                ),
+        };
         }
     }
 }

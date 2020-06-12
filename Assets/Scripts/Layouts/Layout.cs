@@ -14,19 +14,25 @@ namespace CustomInput
 
         public readonly int? rawValue;
 
-        public InputData(int? raw) : this(null, raw)
-        { }
+        public readonly bool frontButtonDown, backButtonDown;
 
-        public InputData(string context, int? raw) : this(context, raw, null, null, null)
-        { }
-
-        public InputData(string context, int? raw, float? normalizedX, float? normalizedZ, float? normalizedPotentiometer)
+        public InputData(
+            string context,
+            int? rawValue,
+            float? normalizedX,
+            float? normalizedZ,
+            float? normalizedPotentiometer,
+            bool frontButtonDown,
+            bool backButtonDown
+            )
         {
-            rawValue = raw;
+            this.rawValue = rawValue;
             this.context = context;
             this.normalizedX = normalizedX;
             this.normalizedZ = normalizedZ;
             this.normalizedPotentiometer = normalizedPotentiometer;
+            this.frontButtonDown = frontButtonDown;
+            this.backButtonDown = backButtonDown;
         }
     }
 
@@ -52,18 +58,18 @@ namespace CustomInput
                 , { LayoutObjectType.StylusBinnedPrefab, stylusBinnedPrefab }
                 };
 
-            foreach (var item in keys)
+            foreach (var key in keys)
             {
-                var newChild = item.Representation(transform, objectDict);
+                var newChild = key.Representation(transform, objectDict);
 
-                var blockController = newChild.GetComponent<KeyController>();
+                var blockController = newChild.GetComponent<IKeyController>();
 
                 if (blockController)
                 {
-                    blockController.data = item;
+                    blockController.layoutKey = key;
                 }
 
-                for (int i = 0; i < item.size; i++)
+                for (int i = 0; i < key.size; i++)
                 {
                     childMap.Add(newChild);
                 }
@@ -90,7 +96,7 @@ namespace CustomInput
         // SetHighlight(false) on all AbstractDisplayItemControllers
         protected void UnhighlightAll()
         {
-            foreach (var cont in gameObject.GetComponentsInChildren<KeyController>())
+            foreach (var cont in gameObject.GetComponentsInChildren<IKeyController>())
             {
                 cont.SetHighlight(false);
             }
@@ -102,9 +108,9 @@ namespace CustomInput
             var width = gameObject.GetComponent<RectTransform>().rect.width;
             var height = gameObject.GetComponent<RectTransform>().rect.height;
             var unitWidth = width / 64.0f;
-            var unitHeight = height/22.0f;
+            var unitHeight = height / 22.0f;
 
-            foreach (var child in gameObject.GetComponentsInChildren<KeyController>())
+            foreach (var child in gameObject.GetComponentsInChildren<IKeyController>())
             {
                 child.Resize(unitWidth);
                 child.ResizeHeight(unitHeight);
@@ -122,7 +128,7 @@ namespace CustomInput
 
         // Equivalent to
         // ```ChildAt(index)?.GetComponent<LayoutKey>()```
-        public LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<KeyController>().data;
+        public LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<IKeyController>().layoutKey;
 
         // The chars for the key at index
         public string CharsFor(InputData data) => LayoutKeyFor(data)?.label ?? "";
@@ -135,8 +141,9 @@ namespace CustomInput
         public abstract (LayoutKey parent, SimpleKey simple)? KeysFor(InputData data);
 
         // Gets the letter for the keypress at index, given the context, and a boolean representing
-        // certainty, or null if the index is out of bounds
-        public abstract (char letter, bool certain)? GetLetterFor(InputData data);
+        // certainty, or null if the index is out of bounds.
+        // May alter state of layout and return null.
+        public abstract (char letter, bool certain)? GetSelectedLetter(InputData data);
 
         // The name of the layout
         public abstract string layoutName { get; }

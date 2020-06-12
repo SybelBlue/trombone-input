@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class AmbiguousKeyController : KeyController
+public class AmbiguousKeyController : KeyController<CustomInput.AmbiguousKey>
 {
     public Color highlightColor;
 
