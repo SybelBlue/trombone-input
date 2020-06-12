@@ -9,6 +9,8 @@ data LayoutKey = Simple Char Size | Binned [ LayoutKey ] | Alt Char Size (Maybe 
 
 data Size = Small | Medium | Big deriving Show
 
+data Mode = Basic | Stylus | Raycast deriving Show
+
 sizeToBarWidth :: Size -> Int
 sizeToBarWidth =
     \case

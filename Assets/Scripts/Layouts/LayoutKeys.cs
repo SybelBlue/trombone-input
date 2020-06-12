@@ -180,4 +180,15 @@ namespace CustomInput
             return newItem;
         }
     }
+
+    public class RaycastKey : StylusKey
+    {
+        public override string typeName => "RaycastKey";
+
+        public RaycastKey(char data, int size, char? alt = null) : base(data, size, alt)
+        { }
+
+        public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
+            => RepresentationUsing<RaycastKeyController>(parent, objectDict[LayoutObjectType.StylusKeyPrefab]);
+    }
 }
