@@ -10,7 +10,7 @@ namespace CustomInput
     public enum LayoutObjectType
     {
         SimpleKeyPrefab,
-        AmbiguousKeyPrefab,
+        BinnedKeyPrefab,
         StylusKeyPrefab,
         StylusBinnedPrefab,
     }
@@ -90,7 +90,7 @@ namespace CustomInput
     // The Base class for all keys with binned labeling
     public class BinnedKey : LayoutKey
     {
-        public override string typeName => "AmbiguousKey";
+        public override string typeName => "BinnedKey";
 
         public override string label => _data;
         public override int size => _size;
@@ -130,7 +130,7 @@ namespace CustomInput
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
-            var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.AmbiguousKeyPrefab], parent);
+            var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.BinnedKeyPrefab], parent);
             var controller = newItem.GetComponent<BinnedKeyController>();
             foreach (var item in items)
             {
@@ -157,7 +157,7 @@ namespace CustomInput
             => RepresentationUsing<StylusKeyController>(parent, objectDict[LayoutObjectType.StylusKeyPrefab]);
     }
 
-    // The AmbiguousKey for Stylus canvases
+    // The BinnedKey for Stylus canvases
     public class StylusBinnedKey : BinnedKey
     {
         public override string typeName => "StylusBinnedKey";

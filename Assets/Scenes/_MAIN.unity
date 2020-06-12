@@ -586,7 +586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   simpleKeyPrefab: {fileID: 3265795387704717104, guid: 3344e1193debe304a81509bb26bf33ca,
     type: 3}
-  ambiguousKeyPrefab: {fileID: 8073901440390734995, guid: f0afbb1267364214ca460d9508b3e523,
+  binnedKeyPrefab: {fileID: 8073901440390734995, guid: f0afbb1267364214ca460d9508b3e523,
     type: 3}
   stylusKeyPrefab: {fileID: 2312528965249368717, guid: 6e7a01433d87b5a488fadd46abeb1f44,
     type: 3}
@@ -3097,7 +3097,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   simpleKeyPrefab: {fileID: 3265795387704717104, guid: 3344e1193debe304a81509bb26bf33ca,
     type: 3}
-  ambiguousKeyPrefab: {fileID: 8073901440390734995, guid: f0afbb1267364214ca460d9508b3e523,
+  binnedKeyPrefab: {fileID: 8073901440390734995, guid: f0afbb1267364214ca460d9508b3e523,
     type: 3}
   stylusKeyPrefab: {fileID: 2312528965249368717, guid: 6e7a01433d87b5a488fadd46abeb1f44,
     type: 3}
@@ -4621,7 +4621,7 @@ MonoBehaviour:
   layoutManager: {fileID: 1903087916}
   stylusModel: {fileID: 971101864}
   inputPanel: {fileID: 1125104903}
-  displayRect: {fileID: 0}
+  displayRect: {fileID: 1903087915}
   indicatorRect: {fileID: 2053574479}
   outputController: {fileID: 1708648835}
 --- !u!114 &1335849778
@@ -7189,7 +7189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   simpleKeyPrefab: {fileID: 3265795387704717104, guid: 3344e1193debe304a81509bb26bf33ca,
     type: 3}
-  ambiguousKeyPrefab: {fileID: 8073901440390734995, guid: f0afbb1267364214ca460d9508b3e523,
+  binnedKeyPrefab: {fileID: 8073901440390734995, guid: f0afbb1267364214ca460d9508b3e523,
     type: 3}
   stylusKeyPrefab: {fileID: 2312528965249368717, guid: 6e7a01433d87b5a488fadd46abeb1f44,
     type: 3}

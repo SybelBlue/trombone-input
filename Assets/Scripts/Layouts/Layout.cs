@@ -39,7 +39,7 @@ namespace CustomInput
     public abstract class Layout : MonoBehaviour
     {
         // Prefabs for the basic layout key and basic block key
-        public GameObject simpleKeyPrefab, ambiguousKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab;
+        public GameObject simpleKeyPrefab, binnedKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab;
 
         // All of the keys in this layout
         protected LayoutKey[] keys;
@@ -52,7 +52,7 @@ namespace CustomInput
             keys = FillKeys();
 
             var objectDict = new Dictionary<LayoutObjectType, GameObject>
-                { { LayoutObjectType.AmbiguousKeyPrefab, ambiguousKeyPrefab }
+                { { LayoutObjectType.BinnedKeyPrefab, binnedKeyPrefab }
                 , { LayoutObjectType.SimpleKeyPrefab, simpleKeyPrefab }
                 , { LayoutObjectType.StylusKeyPrefab, stylusKeyPrefab }
                 , { LayoutObjectType.StylusBinnedPrefab, stylusBinnedPrefab }

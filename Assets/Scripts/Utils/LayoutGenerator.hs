@@ -17,11 +17,11 @@ sizeToBarWidth =
       Big -> 4
 
 qwerty :: Layout
-qwerty = (False, map tripletIntoAmbiguous $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ])
+qwerty = (False, map tripletIntoBinned $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ])
 
-tripletIntoAmbiguous :: String -> LayoutKey
-tripletIntoAmbiguous [ a, b, c ] = Binned [ Simple a Small, Simple b Medium, Simple c Small ]
-tripletIntoAmbiguous _ = error "unexpected input"
+tripletIntoBinned :: String -> LayoutKey
+tripletIntoBinned [ a, b, c ] = Binned [ Simple a Small, Simple b Medium, Simple c Small ]
+tripletIntoBinned _ = error "unexpected input"
 
 layoutSize :: [LayoutKey] -> Int
 layoutSize = sum . map itemSize
@@ -77,7 +77,7 @@ deformat :: Formatted -> String
 deformat (n, s, b) = (take n $ cycle "\t") ++ s ++ if b then "," else ""
 
 constructorName :: Bool -> LayoutKey -> String
-constructorName stylusMode (Binned _) = if stylusMode then "StylusBinnedKey" else "AmbiguousKey"
+constructorName stylusMode (Binned _) = if stylusMode then "StylusBinnedKey" else "BinnedKey"
 constructorName stylusMode _ = if stylusMode then "StylusKey" else "SimpleKey"
 
 makeConstructorLineFor :: Bool -> LayoutKey -> [Formatted]
