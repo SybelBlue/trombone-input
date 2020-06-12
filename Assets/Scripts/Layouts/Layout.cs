@@ -45,7 +45,7 @@ namespace CustomInput
     public abstract class Layout : MonoBehaviour
     {
         // Prefabs for the basic layout key and basic block key
-        public GameObject simpleKeyPrefab, binnedKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab;
+        public GameObject simpleKeyPrefab, binnedKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab, raycastKeyPrefab;
 
         // All of the keys in this layout
         protected LayoutKey[] keys;
@@ -62,6 +62,7 @@ namespace CustomInput
                 , { LayoutObjectType.SimpleKeyPrefab, simpleKeyPrefab }
                 , { LayoutObjectType.StylusKeyPrefab, stylusKeyPrefab }
                 , { LayoutObjectType.StylusBinnedPrefab, stylusBinnedPrefab }
+                , { LayoutObjectType.RaycastKeyPrefab, raycastKeyPrefab }
                 };
 
             foreach (var key in keys)

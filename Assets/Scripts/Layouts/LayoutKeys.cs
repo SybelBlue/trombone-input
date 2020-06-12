@@ -13,6 +13,7 @@ namespace CustomInput
         BinnedKeyPrefab,
         StylusKeyPrefab,
         StylusBinnedPrefab,
+        RaycastKeyPrefab,
     }
 
     // The Base class for the data contained within a KeyController,
@@ -69,10 +70,10 @@ namespace CustomInput
             => RepresentationUsing<SimpleKeyController>(parent, objectDict[LayoutObjectType.SimpleKeyPrefab]);
 
         // Used in SimpleKey.Representation to make a default key and set the new object's T.symbol to this.c
-        protected GameObject RepresentationUsing<T>(Transform parent, GameObject simpleKeyPrefab)
+        protected GameObject RepresentationUsing<T>(Transform parent, GameObject prefab)
             where T : AbstractSimpleKeyController
         {
-            var newItem = GameObject.Instantiate(simpleKeyPrefab, parent);
+            var newItem = GameObject.Instantiate(prefab, parent);
             newItem.GetComponent<T>().symbol = c;
             return newItem;
         }
@@ -189,6 +190,6 @@ namespace CustomInput
         { }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
-            => RepresentationUsing<RaycastKeyController>(parent, objectDict[LayoutObjectType.StylusKeyPrefab]);
+            => RepresentationUsing<RaycastKeyController>(parent, objectDict[LayoutObjectType.RaycastKeyPrefab]);
     }
 }

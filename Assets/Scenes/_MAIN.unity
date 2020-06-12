@@ -592,6 +592,8 @@ MonoBehaviour:
     type: 3}
   stylusBinnedPrefab: {fileID: 7355011700996924773, guid: 2b25e3e9417a75649b092c7658293832,
     type: 3}
+  raycastKeyPrefab: {fileID: 236652873365184703, guid: 72134ec246700974a9e25ce2f000ad6f,
+    type: 3}
 --- !u!114 &168735321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3103,6 +3105,8 @@ MonoBehaviour:
     type: 3}
   stylusBinnedPrefab: {fileID: 7355011700996924773, guid: 2b25e3e9417a75649b092c7658293832,
     type: 3}
+  raycastKeyPrefab: {fileID: 236652873365184703, guid: 72134ec246700974a9e25ce2f000ad6f,
+    type: 3}
 --- !u!114 &997093842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4680,7 +4684,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -7194,6 +7198,8 @@ MonoBehaviour:
   stylusKeyPrefab: {fileID: 2312528965249368717, guid: 6e7a01433d87b5a488fadd46abeb1f44,
     type: 3}
   stylusBinnedPrefab: {fileID: 7355011700996924773, guid: 2b25e3e9417a75649b092c7658293832,
+    type: 3}
+  raycastKeyPrefab: {fileID: 236652873365184703, guid: 72134ec246700974a9e25ce2f000ad6f,
     type: 3}
 --- !u!222 &2096338479
 CanvasRenderer:
