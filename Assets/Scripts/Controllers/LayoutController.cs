@@ -28,7 +28,7 @@ namespace CustomInput
         private StylusBinnedABCDE stylusBinnedABCDE;
 
         [SerializeField]
-        private TwoRotBinnedABCDE twoRotBinnedABCDE;
+        private TwoRotationABCDE twoRotationABCDE;
 
         public Layout currentLayout() => fromOption(layout);
 
@@ -43,7 +43,7 @@ namespace CustomInput
                     return stylusBinnedABCDE;
 
                 case LayoutOption.TwoRotBinnedABCDE:
-                    return twoRotBinnedABCDE;
+                    return twoRotationABCDE;
             }
 
             throw new ArgumentException($"unknown layout option: {option.ToString()} in fromOption");

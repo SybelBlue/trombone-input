@@ -547,7 +547,7 @@ GameObject:
   - component: {fileID: 168735321}
   - component: {fileID: 168735320}
   m_Layer: 2
-  m_Name: RotBinnedABCDE
+  m_Name: TwoRotationABCDE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -581,7 +581,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 168735318}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9c038c3f1b8d1b4d8d5c64841ca4b9e, type: 3}
+  m_Script: {fileID: 11500000, guid: a664841b86a1ec84aa1b81c3d0257d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   simpleKeyPrefab: {fileID: 3265795387704717104, guid: 3344e1193debe304a81509bb26bf33ca,
@@ -6410,7 +6410,7 @@ MonoBehaviour:
   dropdown: {fileID: 970785287}
   linearABCDE: {fileID: 997093841}
   stylusBinnedABCDE: {fileID: 2096338478}
-  twoRotBinnedABCDE: {fileID: 168735320}
+  twoRotationABCDE: {fileID: 168735320}
 --- !u!1 &1946906083
 GameObject:
   m_ObjectHideFlags: 0

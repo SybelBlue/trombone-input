@@ -1,6 +1,6 @@
 namespace CustomInput
 {
-    public class TwoRotBinnedABCDE : StylusBinnedABCDE
+    public class TwoRotationABCDE : StylusBinnedABCDE
     {
         public override bool usesSlider => false;
 
