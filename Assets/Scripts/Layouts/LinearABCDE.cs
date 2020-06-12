@@ -33,7 +33,7 @@ namespace CustomInput
 
             if (MainController.inputThisFrame)
             {
-                ChildFor(data)?.GetComponent<KeyController>()?.SetHighlight(true);
+                ChildFor(data)?.GetComponent<IKeyController>()?.SetHighlight(true);
             }
         }
 

@@ -147,7 +147,7 @@ namespace CustomInput
     {
         public override string typeName => "StylusKey";
 
-        public StylusKey(char data, int size) : base(data, size)
+        public StylusKey(char data, int size, char? alt = null) : base(data, size, alt)
         { }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)

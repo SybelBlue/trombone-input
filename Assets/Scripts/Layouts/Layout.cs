@@ -58,18 +58,18 @@ namespace CustomInput
                 , { LayoutObjectType.StylusBinnedPrefab, stylusBinnedPrefab }
                 };
 
-            foreach (var item in keys)
+            foreach (var key in keys)
             {
-                var newChild = item.Representation(transform, objectDict);
+                var newChild = key.Representation(transform, objectDict);
 
-                var blockController = newChild.GetComponent<KeyController>();
+                var blockController = newChild.GetComponent<IKeyController>();
 
                 if (blockController)
                 {
-                    blockController.data = item;
+                    blockController.layoutKey = key;
                 }
 
-                for (int i = 0; i < item.size; i++)
+                for (int i = 0; i < key.size; i++)
                 {
                     childMap.Add(newChild);
                 }
@@ -96,7 +96,7 @@ namespace CustomInput
         // SetHighlight(false) on all AbstractDisplayItemControllers
         protected void UnhighlightAll()
         {
-            foreach (var cont in gameObject.GetComponentsInChildren<KeyController>())
+            foreach (var cont in gameObject.GetComponentsInChildren<IKeyController>())
             {
                 cont.SetHighlight(false);
             }
@@ -110,7 +110,7 @@ namespace CustomInput
             var unitWidth = width / 64.0f;
             var unitHeight = height / 22.0f;
 
-            foreach (var child in gameObject.GetComponentsInChildren<KeyController>())
+            foreach (var child in gameObject.GetComponentsInChildren<IKeyController>())
             {
                 child.Resize(unitWidth);
                 child.ResizeHeight(unitHeight);
@@ -128,7 +128,7 @@ namespace CustomInput
 
         // Equivalent to
         // ```ChildAt(index)?.GetComponent<LayoutKey>()```
-        public LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<KeyController>().data;
+        public LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<IKeyController>().layoutKey;
 
         // The chars for the key at index
         public string CharsFor(InputData data) => LayoutKeyFor(data)?.label ?? "";
