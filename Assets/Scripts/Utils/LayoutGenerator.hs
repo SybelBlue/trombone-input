@@ -5,7 +5,7 @@ import Data.List
 
 type Layout = (Bool, [LayoutKey])
 
-data LayoutKey = Simple Char Size | Ambiguous [ LayoutKey ] | Alt Char Size (Maybe Char) deriving Show
+data LayoutKey = Simple Char Size | Binned [ LayoutKey ] | Alt Char Size (Maybe Char) deriving Show
 
 data Size = Small | Medium | Big deriving Show
 
@@ -20,7 +20,7 @@ qwerty :: Layout
 qwerty = (False, map tripletIntoAmbiguous $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ])
 
 tripletIntoAmbiguous :: String -> LayoutKey
-tripletIntoAmbiguous [ a, b, c ] = Ambiguous [ Simple a Small, Simple b Medium, Simple c Small ]
+tripletIntoAmbiguous [ a, b, c ] = Binned [ Simple a Small, Simple b Medium, Simple c Small ]
 tripletIntoAmbiguous _ = error "unexpected input"
 
 layoutSize :: [LayoutKey] -> Int
@@ -28,7 +28,7 @@ layoutSize = sum . map itemSize
 
 itemSize :: LayoutKey -> Int
 itemSize (Simple _ s) = sizeToBarWidth s
-itemSize (Ambiguous xs) = layoutSize xs
+itemSize (Binned xs) = layoutSize xs
 itemSize _ = sizeToBarWidth Small
 
 abcde :: Layout
@@ -36,7 +36,7 @@ abcde = (False, map makeItem ['A'..'Z'])
   where makeItem x = Simple x $ if commonLetter x then Medium else Small
 
 binnedAbcde :: Layout
-binnedAbcde = (True, map Ambiguous . splitEvery 4 . map makeItem $ zip base alt)
+binnedAbcde = (True, map Binned . splitEvery 4 . map makeItem $ zip base alt)
   where 
     base = (map (\c -> (c, Small)) ['A'..'Z']) ++ [('.', Medium), (' ', Medium)]
     makeItem ((c, s), a) = Alt c s a
@@ -77,7 +77,7 @@ deformat :: Formatted -> String
 deformat (n, s, b) = (take n $ cycle "\t") ++ s ++ if b then "," else ""
 
 constructorName :: Bool -> LayoutKey -> String
-constructorName stylusMode (Ambiguous _) = if stylusMode then "StylusBinnedKey" else "AmbiguousKey"
+constructorName stylusMode (Binned _) = if stylusMode then "StylusBinnedKey" else "AmbiguousKey"
 constructorName stylusMode _ = if stylusMode then "StylusKey" else "SimpleKey"
 
 makeConstructorLineFor :: Bool -> LayoutKey -> [Formatted]
@@ -90,9 +90,9 @@ makeConstructorLineFor stylusMode (Alt c s x) = [(2, printf "new %s('%s', %d%s)"
       case x of 
           Nothing -> ""
           Just a -> printf ", '%s'" $ charString a
-makeConstructorLineFor stylusMode (Ambiguous items) = (2, "new " ++ name ++ "(true", True) : inner ++ [(2, ")", True)]
+makeConstructorLineFor stylusMode (Binned items) = (2, "new " ++ name ++ "(true", True) : inner ++ [(2, ")", True)]
   where 
-    name = constructorName stylusMode $ Ambiguous items
+    name = constructorName stylusMode $ Binned items
     inner =
       case uncons . reverse . map (\(n, s, b) -> (n + 1, s, b)) . concat $ map (makeConstructorLineFor stylusMode) items of
         Just ((n, s, _), others) ->

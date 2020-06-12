@@ -138,7 +138,7 @@ namespace CustomInput
         public abstract void SetHighlightedKey(InputData data);
 
         // Gets the largest key and smallest key that are situated at index, or null if the index is out of bounds
-        // (if this is not an ambiguous key, then the tuple items should be equal)
+        // (if this is not a binned key, then the tuple items should be equal)
         public abstract (LayoutKey parent, SimpleKey simple)? KeysFor(InputData data);
 
         // Gets the letter for the keypress at index, given the context, and a boolean representing

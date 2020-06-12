@@ -87,8 +87,8 @@ namespace CustomInput
             => useAlternate && alt.HasValue ? alt.Value : c;
     }
 
-    // The Base class for all keys with binned/ambiguous labeling
-    public class AmbiguousKey : LayoutKey
+    // The Base class for all keys with binned labeling
+    public class BinnedKey : LayoutKey
     {
         public override string typeName => "AmbiguousKey";
 
@@ -102,7 +102,7 @@ namespace CustomInput
         protected readonly SimpleKey[] items;
         protected readonly bool slant;
 
-        public AmbiguousKey(bool slant, params SimpleKey[] subitems)
+        public BinnedKey(bool slant, params SimpleKey[] subitems)
         {
             items = subitems;
             this.slant = slant;
@@ -131,7 +131,7 @@ namespace CustomInput
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
             var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.AmbiguousKeyPrefab], parent);
-            var controller = newItem.GetComponent<AmbiguousKeyController>();
+            var controller = newItem.GetComponent<BinnedKeyController>();
             foreach (var item in items)
             {
                 var newChild = item.Representation(parent, objectDict);
@@ -158,7 +158,7 @@ namespace CustomInput
     }
 
     // The AmbiguousKey for Stylus canvases
-    public class StylusBinnedKey : AmbiguousKey
+    public class StylusBinnedKey : BinnedKey
     {
         public override string typeName => "StylusBinnedKey";
 
@@ -168,7 +168,7 @@ namespace CustomInput
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
             var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.StylusBinnedPrefab], parent);
-            var controller = newItem.GetComponent<AmbiguousKeyController>();
+            var controller = newItem.GetComponent<BinnedKeyController>();
             foreach (var i in items)
             {
                 var newChild = i.Representation(parent, objectDict);

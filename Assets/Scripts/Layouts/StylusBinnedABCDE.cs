@@ -60,7 +60,7 @@ namespace CustomInput
         {
             UnhighlightAll();
 
-            var binnedKey = ChildFor(data)?.GetComponent<AmbiguousKeyController>();
+            var binnedKey = ChildFor(data)?.GetComponent<BinnedKeyController>();
 
             if (binnedKey == null) return;
 
