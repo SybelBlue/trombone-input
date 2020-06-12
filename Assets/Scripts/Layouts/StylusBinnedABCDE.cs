@@ -21,7 +21,7 @@ namespace CustomInput
 
         protected virtual int? InnerIndex(InputData data, int parentSize)
             => data.normalizedPotentiometer.HasValue ?
-                (int?)Utils.NormalizedIntoIndex(1 - data.normalizedPotentiometer.Value, parentSize) :
+                (int?)Utils.NormalizedIntoIndex(data.normalizedPotentiometer.Value-1, parentSize) :
                 null;
 
         public override int ChildIndexFor(InputData data)
@@ -78,7 +78,7 @@ namespace CustomInput
             }
         }
 
-        // Auto-generated 
+        // Auto-generated
         protected override LayoutKey[] FillKeys()
         {
             return new LayoutKey[] {
