@@ -50,16 +50,19 @@ namespace CustomInput
         // the char this key represents
         public readonly char c;
 
+        public readonly char? alt;
+
         public override string label
             => new string(new char[] { c });
 
         private readonly int _size;
         public override int size => _size;
 
-        public SimpleKey(char data, int size)
+        public SimpleKey(char data, int size, char? alt = null)
         {
             this.c = data;
             this._size = size;
+            this.alt = alt;
         }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
@@ -126,11 +129,11 @@ namespace CustomInput
         {
             var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.AmbiguousKeyPrefab], parent);
             var controller = newItem.GetComponent<AmbiguousKeyController>();
-            foreach (var i in items)
+            foreach (var item in items)
             {
-                var newChild = i.Representation(parent, objectDict);
+                var newChild = item.Representation(parent, objectDict);
 
-                newChild.GetComponent<SimpleKeyController>().data = i;
+                newChild.GetComponent<SimpleKeyController>().data = item;
 
                 controller.AddChild(newChild);
             }
@@ -144,7 +147,7 @@ namespace CustomInput
     {
         public override string typeName => "StylusKey";
 
-        public StylusKey(char data, int size) : base(data, size)
+        public StylusKey(char data, int size, char? alt = null) : base(data, size, alt)
         { }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)

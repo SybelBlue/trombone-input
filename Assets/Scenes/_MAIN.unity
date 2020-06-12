@@ -166,10 +166,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackingSpaceCorners:
-    topLeft: {x: -4, y: 0, z: -4}
-    topRight: {x: -4, y: 0, z: 4}
-    bottomRight: {x: -4, y: -4, z: 4}
-    bottomLeft: {x: -4, y: -4, z: -4}
+    topLeft: {x: -4, y: 4.338542, z: -3.75}
+    topRight: {x: -4, y: 4.338542, z: 4}
+    bottomRight: {x: -4, y: 0, z: 4}
+    bottomLeft: {x: -4, y: 0, z: -3.802083}
   cam: {fileID: 0}
   headTrackingEvent: Head_Move
   projectionType: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
   serverIPAddress: 127.0.0.1
   serverPort: 3490
   numClients: 1
-  windowXPos: 1680
+  windowXPos: 1920
   windowYPos: 720
   windowWidth: 1280
   windowHeight: 720
@@ -320,7 +320,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 97595519}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d21d080a1ab324998947c72c16eb4117, type: 3}
   m_Name: 
@@ -1546,10 +1546,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackingSpaceCorners:
-    topLeft: {x: 4, y: 0, z: 4}
-    topRight: {x: 4, y: 0, z: -4}
-    bottomRight: {x: 4, y: -4, z: -4}
-    bottomLeft: {x: 4, y: -4, z: 4}
+    topLeft: {x: 3.91667, y: 4.3125, z: 4}
+    topRight: {x: 3.91667, y: 4.302083, z: -3.75}
+    bottomRight: {x: 3.91667, y: -0.01041667, z: -3.84375}
+    bottomLeft: {x: 3.91667, y: 0, z: 4}
   cam: {fileID: 0}
   headTrackingEvent: Head_Move
   projectionType: 0
@@ -1570,7 +1570,7 @@ MonoBehaviour:
   serverIPAddress: 127.0.0.1
   serverPort: 3490
   numClients: 1
-  windowXPos: 4240
+  windowXPos: 3200
   windowYPos: 720
   windowWidth: 1280
   windowHeight: 720
@@ -1625,10 +1625,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackingSpaceCorners:
-    topLeft: {x: -4, y: 4, z: -4}
-    topRight: {x: -4, y: 4, z: 4}
-    bottomRight: {x: -4, y: 0, z: 4}
-    bottomLeft: {x: -4, y: 0, z: -4}
+    topLeft: {x: -4, y: 7.666666, z: -3.75}
+    topRight: {x: -4, y: 7.708333, z: 4}
+    bottomRight: {x: -4, y: 3.302083, z: 4}
+    bottomLeft: {x: -4, y: 3.307292, z: -3.75}
   cam: {fileID: 0}
   headTrackingEvent: Head_Move
   projectionType: 0
@@ -1649,7 +1649,7 @@ MonoBehaviour:
   serverIPAddress: 127.0.0.1
   serverPort: 3490
   numClients: 1
-  windowXPos: 1680
+  windowXPos: 1920
   windowYPos: 0
   windowWidth: 1280
   windowHeight: 720
@@ -3740,6 +3740,100 @@ RectTransform:
   m_AnchoredPosition: {x: -40, y: -235}
   m_SizeDelta: {x: 315, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1126700220
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1126700224}
+  - component: {fileID: 1126700223}
+  - component: {fileID: 1126700222}
+  - component: {fileID: 1126700221}
+  m_Layer: 0
+  m_Name: Plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &1126700221
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126700220}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1126700222
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126700220}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1126700223
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126700220}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1126700224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126700220}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1175239652
 GameObject:
   m_ObjectHideFlags: 0
@@ -4721,7 +4815,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335849776}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 20}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 0.01754386, y: 0.015209125, z: 1}
   m_Children:
   - {fileID: 1903087915}
@@ -4911,10 +5005,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackingSpaceCorners:
-    topLeft: {x: -4, y: 0, z: 4}
-    topRight: {x: 4, y: 0, z: 4}
-    bottomRight: {x: 4, y: -4, z: 4}
-    bottomLeft: {x: -4, y: -4, z: 4}
+    topLeft: {x: -4, y: 4.338542, z: 4}
+    topRight: {x: 3.91667, y: 4.291667, z: 4}
+    bottomRight: {x: 3.91667, y: 0, z: 4}
+    bottomLeft: {x: -4, y: 0, z: 4}
   cam: {fileID: 0}
   headTrackingEvent: Head_Move
   projectionType: 0
@@ -4935,7 +5029,7 @@ MonoBehaviour:
   serverIPAddress: 127.0.0.1
   serverPort: 3490
   numClients: 1
-  windowXPos: 2960
+  windowXPos: 4480
   windowYPos: 720
   windowWidth: 1280
   windowHeight: 720
@@ -5068,10 +5162,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackingSpaceCorners:
-    topLeft: {x: -4, y: -4, z: 0}
-    topRight: {x: 4, y: -4, z: 0}
-    bottomRight: {x: 4, y: -4, z: -4}
-    bottomLeft: {x: -4, y: -4, z: -4}
+    topLeft: {x: -0.15625, y: -4, z: -3.354167}
+    topRight: {x: -0.1822917, y: -4, z: 4}
+    bottomRight: {x: 3.91667, y: -4, z: 4}
+    bottomLeft: {x: 3.91667, y: -4, z: -3.375}
   cam: {fileID: 0}
   headTrackingEvent: Head_Move
   projectionType: 0
@@ -5092,7 +5186,7 @@ MonoBehaviour:
   serverIPAddress: 127.0.0.1
   serverPort: 3490
   numClients: 1
-  windowXPos: 5520
+  windowXPos: 5760
   windowYPos: 720
   windowWidth: 1280
   windowHeight: 720
@@ -5568,10 +5662,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackingSpaceCorners:
-    topLeft: {x: -4, y: 4, z: 4}
-    topRight: {x: 4, y: 4, z: 4}
-    bottomRight: {x: 4, y: 0, z: 4}
-    bottomLeft: {x: -4, y: 0, z: 4}
+    topLeft: {x: -4, y: 7.708333, z: 4}
+    topRight: {x: 3.91667, y: 7.708333, z: 4}
+    bottomRight: {x: 3.91667, y: 3.291667, z: 4}
+    bottomLeft: {x: -4, y: 3.302083, z: 4}
   cam: {fileID: 0}
   headTrackingEvent: Head_Move
   projectionType: 0
@@ -5591,8 +5685,8 @@ MonoBehaviour:
   vrNodeType: 2
   serverIPAddress: 127.0.0.1
   serverPort: 3490
-  numClients: 1
-  windowXPos: 2960
+  numClients: 7
+  windowXPos: 4480
   windowYPos: 0
   windowWidth: 1280
   windowHeight: 720
@@ -5868,10 +5962,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackingSpaceCorners:
-    topLeft: {x: -4, y: -4, z: 4}
-    topRight: {x: 4, y: -4, z: 4}
-    bottomRight: {x: 4, y: -4, z: 0}
-    bottomLeft: {x: -4, y: -4, z: 0}
+    topLeft: {x: -4, y: 0, z: -3.380208}
+    topRight: {x: -4.038, y: 0, z: 4}
+    bottomRight: {x: 0.1041667, y: 0, z: 4}
+    bottomLeft: {x: 0.125, y: 0, z: -3.354167}
   cam: {fileID: 0}
   headTrackingEvent: Head_Move
   projectionType: 0
@@ -5892,7 +5986,7 @@ MonoBehaviour:
   serverIPAddress: 127.0.0.1
   serverPort: 3490
   numClients: 1
-  windowXPos: 5520
+  windowXPos: 5760
   windowYPos: 0
   windowWidth: 1280
   windowHeight: 720
@@ -6313,10 +6407,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackingSpaceCorners:
-    topLeft: {x: 4, y: 4, z: 4}
-    topRight: {x: 4, y: 4, z: -4}
-    bottomRight: {x: 4, y: 0, z: -4}
-    bottomLeft: {x: 4, y: 0, z: 4}
+    topLeft: {x: 3.91667, y: 7.66667, z: 4}
+    topRight: {x: 3.91667, y: 7.66667, z: -3.729167}
+    bottomRight: {x: 3.91667, y: 3.260417, z: -3.875}
+    bottomLeft: {x: 3.91667, y: 3.260417, z: 4}
   cam: {fileID: 0}
   headTrackingEvent: Head_Move
   projectionType: 0
@@ -6337,7 +6431,7 @@ MonoBehaviour:
   serverIPAddress: 127.0.0.1
   serverPort: 3490
   numClients: 1
-  windowXPos: 4240
+  windowXPos: 3200
   windowYPos: 0
   windowWidth: 1280
   windowHeight: 720
@@ -7252,7 +7346,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  fDistance: 60
+  fDistance: 101
   MinAngle: 230
   MaxAngle: 120
   StartAngle: 90
