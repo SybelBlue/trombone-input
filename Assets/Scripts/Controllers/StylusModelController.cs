@@ -96,13 +96,13 @@ public class StylusModelController : MonoBehaviour
         normalizedZ = Mathf.InverseLerp(min.z, max.z, z);
 
         UpdateOrientation();
-
-        Debug.DrawRay(orientation.origin, orientation.direction, Color.cyan, 0.5f);
     }
 
     private void UpdateOrientation()
     {
-        var direction = transform.rotation * Vector3.forward;
+        // TODO: when stylus is fixed, will be Vector3.forward
+        var direction = transform.rotation * Vector3.down;
         orientation = (transform.position, direction);
+        Debug.DrawRay(orientation.origin, orientation.direction, Color.cyan, 0.5f);
     }
 }
