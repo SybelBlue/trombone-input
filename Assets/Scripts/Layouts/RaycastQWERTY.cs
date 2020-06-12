@@ -1,48 +1,48 @@
-using CustomInput;
-
-public class RaycastQWERTY : Layout
+namespace CustomInput
 {
-    public override bool usesSlider => false;
-
-    private bool _useAlternate;
-
-    public override bool useAlternate
+    public class RaycastQWERTY : Layout
     {
-        get => _useAlternate;
-        set
+        public override bool usesSlider => false;
+
+        private bool _useAlternate;
+
+        public override bool useAlternate
         {
-            _useAlternate = value;
-            foreach (var controller in gameObject.GetComponentsInChildren<StylusKeyController>())
+            get => _useAlternate;
+            set
             {
-                controller.useAlternate = value;
+                _useAlternate = value;
+                foreach (var controller in gameObject.GetComponentsInChildren<StylusKeyController>())
+                {
+                    controller.useAlternate = value;
+                }
             }
         }
-    }
 
-    public override int ChildIndexFor(InputData data)
-    {
-        throw new System.NotImplementedException();
-    }
+        protected override int ChildIndexFor(InputData data)
+        {
+            throw new System.NotImplementedException();
+        }
 
-    public override (char letter, bool certain)? GetSelectedLetter(InputData data)
-    {
-        throw new System.NotImplementedException();
-    }
+        public override (char letter, bool certain)? GetSelectedLetter(InputData data)
+        {
+            throw new System.NotImplementedException();
+        }
 
-    public override (LayoutKey parent, SimpleKey simple)? KeysFor(InputData data)
-    {
-        throw new System.NotImplementedException();
-    }
+        public override (LayoutKey parent, SimpleKey simple)? KeysFor(InputData data)
+        {
+            throw new System.NotImplementedException();
+        }
 
-    public override void SetHighlightedKey(InputData data)
-    {
-        throw new System.NotImplementedException();
-    }
+        public override void SetHighlightedKey(InputData data)
+        {
+            throw new System.NotImplementedException();
+        }
 
-    // Auto-generated 
-    protected override LayoutKey[] FillKeys()
-    {
-        return new LayoutKey[] {
+        // Auto-generated 
+        protected override LayoutKey[] FillKeys()
+        {
+            return new LayoutKey[] {
                 new RaycastKey('Q', 2, '1'),
                 new RaycastKey('W', 2, '2'),
                 new RaycastKey('E', 2, '3'),
@@ -74,5 +74,6 @@ public class RaycastQWERTY : Layout
                 new RaycastKey('.', 2, '.'),
                 new RaycastKey(' ', 2, ' '),
         };
+        }
     }
 }

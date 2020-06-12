@@ -24,7 +24,7 @@ namespace CustomInput
                 (int?)Utils.NormalizedIntoIndex(1 - data.normalizedSlider.Value, parentSize) :
                 null;
 
-        public override int ChildIndexFor(InputData data)
+        protected override int ChildIndexFor(InputData data)
             => Utils.NormalizedIntoIndex(data.normalizedZ, childMap.Count);
 
         private (LayoutKey, SimpleKey) FetchInnerKey(InputData data)

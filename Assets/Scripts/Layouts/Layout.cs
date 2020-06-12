@@ -50,6 +50,12 @@ namespace CustomInput
         // All of the keys in this layout
         protected LayoutKey[] keys;
 
+        // True if this layout uses the slider on the stylus
+        public abstract bool usesSlider { get; }
+
+        // Determines if the LayoutKeys are displaying the alternate label
+        public abstract bool useAlternate { set; get; }
+
         // Map of value to GameObject
         protected readonly List<GameObject> childMap = new List<GameObject>(64);
 
@@ -85,7 +91,7 @@ namespace CustomInput
             ResizeAll();
         }
 
-        public virtual void UpdateState(InputData data)
+        public void UpdateState(InputData data)
             => SetHighlightedKey(data);
 
         // Last width of this item
@@ -126,20 +132,17 @@ namespace CustomInput
         }
 
         // Returns the GameObject at value index
-        public GameObject ChildFor(InputData data)
+        public virtual GameObject ChildFor(InputData data)
         {
             var index = ChildIndexFor(data);
             return childMap.Count <= index || index < 0 ? null : childMap[index];
         }
 
-        public abstract int ChildIndexFor(InputData data);
+        protected abstract int ChildIndexFor(InputData data);
 
         // Equivalent to
         // ```ChildAt(index)?.GetComponent<LayoutKey>()```
-        public LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<IKeyController>().layoutKey;
-
-        // The chars for the key at index
-        public string CharsFor(InputData data) => LayoutKeyFor(data)?.label ?? "";
+        protected LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<IKeyController>().layoutKey;
 
         // Sets the item at index (or no item if null) to be highlighted and all others to be unhiglighted
         public abstract void SetHighlightedKey(InputData data);
@@ -155,9 +158,5 @@ namespace CustomInput
 
         // The method to fill the keys field on this, called in Start
         protected abstract LayoutKey[] FillKeys();
-
-        public abstract bool usesSlider { get; }
-
-        public abstract bool useAlternate { set; get; }
     }
 }

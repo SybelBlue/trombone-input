@@ -50,12 +50,12 @@ namespace CustomInput
             }
         }
 
-        public override int ChildIndexFor(InputData data)
+        protected override int ChildIndexFor(InputData data)
             => data.rawValue ?? -1;
 
         public override (char, bool)? GetSelectedLetter(InputData data)
         {
-            var s = CharsFor(data);
+            var s = LayoutKeyFor(data)?.label ?? "";
             if (s == null || s.Length != 1) return null;
             return (s.ToCharArray()[0], true);
         }
