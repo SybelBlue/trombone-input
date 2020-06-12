@@ -37,7 +37,7 @@ namespace CustomInput
             return null;
         }
 
-        public override (char, bool)? GetLetterFor(InputData data)
+        public override (char, bool)? GetSelectedLetter(InputData data)
         {
             var (parent, inner) = FetchInnerKey(data);
             return inner == null ? (parent.label[0], false) : (inner.c, true);

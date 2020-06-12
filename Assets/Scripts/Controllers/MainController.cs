@@ -100,7 +100,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         }
         else
         {
-            (char typed, bool certain) = layout.GetLetterFor(currentInputData) ?? ('-', false);
+            (char typed, bool certain) = layout.GetSelectedLetter(currentInputData) ?? ('-', false);
 
             Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
 

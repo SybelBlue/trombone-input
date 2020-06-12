@@ -141,8 +141,9 @@ namespace CustomInput
         public abstract (LayoutKey parent, SimpleKey simple)? KeysFor(InputData data);
 
         // Gets the letter for the keypress at index, given the context, and a boolean representing
-        // certainty, or null if the index is out of bounds
-        public abstract (char letter, bool certain)? GetLetterFor(InputData data);
+        // certainty, or null if the index is out of bounds.
+        // May alter state of layout and return null.
+        public abstract (char letter, bool certain)? GetSelectedLetter(InputData data);
 
         // The name of the layout
         public abstract string layoutName { get; }

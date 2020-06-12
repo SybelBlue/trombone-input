@@ -40,7 +40,7 @@ namespace CustomInput
         public override int ChildIndexFor(InputData data)
             => data.rawValue ?? -1;
 
-        public override (char, bool)? GetLetterFor(InputData data)
+        public override (char, bool)? GetSelectedLetter(InputData data)
         {
             var s = CharsFor(data);
             if (s == null || s.Length != 1) return null;

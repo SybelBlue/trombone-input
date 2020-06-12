@@ -33,7 +33,7 @@ namespace CustomInput
             return null;
         }
 
-        public override (char letter, bool certain)? GetLetterFor(InputData data)
+        public override (char letter, bool certain)? GetSelectedLetter(InputData data)
         {
             var s = CharsFor(data);
             if (s == null) return null;
