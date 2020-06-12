@@ -41,19 +41,27 @@ binnedAbcde :: Layout
 binnedAbcde = (Stylus, map Binned . splitEvery 4 . map makeItem $ zip base alt)
   where 
     base = (map (\c -> (c, Small)) ['A'..'Z']) ++ [('.', Medium), (' ', Medium)]
-    makeItem ((c, s), a) = Alt c s a
-    alt = map Just . concat . transpose $
+    makeItem ((c, s), a) = Alt c s (Just a)
+    alt = concat . transpose $
           [ [ '1', '2', '3', '/', '@',  '-', ';' ]
           , [ '4', '5', '6', '%', '\'', '&', ':' ]
           , [ '7', '8', '9', '#', '\"', '?', ',' ]
           , [ '*', '+', '.', '(', ')', '!', '\b' ] 
           ]
 
+raycastQwerty :: Layout
+raycastQwerty = (Raycast, map makeItem $ zip base alt)
+  where 
+    base = "QWERTYUIOPASDFGHJKL;ZXCVBNM,. "
+    alt =  "1234567890!@#$%^&*!:()\\/\'\"-?. "
+    makeItem (c, a) = Alt c Small (Just a)
+
 charString :: Char -> String
 charString = \case
   '\b' -> "\\b"
   '\'' -> "\\'"
   '\"' -> "\\\""
+  '\\' -> "\\\\"
   x -> [x]
 
 -- https://stackoverflow.com/questions/8680888/subdividing-a-list-in-haskell
@@ -107,4 +115,4 @@ makeConstructorLineFor stylusMode (Binned items) = (2, "new " ++ name ++ "(true"
           []
   
 
-main = putStr $ makeInitMethod binnedAbcde
+main = putStr $ makeInitMethod raycastQwerty
