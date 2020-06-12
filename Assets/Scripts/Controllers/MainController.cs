@@ -140,7 +140,7 @@ public class MainController : MonoBehaviour, VREventGenerator
                 stylusModel.normalizedSlider,
                 stylusModel.frontButtonDown,
                 stylusModel.backButtonDown,
-                (new Vector3(), new Vector3())
+                stylusModel.orientation
             );
 
     private void AnalogUpdate(float value)
