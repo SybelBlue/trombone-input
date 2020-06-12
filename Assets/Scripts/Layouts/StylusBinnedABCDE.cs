@@ -121,8 +121,8 @@ namespace CustomInput
                 new StylusBinnedKey(true,
                         new StylusKey('Y', 2, ';'),
                         new StylusKey('Z', 2, ':'),
-                        new StylusKey('.', 2, ','),
-                        new StylusKey(' ', 2, '\b')
+                        new StylusKey('.', 3, ','),
+                        new StylusKey(' ', 3, '\b')
                 ),
             };
         }

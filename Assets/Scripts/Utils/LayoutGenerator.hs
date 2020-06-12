@@ -7,13 +7,14 @@ type Layout = (Bool, [LayoutKey])
 
 data LayoutKey = Simple Char Size | Ambiguous [ LayoutKey ] | Alt Char Size (Maybe Char) deriving Show
 
-data Size = Small | Medium deriving Show
+data Size = Small | Medium | Big deriving Show
 
 sizeToBarWidth :: Size -> Int
 sizeToBarWidth =
     \case
       Small -> 2
       Medium -> 3
+      Big -> 4
 
 qwerty :: Layout
 qwerty = (False, map tripletIntoAmbiguous $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ])
@@ -37,10 +38,10 @@ abcde = (False, map makeItem ['A'..'Z'])
 binnedAbcde :: Layout
 binnedAbcde = (True, map Ambiguous . splitEvery 4 . map makeItem $ zip base alt)
   where 
-    base = ['A'..'Z'] ++ ['.', ' ']
-    makeItem (c, a) = Alt c Small a
+    base = (map (\c -> (c, Small)) ['A'..'Z']) ++ [('.', Medium), (' ', Medium)]
+    makeItem ((c, s), a) = Alt c s a
     alt = map Just . concat . transpose $
-          [ [ '1', '2', '3', '/', '@', '-', ';' ]
+          [ [ '1', '2', '3', '/', '@',  '-', ';' ]
           , [ '4', '5', '6', '%', '\'', '&', ':' ]
           , [ '7', '8', '9', '#', '\"', '?', ',' ]
           , [ '*', '+', '.', '(', ')', '!', '\b' ] 
