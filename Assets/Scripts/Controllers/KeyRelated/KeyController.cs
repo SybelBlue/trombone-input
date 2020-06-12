@@ -2,9 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.RectTransform;
 
-
+// The interface for all KeyControllers
 public abstract class IKeyController : MonoBehaviour
 {
+    // set can cause cast exception!
     public abstract CustomInput.LayoutKey layoutKey { get; set; }
 
 
