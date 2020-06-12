@@ -14,6 +14,10 @@ public class FollowTheStylus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    // transform.position = new Vector3(sty.position.x, transform.position.y, transform.position.z);
+    // transform.position = new Vector3(transform.position.x, sty.position.y, transform.position.z);
+    // transform.position = new Vector3(transform.position.x, transform.position.y, sty.position.z);
     transform.position = new Vector3(sty.position.x, sty.position.y, sty.position.z);
+
     }
 }
