@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace CustomInput
 {
     public class RaycastQWERTY : Layout
@@ -21,23 +23,60 @@ namespace CustomInput
 
         protected override int ChildIndexFor(InputData data)
         {
-            throw new System.NotImplementedException();
+            throw new System.InvalidOperationException("Should not be used");
+        }
+
+        public override GameObject ChildFor(InputData data)
+        {
+            // should be UI layer
+            int layerMask = 1 << 5;
+            (Vector3 origin, Vector3 direction) = data.orientation;
+
+            RaycastHit hit;
+            if (!Physics.Raycast(origin, direction, out hit, Mathf.Infinity, layerMask))
+            {
+                return null;
+            }
+
+            var controller = hit.transform.gameObject.GetComponent<RaycastKeyController>();
+
+            if (controller == null)
+            {
+                Debug.Log("hit something weird?");
+                return null;
+            }
+
+            return hit.transform.gameObject;
         }
 
         public override (char letter, bool certain)? GetSelectedLetter(InputData data)
         {
-            throw new System.NotImplementedException();
+            var raycastKey = RaycastKeyFor(data);
+            if (raycastKey == null) return null;
+            char c = raycastKey.CharWithAlternate(useAlternate);
+            return (c, true);
         }
+
+        private SimpleKey RaycastKeyFor(InputData data)
+            => ChildFor(data)?.GetComponent<RaycastKeyController>().data;
 
         public override (LayoutKey parent, SimpleKey simple)? KeysFor(InputData data)
         {
-            throw new System.NotImplementedException();
+            var raycastKey = RaycastKeyFor(data);
+            if (raycastKey == null) return null;
+            return (raycastKey, raycastKey);
         }
 
         public override void SetHighlightedKey(InputData data)
         {
-            throw new System.NotImplementedException();
+            UnhighlightAll();
+
+            var controller = ChildFor(data)?.GetComponent<RaycastKeyController>();
+            if (controller == null) return;
+
+            controller.SetHighlight(true);
         }
+
 
         // Auto-generated 
         protected override LayoutKey[] FillKeys()
