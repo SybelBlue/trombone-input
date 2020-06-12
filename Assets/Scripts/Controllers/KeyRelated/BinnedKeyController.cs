@@ -1,7 +1,32 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class BinnedKeyController : KeyController<CustomInput.BinnedKey>
+public class BinnedKeyController : AbstractBinnedController<CustomInput.BinnedKey>
+{
+    public override void SetSlant(bool forward)
+    {
+        var children = transform.GetComponentsInChildren<SimpleKeyController>();
+        for (int i = 0; i < children.Length; i++)
+        {
+            var child = children[i];
+            switch (i % 3)
+            {
+                case 0:
+                    child.alignment = forward ? TextAnchor.UpperCenter : TextAnchor.LowerCenter;
+                    break;
+                case 1:
+                    child.alignment = TextAnchor.MiddleCenter;
+                    break;
+                case 2:
+                    child.alignment = forward ? TextAnchor.LowerCenter : TextAnchor.UpperCenter;
+                    break;
+            }
+        }
+    }
+}
+
+public abstract class AbstractBinnedController<T> : KeyController<T>
+    where T : CustomInput.BinnedKey
 {
     public Color highlightColor;
 
@@ -41,24 +66,5 @@ public class BinnedKeyController : KeyController<CustomInput.BinnedKey>
         g.transform.SetParent(transform);
     }
 
-    public virtual void SetSlant(bool forward)
-    {
-        var children = transform.GetComponentsInChildren<SimpleKeyController>();
-        for (int i = 0; i < children.Length; i++)
-        {
-            var child = children[i];
-            switch (i % 3)
-            {
-                case 0:
-                    child.alignment = forward ? TextAnchor.UpperCenter : TextAnchor.LowerCenter;
-                    break;
-                case 1:
-                    child.alignment = TextAnchor.MiddleCenter;
-                    break;
-                case 2:
-                    child.alignment = forward ? TextAnchor.LowerCenter : TextAnchor.UpperCenter;
-                    break;
-            }
-        }
-    }
+    public abstract void SetSlant(bool forward);
 }

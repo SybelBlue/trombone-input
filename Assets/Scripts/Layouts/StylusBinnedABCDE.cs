@@ -60,7 +60,7 @@ namespace CustomInput
         {
             UnhighlightAll();
 
-            var binnedKey = ChildFor(data)?.GetComponent<BinnedKeyController>();
+            var binnedKey = ChildFor(data)?.GetComponent<StylusBinnedController>();
 
             if (binnedKey == null) return;
 

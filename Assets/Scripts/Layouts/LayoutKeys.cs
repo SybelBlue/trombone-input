@@ -168,7 +168,7 @@ namespace CustomInput
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
             var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.StylusBinnedPrefab], parent);
-            var controller = newItem.GetComponent<BinnedKeyController>();
+            var controller = newItem.GetComponent<StylusBinnedController>();
             foreach (var i in items)
             {
                 var newChild = i.Representation(parent, objectDict);
