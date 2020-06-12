@@ -25,6 +25,17 @@ public class AmbiguousKeyController : KeyController<CustomInput.AmbiguousKey>
         highlighting = h;
     }
 
+    public bool useAlternate
+    {
+        set
+        {
+            foreach (var controller in gameObject.GetComponentsInChildren<AbstractSimpleKeyController>())
+            {
+                controller.useAlternate = value;
+            }
+        }
+    }
+
     public void AddChild(GameObject g)
     {
         g.transform.SetParent(transform);

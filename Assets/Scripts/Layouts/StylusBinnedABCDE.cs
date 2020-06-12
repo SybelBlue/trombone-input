@@ -4,6 +4,17 @@ namespace CustomInput
     {
         public override bool usesSlider => true;
 
+        public override bool useAlternate
+        {
+            set
+            {
+                foreach (var controller in gameObject.GetComponentsInChildren<StylusBinnedController>())
+                {
+                    controller.useAlternate = value;
+                }
+            }
+        }
+
         protected virtual int? InnerIndex(InputData data, int parentSize)
             => data.normalizedPotentiometer.HasValue ?
                 (int?)Utils.NormalizedIntoIndex(1 - data.normalizedPotentiometer.Value, parentSize) :

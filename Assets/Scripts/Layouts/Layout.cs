@@ -150,5 +150,7 @@ namespace CustomInput
         protected abstract LayoutKey[] FillKeys();
 
         public abstract bool usesSlider { get; }
+
+        public abstract bool useAlternate { set; }
     }
 }

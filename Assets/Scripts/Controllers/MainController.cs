@@ -71,6 +71,17 @@ public class MainController : MonoBehaviour, VREventGenerator
             outputController.text += ' ';
         }
 
+        if (GetKeyDown(KeyCode.LeftShift))
+        {
+            layout.useAlternate = true;
+        }
+
+        if (GetKeyUp(KeyCode.LeftShift))
+        {
+            Debug.Log("Up");
+            layout.useAlternate = false;
+        }
+
         layout.UpdateState(currentInputData);
     }
 
