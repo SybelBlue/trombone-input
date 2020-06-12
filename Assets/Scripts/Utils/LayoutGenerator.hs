@@ -38,11 +38,11 @@ binnedAbcde :: Layout
 binnedAbcde = (True, map Ambiguous . splitEvery 4 . map makeItem $ zip ['A'..'Z'] alt)
   where 
     makeItem (c, a) = Alt c Small a
-    alt = concat . transpose $
-          [ [ Just '1', Just '2', Just '3', Nothing, Nothing, Nothing, Nothing ]
-          , [ Just '4', Just '5', Just '6', Nothing, Nothing, Nothing, Nothing ]
-          , [ Just '7', Just '8', Just '9', Nothing, Nothing, Nothing ]
-          , [ Just '*', Just '/', Just '.', Nothing, Nothing, Nothing ] 
+    alt = map Just . concat . transpose $
+          [ [ '1', '2', '3', '/', '@', '-', '.' ]
+          , [ '4', '5', '6', '%', '\'', '?', ' ' ]
+          , [ '7', '8', '9', '#', '\"', '!' ]
+          , [ '*', '+', '.', '(', ')', ',' ] 
           ]
 
 -- https://stackoverflow.com/questions/8680888/subdividing-a-list-in-haskell
@@ -72,9 +72,9 @@ constructorName stylusMode (Ambiguous _) = if stylusMode then "StylusBinnedKey" 
 constructorName stylusMode _ = if stylusMode then "StylusKey" else "SimpleKey"
 
 makeConstructorLineFor :: Bool -> LayoutKey -> [Formatted]
-makeConstructorLineFor stylusMode (Simple c s) = [(2, printf "new %s('%c', %d)" name c (sizeToBarWidth s), True)]
+makeConstructorLineFor stylusMode (Simple c s) = [(2, printf "new %s('%s', %d)" name c (sizeToBarWidth s), True)]
   where name = constructorName stylusMode $ Simple c s
-makeConstructorLineFor stylusMode (Alt c s x) = [(2, printf "new %s('%c', %d%s)" name c (sizeToBarWidth s) lastArg, True)]
+makeConstructorLineFor stylusMode (Alt c s x) = [(2, printf "new %s('%s', %d%s)" name c (sizeToBarWidth s) lastArg, True)]
   where
     name = constructorName stylusMode $ Alt c s x
     lastArg = 
