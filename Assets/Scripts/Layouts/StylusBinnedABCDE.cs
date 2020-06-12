@@ -52,7 +52,7 @@ namespace CustomInput
             if (binnedKey == null) return;
 
             binnedKey.SetHighlight(true);
-            var controllers = binnedKey.GetComponentsInChildren<AbstractSimpleKeyController>();
+            var controllers = binnedKey.GetComponentsInChildren<StylusKeyController>();
             var inner = InnerIndex(data, binnedKey.data.size);
 
             if (!inner.HasValue) return;
@@ -65,51 +65,51 @@ namespace CustomInput
             }
         }
 
-        // Auto-generated
+        // Auto-generated 
         protected override LayoutKey[] FillKeys()
         {
             return new LayoutKey[] {
-                    new StylusBinnedKey(true,
-                            new StylusKey('A', 2),
-                            new StylusKey('B', 2),
-                            new StylusKey('C', 2),
-                            new StylusKey('D', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('E', 2),
-                            new StylusKey('F', 2),
-                            new StylusKey('G', 2),
-                            new StylusKey('H', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('I', 2),
-                            new StylusKey('J', 2),
-                            new StylusKey('K', 2),
-                            new StylusKey('L', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('M', 2),
-                            new StylusKey('N', 2),
-                            new StylusKey('O', 2),
-                            new StylusKey('P', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('Q', 2),
-                            new StylusKey('R', 2),
-                            new StylusKey('S', 2),
-                            new StylusKey('T', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('U', 2),
-                            new StylusKey('V', 2),
-                            new StylusKey('W', 2),
-                            new StylusKey('X', 2)
-                            ),
-                    new StylusBinnedKey(true,
-                            new StylusKey('Y', 2),
-                            new StylusKey('Z', 2)
-                            )
-            };
+                new AmbiguousKey(true,
+                        new SimpleKey('A', 2, '1'),
+                        new SimpleKey('B', 2, '4'),
+                        new SimpleKey('C', 2, '7'),
+                        new SimpleKey('D', 2, '*')
+                ),
+                new AmbiguousKey(true,
+                        new SimpleKey('E', 2, '2'),
+                        new SimpleKey('F', 2, '5'),
+                        new SimpleKey('G', 2, '8'),
+                        new SimpleKey('H', 2, '/')
+                ),
+                new AmbiguousKey(true,
+                        new SimpleKey('I', 2, '3'),
+                        new SimpleKey('J', 2, '6'),
+                        new SimpleKey('K', 2, '9'),
+                        new SimpleKey('L', 2, '.')
+                ),
+                new AmbiguousKey(true,
+                        new SimpleKey('M', 2),
+                        new SimpleKey('N', 2),
+                        new SimpleKey('O', 2),
+                        new SimpleKey('P', 2)
+                ),
+                new AmbiguousKey(true,
+                        new SimpleKey('Q', 2),
+                        new SimpleKey('R', 2),
+                        new SimpleKey('S', 2),
+                        new SimpleKey('T', 2)
+                ),
+                new AmbiguousKey(true,
+                        new SimpleKey('U', 2),
+                        new SimpleKey('V', 2),
+                        new SimpleKey('W', 2),
+                        new SimpleKey('X', 2)
+                ),
+                new AmbiguousKey(true,
+                        new SimpleKey('Y', 2),
+                        new SimpleKey('Z', 2)
+                ),
+        };
         }
     }
 }
