@@ -142,7 +142,6 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public void FrontButtonDown()
     {
-        Debug.Log($"Button Down from Hardware, using last reported value: ({lastReportedValue})");
         stylusModel.frontButtonDown = true;
         OnInputEnd(lastReportedValue);
     }

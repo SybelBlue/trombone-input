@@ -2,8 +2,6 @@ namespace CustomInput
 {
     public class StylusBinnedABCDE : Layout
     {
-        public override string layoutName => "Stylus ABCDE";
-
         public override bool usesSlider => true;
 
         protected virtual int? InnerIndex(InputData data, int parentSize)

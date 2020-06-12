@@ -6,8 +6,6 @@ namespace CustomInput
     public class SquashedQWERTY : Layout
     {
 
-        public override string layoutName => "Squashed QWERTY";
-
         public override bool usesSlider => true;
 
         public override (LayoutKey, SimpleKey)? KeysFor(InputData data)

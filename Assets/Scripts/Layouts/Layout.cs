@@ -90,6 +90,7 @@ namespace CustomInput
 
             if (lastWidth == width) return;
 
+            lastWidth = width;
             ResizeAll();
         }
 
@@ -144,9 +145,6 @@ namespace CustomInput
         // certainty, or null if the index is out of bounds.
         // May alter state of layout and return null.
         public abstract (char letter, bool certain)? GetSelectedLetter(InputData data);
-
-        // The name of the layout
-        public abstract string layoutName { get; }
 
         // The method to fill the keys field on this, called in Start
         protected abstract LayoutKey[] FillKeys();

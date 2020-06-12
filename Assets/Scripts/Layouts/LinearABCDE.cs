@@ -5,8 +5,6 @@ namespace CustomInput
     public class LinearABCDE : Layout
     {
 
-        public override string layoutName => "Linear ABCDE";
-
         public override bool usesSlider => true;
 
         protected override void Start()
