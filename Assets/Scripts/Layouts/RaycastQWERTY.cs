@@ -2,11 +2,18 @@ using UnityEngine;
 
 namespace CustomInput
 {
-    public class RaycastQWERTY : Layout
+#pragma warning disable 649
+    public sealed class RaycastQWERTY : Layout
     {
         public override bool usesSlider => false;
 
         private bool _useAlternate;
+
+        [SerializeField]
+        private RectTransform rectTransform;
+
+        [SerializeField]
+        private GameObject rowPrefab;
 
         public override bool useAlternate
         {
@@ -19,6 +26,22 @@ namespace CustomInput
                     controller.useAlternate = value;
                 }
             }
+        }
+
+        private GameObject[] rows;
+
+        protected override void BeforeStart()
+        {
+            rows = new GameObject[3];
+            for (int i = 0; i < rows.Length; i++)
+            {
+                rows[i] = Instantiate(rowPrefab, transform);
+            }
+        }
+
+        protected override Transform ParentForNthChild(int n)
+        {
+            return rows[n / 10].transform;
         }
 
         protected override int ChildIndexFor(InputData data)

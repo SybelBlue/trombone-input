@@ -59,8 +59,10 @@ namespace CustomInput
         // Map of value to GameObject
         protected readonly List<GameObject> childMap = new List<GameObject>(64);
 
-        protected virtual void Start()
+        protected void Start()
         {
+            BeforeStart();
+
             keys = FillKeys();
 
             var objectDict = new Dictionary<LayoutObjectType, GameObject>
@@ -71,25 +73,38 @@ namespace CustomInput
                 , { LayoutObjectType.RaycastKeyPrefab, raycastKeyPrefab }
                 };
 
-            foreach (var key in keys)
+            for (int i = 0; i < keys.Length; i++)
             {
-                var newChild = key.Representation(transform, objectDict);
+                var key = keys[i];
 
-                var blockController = newChild.GetComponent<IKeyController>();
+                var newChild = key.Representation(ParentForNthChild(i), objectDict);
 
-                if (blockController)
+                var controller = newChild.GetComponent<IKeyController>();
+
+                if (controller)
                 {
-                    blockController.layoutKey = key;
+                    controller.layoutKey = key;
                 }
 
-                for (int i = 0; i < key.size; i++)
+                for (int _i = 0; _i < key.size; _i++)
                 {
                     childMap.Add(newChild);
                 }
             }
 
             ResizeAll();
+
+            AfterStart();
         }
+
+        protected virtual void BeforeStart()
+        { }
+
+        protected virtual Transform ParentForNthChild(int n)
+            => transform;
+
+        protected virtual void AfterStart()
+        { }
 
         public void UpdateState(InputData data)
             => SetHighlightedKey(data);

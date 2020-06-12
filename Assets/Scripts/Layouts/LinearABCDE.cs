@@ -22,10 +22,8 @@ namespace CustomInput
             }
         }
 
-        protected override void Start()
+        protected override void AfterStart()
         {
-            base.Start();
-
             foreach (SimpleKeyController cont in GetComponentsInChildren<SimpleKeyController>())
             {
                 var newColor = cont.background.color;
@@ -33,7 +31,6 @@ namespace CustomInput
                 cont.background.color = newColor;
             }
         }
-
         public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
         {
             var lKey = LayoutKeyFor(data);
