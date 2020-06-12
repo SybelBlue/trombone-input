@@ -76,7 +76,7 @@ namespace CustomInput
             }
         }
 
-        // Auto-generated 
+        // Auto-generated
         protected override LayoutKey[] FillKeys()
         {
             return new LayoutKey[] {

@@ -227,7 +227,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 64718941}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.22, z: 0.12}
+  m_LocalPosition: {x: 0, y: -0.201, z: 0.094}
   m_LocalScale: {x: 0.1, y: 0.02, z: 0.1}
   m_Children: []
   m_Father: {fileID: 971101863}
@@ -1099,7 +1099,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281251434}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.12}
+  m_LocalPosition: {x: 0, y: 0.019, z: 0.094}
   m_LocalScale: {x: 0.1, y: 0.02, z: 0.1}
   m_Children: []
   m_Father: {fileID: 971101863}
@@ -3009,7 +3009,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 971101858}
-  m_Mesh: {fileID: -2432090755550338912, guid: 95cd9f3258a7b004eaaf94a2ca3c63a4, type: 3}
+  m_Mesh: {fileID: -2432090755550338912, guid: cd160c12cfba340bcb52829aef052e73, type: 3}
 --- !u!4 &971101863
 Transform:
   m_ObjectHideFlags: 0
@@ -7281,6 +7281,7 @@ GameObject:
   - component: {fileID: 2096338479}
   - component: {fileID: 2096338478}
   - component: {fileID: 2096338480}
+  - component: {fileID: 2096338481}
   m_Layer: 2
   m_Name: StylusBinnedABCDE
   m_TagString: Untagged
@@ -7360,6 +7361,18 @@ MonoBehaviour:
   MaxAngle: 120
   StartAngle: 90
   OnlyLayoutVisible: 0
+--- !u!114 &2096338481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096338476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8f9ee75cfc9b438f9c13eb66e487f4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2112465617
 PrefabInstance:
   m_ObjectHideFlags: 0
