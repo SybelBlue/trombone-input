@@ -3,13 +3,13 @@
 import Text.Printf
 import Data.List
 
-type Layout = (Bool, [LayoutKey])
+type Layout = (LayoutMode, [LayoutKey])
 
 data LayoutKey = Simple Char Size | Binned [ LayoutKey ] | Alt Char Size (Maybe Char) deriving Show
 
 data Size = Small | Medium | Big deriving Show
 
-data Mode = Basic | Stylus | Raycast deriving Show
+data LayoutMode = Basic | Stylus | Raycast deriving Show
 
 sizeToBarWidth :: Size -> Int
 sizeToBarWidth =
@@ -19,7 +19,7 @@ sizeToBarWidth =
       Big -> 4
 
 qwerty :: Layout
-qwerty = (False, map tripletIntoBinned $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ])
+qwerty = (Basic, map tripletIntoBinned $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ])
 
 tripletIntoBinned :: String -> LayoutKey
 tripletIntoBinned [ a, b, c ] = Binned [ Simple a Small, Simple b Medium, Simple c Small ]
@@ -34,11 +34,11 @@ itemSize (Binned xs) = layoutSize xs
 itemSize _ = sizeToBarWidth Small
 
 abcde :: Layout
-abcde = (False, map makeItem ['A'..'Z'])
+abcde = (Basic, map makeItem ['A'..'Z'])
   where makeItem x = Simple x $ if commonLetter x then Medium else Small
 
 binnedAbcde :: Layout
-binnedAbcde = (True, map Binned . splitEvery 4 . map makeItem $ zip base alt)
+binnedAbcde = (Stylus, map Binned . splitEvery 4 . map makeItem $ zip base alt)
   where 
     base = (map (\c -> (c, Small)) ['A'..'Z']) ++ [('.', Medium), (' ', Medium)]
     makeItem ((c, s), a) = Alt c s a
@@ -78,11 +78,15 @@ type Formatted = (Int, String, Bool)
 deformat :: Formatted -> String
 deformat (n, s, b) = (take n $ cycle "\t") ++ s ++ if b then "," else ""
 
-constructorName :: Bool -> LayoutKey -> String
-constructorName stylusMode (Binned _) = if stylusMode then "StylusBinnedKey" else "BinnedKey"
-constructorName stylusMode _ = if stylusMode then "StylusKey" else "SimpleKey"
+constructorName :: LayoutMode -> LayoutKey -> String
+constructorName stylusMode (Binned _) = 
+  case stylusMode of 
+    Basic -> "BinnedKey"
+    Stylus -> "StylusBinnedKey"
+    Raycast -> error "no binned raycast constructor"
+constructorName stylusMode _ = show stylusMode ++ "Key"
 
-makeConstructorLineFor :: Bool -> LayoutKey -> [Formatted]
+makeConstructorLineFor :: LayoutMode -> LayoutKey -> [Formatted]
 makeConstructorLineFor stylusMode (Simple c s) = [(2, printf "new %s('%s', %d)" name (charString c) (sizeToBarWidth s), True)]
   where name = constructorName stylusMode $ Simple c s
 makeConstructorLineFor stylusMode (Alt c s x) = [(2, printf "new %s('%s', %d%s)" name (charString c) (sizeToBarWidth s) lastArg, True)]
