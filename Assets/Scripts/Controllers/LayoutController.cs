@@ -9,7 +9,6 @@ namespace CustomInput
     [Serializable]
     public enum LayoutOption
     {
-        SquashedQWERTY,
         LinearABCDE,
         StylusBinnedABCDE,
         TwoRotBinnedABCDE,
@@ -21,9 +20,6 @@ namespace CustomInput
         public LayoutOption layout;
 
         public Dropdown dropdown;
-
-        [SerializeField]
-        private SquashedQWERTY squashedQWERTY;
 
         [SerializeField]
         private LinearABCDE linearABCDE;
@@ -40,9 +36,6 @@ namespace CustomInput
         {
             switch (option)
             {
-                case LayoutOption.SquashedQWERTY:
-                    return squashedQWERTY;
-
                 case LayoutOption.LinearABCDE:
                     return linearABCDE;
 

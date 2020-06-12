@@ -117,12 +117,9 @@ public class MainController : MonoBehaviour, VREventGenerator
             {
                 Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
 
-                keypresses.Add(parentKey?.label ?? " ");
-
                 outputController.text += typed;
             }
 
-            disambiguated = AutoCorrect.Disambiguator.Disambiguated(keypresses);
         }
 
         stylusModel.normalizedSlider = null;
@@ -144,12 +141,6 @@ public class MainController : MonoBehaviour, VREventGenerator
                 stylusModel.frontButtonDown,
                 stylusModel.backButtonDown
             );
-
-    // TODO: put this somewhere else?
-    public List<string> keypresses = new List<string>();
-
-    // The disambiguated options for keypresses
-    public List<string> disambiguated = new List<string>();
 
     private void AnalogUpdate(float value)
         => OnInputValueChange(Mathf.RoundToInt(value));
@@ -176,11 +167,6 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     private void PerformBackspace()
     {
-        if (keypresses.Count > 0)
-        {
-            keypresses.RemoveAt(keypresses.Count - 1);
-        }
-
         outputController.text = outputController.text.Substring(0, Mathf.Max(0, outputController.text.Length - 1));
     }
 
