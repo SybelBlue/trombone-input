@@ -10,29 +10,35 @@ namespace CustomInput
 
         public readonly string context;
 
-        public readonly float? normalizedX, normalizedZ, normalizedPotentiometer;
+        public readonly float normalizedX, normalizedZ;
+
+        public readonly float? normalizedSlider;
 
         public readonly int? rawValue;
 
         public readonly bool frontButtonDown, backButtonDown;
 
+        public readonly (Vector3 origin, Vector3 direction) orientation;
+
         public InputData(
             string context,
             int? rawValue,
-            float? normalizedX,
-            float? normalizedZ,
-            float? normalizedPotentiometer,
+            float normalizedX,
+            float normalizedZ,
+            float? normalizedSlider,
             bool frontButtonDown,
-            bool backButtonDown
+            bool backButtonDown,
+            (Vector3 origin, Vector3 direction) orientation
             )
         {
             this.rawValue = rawValue;
             this.context = context;
             this.normalizedX = normalizedX;
             this.normalizedZ = normalizedZ;
-            this.normalizedPotentiometer = normalizedPotentiometer;
+            this.normalizedSlider = normalizedSlider;
             this.frontButtonDown = frontButtonDown;
             this.backButtonDown = backButtonDown;
+            this.orientation = orientation;
         }
     }
 

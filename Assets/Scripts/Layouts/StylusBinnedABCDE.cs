@@ -20,14 +20,12 @@ namespace CustomInput
         }
 
         protected virtual int? InnerIndex(InputData data, int parentSize)
-            => data.normalizedPotentiometer.HasValue ?
-                (int?)Utils.NormalizedIntoIndex(1 - data.normalizedPotentiometer.Value, parentSize) :
+            => data.normalizedSlider.HasValue ?
+                (int?)Utils.NormalizedIntoIndex(1 - data.normalizedSlider.Value, parentSize) :
                 null;
 
         public override int ChildIndexFor(InputData data)
-            => data.normalizedZ.HasValue ?
-                Utils.NormalizedIntoIndex(data.normalizedZ.Value, childMap.Count) :
-                -1;
+            => Utils.NormalizedIntoIndex(data.normalizedZ, childMap.Count);
 
         private (LayoutKey, SimpleKey) FetchInnerKey(InputData data)
         {
