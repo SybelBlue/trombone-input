@@ -3306,7 +3306,7 @@ GameObject:
   - component: {fileID: 1047773959}
   - component: {fileID: 1047773957}
   - component: {fileID: 1047773958}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: RaycastQWERTY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5544,7 +5544,7 @@ GameObject:
   - component: {fileID: 1634427605}
   - component: {fileID: 1634427604}
   m_Layer: 2
-  m_Name: PotentiometerIndicator
+  m_Name: SliderIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

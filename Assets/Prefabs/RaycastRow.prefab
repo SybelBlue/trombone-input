@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3799792557660490450}
   - component: {fileID: 3026865043013334123}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: RaycastRow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

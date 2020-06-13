@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 236652873365184698}
   - component: {fileID: 236652873365184697}
   - component: {fileID: 1317882519347233944}
+  - component: {fileID: -2986733275819204655}
   m_Layer: 5
   m_Name: RaycastKeyPrefab
   m_TagString: Untagged
@@ -60,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.15686275, g: 0.17254902, b: 0.20392159, a: 0.36078432}
+  m_Color: {r: 0.7317106, g: 0.7425241, b: 0.764151, a: 0.36078432}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -93,6 +94,32 @@ MonoBehaviour:
   background: {fileID: 236652873365184697}
   _symbol: 0
   textMeshPro: {fileID: 110404552551467935}
+--- !u!61 &-2986733275819204655
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236652873365184703}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 20, y: 20}
+  m_EdgeRadius: 0
 --- !u!1 &6447662049225845340
 GameObject:
   m_ObjectHideFlags: 0

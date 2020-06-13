@@ -52,24 +52,22 @@ namespace CustomInput
         public override GameObject ChildFor(InputData data)
         {
             // should be UI layer
-            int layerMask = 1 << 5;
             (Vector3 origin, Vector3 direction) = data.orientation;
 
-            RaycastHit hit;
-            if (!Physics.Raycast(origin, direction, out hit, Mathf.Infinity, layerMask))
+            foreach (RaycastHit hit in Physics.RaycastAll(origin, direction, Mathf.Infinity))
             {
-                return null;
+                if (hit.transform.gameObject.GetComponent<RaycastKeyController>())
+                {
+                    Debug.Log("hit!");
+                    return hit.transform.gameObject;
+                }
+                else
+                {
+                    Debug.DrawLine(data.orientation.origin, hit.point, Color.red, 0.2f);
+                }
             }
 
-            var controller = hit.transform.gameObject.GetComponent<RaycastKeyController>();
-
-            if (controller == null)
-            {
-                Debug.Log("hit something weird?");
-                return null;
-            }
-
-            return hit.transform.gameObject;
+            return null;
         }
 
         public override (char letter, bool certain)? GetSelectedLetter(InputData data)
@@ -135,7 +133,7 @@ namespace CustomInput
                 new RaycastKey(',', 2, '?'),
                 new RaycastKey('.', 2, '.'),
                 new RaycastKey(' ', 2, ' '),
-        };
+            };
         }
     }
 }
