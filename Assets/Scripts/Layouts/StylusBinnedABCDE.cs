@@ -4,10 +4,14 @@ namespace CustomInput
     {
         public override bool usesSlider => true;
 
+        private bool _useAlternate;
+
         public override bool useAlternate
         {
+            get => _useAlternate;
             set
             {
+                _useAlternate = value;
                 foreach (var controller in gameObject.GetComponentsInChildren<StylusBinnedController>())
                 {
                     controller.useAlternate = value;
@@ -16,14 +20,12 @@ namespace CustomInput
         }
 
         protected virtual int? InnerIndex(InputData data, int parentSize)
-            => data.normalizedPotentiometer.HasValue ?
-                (int?)Utils.NormalizedIntoIndex(1 - data.normalizedPotentiometer.Value, parentSize) :
+            => data.normalizedSlider.HasValue ?
+                (int?)Utils.NormalizedIntoIndex(1 - data.normalizedSlider.Value, parentSize) :
                 null;
 
-        public override int ChildIndexFor(InputData data)
-            => data.normalizedZ.HasValue ?
-                Utils.NormalizedIntoIndex(data.normalizedZ.Value, childMap.Count) :
-                -1;
+        protected override int ChildIndexFor(InputData data)
+            => Utils.NormalizedIntoIndex(data.normalizedZ, childMap.Count);
 
         private (LayoutKey, SimpleKey) FetchInnerKey(InputData data)
         {
@@ -49,14 +51,14 @@ namespace CustomInput
         public override (char, bool)? GetSelectedLetter(InputData data)
         {
             var (parent, inner) = FetchInnerKey(data);
-            return inner == null ? (parent.label[0], false) : (inner.c, true);
+            return inner == null ? (parent.label[0], false) : (inner.CharWithAlternate(useAlternate), true);
         }
 
         public override void SetHighlightedKey(InputData data)
         {
             UnhighlightAll();
 
-            var binnedKey = ChildFor(data)?.GetComponent<AmbiguousKeyController>();
+            var binnedKey = ChildFor(data)?.GetComponent<StylusBinnedController>();
 
             if (binnedKey == null) return;
 
@@ -79,46 +81,48 @@ namespace CustomInput
         {
             return new LayoutKey[] {
                 new StylusBinnedKey(true,
-                        new StylusKey('A', 4, '1'),
-                        new StylusKey('B', 4, '4'),
-                        new StylusKey('C', 4, '7'),
-                        new StylusKey('D', 4, '*')
+                        new StylusKey('A', 2, '1'),
+                        new StylusKey('B', 2, '4'),
+                        new StylusKey('C', 2, '7'),
+                        new StylusKey('D', 2, '*')
                 ),
                 new StylusBinnedKey(true,
-                        new StylusKey('E', 4, '2'),
-                        new StylusKey('F', 4, '5'),
-                        new StylusKey('G', 4, '8'),
-                        new StylusKey('H', 4, '/')
+                        new StylusKey('E', 2, '2'),
+                        new StylusKey('F', 2, '5'),
+                        new StylusKey('G', 2, '8'),
+                        new StylusKey('H', 2, '+')
                 ),
                 new StylusBinnedKey(true,
-                        new StylusKey('I', 4, '3'),
-                        new StylusKey('J', 4, '6'),
-                        new StylusKey('K', 4, '9'),
-                        new StylusKey('L', 4, '.')
+                        new StylusKey('I', 2, '3'),
+                        new StylusKey('J', 2, '6'),
+                        new StylusKey('K', 2, '9'),
+                        new StylusKey('L', 2, '.')
                 ),
                 new StylusBinnedKey(true,
-                        new StylusKey('M', 4),
-                        new StylusKey('N', 4),
-                        new StylusKey('O', 4),
-                        new StylusKey('P', 4)
+                        new StylusKey('M', 2, '/'),
+                        new StylusKey('N', 2, '%'),
+                        new StylusKey('O', 2, '#'),
+                        new StylusKey('P', 2, '(')
                 ),
                 new StylusBinnedKey(true,
-                        new StylusKey('Q', 4),
-                        new StylusKey('R', 4),
-                        new StylusKey('S', 4),
-                        new StylusKey('T', 4)
+                        new StylusKey('Q', 2, '@'),
+                        new StylusKey('R', 2, '\''),
+                        new StylusKey('S', 2, '\"'),
+                        new StylusKey('T', 2, ')')
                 ),
                 new StylusBinnedKey(true,
-                        new StylusKey('U', 4),
-                        new StylusKey('V', 4),
-                        new StylusKey('W', 4),
-                        new StylusKey('X', 4)
+                        new StylusKey('U', 2, '-'),
+                        new StylusKey('V', 2, '&'),
+                        new StylusKey('W', 2, '?'),
+                        new StylusKey('X', 2, '!')
                 ),
                 new StylusBinnedKey(true,
-                        new StylusKey('Y', 4),
-                        new StylusKey('Z', 4)
+                        new StylusKey('Y', 2, ';'),
+                        new StylusKey('Z', 2, ':'),
+                        new StylusKey('.', 3, ','),
+                        new StylusKey(' ', 3, '\b')
                 ),
-        };
+            };
         }
     }
 }

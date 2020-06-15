@@ -7,10 +7,14 @@ namespace CustomInput
 
         public override bool usesSlider => true;
 
+        private bool _useAlternate;
+
         public override bool useAlternate
         {
+            get => _useAlternate;
             set
             {
+                _useAlternate = value;
                 foreach (var controller in gameObject.GetComponentsInChildren<AbstractSimpleKeyController>())
                 {
                     controller.useAlternate = value;
@@ -18,10 +22,8 @@ namespace CustomInput
             }
         }
 
-        protected override void Start()
+        protected override void AfterStart()
         {
-            base.Start();
-
             foreach (SimpleKeyController cont in GetComponentsInChildren<SimpleKeyController>())
             {
                 var newColor = cont.background.color;
@@ -29,7 +31,6 @@ namespace CustomInput
                 cont.background.color = newColor;
             }
         }
-
         public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
         {
             var lKey = LayoutKeyFor(data);
@@ -46,12 +47,12 @@ namespace CustomInput
             }
         }
 
-        public override int ChildIndexFor(InputData data)
+        protected override int ChildIndexFor(InputData data)
             => data.rawValue ?? -1;
 
         public override (char, bool)? GetSelectedLetter(InputData data)
         {
-            var s = CharsFor(data);
+            var s = LayoutKeyFor(data)?.label ?? "";
             if (s == null || s.Length != 1) return null;
             return (s.ToCharArray()[0], true);
         }

@@ -20,6 +20,8 @@ public class StylusModelController : MonoBehaviour
     public float normalizedX { get; private set; }
     public float normalizedZ { get; private set; }
 
+    public (Vector3 origin, Vector3 direction) orientation { get; private set; }
+
     public float? normalizedSlider
     {
         get
@@ -81,6 +83,8 @@ public class StylusModelController : MonoBehaviour
         normalizedSlider = null;
         frontButtonDown = false;
         backButtonDown = false;
+
+        UpdateOrientation();
     }
 
     void Update()
@@ -90,5 +94,15 @@ public class StylusModelController : MonoBehaviour
         var z = Utils.ModIntoRange(euler.z, -180, 180);
         normalizedX = Mathf.InverseLerp(min.x, max.x, x);
         normalizedZ = Mathf.InverseLerp(min.z, max.z, z);
+
+        UpdateOrientation();
+    }
+
+    private void UpdateOrientation()
+    {
+        // TODO: when stylus is fixed, will be Vector3.forward
+        var direction = transform.rotation * Vector3.down;
+        orientation = (transform.position, direction);
+        Debug.DrawRay(orientation.origin, orientation.direction, Color.cyan, 0.5f);
     }
 }

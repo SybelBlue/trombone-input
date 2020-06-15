@@ -9,10 +9,10 @@ namespace CustomInput
     [Serializable]
     public enum LayoutOption
     {
-        SquashedQWERTY,
         LinearABCDE,
         StylusBinnedABCDE,
         TwoRotBinnedABCDE,
+        RaycastQWERTY,
     }
 
 #pragma warning disable 649
@@ -23,16 +23,16 @@ namespace CustomInput
         public Dropdown dropdown;
 
         [SerializeField]
-        private SquashedQWERTY squashedQWERTY;
-
-        [SerializeField]
         private LinearABCDE linearABCDE;
 
         [SerializeField]
         private StylusBinnedABCDE stylusBinnedABCDE;
 
         [SerializeField]
-        private TwoRotBinnedABCDE twoRotBinnedABCDE;
+        private TwoRotationABCDE twoRotationABCDE;
+
+        [SerializeField]
+        private RaycastQWERTY raycastQWERTY;
 
         public Layout currentLayout() => fromOption(layout);
 
@@ -40,9 +40,6 @@ namespace CustomInput
         {
             switch (option)
             {
-                case LayoutOption.SquashedQWERTY:
-                    return squashedQWERTY;
-
                 case LayoutOption.LinearABCDE:
                     return linearABCDE;
 
@@ -50,7 +47,10 @@ namespace CustomInput
                     return stylusBinnedABCDE;
 
                 case LayoutOption.TwoRotBinnedABCDE:
-                    return twoRotBinnedABCDE;
+                    return twoRotationABCDE;
+
+                case LayoutOption.RaycastQWERTY:
+                    return raycastQWERTY;
             }
 
             throw new ArgumentException($"unknown layout option: {option.ToString()} in fromOption");

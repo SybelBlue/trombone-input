@@ -84,9 +84,11 @@ public abstract class AbstractSimpleKeyController : KeyController<CustomInput.Si
         switch (c)
         {
             case ((char)0):
-                return "Sym";
+                return "sym";
             case ' ':
-                return "_";
+                return "spc";
+            case '\b':
+                return "bksp";
         }
 
         return new string(new char[] { c });
@@ -110,16 +112,6 @@ public abstract class AbstractSimpleKeyController : KeyController<CustomInput.Si
 
     public bool useAlternate
     {
-        set
-        {
-            if (value)
-            {
-                symbol = data.alt ?? data.c;
-            }
-            else
-            {
-                symbol = data.c;
-            }
-        }
+        set => symbol = data.CharWithAlternate(value);
     }
 }

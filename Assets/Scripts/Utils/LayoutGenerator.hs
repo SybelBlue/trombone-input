@@ -3,47 +3,66 @@
 import Text.Printf
 import Data.List
 
-type Layout = (Bool, [LayoutKey])
+type Layout = (LayoutMode, [LayoutKey])
 
-data LayoutKey = Simple Char Size | Ambiguous [ LayoutKey ] | Alt Char Size (Maybe Char) deriving Show
+data LayoutKey = Simple Char Size | Binned [ LayoutKey ] | Alt Char Size (Maybe Char) deriving Show
 
-data Size = Small | Medium deriving Show
+data Size = Small | Medium | Big deriving Show
+
+data LayoutMode = Basic | Stylus | Raycast deriving Show
 
 sizeToBarWidth :: Size -> Int
 sizeToBarWidth =
     \case
       Small -> 2
       Medium -> 3
+      Big -> 4
 
 qwerty :: Layout
-qwerty = (False, map tripletIntoAmbiguous $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ])
+qwerty = (Basic, map tripletIntoBinned $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ])
 
-tripletIntoAmbiguous :: String -> LayoutKey
-tripletIntoAmbiguous [ a, b, c ] = Ambiguous [ Simple a Small, Simple b Medium, Simple c Small ]
-tripletIntoAmbiguous _ = error "unexpected input"
+tripletIntoBinned :: String -> LayoutKey
+tripletIntoBinned [ a, b, c ] = Binned [ Simple a Small, Simple b Medium, Simple c Small ]
+tripletIntoBinned _ = error "unexpected input"
 
 layoutSize :: [LayoutKey] -> Int
 layoutSize = sum . map itemSize
 
 itemSize :: LayoutKey -> Int
 itemSize (Simple _ s) = sizeToBarWidth s
-itemSize (Ambiguous xs) = layoutSize xs
+itemSize (Binned xs) = layoutSize xs
 itemSize _ = sizeToBarWidth Small
 
 abcde :: Layout
-abcde = (False, map makeItem ['A'..'Z'])
+abcde = (Basic, map makeItem ['A'..'Z'])
   where makeItem x = Simple x $ if commonLetter x then Medium else Small
 
 binnedAbcde :: Layout
-binnedAbcde = (True, map Ambiguous . splitEvery 4 . map makeItem $ zip ['A'..'Z'] alt)
+binnedAbcde = (Stylus, map Binned . splitEvery 4 . map makeItem $ zip base alt)
   where 
-    makeItem (c, a) = Alt c Small a
+    base = (map (\c -> (c, Small)) ['A'..'Z']) ++ [('.', Medium), (' ', Medium)]
+    makeItem ((c, s), a) = Alt c s (Just a)
     alt = concat . transpose $
-          [ [ Just '1', Just '2', Just '3', Nothing, Nothing, Nothing, Nothing ]
-          , [ Just '4', Just '5', Just '6', Nothing, Nothing, Nothing, Nothing ]
-          , [ Just '7', Just '8', Just '9', Nothing, Nothing, Nothing ]
-          , [ Just '*', Just '/', Just '.', Nothing, Nothing, Nothing ] 
+          [ [ '1', '2', '3', '/', '@',  '-', ';' ]
+          , [ '4', '5', '6', '%', '\'', '&', ':' ]
+          , [ '7', '8', '9', '#', '\"', '?', ',' ]
+          , [ '*', '+', '.', '(', ')', '!', '\b' ] 
           ]
+
+raycastQwerty :: Layout
+raycastQwerty = (Raycast, map makeItem $ zip base alt)
+  where 
+    base = "QWERTYUIOPASDFGHJKL;ZXCVBNM,. "
+    alt =  "1234567890!@#$%^&*!:()\\/\'\"-?. "
+    makeItem (c, a) = Alt c Small (Just a)
+
+charString :: Char -> String
+charString = \case
+  '\b' -> "\\b"
+  '\'' -> "\\'"
+  '\"' -> "\\\""
+  '\\' -> "\\\\"
+  x -> [x]
 
 -- https://stackoverflow.com/questions/8680888/subdividing-a-list-in-haskell
 splitEvery :: Int -> [a] -> [[a]]
@@ -67,23 +86,27 @@ type Formatted = (Int, String, Bool)
 deformat :: Formatted -> String
 deformat (n, s, b) = (take n $ cycle "\t") ++ s ++ if b then "," else ""
 
-constructorName :: Bool -> LayoutKey -> String
-constructorName stylusMode (Ambiguous _) = if stylusMode then "StylusBinnedKey" else "AmbiguousKey"
-constructorName stylusMode _ = if stylusMode then "StylusKey" else "SimpleKey"
+constructorName :: LayoutMode -> LayoutKey -> String
+constructorName stylusMode (Binned _) = 
+  case stylusMode of 
+    Basic -> "BinnedKey"
+    Stylus -> "StylusBinnedKey"
+    Raycast -> error "no binned raycast constructor"
+constructorName stylusMode _ = show stylusMode ++ "Key"
 
-makeConstructorLineFor :: Bool -> LayoutKey -> [Formatted]
-makeConstructorLineFor stylusMode (Simple c s) = [(2, printf "new %s('%c', %d)" name c (sizeToBarWidth s), True)]
+makeConstructorLineFor :: LayoutMode -> LayoutKey -> [Formatted]
+makeConstructorLineFor stylusMode (Simple c s) = [(2, printf "new %s('%s', %d)" name (charString c) (sizeToBarWidth s), True)]
   where name = constructorName stylusMode $ Simple c s
-makeConstructorLineFor stylusMode (Alt c s x) = [(2, printf "new %s('%c', %d%s)" name c (sizeToBarWidth s) lastArg, True)]
+makeConstructorLineFor stylusMode (Alt c s x) = [(2, printf "new %s('%s', %d%s)" name (charString c) (sizeToBarWidth s) lastArg, True)]
   where
     name = constructorName stylusMode $ Alt c s x
     lastArg = 
       case x of 
           Nothing -> ""
-          Just a -> printf ", '%c'" a
-makeConstructorLineFor stylusMode (Ambiguous items) = (2, "new " ++ name ++ "(true", True) : inner ++ [(2, ")", True)]
+          Just a -> printf ", '%s'" $ charString a
+makeConstructorLineFor stylusMode (Binned items) = (2, "new " ++ name ++ "(true", True) : inner ++ [(2, ")", True)]
   where 
-    name = constructorName stylusMode $ Ambiguous items
+    name = constructorName stylusMode $ Binned items
     inner =
       case uncons . reverse . map (\(n, s, b) -> (n + 1, s, b)) . concat $ map (makeConstructorLineFor stylusMode) items of
         Just ((n, s, _), others) ->
@@ -92,4 +115,4 @@ makeConstructorLineFor stylusMode (Ambiguous items) = (2, "new " ++ name ++ "(tr
           []
   
 
-main = putStr $ makeInitMethod binnedAbcde
+main = putStr $ makeInitMethod raycastQwerty

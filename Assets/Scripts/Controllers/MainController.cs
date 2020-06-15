@@ -40,8 +40,8 @@ public class MainController : MonoBehaviour, VREventGenerator
         || GetMouseButton(1)
         || GetKey(KeyCode.LeftControl)
         || GetKey(KeyCode.Space)
-        || GetKey(KeyCode.Backspace)
-        || GetKey(KeyCode.Tab);
+        || GetKey(KeyCode.Tab)
+        || GetKey(KeyCode.BackQuote);
 
     public void Start()
     {
@@ -71,15 +71,9 @@ public class MainController : MonoBehaviour, VREventGenerator
             outputController.text += ' ';
         }
 
-        if (GetKeyDown(KeyCode.LeftShift))
+        if (GetKeyDown(KeyCode.Backspace))
         {
-            layout.useAlternate = true;
-        }
-
-        if (GetKeyUp(KeyCode.LeftShift))
-        {
-            Debug.Log("Up");
-            layout.useAlternate = false;
+            PerformBackspace();
         }
 
         layout.UpdateState(currentInputData);
@@ -113,13 +107,19 @@ public class MainController : MonoBehaviour, VREventGenerator
         {
             (char typed, bool certain) = layout.GetSelectedLetter(currentInputData) ?? ('-', false);
 
-            Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
+            if (typed == '\b' && certain)
+            {
+                Debug.Log("Pressed Backspace");
 
-            keypresses.Add(parentKey?.label ?? " ");
+                PerformBackspace();
+            }
+            else
+            {
+                Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
 
-            disambiguated = AutoCorrect.Disambiguator.Disambiguated(keypresses);
+                outputController.text += typed;
+            }
 
-            outputController.text += typed;
         }
 
         stylusModel.normalizedSlider = null;
@@ -139,14 +139,9 @@ public class MainController : MonoBehaviour, VREventGenerator
                 stylusModel.normalizedZ,
                 stylusModel.normalizedSlider,
                 stylusModel.frontButtonDown,
-                stylusModel.backButtonDown
+                stylusModel.backButtonDown,
+                stylusModel.orientation
             );
-
-    // TODO: put this somewhere else?
-    public List<string> keypresses = new List<string>();
-
-    // The disambiguated options for keypresses
-    public List<string> disambiguated = new List<string>();
 
     private void AnalogUpdate(float value)
         => OnInputValueChange(Mathf.RoundToInt(value));
@@ -163,15 +158,18 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void BackButtonDown()
     {
         stylusModel.backButtonDown = true;
-
-        if (outputController.text.Length > 0)
-        {
-            outputController.text = outputController.text.Substring(0, outputController.text.Length - 1);
-        }
+        layout.useAlternate = !layout.useAlternate;
     }
 
     public void BackButtonUp()
-        => stylusModel.backButtonDown = false;
+    {
+        stylusModel.backButtonDown = false;
+    }
+
+    private void PerformBackspace()
+    {
+        outputController.text = outputController.text.Substring(0, Mathf.Max(0, outputController.text.Length - 1));
+    }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
     {
@@ -206,27 +204,27 @@ public class MainController : MonoBehaviour, VREventGenerator
     }
 
 
-    // If tab is hit or Right click is released when the layout accepts potentiometer input,
+    // If BackQuote is hit or Right click is released when the layout accepts potentiometer input,
     // then it emulates the forward button down.
-    // If backspace is hit then it emulates back button down
+    // If Tab is hit then it emulates back button down
     private void CaptureEmulatedButtonInput(ref List<VREvent> eventList)
     {
-        if (GetKeyDown(KeyCode.Tab) || (GetMouseButtonUp(1) && layout.usesSlider))
+        if (GetKeyDown(KeyCode.BackQuote) || (GetMouseButtonUp(1) && layout.usesSlider))
         {
             eventList.Add(MakeButtonDownEvent(_front_button_event_name));
         }
 
-        if (GetKeyUp(KeyCode.Tab))
+        if (GetKeyUp(KeyCode.BackQuote))
         {
             eventList.Add(MakeButtonUpEvent(_front_button_event_name));
         }
 
-        if (GetKeyDown(KeyCode.Backspace))
+        if (GetKeyDown(KeyCode.Tab))
         {
             eventList.Add(MakeButtonDownEvent(_back_button_event_name));
         }
 
-        if (GetKeyUp(KeyCode.Backspace))
+        if (GetKeyUp(KeyCode.Tab))
         {
             eventList.Add(MakeButtonUpEvent(_back_button_event_name));
         }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using AutoCorrect;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +17,7 @@ public class TextOutputController : MonoBehaviour
 
     public TextAsset dict824765, dict243342;
 
-    public DictionarySize dictionarySize;
+    public Auto.DictionarySize dictionarySize;
 
     public SymSpell.Verbosity verbosity;
 
@@ -36,11 +35,11 @@ public class TextOutputController : MonoBehaviour
 
     public void Start()
     {
-        AutoCorrect.AutoCorrect.Instance.InitDictionary(dictionarySize, dict824765, dict243342);
+        Auto.Correct.Instance.InitDictionary(dictionarySize, dict824765, dict243342);
 
-        if (dictionarySize != DictionarySize.None)
+        if (dictionarySize != Auto.DictionarySize.None)
         {
-            AutoComplete.AutoComplete.Instance.InitDictionary(dict824765, ' ');
+            Auto.Complete.Instance.InitDictionary(dict824765, ' ');
         }
 
         suggested = suggestionsContainer.GetComponentsInChildren<TMPro.TMP_Text>();
@@ -64,15 +63,15 @@ public class TextOutputController : MonoBehaviour
     {
         suggestions = new List<string>();
 
-        if (AutoCorrect.AutoCorrect.Instance.dictionaryLoaded)
+        if (Auto.Correct.Instance.dictionaryLoaded)
         {
-            suggestions = AutoCorrect.AutoCorrect.Instance.Suggestions(value, verbosity);
+            suggestions = Auto.Correct.Instance.Suggestions(value, verbosity);
         }
 
-        if (AutoComplete.AutoComplete.Instance.dictionaryLoaded)
+        if (Auto.Complete.Instance.dictionaryLoaded)
         {
             string lastWord = value.Split(' ').Last();
-            suggestions.AddRange(AutoComplete.AutoComplete.Instance.Completions(lastWord));
+            suggestions.AddRange(Auto.Complete.Instance.Completions(lastWord));
         }
 
 

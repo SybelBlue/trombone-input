@@ -10,9 +10,10 @@ namespace CustomInput
     public enum LayoutObjectType
     {
         SimpleKeyPrefab,
-        AmbiguousKeyPrefab,
+        BinnedKeyPrefab,
         StylusKeyPrefab,
         StylusBinnedPrefab,
+        RaycastKeyPrefab,
     }
 
     // The Base class for the data contained within a KeyController,
@@ -69,10 +70,10 @@ namespace CustomInput
             => RepresentationUsing<SimpleKeyController>(parent, objectDict[LayoutObjectType.SimpleKeyPrefab]);
 
         // Used in SimpleKey.Representation to make a default key and set the new object's T.symbol to this.c
-        protected GameObject RepresentationUsing<T>(Transform parent, GameObject simpleKeyPrefab)
+        protected GameObject RepresentationUsing<T>(Transform parent, GameObject prefab)
             where T : AbstractSimpleKeyController
         {
-            var newItem = GameObject.Instantiate(simpleKeyPrefab, parent);
+            var newItem = GameObject.Instantiate(prefab, parent);
             newItem.GetComponent<T>().symbol = c;
             return newItem;
         }
@@ -82,12 +83,15 @@ namespace CustomInput
             Assert.IsTrue(0 <= index && index < _size);
             return this;
         }
+
+        public char CharWithAlternate(bool useAlternate)
+            => useAlternate && alt.HasValue ? alt.Value : c;
     }
 
-    // The Base class for all keys with binned/ambiguous labeling
-    public class AmbiguousKey : LayoutKey
+    // The Base class for all keys with binned labeling
+    public class BinnedKey : LayoutKey
     {
-        public override string typeName => "AmbiguousKey";
+        public override string typeName => "BinnedKey";
 
         public override string label => _data;
         public override int size => _size;
@@ -99,7 +103,7 @@ namespace CustomInput
         protected readonly SimpleKey[] items;
         protected readonly bool slant;
 
-        public AmbiguousKey(bool slant, params SimpleKey[] subitems)
+        public BinnedKey(bool slant, params SimpleKey[] subitems)
         {
             items = subitems;
             this.slant = slant;
@@ -127,8 +131,8 @@ namespace CustomInput
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
-            var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.AmbiguousKeyPrefab], parent);
-            var controller = newItem.GetComponent<AmbiguousKeyController>();
+            var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.BinnedKeyPrefab], parent);
+            var controller = newItem.GetComponent<BinnedKeyController>();
             foreach (var item in items)
             {
                 var newChild = item.Representation(parent, objectDict);
@@ -154,8 +158,8 @@ namespace CustomInput
             => RepresentationUsing<StylusKeyController>(parent, objectDict[LayoutObjectType.StylusKeyPrefab]);
     }
 
-    // The AmbiguousKey for Stylus canvases
-    public class StylusBinnedKey : AmbiguousKey
+    // The BinnedKey for Stylus canvases
+    public class StylusBinnedKey : BinnedKey
     {
         public override string typeName => "StylusBinnedKey";
 
@@ -165,7 +169,7 @@ namespace CustomInput
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
             var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.StylusBinnedPrefab], parent);
-            var controller = newItem.GetComponent<AmbiguousKeyController>();
+            var controller = newItem.GetComponent<StylusBinnedController>();
             foreach (var i in items)
             {
                 var newChild = i.Representation(parent, objectDict);
@@ -176,5 +180,16 @@ namespace CustomInput
             }
             return newItem;
         }
+    }
+
+    public class RaycastKey : StylusKey
+    {
+        public override string typeName => "RaycastKey";
+
+        public RaycastKey(char data, int size, char? alt = null) : base(data, size, alt)
+        { }
+
+        public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
+            => RepresentationUsing<RaycastKeyController>(parent, objectDict[LayoutObjectType.RaycastKeyPrefab]);
     }
 }
