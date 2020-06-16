@@ -24,7 +24,7 @@ public class StylusModelController : MonoBehaviour
     public (Vector3 origin, Vector3 direction) orientation => (origin, direction);
 
     public float normalizedX { get; private set; }
-    public float normalizedZ { get; private set; }
+    public float normalizedY { get; private set; }
 
     public float? normalizedSlider
     {
@@ -32,7 +32,7 @@ public class StylusModelController : MonoBehaviour
         {
             if (potentiometerIndicator.activeInHierarchy)
             {
-                return Mathf.InverseLerp(min.y, max.y, potentiometerIndicator.transform.localPosition.y);
+                return Mathf.InverseLerp(min.z, max.z, potentiometerIndicator.transform.localPosition.z);
             }
             return null;
         }
@@ -51,7 +51,7 @@ public class StylusModelController : MonoBehaviour
             }
 
             var pos = potentiometerIndicator.transform.localPosition;
-            pos.y = Mathf.Lerp(min.y, max.y, value.Value);
+            pos.z = Mathf.Lerp(min.z, max.z, value.Value);
             potentiometerIndicator.transform.localPosition = pos;
         }
     }
@@ -95,9 +95,9 @@ public class StylusModelController : MonoBehaviour
     {
         Vector3 euler = transform.rotation.eulerAngles;
         var x = Utils.ModIntoRange(euler.x, -180, 180);
-        var z = Utils.ModIntoRange(euler.z, -180, 180);
+        var y = Utils.ModIntoRange(euler.y, -180, 180);
         normalizedX = Mathf.InverseLerp(min.x, max.x, x);
-        normalizedZ = Mathf.InverseLerp(min.z, max.z, z);
+        normalizedY = Mathf.InverseLerp(min.y, max.y, y);
 
         UpdateOrientation();
     }
