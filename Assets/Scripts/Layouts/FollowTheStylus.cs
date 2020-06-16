@@ -18,6 +18,8 @@ public class FollowTheStylus : MonoBehaviour
     // transform.position = new Vector3(transform.position.x, sty.position.y, transform.position.z);
     // transform.position = new Vector3(transform.position.x, transform.position.y, sty.position.z);
     transform.position = new Vector3(sty.position.x, sty.position.y, sty.position.z);
+    // transform.rotation = Quaternion.Euler(sty.rotation.x, transform.rotation.y, transform.rotation.z);
+    transform.rotation = Quaternion.Euler(sty.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
 
     }
 }

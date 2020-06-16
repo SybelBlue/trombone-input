@@ -17,10 +17,14 @@ public class StylusModelController : MonoBehaviour
     [SerializeField]
     private Vector3 min, max;
 
+    public Vector3 origin { get; private set; }
+
+    public Vector3 direction { get; private set; }
+
+    public (Vector3 origin, Vector3 direction) orientation => (origin, direction);
+
     public float normalizedX { get; private set; }
     public float normalizedZ { get; private set; }
-
-    public (Vector3 origin, Vector3 direction) orientation { get; private set; }
 
     public float? normalizedSlider
     {
@@ -100,9 +104,8 @@ public class StylusModelController : MonoBehaviour
 
     private void UpdateOrientation()
     {
-        // TODO: when stylus is fixed, will be Vector3.forward
-        var direction = transform.rotation * Vector3.down;
-        orientation = (transform.position, direction);
+        direction = transform.rotation * Vector3.forward;
+        origin = transform.position;
         Debug.DrawRay(orientation.origin, orientation.direction, Color.cyan, 0.5f);
     }
 }
