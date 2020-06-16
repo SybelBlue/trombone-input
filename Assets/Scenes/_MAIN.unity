@@ -6524,7 +6524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9e7e15bed46f249b6039a625a27bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layout: 3
+  layout: 1
   dropdown: {fileID: 970785287}
   linearABCDE: {fileID: 997093841}
   stylusBinnedABCDE: {fileID: 2096338478}
