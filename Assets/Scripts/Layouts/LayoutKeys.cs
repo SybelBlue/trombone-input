@@ -190,6 +190,14 @@ namespace CustomInput
         { }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
-            => RepresentationUsing<RaycastKeyController>(parent, objectDict[LayoutObjectType.RaycastKeyPrefab]);
+        {
+            var go = RepresentationUsing<RaycastKeyController>(parent, objectDict[LayoutObjectType.RaycastKeyPrefab]);
+
+            var rectTransform = go.GetComponent<RectTransform>();
+            var collider = go.GetComponent<BoxCollider>();
+            collider.size = new Vector3(rectTransform.rect.width, rectTransform.rect.height, collider.size.z);
+
+            return go;
+        }
     }
 }

@@ -15,6 +15,9 @@ namespace CustomInput
         [SerializeField]
         private GameObject rowPrefab;
 
+        [SerializeField]
+        private UnityEngine.UI.GraphicRaycaster raycaster;
+
         public override bool useAlternate
         {
             get => _useAlternate;
@@ -58,7 +61,6 @@ namespace CustomInput
             {
                 if (hit.transform.gameObject.GetComponent<RaycastKeyController>())
                 {
-                    Debug.Log("hit!");
                     return hit.transform.gameObject;
                 }
                 else

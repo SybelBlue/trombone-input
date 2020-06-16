@@ -177,11 +177,11 @@ namespace MinVR
                 float angle = 0.1f * (x - lastx);
                 if (curTracker == 0)
                 {
-                    tracker1Rot = Quaternion.AngleAxis(angle, new Vector3(0f, 0f, 1f)) * tracker1Rot;
+                    tracker1Rot = Quaternion.AngleAxis(angle, Vector3.up) * tracker1Rot;
                 }
                 else if (curTracker == 1)
                 {
-                    tracker2Rot = Quaternion.AngleAxis(angle, new Vector3(0f, 0f, 1f)) * tracker2Rot;
+                    tracker2Rot = Quaternion.AngleAxis(angle, Vector3.forward) * tracker2Rot;
                 }
 
                 angle = 0.2f * (y - lasty);
