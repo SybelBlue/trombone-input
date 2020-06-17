@@ -6,7 +6,7 @@
 
     void Update()
     {
-        xSlider.value = modelController.normalizedX;
-        zSlider.value = modelController.normalizedZ;
+        xSlider.value = modelController.normalizedAngles.x;
+        zSlider.value = modelController.normalizedAngles.z;
     }
 }

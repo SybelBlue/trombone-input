@@ -24,9 +24,8 @@ public class StylusModelController : MonoBehaviour
 
     public (Vector3 origin, Vector3 direction) orientation => (origin, direction);
 
-    public float normalizedX { get; private set; }
-    public float normalizedY { get; private set; }
-    public float normalizedZ { get; private set; }
+    public Vector3 normalizedAngles { get; private set; }
+
 
     private bool highlightingFront, highlightingBack;
 
@@ -97,13 +96,12 @@ public class StylusModelController : MonoBehaviour
 
     void Update()
     {
-        Vector3 euler = transform.rotation.eulerAngles;
-        var x = Utils.ModIntoRange(euler.x, -180, 180);
-        var y = Utils.ModIntoRange(euler.y, -180, 180);
-        var z = Utils.ModIntoRange(euler.z, -180, 180);
-        normalizedX = Mathf.InverseLerp(minAngle.x, maxAngle.x, x);
-        normalizedY = Mathf.InverseLerp(minAngle.y, maxAngle.y, y);
-        normalizedZ = Mathf.InverseLerp(minAngle.z, maxAngle.z, z);
+        normalizedAngles =
+            transform
+            .rotation
+            .eulerAngles
+            .Map(x => Utils.ModIntoRange(x, -180, 180))
+            .Map((i, x) => Mathf.InverseLerp(minAngle[i], maxAngle[i], x));
 
         UpdateOrientation();
     }

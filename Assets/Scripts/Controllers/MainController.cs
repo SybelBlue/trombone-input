@@ -135,8 +135,8 @@ public class MainController : MonoBehaviour, VREventGenerator
         => new InputData(
                 outputController.text,
                 lastReportedValue,
-                stylusModel.normalizedX,
-                stylusModel.normalizedZ,
+                stylusModel.normalizedAngles.x,
+                stylusModel.normalizedAngles.z,
                 stylusModel.normalizedSlider,
                 stylusModel.frontButtonDown,
                 stylusModel.backButtonDown,

@@ -44,6 +44,11 @@ public static class Utils
     public static T Last<T>(this T[] array)
         => array[Mathf.Max(0, array.Length - 1)];
 
+    public static Vector3 Map(this Vector3 vec, System.Func<float, float> f)
+        => new Vector3(f(vec.x), f(vec.y), f(vec.z));
+
+    public static Vector3 Map(this Vector3 vec, System.Func<int, float, float> f)
+        => new Vector3(f(0, vec.x), f(1, vec.y), f(2, vec.z));
     public static System.IO.MemoryStream StreamFromTextAsset(TextAsset asset)
         => new System.IO.MemoryStream(asset.bytes);
 }
