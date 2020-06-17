@@ -67,7 +67,7 @@ namespace CustomInput
         public const string _button_up_event_type = "ButtonUp";
 
         public static VREvent MakeButtonDownEvent(string name)
-        => MakeEvent(name, _button_down_event_type);
+            => MakeEvent(name, _button_down_event_type);
 
         public static VREvent MakeButtonUpEvent(string name)
             => MakeEvent(name, _button_up_event_type);

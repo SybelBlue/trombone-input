@@ -138,9 +138,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     }
 
     public void BackButtonUp()
-    {
-        stylusModel.backButtonDown = false;
-    }
+        => stylusModel.backButtonDown = false;
 
     private void PerformBackspace()
     {
