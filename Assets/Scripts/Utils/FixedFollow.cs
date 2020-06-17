@@ -10,7 +10,7 @@ public class FixedFollow : MonoBehaviour
 
     void Update()
     {
-        if (followParent is null) return;
+        if (followParent == null) return;
 
         Vector3 nextPos;
         Quaternion nextRot;

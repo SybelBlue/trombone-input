@@ -4,7 +4,7 @@
 public class StylusModelController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject potentiometerIndicator;
+    private GameObject potentiometerIndicator, laserPointer;
 
     [SerializeField]
     private MeshRenderer frontButtonRenderer, backButtonRenderer;
@@ -18,11 +18,18 @@ public class StylusModelController : MonoBehaviour
     [SerializeField]
     private Vector2 sliderBounds;
 
+    public bool useLaser
+    {
+        get => laserPointer.activeInHierarchy;
+        set => laserPointer.SetActive(value);
+    }
+
     public Vector3 origin { get; private set; }
 
     public Vector3 direction { get; private set; }
 
-    public (Vector3 origin, Vector3 direction) orientation => (origin, direction);
+    public (Vector3 origin, Vector3 direction) orientation
+        => (transform.position, transform.forward);
 
     public Vector3 normalizedAngles { get; private set; }
 
@@ -85,15 +92,6 @@ public class StylusModelController : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        normalizedSlider = null;
-        frontButtonDown = false;
-        backButtonDown = false;
-
-        UpdateOrientation();
-    }
-
     void Update()
     {
         normalizedAngles =
@@ -102,13 +100,5 @@ public class StylusModelController : MonoBehaviour
             .eulerAngles
             .Map(x => Utils.ModIntoRange(x, -180, 180))
             .Map((i, x) => Mathf.InverseLerp(minAngle[i], maxAngle[i], x));
-
-        UpdateOrientation();
-    }
-
-    private void UpdateOrientation()
-    {
-        direction = transform.rotation * Vector3.forward;
-        origin = transform.position;
     }
 }

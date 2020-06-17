@@ -3,6 +3,7 @@ namespace CustomInput
     public class StylusBinnedABCDE : Layout
     {
         public override bool usesSlider => true;
+        public override bool usesRaycasting => false;
 
         private bool _useAlternate;
 

@@ -64,6 +64,10 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void Update()
     {
         indicatorRect.gameObject.SetActive(layout.usesSlider && inputThisFrame);
+        if (stylusModel.useLaser != layout.usesRaycasting)
+        {
+            stylusModel.useLaser = layout.usesRaycasting;
+        }
 
         // TODO: Map to stylus events
         if (outputController.text.Length > 0 && GetKeyDown(KeyCode.Space))
@@ -162,9 +166,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     }
 
     public void BackButtonUp()
-    {
-        stylusModel.backButtonDown = false;
-    }
+        => stylusModel.backButtonDown = false;
 
     private void PerformBackspace()
     {
