@@ -138,9 +138,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     }
 
     public void BackButtonUp()
-    {
-        stylusModel.backButtonDown = false;
-    }
+        => stylusModel.backButtonDown = false;
 
     private void PerformBackspace()
     {
@@ -174,7 +172,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         int rawNext = Mathf.RoundToInt(lastReportedValue + delta ?? 0);
         int next = Mathf.Clamp(rawNext, 0, inputPanel.maxValue);
 
-        if (Bindings.emulatingSlide && delta != 0)
+        if (Bindings.emulatingSlide)
         {
             eventList.Add(MakePotentiometerEvent(next));
         }
