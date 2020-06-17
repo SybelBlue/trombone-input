@@ -3010,7 +3010,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 971101858}
-  m_Mesh: {fileID: -2432090755550338912, guid: 0daf309fc98564beb93807c028f92f5a, type: 3}
+  m_Mesh: {fileID: -2432090755550338912, guid: f6c503c0769d441efb705ec564efeb0d, type: 3}
 --- !u!4 &971101863
 Transform:
   m_ObjectHideFlags: 0
@@ -3045,26 +3045,9 @@ MonoBehaviour:
   backButtonRenderer: {fileID: 281251436}
   highlightMaterial: {fileID: 2100000, guid: ea5906402a6b7fb40a9b9f4d8af4ff17, type: 2}
   defaultMaterial: {fileID: 2100000, guid: 7ff72e74ddb75334a966aadc768d4de0, type: 2}
-  min: {x: -45, y: 60, z: 0}
-  max: {x: 45, y: -30, z: 0.5}
---- !u!114 &971101865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971101858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Device: 1
-  m_PoseSource: 5
-  m_PoseProviderComponent: {fileID: 0}
-  m_TrackingType: 0
-  m_UpdateType: 0
-  m_UseRelativeTransform: 0
+  minAngle: {x: -45, y: 60, z: 60}
+  maxAngle: {x: 45, y: -30, z: -30}
+  sliderBounds: {x: 0, y: 0.5}
 --- !u!1 &997093839
 GameObject:
   m_ObjectHideFlags: 0
@@ -4037,7 +4020,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.92156863, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -7398,6 +7381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8f9ee75cfc9b438f9c13eb66e487f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stylusTransform: {fileID: 971101863}
 --- !u!1001 &2112465617
 PrefabInstance:
   m_ObjectHideFlags: 0

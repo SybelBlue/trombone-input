@@ -9,13 +9,14 @@ public class StylusModelController : MonoBehaviour
     [SerializeField]
     private MeshRenderer frontButtonRenderer, backButtonRenderer;
 
-    private bool highlightingFront, highlightingBack;
-
     [SerializeField]
     private Material highlightMaterial, defaultMaterial;
 
     [SerializeField]
-    private Vector3 min, max;
+    private Vector3 minAngle, maxAngle;
+
+    [SerializeField]
+    private Vector2 sliderBounds;
 
     public Vector3 origin { get; private set; }
 
@@ -25,6 +26,9 @@ public class StylusModelController : MonoBehaviour
 
     public float normalizedX { get; private set; }
     public float normalizedY { get; private set; }
+    public float normalizedZ { get; private set; }
+
+    private bool highlightingFront, highlightingBack;
 
     public float? normalizedSlider
     {
@@ -32,7 +36,7 @@ public class StylusModelController : MonoBehaviour
         {
             if (potentiometerIndicator.activeInHierarchy)
             {
-                return Mathf.InverseLerp(min.z, max.z, potentiometerIndicator.transform.localPosition.z);
+                return Mathf.InverseLerp(sliderBounds.x, sliderBounds.y, potentiometerIndicator.transform.localPosition.z);
             }
             return null;
         }
@@ -51,7 +55,7 @@ public class StylusModelController : MonoBehaviour
             }
 
             var pos = potentiometerIndicator.transform.localPosition;
-            pos.z = Mathf.Lerp(min.z, max.z, value.Value);
+            pos.z = Mathf.Lerp(sliderBounds.x, sliderBounds.y, value.Value);
             potentiometerIndicator.transform.localPosition = pos;
         }
     }
@@ -96,8 +100,10 @@ public class StylusModelController : MonoBehaviour
         Vector3 euler = transform.rotation.eulerAngles;
         var x = Utils.ModIntoRange(euler.x, -180, 180);
         var y = Utils.ModIntoRange(euler.y, -180, 180);
-        normalizedX = Mathf.InverseLerp(min.x, max.x, x);
-        normalizedY = Mathf.InverseLerp(min.y, max.y, y);
+        var z = Utils.ModIntoRange(euler.z, -180, 180);
+        normalizedX = Mathf.InverseLerp(minAngle.x, maxAngle.x, x);
+        normalizedY = Mathf.InverseLerp(minAngle.y, maxAngle.y, y);
+        normalizedZ = Mathf.InverseLerp(minAngle.z, maxAngle.z, z);
 
         UpdateOrientation();
     }
@@ -106,7 +112,6 @@ public class StylusModelController : MonoBehaviour
     {
         direction = transform.rotation * Vector3.forward;
         origin = transform.position;
-        Debug.DrawRay(orientation.origin, orientation.direction, Color.cyan, 0.5f);
     }
 
     public CustomInput.InputData PackageData(string context, int? lastReportedValue)
