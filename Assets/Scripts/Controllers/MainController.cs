@@ -29,16 +29,6 @@ public class MainController : MonoBehaviour, VREventGenerator
     // The place where typed guesses go
     public TextOutputController outputController;
 
-    // True if no input is provided
-    public static bool inputThisFrame
-        => touchCount > 0
-        || GetMouseButton(0)
-        || GetMouseButton(1)
-        || GetKey(KeyCode.LeftControl)
-        || GetKey(KeyCode.Space)
-        || GetKey(KeyCode.Tab)
-        || GetKey(KeyCode.BackQuote);
-
     public void Start()
     {
         VRMain.Instance.AddEventGenerator(this);
@@ -59,7 +49,7 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public void Update()
     {
-        indicatorRect.gameObject.SetActive(layout.usesSlider && inputThisFrame);
+        indicatorRect.gameObject.SetActive(layout.usesSlider && Bindings.inputThisFrame);
 
         // TODO: Map to stylus events
         if (outputController.text.Length > 0 && GetKeyDown(KeyCode.Space))

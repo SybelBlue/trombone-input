@@ -6,6 +6,14 @@ namespace CustomInput
 {
     public static class Bindings
     {
+        public static bool inputThisFrame
+            => touchCount > 0
+            || GetMouseButton(0)
+            || emulatingSlide
+            || precisionMode
+            || emulatingFront
+            || emulatingBack;
+
         // right mouse down
         public static bool beginEmulatedSlide
             => GetMouseButtonDown(1);
@@ -25,11 +33,17 @@ namespace CustomInput
         public static bool emulatingFrontDown
             => GetKeyDown(BackQuote);
 
+        public static bool emulatingFront
+            => GetKey(BackQuote);
+
         public static bool emulatingFrontUp
             => GetKeyUp(BackQuote);
 
         public static bool emulatingBackDown
             => GetKeyDown(Tab);
+
+        public static bool emulatingBack
+            => GetKey(Tab);
 
         public static bool emulatingBackUp
             => GetKeyUp(Tab);

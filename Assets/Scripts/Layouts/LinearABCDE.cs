@@ -41,7 +41,7 @@ namespace CustomInput
         {
             UnhighlightAll();
 
-            if (MainController.inputThisFrame)
+            if (Bindings.inputThisFrame)
             {
                 ChildFor(data)?.GetComponent<IKeyController>()?.SetHighlight(true);
             }
