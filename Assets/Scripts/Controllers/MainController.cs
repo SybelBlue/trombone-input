@@ -172,7 +172,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         int rawNext = Mathf.RoundToInt(lastReportedValue + delta ?? 0);
         int next = Mathf.Clamp(rawNext, 0, inputPanel.maxValue);
 
-        if (Bindings.emulatingSlide)
+        if (Bindings.emulatingSlide && delta != 0)
         {
             eventList.Add(MakePotentiometerEvent(next));
         }
