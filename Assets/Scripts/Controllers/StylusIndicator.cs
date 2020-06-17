@@ -7,6 +7,6 @@
     void Update()
     {
         xSlider.value = modelController.normalizedX;
-        zSlider.value = modelController.normalizedY;
+        zSlider.value = modelController.normalizedZ;
     }
 }
