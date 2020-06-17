@@ -108,4 +108,16 @@ public class StylusModelController : MonoBehaviour
         origin = transform.position;
         Debug.DrawRay(orientation.origin, orientation.direction, Color.cyan, 0.5f);
     }
+
+    public CustomInput.InputData PackageData(string context, int? lastReportedValue)
+        => new CustomInput.InputData(
+                context,
+                lastReportedValue,
+                normalizedX,
+                normalizedY,
+                normalizedSlider,
+                frontButtonDown,
+                backButtonDown,
+                orientation
+            );
 }

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using CustomInput;
 using MinVR;
 using UnityEngine;
-using static UnityEngine.Input;
 using static CustomInput.VREventFactory;
 
 public class MainController : MonoBehaviour, VREventGenerator
@@ -52,12 +51,12 @@ public class MainController : MonoBehaviour, VREventGenerator
         indicatorRect.gameObject.SetActive(layout.usesSlider && Bindings.inputThisFrame);
 
         // TODO: Map to stylus events
-        if (outputController.text.Length > 0 && GetKeyDown(KeyCode.Space))
+        if (outputController.text.Length > 0 && Bindings.spaceDown)
         {
             outputController.text += ' ';
         }
 
-        if (GetKeyDown(KeyCode.Backspace))
+        if (Bindings.backspaceDown)
         {
             PerformBackspace();
         }
@@ -118,16 +117,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         => OnInputEnd(value);
 
     private InputData currentInputData
-        => new InputData(
-                outputController.text,
-                lastReportedValue,
-                stylusModel.normalizedX,
-                stylusModel.normalizedY,
-                stylusModel.normalizedSlider,
-                stylusModel.frontButtonDown,
-                stylusModel.backButtonDown,
-                stylusModel.orientation
-            );
+        => stylusModel.PackageData(outputController.text, lastReportedValue);
 
     private void AnalogUpdate(float value)
         => OnInputValueChange(Mathf.RoundToInt(value));
@@ -154,7 +144,8 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     private void PerformBackspace()
     {
-        outputController.text = outputController.text.Substring(0, Mathf.Max(0, outputController.text.Length - 1));
+        int endIndex = Mathf.Max(0, outputController.text.Length - 1);
+        outputController.text = outputController.text.Substring(0, endIndex);
     }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
@@ -174,7 +165,7 @@ public class MainController : MonoBehaviour, VREventGenerator
             return;
         }
 
-        float delta = mouseScrollDelta.y * 2;
+        float delta = Bindings.emulatedSlideDelta;
         if (!Bindings.precisionMode)
         {
             delta *= 4;

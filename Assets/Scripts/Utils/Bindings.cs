@@ -26,6 +26,9 @@ namespace CustomInput
         public static bool endEmulatedSlide
             => GetMouseButtonUp(1);
 
+        public static float emulatedSlideDelta
+            => mouseScrollDelta.y * 2;
+
         // either shift key held
         public static bool precisionMode
             => GetKey(LeftShift) || GetKey(RightShift);
@@ -47,6 +50,12 @@ namespace CustomInput
 
         public static bool emulatingBackUp
             => GetKeyUp(Tab);
+
+        public static bool spaceDown
+            => GetKeyDown(Space);
+
+        public static bool backspaceDown
+            => GetKeyDown(Backspace);
     }
 
     public static class VREventFactory
