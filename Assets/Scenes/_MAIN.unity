@@ -7360,6 +7360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8f9ee75cfc9b438f9c13eb66e487f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stylusTransform: {fileID: 971101863}
 --- !u!1001 &2112465617
 PrefabInstance:
   m_ObjectHideFlags: 0
