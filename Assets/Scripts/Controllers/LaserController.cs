@@ -9,5 +9,5 @@ public class LaserController : MonoBehaviour
     private LineRenderer renderer;
 
     void Update()
-        => renderer.SetPosition(1, transform.forward * 60);
+        => renderer.SetPosition(1, Vector3.forward * 60);
 }
