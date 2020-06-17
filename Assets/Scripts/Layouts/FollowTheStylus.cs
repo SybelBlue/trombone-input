@@ -1,9 +1,15 @@
 ﻿using UnityEngine;
 
+#pragma warning disable 649
 public class FollowTheStylus : MonoBehaviour
 {
     [SerializeField]
     private Transform stylusTransform;
+
+    void Start()
+    {
+      stylusTransform = GameObject.Find("Stylus").transform;
+    }
 
     // Update is called once per frame
     void Update()

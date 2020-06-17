@@ -46,9 +46,25 @@ public class MainController : MonoBehaviour, VREventGenerator
     // The most up-to-date value reported by the InputFieldController
     private int? lastReportedValue;
 
+    private bool usingIndicator
+    {
+        get => indicatorRect.gameObject.activeInHierarchy;
+        set => indicatorRect.gameObject.SetActive(value);
+    }
+
     public void Update()
     {
-        indicatorRect.gameObject.SetActive(layout.usesSlider && Bindings.inputThisFrame);
+        bool indicator = layout.usesSlider && Bindings.inputThisFrame;
+        if (indicator != usingIndicator)
+        {
+            usingIndicator = indicator;
+        }
+
+
+        if (stylusModel.useLaser != layout.usesRaycasting)
+        {
+            stylusModel.useLaser = layout.usesRaycasting;
+        }
 
         // TODO: Map to stylus events
         if (outputController.text.Length > 0 && Bindings.spaceDown)

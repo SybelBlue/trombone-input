@@ -51,6 +51,9 @@ namespace CustomInput
         // True if this layout uses the slider on the stylus
         public abstract bool usesSlider { get; }
 
+        // True if this layout raycasts
+        public abstract bool usesRaycasting { get; }
+
         // Determines if the LayoutKeys are displaying the alternate label
         public abstract bool useAlternate { set; get; }
 

@@ -6,6 +6,7 @@ namespace CustomInput
     {
 
         public override bool usesSlider => true;
+        public override bool usesRaycasting => false;
 
         private bool _useAlternate;
 
