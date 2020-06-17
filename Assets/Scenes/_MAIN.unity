@@ -3118,7 +3118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   potentiometerIndicator: {fileID: 1634427602}
-  laserPointer: {fileID: 0}
+  laserPointer: {fileID: 420008066}
   frontButtonRenderer: {fileID: 64718944}
   backButtonRenderer: {fileID: 281251436}
   highlightMaterial: {fileID: 2100000, guid: ea5906402a6b7fb40a9b9f4d8af4ff17, type: 2}
