@@ -3,14 +3,10 @@ using CustomInput;
 using MinVR;
 using UnityEngine;
 using static UnityEngine.Input;
+using static CustomInput.VREventFactory;
 
 public class MainController : MonoBehaviour, VREventGenerator
 {
-    public const string _potentiometer_event_name = "BlueStylusAnalog";
-    public const string _front_button_event_name = "BlueStylusFrontBtn";
-    public const string _back_button_event_name = "BlueStylusBackBtn";
-    public const string _button_down_event_type = "ButtonDown";
-    public const string _button_up_event_type = "ButtonUp";
 
     // The LayoutManager that is in charge of loading the layout
     public LayoutController layoutManager;
@@ -181,7 +177,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     // will be less sensitive if either Shift key is held.
     private void CaptureEmulatedSliderInput(ref List<VREvent> eventList)
     {
-        if (GetMouseButtonDown(1))
+        if (Bindings.beginEmulatedSlide)
         {
             int value = lastReportedValue ?? inputPanel.maxValue / 2;
             eventList.Add(MakePotentiometerEvent(value));
@@ -189,7 +185,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         }
 
         float delta = mouseScrollDelta.y * 2;
-        if (!GetKey(KeyCode.LeftShift) && !GetKey(KeyCode.RightShift))
+        if (!Bindings.precisionMode)
         {
             delta *= 4;
         }
@@ -197,7 +193,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         int rawNext = Mathf.RoundToInt(lastReportedValue + delta ?? 0);
         int next = Mathf.Clamp(rawNext, 0, inputPanel.maxValue);
 
-        if (GetMouseButton(1) && delta != 0)
+        if (Bindings.emulatingSlide && delta != 0)
         {
             eventList.Add(MakePotentiometerEvent(next));
         }
@@ -209,47 +205,24 @@ public class MainController : MonoBehaviour, VREventGenerator
     // If Tab is hit then it emulates back button down
     private void CaptureEmulatedButtonInput(ref List<VREvent> eventList)
     {
-        if (GetKeyDown(KeyCode.BackQuote) || (GetMouseButtonUp(1) && layout.usesSlider))
+        if (Bindings.emulatingFrontDown || (Bindings.endEmulatedSlide && layout.usesSlider))
         {
             eventList.Add(MakeButtonDownEvent(_front_button_event_name));
         }
 
-        if (GetKeyUp(KeyCode.BackQuote))
+        if (Bindings.emulatingFrontUp)
         {
             eventList.Add(MakeButtonUpEvent(_front_button_event_name));
         }
 
-        if (GetKeyDown(KeyCode.Tab))
+        if (Bindings.emulatingBackDown)
         {
             eventList.Add(MakeButtonDownEvent(_back_button_event_name));
         }
 
-        if (GetKeyUp(KeyCode.Tab))
+        if (Bindings.emulatingBackUp)
         {
             eventList.Add(MakeButtonUpEvent(_back_button_event_name));
         }
     }
-
-    private static VREvent MakeButtonDownEvent(string name)
-        => MakeEvent(name, _button_down_event_type);
-
-    private static VREvent MakeButtonUpEvent(string name)
-        => MakeEvent(name, _button_up_event_type);
-
-    private static VREvent MakePotentiometerEvent(float analogValue)
-        => MakeEvent(_potentiometer_event_name, "AnalogUpdate", analogValue);
-
-    private static VREvent MakeEvent(string name, string type, float? analogValue = null)
-    {
-        VREvent e = new VREvent(name);
-        e.AddData("EventType", type);
-
-        if (analogValue.HasValue)
-        {
-            e.AddData("AnalogValue", analogValue.Value);
-        }
-
-        return e;
-    }
-
 }
