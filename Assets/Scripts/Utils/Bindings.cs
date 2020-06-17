@@ -18,9 +18,9 @@ namespace CustomInput
         public static bool beginEmulatedSlide
             => GetMouseButtonDown(1);
 
-        // right mouse held
+        // right mouse held and slide delta exists
         public static bool emulatingSlide
-            => GetMouseButton(1);
+            => GetMouseButton(1) && emulatedSlideDelta != 0;
 
         // right mouse up
         public static bool endEmulatedSlide
