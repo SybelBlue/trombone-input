@@ -36,7 +36,7 @@ public class StylusModelController : MonoBehaviour
         {
             if (potentiometerIndicator.activeInHierarchy)
             {
-                return Mathf.InverseLerp(sliderBounds.x, sliderBounds.y, potentiometerIndicator.transform.localPosition.z);
+                return Mathf.InverseLerp(sliderBounds.x, sliderBounds.y, -potentiometerIndicator.transform.localPosition.z);
             }
             return null;
         }
@@ -55,7 +55,7 @@ public class StylusModelController : MonoBehaviour
             }
 
             var pos = potentiometerIndicator.transform.localPosition;
-            pos.z = Mathf.Lerp(sliderBounds.x, sliderBounds.y, value.Value);
+            pos.z = -Mathf.Lerp(sliderBounds.x, sliderBounds.y, value.Value);
             potentiometerIndicator.transform.localPosition = pos;
         }
     }
