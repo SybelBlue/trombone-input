@@ -2853,7 +2853,6 @@ GameObject:
   - component: {fileID: 971101860}
   - component: {fileID: 971101859}
   - component: {fileID: 971101864}
-  - component: {fileID: 971101865}
   m_Layer: 2
   m_Name: Stylus
   m_TagString: Untagged
