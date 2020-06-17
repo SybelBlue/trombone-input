@@ -6,8 +6,8 @@ namespace CustomInput
 {
     public static class Bindings
     {
-        public const string _right_wmr_trigger = "XRI_Right_Trigger";
-        public const string _right_wmr_trigger_button = "XRI_Right_TriggerButton";
+        public const string _right_wmr_trigger = "XRI_Right_TriggerButton";
+        public const string _right_wmr_grip = "XRI_Right_GripButton";
 
         public static bool inputThisFrame
             => touchCount > 0
@@ -37,22 +37,22 @@ namespace CustomInput
             => GetKey(LeftShift) || GetKey(RightShift);
 
         public static bool emulatingFrontDown
-            => GetKeyDown(BackQuote) || GetButtonDown(_right_wmr_trigger) || GetButtonDown(_right_wmr_trigger_button);
+            => GetKeyDown(BackQuote) || GetButtonDown(_right_wmr_trigger);
 
         public static bool emulatingFront
-            => GetKey(BackQuote) || GetButton(_right_wmr_trigger) || GetButton(_right_wmr_trigger_button);
+            => GetKey(BackQuote) || GetButton(_right_wmr_trigger);
 
         public static bool emulatingFrontUp
-            => GetKeyUp(BackQuote) || GetButtonUp(_right_wmr_trigger) || GetButtonUp(_right_wmr_trigger_button);
+            => GetKeyUp(BackQuote) || GetButtonUp(_right_wmr_trigger);
 
         public static bool emulatingBackDown
-            => GetKeyDown(Tab);
+            => GetKeyDown(Tab) || GetButtonDown(_right_wmr_grip);
 
         public static bool emulatingBack
-            => GetKey(Tab);
+            => GetKey(Tab) || GetButton(_right_wmr_grip);
 
         public static bool emulatingBackUp
-            => GetKeyUp(Tab);
+            => GetKeyUp(Tab) || GetButtonUp(_right_wmr_grip);
 
         public static bool spaceDown
             => GetKeyDown(Space);
