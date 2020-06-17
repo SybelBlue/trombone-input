@@ -6,6 +6,9 @@ namespace CustomInput
 {
     public static class Bindings
     {
+        public const string _right_wmr_trigger = "XRI_Right_Trigger";
+        public const string _right_wmr_trigger_button = "XRI_Right_TriggerButton";
+
         public static bool inputThisFrame
             => touchCount > 0
             || GetMouseButton(0)
@@ -34,13 +37,13 @@ namespace CustomInput
             => GetKey(LeftShift) || GetKey(RightShift);
 
         public static bool emulatingFrontDown
-            => GetKeyDown(BackQuote);
+            => GetKeyDown(BackQuote) || GetButtonDown(_right_wmr_trigger) || GetButtonDown(_right_wmr_trigger_button);
 
         public static bool emulatingFront
-            => GetKey(BackQuote);
+            => GetKey(BackQuote) || GetButton(_right_wmr_trigger) || GetButton(_right_wmr_trigger_button);
 
         public static bool emulatingFrontUp
-            => GetKeyUp(BackQuote);
+            => GetKeyUp(BackQuote) || GetButtonUp(_right_wmr_trigger) || GetButtonUp(_right_wmr_trigger_button);
 
         public static bool emulatingBackDown
             => GetKeyDown(Tab);
