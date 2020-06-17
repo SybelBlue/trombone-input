@@ -10,7 +10,7 @@ namespace CustomInput
 
         public readonly string context;
 
-        public readonly float normalizedX, normalizedZ;
+        public readonly Vector3 normalizedAngles;
 
         public readonly float? normalizedSlider;
 
@@ -23,8 +23,7 @@ namespace CustomInput
         public InputData(
             string context,
             int? rawValue,
-            float normalizedX,
-            float normalizedZ,
+            Vector3 normalizedAngles,
             float? normalizedSlider,
             bool frontButtonDown,
             bool backButtonDown,
@@ -33,8 +32,7 @@ namespace CustomInput
         {
             this.rawValue = rawValue;
             this.context = context;
-            this.normalizedX = normalizedX;
-            this.normalizedZ = normalizedZ;
+            this.normalizedAngles = normalizedAngles;
             this.normalizedSlider = normalizedSlider;
             this.frontButtonDown = frontButtonDown;
             this.backButtonDown = backButtonDown;

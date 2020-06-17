@@ -116,8 +116,7 @@ public class StylusModelController : MonoBehaviour
         => new CustomInput.InputData(
                 context,
                 lastReportedValue,
-                normalizedAngles.x,
-                normalizedAngles.y,
+                normalizedAngles,
                 normalizedSlider,
                 frontButtonDown,
                 backButtonDown,

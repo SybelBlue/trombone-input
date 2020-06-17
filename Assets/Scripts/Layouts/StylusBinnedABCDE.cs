@@ -25,7 +25,7 @@ namespace CustomInput
                 null;
 
         protected override int ChildIndexFor(InputData data)
-            => Utils.NormalizedIntoIndex(data.normalizedZ, childMap.Count);
+            => Utils.NormalizedIntoIndex(data.normalizedAngles.z, childMap.Count);
 
         private (LayoutKey, SimpleKey) FetchInnerKey(InputData data)
         {
