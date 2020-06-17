@@ -3044,8 +3044,9 @@ MonoBehaviour:
   backButtonRenderer: {fileID: 281251436}
   highlightMaterial: {fileID: 2100000, guid: ea5906402a6b7fb40a9b9f4d8af4ff17, type: 2}
   defaultMaterial: {fileID: 2100000, guid: 7ff72e74ddb75334a966aadc768d4de0, type: 2}
-  min: {x: -45, y: 60, z: 0}
-  max: {x: 45, y: -30, z: 0.5}
+  minAngle: {x: -45, y: 60, z: 60}
+  maxAngle: {x: 45, y: -30, z: -30}
+  sliderBounds: {x: 0, y: 0.5}
 --- !u!1 &997093839
 GameObject:
   m_ObjectHideFlags: 0

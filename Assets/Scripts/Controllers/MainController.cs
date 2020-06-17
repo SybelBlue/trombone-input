@@ -136,7 +136,7 @@ public class MainController : MonoBehaviour, VREventGenerator
                 outputController.text,
                 lastReportedValue,
                 stylusModel.normalizedX,
-                stylusModel.normalizedY,
+                stylusModel.normalizedZ,
                 stylusModel.normalizedSlider,
                 stylusModel.frontButtonDown,
                 stylusModel.backButtonDown,
