@@ -105,6 +105,16 @@ public class StylusModelController : MonoBehaviour
             .Map((i, x) => Mathf.InverseLerp(minAngle[i], maxAngle[i], x));
     }
 
+    public CustomInput.InputData PackageData(string context, int? lastReportedValue)
+        => new CustomInput.InputData(
+                context,
+                lastReportedValue,
+                normalizedAngles,
+                normalizedSlider,
+                frontButtonDown,
+                backButtonDown,
+                orientation
+            );
     private int lastFrame = -1;
     private (RaycastHit hit, IRaycastable obj)? lastFound;
 

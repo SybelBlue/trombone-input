@@ -3,15 +3,10 @@ using CustomInput;
 using MinVR;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Input;
+using static CustomInput.VREventFactory;
 
 public class MainController : MonoBehaviour, VREventGenerator
 {
-    public const string _potentiometer_event_name = "BlueStylusAnalog";
-    public const string _front_button_event_name = "BlueStylusFrontBtn";
-    public const string _back_button_event_name = "BlueStylusBackBtn";
-    public const string _button_down_event_type = "ButtonDown";
-    public const string _button_up_event_type = "ButtonUp";
 
     // The LayoutManager that is in charge of loading the layout
     public LayoutController layoutManager;
@@ -33,16 +28,6 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     // The place where typed guesses go
     public TextOutputController outputController;
-
-    // True if no input is provided
-    public static bool inputThisFrame
-        => touchCount > 0
-        || GetMouseButton(0)
-        || GetMouseButton(1)
-        || GetKey(KeyCode.LeftControl)
-        || GetKey(KeyCode.Space)
-        || GetKey(KeyCode.Tab)
-        || GetKey(KeyCode.BackQuote);
 
     public void Start()
     {
@@ -70,7 +55,7 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public void Update()
     {
-        bool indicator = layout.usesSlider && inputThisFrame;
+        bool indicator = layout.usesSlider && Bindings.inputThisFrame;
         if (indicator != usingIndicator)
         {
             usingIndicator = indicator;
@@ -83,32 +68,19 @@ public class MainController : MonoBehaviour, VREventGenerator
         }
 
         // TODO: Map to stylus events
-        if (outputController.text.Length > 0 && GetKeyDown(KeyCode.Space))
+        if (outputController.text.Length > 0 && Bindings.spaceDown)
         {
             outputController.text += ' ';
         }
 
-        if (GetKeyDown(KeyCode.Backspace))
+        if (Bindings.backspaceDown)
         {
             PerformBackspace();
         }
 
-
-        if (GetKeyDown(KeyCode.Alpha7))
+        if (Bindings.emulatingLayoutSwitch.HasValue)
         {
-            layoutManager.DropdownValueSelected(0);
-        }
-        if (GetKeyDown(KeyCode.Alpha8))
-        {
-            layoutManager.DropdownValueSelected(1);
-        }
-        if (GetKeyDown(KeyCode.Alpha9))
-        {
-            layoutManager.DropdownValueSelected(2);
-        }
-        if (GetKeyDown(KeyCode.Alpha0))
-        {
-            layoutManager.DropdownValueSelected(3);
+            layoutManager.DropdownValueSelected(Bindings.emulatingLayoutSwitch.Value);
         }
 
         if (stylusModel.transform.hasChanged)
@@ -184,16 +156,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         => OnInputEnd(value);
 
     private InputData currentInputData
-        => new InputData(
-                outputController.text,
-                lastReportedValue,
-                stylusModel.normalizedAngles.x,
-                stylusModel.normalizedAngles.z,
-                stylusModel.normalizedSlider,
-                stylusModel.frontButtonDown,
-                stylusModel.backButtonDown,
-                stylusModel.orientation
-            );
+        => stylusModel.PackageData(outputController.text, lastReportedValue);
 
     private void AnalogUpdate(float value)
         => OnInputValueChange(Mathf.RoundToInt(value));
@@ -230,7 +193,8 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     private void PerformBackspace()
     {
-        outputController.text = outputController.text.Substring(0, Mathf.Max(0, outputController.text.Length - 1));
+        int endIndex = Mathf.Max(0, outputController.text.Length - 1);
+        outputController.text = outputController.text.Substring(0, endIndex);
     }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
@@ -243,15 +207,15 @@ public class MainController : MonoBehaviour, VREventGenerator
     // will be less sensitive if either Shift key is held.
     private void CaptureEmulatedSliderInput(ref List<VREvent> eventList)
     {
-        if (GetMouseButtonDown(1))
+        if (Bindings.beginEmulatedSlide)
         {
             int value = lastReportedValue ?? inputPanel.maxValue / 2;
             eventList.Add(MakePotentiometerEvent(value));
             return;
         }
 
-        float delta = mouseScrollDelta.y * 2;
-        if (!GetKey(KeyCode.LeftShift) && !GetKey(KeyCode.RightShift))
+        float delta = Bindings.emulatedSlideDelta;
+        if (!Bindings.precisionMode)
         {
             delta *= 4;
         }
@@ -259,7 +223,12 @@ public class MainController : MonoBehaviour, VREventGenerator
         int rawNext = Mathf.RoundToInt(lastReportedValue + delta ?? 0);
         int next = Mathf.Clamp(rawNext, 0, inputPanel.maxValue);
 
-        if (GetMouseButton(1) && delta != 0)
+        if (delta == 0)
+        {
+            next = Bindings.emulatedSlideValue;
+        }
+
+        if (Bindings.emulatingSlide)
         {
             eventList.Add(MakePotentiometerEvent(next));
         }
@@ -271,47 +240,24 @@ public class MainController : MonoBehaviour, VREventGenerator
     // If Tab is hit then it emulates back button down
     private void CaptureEmulatedButtonInput(ref List<VREvent> eventList)
     {
-        if (GetKeyDown(KeyCode.BackQuote) || (GetMouseButtonUp(1) && layout.usesSlider))
+        if (Bindings.emulatingFrontDown || (Bindings.endEmulatedSlide && layout.usesSlider))
         {
             eventList.Add(MakeButtonDownEvent(_front_button_event_name));
         }
 
-        if (GetKeyUp(KeyCode.BackQuote))
+        if (Bindings.emulatingFrontUp)
         {
             eventList.Add(MakeButtonUpEvent(_front_button_event_name));
         }
 
-        if (GetKeyDown(KeyCode.Tab))
+        if (Bindings.emulatingBackDown)
         {
             eventList.Add(MakeButtonDownEvent(_back_button_event_name));
         }
 
-        if (GetKeyUp(KeyCode.Tab))
+        if (Bindings.emulatingBackUp)
         {
             eventList.Add(MakeButtonUpEvent(_back_button_event_name));
         }
     }
-
-    private static VREvent MakeButtonDownEvent(string name)
-        => MakeEvent(name, _button_down_event_type);
-
-    private static VREvent MakeButtonUpEvent(string name)
-        => MakeEvent(name, _button_up_event_type);
-
-    private static VREvent MakePotentiometerEvent(float analogValue)
-        => MakeEvent(_potentiometer_event_name, "AnalogUpdate", analogValue);
-
-    private static VREvent MakeEvent(string name, string type, float? analogValue = null)
-    {
-        VREvent e = new VREvent(name);
-        e.AddData("EventType", type);
-
-        if (analogValue.HasValue)
-        {
-            e.AddData("AnalogValue", analogValue.Value);
-        }
-
-        return e;
-    }
-
 }
