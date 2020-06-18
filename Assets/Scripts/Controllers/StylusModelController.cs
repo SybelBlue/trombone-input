@@ -4,7 +4,10 @@
 public class StylusModelController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject potentiometerIndicator, laserPointer;
+    private GameObject potentiometerIndicator;
+
+    [SerializeField]
+    private LaserController laserPointer;
 
     [SerializeField]
     private MeshRenderer frontButtonRenderer, backButtonRenderer;
@@ -20,8 +23,8 @@ public class StylusModelController : MonoBehaviour
 
     public bool useLaser
     {
-        get => laserPointer.activeInHierarchy;
-        set => laserPointer.SetActive(value);
+        get => laserPointer.active;
+        set => laserPointer.active = value;
     }
 
     public Vector3 origin { get; private set; }

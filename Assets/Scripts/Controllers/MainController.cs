@@ -143,16 +143,14 @@ public class MainController : MonoBehaviour, VREventGenerator
         stylusModel.normalizedSlider = normalized;
     }
 
-    private void OnInputEnd(int? value)
+    private bool OnInputEnd(int? value)
     {
         lastReportedValue = value;
         (LayoutKey parentKey, SimpleKey simpleKey) = layout.KeysFor(currentInputData) ?? (null, null);
 
-        if (parentKey == null)
-        {
-            Debug.LogWarning(value.HasValue ? "Ended gesture in empty zone: {value}" : "Ended gesture on invalid key");
-        }
-        else
+        bool success = parentKey != null;
+
+        if (success)
         {
             (char typed, bool certain) = layout.GetSelectedLetter(currentInputData) ?? ('-', false);
 
@@ -168,12 +166,17 @@ public class MainController : MonoBehaviour, VREventGenerator
 
                 outputController.text += typed;
             }
-
+        }
+        else
+        {
+            Debug.LogWarning(value.HasValue ? $"Ended gesture in empty zone: {value}" : "Ended gesture on invalid key");
         }
 
         stylusModel.normalizedSlider = null;
 
         lastReportedValue = null;
+
+        return success;
     }
 
     // Callback for when the InputFieldController register a completed gesture
@@ -198,7 +201,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void FrontButtonDown()
     {
         stylusModel.frontButtonDown = true;
-        OnInputEnd(lastReportedValue);
+        if (OnInputEnd(lastReportedValue)) return;
 
         RaycastHit? hit;
         var raycastable = stylusModel.Raycast(out hit);

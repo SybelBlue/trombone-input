@@ -10,6 +10,12 @@ public class LaserController : MonoBehaviour
     [SerializeField]
     private LineRenderer renderer;
 
+    public bool active
+    {
+        get => gameObject.activeInHierarchy;
+        set => gameObject.SetActive(value);
+    }
+
     void Update()
     {
         if (!transform.hasChanged) return;
