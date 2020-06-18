@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 236652873365184696}
-  highlightColor: {r: 0.8537736, g: 1, b: 0.97488594, a: 0.34901962}
+  highlightColor: {r: 0.15686275, g: 0.17254902, b: 0.20392159, a: 0.7176471}
   background: {fileID: 236652873365184697}
   _symbol: 0
   textMeshPro: {fileID: 110404552551467935}

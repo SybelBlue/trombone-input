@@ -65,15 +65,17 @@ namespace CustomInput
             dropdown.ClearOptions();
             dropdown.AddOptions(new List<string>(Enum.GetNames(typeof(LayoutOption))));
             dropdown.value = (int)layout;
+            ActivateLayout();
         }
 
         public void DropdownValueSelected(int index)
-            => layout = (LayoutOption)index;
-
-        private void Update()
         {
+            layout = (LayoutOption)index;
             dropdown.value = (int)layout;
+            ActivateLayout();
+        }
 
+        private void ActivateLayout() { 
             foreach (var layoutOption in System.Enum.GetValues(typeof(LayoutOption)))
             {
                 var layout = fromOption((LayoutOption)layoutOption);
