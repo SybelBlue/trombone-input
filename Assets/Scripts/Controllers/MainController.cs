@@ -146,7 +146,7 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         if (parentKey == null)
         {
-            Debug.LogWarning("Ended gesture in empty zone: " + value);
+            Debug.LogWarning(value.HasValue ? "Ended gesture in empty zone: {value}" : "Ended gesture on invalid key");
         }
         else
         {
@@ -195,6 +195,13 @@ public class MainController : MonoBehaviour, VREventGenerator
     {
         stylusModel.frontButtonDown = true;
         OnInputEnd(lastReportedValue);
+
+        RaycastHit? hit;
+        var raycastable = stylusModel.Raycast(out hit);
+        if (raycastable)
+        {
+            raycastable.GetComponent<Button>()?.onClick.Invoke();
+        }
     }
 
     public void FrontButtonUp()
