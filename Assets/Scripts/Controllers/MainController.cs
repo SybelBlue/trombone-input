@@ -93,19 +93,19 @@ public class MainController : MonoBehaviour, VREventGenerator
         }
 
 
-        if (GetKeyDown(KeyCode.Alpha1))
+        if (GetKeyDown(KeyCode.Alpha7))
         {
             layoutManager.DropdownValueSelected(0);
         }
-        if (GetKeyDown(KeyCode.Alpha2))
+        if (GetKeyDown(KeyCode.Alpha8))
         {
             layoutManager.DropdownValueSelected(1);
         }
-        if (GetKeyDown(KeyCode.Alpha3))
+        if (GetKeyDown(KeyCode.Alpha9))
         {
             layoutManager.DropdownValueSelected(2);
         }
-        if (GetKeyDown(KeyCode.Alpha4))
+        if (GetKeyDown(KeyCode.Alpha0))
         {
             layoutManager.DropdownValueSelected(3);
         }
