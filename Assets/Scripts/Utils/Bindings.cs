@@ -10,6 +10,9 @@ namespace CustomInput
         public const string _grip = "XRI_Right_GripButton";
         public const string _trackpad_vertical = "XRI_Right_Primary2DAxis_Vertical";
 
+        public const string _joystick_vertical = "XRI_Right_Secondary2DAxis_Vertical";
+        public const string _joystick_horizontal = "XRI_Right_Secondary2DAxis_Horizontal";
+
         public static bool inputThisFrame
             => touchCount > 0
             || GetMouseButton(0)
@@ -84,6 +87,41 @@ namespace CustomInput
                 {
                     return 3;
                 }
+                return joystickQuadrant - 1;
+            }
+        }
+
+        public static int? joystickQuadrant
+        {
+            get
+            {
+                float vert = GetAxis(_joystick_vertical);
+                float horz = GetAxis(_joystick_horizontal);
+                if (vert > 0.5f)
+                {
+                    if (horz > 0.5f)
+                    {
+                        return 1;
+                    }
+                    if (horz < -0.5f)
+                    {
+                        return 2;
+                    }
+                    return null;
+                }
+
+                if (vert < -0.5f)
+                {
+                    if (horz > 0.5f)
+                    {
+                        return 4;
+                    }
+                    if (horz < -0.5f)
+                    {
+                        return 3;
+                    }
+                }
+
                 return null;
             }
         }
