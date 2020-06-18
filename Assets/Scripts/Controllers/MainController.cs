@@ -92,6 +92,24 @@ public class MainController : MonoBehaviour, VREventGenerator
             PerformBackspace();
         }
 
+
+        if (GetKeyDown(KeyCode.Alpha1))
+        {
+            layoutManager.DropdownValueSelected(0);
+        }
+        if (GetKeyDown(KeyCode.Alpha2))
+        {
+            layoutManager.DropdownValueSelected(1);
+        }
+        if (GetKeyDown(KeyCode.Alpha3))
+        {
+            layoutManager.DropdownValueSelected(2);
+        }
+        if (GetKeyDown(KeyCode.Alpha4))
+        {
+            layoutManager.DropdownValueSelected(3);
+        }
+
         layout.UpdateState(currentInputData);
     }
 
