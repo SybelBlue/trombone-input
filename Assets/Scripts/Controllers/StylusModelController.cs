@@ -7,24 +7,37 @@ public class StylusModelController : MonoBehaviour
     private GameObject potentiometerIndicator;
 
     [SerializeField]
-    private MeshRenderer frontButtonRenderer, backButtonRenderer;
+    private LaserController laserPointer;
 
-    private bool highlightingFront, highlightingBack;
+    [SerializeField]
+    private MeshRenderer frontButtonRenderer, backButtonRenderer;
 
     [SerializeField]
     private Material highlightMaterial, defaultMaterial;
 
     [SerializeField]
-    private Vector3 min, max;
+    private Vector3 minAngle, maxAngle;
+
+    [SerializeField]
+    private Vector2 sliderBounds;
+
+    public bool useLaser
+    {
+        get => laserPointer.active;
+        set => laserPointer.active = value;
+    }
 
     public Vector3 origin { get; private set; }
 
     public Vector3 direction { get; private set; }
 
-    public (Vector3 origin, Vector3 direction) orientation => (origin, direction);
+    public (Vector3 origin, Vector3 direction) orientation
+        => (transform.position, transform.forward);
 
-    public float normalizedX { get; private set; }
-    public float normalizedY { get; private set; }
+    public Vector3 normalizedAngles { get; private set; }
+
+
+    private bool highlightingFront, highlightingBack;
 
     public float? normalizedSlider
     {
@@ -32,7 +45,7 @@ public class StylusModelController : MonoBehaviour
         {
             if (potentiometerIndicator.activeInHierarchy)
             {
-                return Mathf.InverseLerp(min.z, max.z, potentiometerIndicator.transform.localPosition.z);
+                return Mathf.InverseLerp(sliderBounds.x, sliderBounds.y, -potentiometerIndicator.transform.localPosition.z);
             }
             return null;
         }
@@ -51,7 +64,7 @@ public class StylusModelController : MonoBehaviour
             }
 
             var pos = potentiometerIndicator.transform.localPosition;
-            pos.z = Mathf.Lerp(min.z, max.z, value.Value);
+            pos.z = -Mathf.Lerp(sliderBounds.x, sliderBounds.y, value.Value);
             potentiometerIndicator.transform.localPosition = pos;
         }
     }
@@ -82,30 +95,45 @@ public class StylusModelController : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        normalizedSlider = null;
-        frontButtonDown = false;
-        backButtonDown = false;
-
-        UpdateOrientation();
-    }
-
     void Update()
     {
-        Vector3 euler = transform.rotation.eulerAngles;
-        var x = Utils.ModIntoRange(euler.x, -180, 180);
-        var y = Utils.ModIntoRange(euler.y, -180, 180);
-        normalizedX = Mathf.InverseLerp(min.x, max.x, x);
-        normalizedY = Mathf.InverseLerp(min.y, max.y, y);
-
-        UpdateOrientation();
+        normalizedAngles =
+            transform
+            .rotation
+            .eulerAngles
+            .Map(x => Utils.ModIntoRange(x, -180, 180))
+            .Map((i, x) => Mathf.InverseLerp(minAngle[i], maxAngle[i], x));
     }
 
-    private void UpdateOrientation()
+    private int lastFrame = -1;
+    private (RaycastHit hit, IRaycastable obj)? lastFound;
+
+    public IRaycastable Raycast(out RaycastHit? hit)
     {
-        direction = transform.rotation * Vector3.forward;
-        origin = transform.position;
-        Debug.DrawRay(orientation.origin, orientation.direction, Color.cyan, 0.5f);
+        if (lastFrame == Time.frameCount)
+        {
+            hit = lastFound?.hit;
+            return lastFound?.obj;
+        }
+
+        lastFrame = Time.frameCount;
+        foreach (RaycastHit h in Physics.RaycastAll(transform.position, transform.forward, Mathf.Infinity))
+        {
+            IRaycastable r = h.transform.gameObject.GetComponent<IRaycastable>();
+            if (r)
+            {
+                lastFound = (h, r);
+                hit = h;
+                return r;
+            }
+            else
+            {
+                Debug.DrawLine(transform.position, h.point, Color.red, 0.2f);
+            }
+        }
+
+        lastFound = null;
+        hit = null;
+        return null;
     }
 }

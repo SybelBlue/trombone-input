@@ -6,6 +6,7 @@ namespace CustomInput
     public sealed class RaycastQWERTY : Layout
     {
         public override bool usesSlider => false;
+        public override bool usesRaycasting => true;
 
         private bool _useAlternate;
 
@@ -14,9 +15,6 @@ namespace CustomInput
 
         [SerializeField]
         private GameObject rowPrefab;
-
-        [SerializeField]
-        private UnityEngine.UI.GraphicRaycaster raycaster;
 
         public override bool useAlternate
         {

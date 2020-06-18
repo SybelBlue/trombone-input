@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CustomInput;
 using MinVR;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.Input;
 
 public class MainController : MonoBehaviour, VREventGenerator
@@ -61,9 +62,25 @@ public class MainController : MonoBehaviour, VREventGenerator
     // The most up-to-date value reported by the InputFieldController
     private int? lastReportedValue;
 
+    private bool usingIndicator
+    {
+        get => indicatorRect.gameObject.activeInHierarchy;
+        set => indicatorRect.gameObject.SetActive(value);
+    }
+
     public void Update()
     {
-        indicatorRect.gameObject.SetActive(layout.usesSlider && inputThisFrame);
+        bool indicator = layout.usesSlider && inputThisFrame;
+        if (indicator != usingIndicator)
+        {
+            usingIndicator = indicator;
+        }
+
+
+        if (stylusModel.useLaser != layout.usesRaycasting)
+        {
+            stylusModel.useLaser = layout.usesRaycasting;
+        }
 
         // TODO: Map to stylus events
         if (outputController.text.Length > 0 && GetKeyDown(KeyCode.Space))
@@ -74,6 +91,38 @@ public class MainController : MonoBehaviour, VREventGenerator
         if (GetKeyDown(KeyCode.Backspace))
         {
             PerformBackspace();
+        }
+
+
+        if (GetKeyDown(KeyCode.Alpha7))
+        {
+            layoutManager.DropdownValueSelected(0);
+        }
+        if (GetKeyDown(KeyCode.Alpha8))
+        {
+            layoutManager.DropdownValueSelected(1);
+        }
+        if (GetKeyDown(KeyCode.Alpha9))
+        {
+            layoutManager.DropdownValueSelected(2);
+        }
+        if (GetKeyDown(KeyCode.Alpha0))
+        {
+            layoutManager.DropdownValueSelected(3);
+        }
+
+        if (stylusModel.transform.hasChanged)
+        {
+            RaycastHit? hit;
+            var raycastable = stylusModel.Raycast(out hit);
+            if (raycastable)
+            {
+                raycastable.hasRaycastFocus = true;
+            }
+            else if (IRaycastable.last)
+            {
+                IRaycastable.last.hasRaycastFocus = false;
+            }
         }
 
         layout.UpdateState(currentInputData);
@@ -94,16 +143,14 @@ public class MainController : MonoBehaviour, VREventGenerator
         stylusModel.normalizedSlider = normalized;
     }
 
-    private void OnInputEnd(int? value)
+    private bool OnInputEnd(int? value)
     {
         lastReportedValue = value;
         (LayoutKey parentKey, SimpleKey simpleKey) = layout.KeysFor(currentInputData) ?? (null, null);
 
-        if (parentKey == null)
-        {
-            Debug.LogWarning("Ended gesture in empty zone: " + value);
-        }
-        else
+        bool success = parentKey != null;
+
+        if (success)
         {
             (char typed, bool certain) = layout.GetSelectedLetter(currentInputData) ?? ('-', false);
 
@@ -119,12 +166,17 @@ public class MainController : MonoBehaviour, VREventGenerator
 
                 outputController.text += typed;
             }
-
+        }
+        else
+        {
+            Debug.LogWarning(value.HasValue ? $"Ended gesture in empty zone: {value}" : "Ended gesture on invalid key");
         }
 
         stylusModel.normalizedSlider = null;
 
         lastReportedValue = null;
+
+        return success;
     }
 
     // Callback for when the InputFieldController register a completed gesture
@@ -135,8 +187,8 @@ public class MainController : MonoBehaviour, VREventGenerator
         => new InputData(
                 outputController.text,
                 lastReportedValue,
-                stylusModel.normalizedX,
-                stylusModel.normalizedY,
+                stylusModel.normalizedAngles.x,
+                stylusModel.normalizedAngles.z,
                 stylusModel.normalizedSlider,
                 stylusModel.frontButtonDown,
                 stylusModel.backButtonDown,
@@ -149,7 +201,19 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void FrontButtonDown()
     {
         stylusModel.frontButtonDown = true;
-        OnInputEnd(lastReportedValue);
+        if (OnInputEnd(lastReportedValue)) return;
+
+        RaycastHit? hit;
+        var raycastable = stylusModel.Raycast(out hit);
+        if (raycastable)
+        {
+            raycastable.GetComponent<Button>()?.onClick.Invoke();
+            var dropdown = raycastable.GetComponent<Dropdown>();
+            if (dropdown)
+            {
+                dropdown.value = (dropdown.value + 1) % dropdown.options.Count;
+            }
+        }
     }
 
     public void FrontButtonUp()
@@ -162,9 +226,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     }
 
     public void BackButtonUp()
-    {
-        stylusModel.backButtonDown = false;
-    }
+        => stylusModel.backButtonDown = false;
 
     private void PerformBackspace()
     {
