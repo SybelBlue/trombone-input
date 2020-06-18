@@ -16,9 +16,6 @@ namespace CustomInput
         [SerializeField]
         private GameObject rowPrefab;
 
-        [SerializeField]
-        private UnityEngine.UI.GraphicRaycaster raycaster;
-
         public override bool useAlternate
         {
             get => _useAlternate;

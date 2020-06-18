@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using static UnityEngine.RectTransform;
 
 // The interface for all KeyControllers
-public abstract class IKeyController : MonoBehaviour
+public abstract class IKeyController : IRaycastable
 {
     // set can cause cast exception!
     public abstract CustomInput.LayoutKey layoutKey { get; set; }
@@ -19,6 +19,8 @@ public abstract class IKeyController : MonoBehaviour
     public abstract float Resize(float sensorWidth);
 
     public abstract float ResizeHeight(float sensorHeight);
+
+    public override bool hasRaycastFocus { get; set; }
 }
 
 // The base component for all GameObjects that are meant to represent
@@ -55,14 +57,17 @@ public abstract class KeyController<T> : IKeyController
     }
 }
 
+#pragma warning disable 649
 public abstract class AbstractSimpleKeyController : KeyController<CustomInput.SimpleKey>
 {
-    public Color highlightColor;
+    [SerializeField]
+    private Color highlightColor;
 
     private Color normalColor;
     private bool highlighting = false;
 
-    public Image background;
+    [SerializeField]
+    private Image background;
 
     public abstract string text { get; set; }
 

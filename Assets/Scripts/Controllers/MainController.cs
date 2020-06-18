@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CustomInput;
 using MinVR;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.Input;
 
 public class MainController : MonoBehaviour, VREventGenerator
@@ -108,6 +109,16 @@ public class MainController : MonoBehaviour, VREventGenerator
         if (GetKeyDown(KeyCode.Alpha0))
         {
             layoutManager.DropdownValueSelected(3);
+        }
+
+        if (stylusModel.transform.hasChanged)
+        {
+            RaycastHit? hit;
+            var raycastable = stylusModel.Raycast(out hit);
+            if (raycastable)
+            {
+                raycastable.hasRaycastFocus = true;
+            }
         }
 
         layout.UpdateState(currentInputData);

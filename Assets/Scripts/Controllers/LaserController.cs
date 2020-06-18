@@ -4,10 +4,19 @@
 #pragma warning disable 649
 public class LaserController : MonoBehaviour
 {
+    [SerializeField]
+    private StylusModelController modelController;
 
     [SerializeField]
     private LineRenderer renderer;
 
     void Update()
-        => renderer.SetPosition(1, Vector3.forward * 60);
+    {
+        if (!transform.hasChanged) return;
+
+        RaycastHit? hit;
+        modelController.Raycast(out hit);
+
+        renderer.SetPosition(1, (hit?.distance ?? 50) * Vector3.forward);
+    }
 }
