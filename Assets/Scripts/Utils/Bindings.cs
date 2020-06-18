@@ -21,6 +21,7 @@ namespace CustomInput
     //      Left Control + Mouse Delta  =>      Stylus XZ Rotation Delta
     //      X/Y/Z + Mouse Delta         =>      Stylus Strictly X/Y/Z Rotation Delta
     //      Up/Down/Left/Right          =>      Main Camera Delta
+    //      1/2                         =>      Switch Fake Tracking Target Stylus <==> Brush
     //
     // In XR Build:
     //    From StylusModelController.Raycast
