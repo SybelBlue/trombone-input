@@ -3522,8 +3522,8 @@ MonoBehaviour:
   backButtonRenderer: {fileID: 281251436}
   highlightMaterial: {fileID: 2100000, guid: ea5906402a6b7fb40a9b9f4d8af4ff17, type: 2}
   defaultMaterial: {fileID: 2100000, guid: 7ff72e74ddb75334a966aadc768d4de0, type: 2}
-  minAngle: {x: -45, y: 60, z: 60}
-  maxAngle: {x: 45, y: -30, z: -30}
+  minAngle: {x: 0, y: 60, z: -80}
+  maxAngle: {x: 80, y: -30, z: 80}
   sliderBounds: {x: 0, y: 0.15}
 --- !u!1 &997093839
 GameObject:
@@ -7108,7 +7108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9e7e15bed46f249b6039a625a27bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layout: 3
+  layout: 2
   dropdownController: {fileID: 970785290}
   linearABCDE: {fileID: 997093841}
   stylusBinnedABCDE: {fileID: 2096338478}
