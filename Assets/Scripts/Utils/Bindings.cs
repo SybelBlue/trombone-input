@@ -4,14 +4,45 @@ using static UnityEngine.KeyCode;
 
 namespace CustomInput
 {
+    // In Unity Editor:
+    //    From _MAIN.scene
+    //      Left Click on recommendations, dropdown via screen to canvas coordinates (Unity Eventsystem)
+    //    From Bindings.cs
+    //      Right Click + Mouse Wheel   =>      Stylus Slider
+    //      Backquote                   =>      Stylus Front Button
+    //      Tab                         =>      Stylus Back Button
+    //      7/8/9/0                     =>      Fast Switch Layouts
+    //      Shift                       =>      Hold for Precise Emulation
+    //    From MainController.cs
+    //      Backspace                   =>      Force Backspace
+    //      Space                       =>      Force Space
+    //    From FakeTrackingInput.cs
+    //      Mouse Delta                 =>      Stylus XY Position Delta
+    //      Left Control + Mouse Delta  =>      Stylus XZ Rotation Delta
+    //      X/Y/Z + Mouse Delta         =>      Stylus Strictly X/Y/Z Rotation Delta
+    //      Up/Down/Left/Right          =>      Main Camera Delta
+    //
+    // In XR Build:
+    //    From StylusModelController.Raycast
+    //      Right Trigger to select recommendations, dropdown via raycast from stylus tip
+    //    From _MAIN.scene
+    //      Head Delta                  =>      Main Camera Delta
+    //      Hand Pos/Rot Delta          =>      Stylus Pos/Rot Delta
+    //    From Bindings.cs 
+    //     - <DOM> is dominant hand, set in Bindings.DOMINANT_HAND
+    //      <DOM> Trackpad Y Position   =>      Stylus Slider
+    //      <DOM> Trigger Button        =>      Stylus Front Button
+    //      <DOM> Grip Button           =>      Stylus Back Button
+    //      <DOM> Joystick Quadrant     =>      Fast Switch Layouts
     public static class Bindings
     {
-        public const string _trigger = "XRI_Right_TriggerButton";
-        public const string _grip = "XRI_Right_GripButton";
-        public const string _trackpad_vertical = "XRI_Right_Primary2DAxis_Vertical";
+        public const string DOMINANT_HAND = "Right"; // or "Left"
+        public static string _trigger = $"XRI_{DOMINANT_HAND}_TriggerButton";
+        public static string _grip = $"XRI_{DOMINANT_HAND}_GripButton";
+        public static string _trackpad_vertical = $"XRI_{DOMINANT_HAND}_Primary2DAxis_Vertical";
 
-        public const string _joystick_vertical = "XRI_Right_Secondary2DAxis_Vertical";
-        public const string _joystick_horizontal = "XRI_Right_Secondary2DAxis_Horizontal";
+        public static string _joystick_vertical = $"XRI_{DOMINANT_HAND}_Secondary2DAxis_Vertical";
+        public static string _joystick_horizontal = $"XRI_{DOMINANT_HAND}_Secondary2DAxis_Horizontal";
 
         public static bool inputThisFrame
             => touchCount > 0
