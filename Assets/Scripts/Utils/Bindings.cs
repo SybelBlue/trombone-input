@@ -30,8 +30,10 @@ namespace CustomInput
     //      Hand Pos/Rot Delta          =>      Stylus Pos/Rot Delta
     //    From Bindings.cs 
     //     - <DOM> is dominant hand, set in Bindings.DOMINANT_HAND
-    //      <DOM> Trackpad Y Position   =>      Stylus Slider
-    //      <DOM> Trigger Button        =>      Stylus Front Button
+    //     - Primary is Trackpad for HP WMR
+    //     - Secondary is Joystick for HP WMR
+    //      <DOM> Primary Y Position    =>      Stylus Slider
+    //      <DOM> Secondary Button      =>      Stylus Front Button
     //      <DOM> Grip Button           =>      Stylus Back Button
     //      <DOM> Joystick Quadrant     =>      Fast Switch Layouts
     public static class Bindings
@@ -39,6 +41,8 @@ namespace CustomInput
         public const string DOMINANT_HAND = "Right"; // or "Left"
         public static string _trigger = $"XRI_{DOMINANT_HAND}_TriggerButton";
         public static string _grip = $"XRI_{DOMINANT_HAND}_GripButton";
+
+        // Trackpad/Joystick labels based on HP WMR 1440^2
         public static string _trackpad_vertical = $"XRI_{DOMINANT_HAND}_Primary2DAxis_Vertical";
 
         public static string _joystick_vertical = $"XRI_{DOMINANT_HAND}_Secondary2DAxis_Vertical";
