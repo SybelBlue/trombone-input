@@ -63,6 +63,30 @@ namespace CustomInput
 
         public static bool backspaceDown
             => GetKeyDown(Backspace);
+
+        public static int? emulatingLayoutSwitch
+        {
+            get
+            {
+                if (GetKeyDown(Alpha7))
+                {
+                    return 0;
+                }
+                if (GetKeyDown(Alpha8))
+                {
+                    return 1;
+                }
+                if (GetKeyDown(Alpha9))
+                {
+                    return 2;
+                }
+                if (GetKeyDown(Alpha0))
+                {
+                    return 3;
+                }
+                return null;
+            }
+        }
     }
 
     public static class VREventFactory

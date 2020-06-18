@@ -20,7 +20,11 @@ namespace CustomInput
     {
         public LayoutOption layout;
 
-        public Dropdown dropdown;
+        [SerializeField]
+        private LayoutDropdownController dropdownController;
+
+        private Dropdown dropdown
+            => dropdownController.dropdown;
 
         [SerializeField]
         private LinearABCDE linearABCDE;
@@ -63,7 +67,8 @@ namespace CustomInput
             dropdown.value = (int)layout;
         }
 
-        public void DropdownValueSelected(int index) => layout = (LayoutOption)index;
+        public void DropdownValueSelected(int index)
+            => layout = (LayoutOption)index;
 
         private void Update()
         {
@@ -79,7 +84,10 @@ namespace CustomInput
             }
 
             var current = currentLayout();
-            if (!current.gameObject.activeInHierarchy) current.gameObject.SetActive(true);
+            if (!current.gameObject.activeInHierarchy)
+            {
+                current.gameObject.SetActive(true);
+            }
         }
     }
 }

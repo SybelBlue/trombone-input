@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace CustomInput
+﻿namespace CustomInput
 {
     public class LinearABCDE : Layout
     {
@@ -23,15 +21,6 @@ namespace CustomInput
             }
         }
 
-        protected override void AfterStart()
-        {
-            foreach (SimpleKeyController cont in GetComponentsInChildren<SimpleKeyController>())
-            {
-                var newColor = cont.background.color;
-                newColor.a = 1.0f;
-                cont.background.color = newColor;
-            }
-        }
         public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
         {
             var lKey = LayoutKeyFor(data);

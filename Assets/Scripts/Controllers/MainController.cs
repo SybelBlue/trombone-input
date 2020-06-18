@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CustomInput;
 using MinVR;
 using UnityEngine;
+using UnityEngine.UI;
 using static CustomInput.VREventFactory;
 
 public class MainController : MonoBehaviour, VREventGenerator
@@ -77,6 +78,25 @@ public class MainController : MonoBehaviour, VREventGenerator
             PerformBackspace();
         }
 
+        if (Bindings.emulatingLayoutSwitch.HasValue)
+        {
+            layoutManager.DropdownValueSelected(Bindings.emulatingLayoutSwitch.Value);
+        }
+
+        if (stylusModel.transform.hasChanged)
+        {
+            RaycastHit? hit;
+            var raycastable = stylusModel.Raycast(out hit);
+            if (raycastable)
+            {
+                raycastable.hasRaycastFocus = true;
+            }
+            else if (IRaycastable.last)
+            {
+                IRaycastable.last.hasRaycastFocus = false;
+            }
+        }
+
         layout.UpdateState(currentInputData);
     }
 
@@ -95,16 +115,14 @@ public class MainController : MonoBehaviour, VREventGenerator
         stylusModel.normalizedSlider = normalized;
     }
 
-    private void OnInputEnd(int? value)
+    private bool OnInputEnd(int? value)
     {
         lastReportedValue = value;
         (LayoutKey parentKey, SimpleKey simpleKey) = layout.KeysFor(currentInputData) ?? (null, null);
 
-        if (parentKey == null)
-        {
-            Debug.LogWarning("Ended gesture in empty zone: " + value);
-        }
-        else
+        bool success = parentKey != null;
+
+        if (success)
         {
             (char typed, bool certain) = layout.GetSelectedLetter(currentInputData) ?? ('-', false);
 
@@ -120,12 +138,17 @@ public class MainController : MonoBehaviour, VREventGenerator
 
                 outputController.text += typed;
             }
-
+        }
+        else
+        {
+            Debug.LogWarning(value.HasValue ? $"Ended gesture in empty zone: {value}" : "Ended gesture on invalid key");
         }
 
         stylusModel.normalizedSlider = null;
 
         lastReportedValue = null;
+
+        return success;
     }
 
     // Callback for when the InputFieldController register a completed gesture
@@ -141,7 +164,19 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void FrontButtonDown()
     {
         stylusModel.frontButtonDown = true;
-        OnInputEnd(lastReportedValue);
+        if (OnInputEnd(lastReportedValue)) return;
+
+        RaycastHit? hit;
+        var raycastable = stylusModel.Raycast(out hit);
+        if (raycastable)
+        {
+            raycastable.GetComponent<Button>()?.onClick.Invoke();
+            var dropdown = raycastable.GetComponent<Dropdown>();
+            if (dropdown)
+            {
+                dropdown.value = (dropdown.value + 1) % dropdown.options.Count;
+            }
+        }
     }
 
     public void FrontButtonUp()

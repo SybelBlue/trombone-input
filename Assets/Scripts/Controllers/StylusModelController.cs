@@ -4,7 +4,10 @@
 public class StylusModelController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject potentiometerIndicator, laserPointer;
+    private GameObject potentiometerIndicator;
+
+    [SerializeField]
+    private LaserController laserPointer;
 
     [SerializeField]
     private MeshRenderer frontButtonRenderer, backButtonRenderer;
@@ -20,8 +23,8 @@ public class StylusModelController : MonoBehaviour
 
     public bool useLaser
     {
-        get => laserPointer.activeInHierarchy;
-        set => laserPointer.SetActive(value);
+        get => laserPointer.active;
+        set => laserPointer.active = value;
     }
 
     public Vector3 origin { get; private set; }
@@ -112,4 +115,35 @@ public class StylusModelController : MonoBehaviour
                 backButtonDown,
                 orientation
             );
+    private int lastFrame = -1;
+    private (RaycastHit hit, IRaycastable obj)? lastFound;
+
+    public IRaycastable Raycast(out RaycastHit? hit)
+    {
+        if (lastFrame == Time.frameCount)
+        {
+            hit = lastFound?.hit;
+            return lastFound?.obj;
+        }
+
+        lastFrame = Time.frameCount;
+        foreach (RaycastHit h in Physics.RaycastAll(transform.position, transform.forward, Mathf.Infinity))
+        {
+            IRaycastable r = h.transform.gameObject.GetComponent<IRaycastable>();
+            if (r)
+            {
+                lastFound = (h, r);
+                hit = h;
+                return r;
+            }
+            else
+            {
+                Debug.DrawLine(transform.position, h.point, Color.red, 0.2f);
+            }
+        }
+
+        lastFound = null;
+        hit = null;
+        return null;
+    }
 }

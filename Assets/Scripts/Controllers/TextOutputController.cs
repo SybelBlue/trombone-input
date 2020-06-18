@@ -14,6 +14,9 @@ public class TextOutputController : MonoBehaviour
     [SerializeField]
     private TMPro.TMP_Text[] suggested;
 
+    [SerializeField]
+    private GridLayoutGroup suggestionLayoutGroup;
+
 
     public TextAsset dict824765, dict243342;
 
@@ -74,11 +77,10 @@ public class TextOutputController : MonoBehaviour
             suggestions.AddRange(Auto.Complete.Instance.Completions(lastWord));
         }
 
-
         for (int i = 0; i < suggested.Length; i++)
         {
             suggested[i].text = (i >= suggestions.Count) ? "" : suggestions[i];
+            suggested[i].GetComponent<BoxCollider>().size = suggestionLayoutGroup.cellSize.Into3(0.2f);
         }
     }
-
 }
