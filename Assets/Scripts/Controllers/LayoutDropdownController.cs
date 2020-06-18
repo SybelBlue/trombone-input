@@ -13,26 +13,14 @@ public class LayoutDropdownController : IRaycastable
 
     private Color normalColor;
 
-    private bool _highlighting;
 
-    public override bool hasRaycastFocus
+    private void Start()
     {
-        get => _highlighting;
-        set
-        {
-            if (value)
-            {
-                normalColor = image.color;
-                image.color = highlightColor;
-            }
-            else if (hasRaycastFocus)
-            {
-                image.color = normalColor;
-            }
-
-            _highlighting = value;
-            Debug.Log(value);
-        }
+        normalColor = image.color;
     }
+
+    protected override void OnRaycastFocusChange(bool value)
+        => image.color = value ? highlightColor : normalColor;
+
 
 }

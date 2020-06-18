@@ -20,7 +20,8 @@ public abstract class IKeyController : IRaycastable
 
     public abstract float ResizeHeight(float sensorHeight);
 
-    public override bool hasRaycastFocus { get; set; }
+    protected override void OnRaycastFocusChange(bool value)
+    { }
 }
 
 // The base component for all GameObjects that are meant to represent

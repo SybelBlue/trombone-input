@@ -3031,6 +3031,7 @@ GameObject:
   - component: {fileID: 970785288}
   - component: {fileID: 970785287}
   - component: {fileID: 970785290}
+  - component: {fileID: 970785291}
   m_Layer: 5
   m_Name: LiveDropdown
   m_TagString: Untagged
@@ -3177,6 +3178,19 @@ MonoBehaviour:
   dropdown: {fileID: 970785287}
   image: {fileID: 970785288}
   highlightColor: {r: 0, g: 0, b: 0, a: 0.21960784}
+--- !u!65 &970785291
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970785285}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 160, y: 30, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &971101858
 GameObject:
   m_ObjectHideFlags: 0
@@ -3624,7 +3638,6 @@ MonoBehaviour:
   rectTransform: {fileID: 1047773956}
   rowPrefab: {fileID: 7558789522572092336, guid: 4b6b61865e394f743ba5f8f7a5d1fe7b,
     type: 3}
-  raycaster: {fileID: 0}
 --- !u!114 &1047773958
 MonoBehaviour:
   m_ObjectHideFlags: 0

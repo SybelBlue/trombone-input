@@ -119,6 +119,10 @@ public class MainController : MonoBehaviour, VREventGenerator
             {
                 raycastable.hasRaycastFocus = true;
             }
+            else if (IRaycastable.last)
+            {
+                IRaycastable.last.hasRaycastFocus = false;
+            }
         }
 
         layout.UpdateState(currentInputData);
@@ -201,6 +205,11 @@ public class MainController : MonoBehaviour, VREventGenerator
         if (raycastable)
         {
             raycastable.GetComponent<Button>()?.onClick.Invoke();
+            var dropdown = raycastable.GetComponent<Dropdown>();
+            if (dropdown)
+            {
+                dropdown.value = (dropdown.value + 1) % dropdown.options.Count;
+            }
         }
     }
 

@@ -83,15 +83,4 @@ public class TextOutputController : MonoBehaviour
             suggested[i].GetComponent<BoxCollider>().size = suggestionLayoutGroup.cellSize.Into3(0.2f);
         }
     }
-
-    public void SuggestionHighlighted(string text)
-    {
-        for (int i = 0; i < suggested.Length; i++)
-        {
-            if (suggested[i].text != text)
-            {
-                suggested[i].GetComponent<IRaycastable>().hasRaycastFocus = false;
-            }
-        }
-    }
 }

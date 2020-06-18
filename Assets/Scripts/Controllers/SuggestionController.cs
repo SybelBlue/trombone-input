@@ -9,18 +9,8 @@ public class SuggestionController : IRaycastable
     [SerializeField]
     protected TextOutputController textOutputController;
 
-    public override bool hasRaycastFocus
-    {
-        get => text.fontStyle == TMPro.FontStyles.Bold;
-        set
-        {
-            text.fontStyle = value ?
-                TMPro.FontStyles.Bold :
-                TMPro.FontStyles.Italic;
-            if (value)
-            {
-                textOutputController.SuggestionHighlighted(text.text);
-            }
-        }
-    }
+    protected override void OnRaycastFocusChange(bool value)
+        => text.fontStyle = value ?
+            TMPro.FontStyles.Bold :
+            TMPro.FontStyles.Italic;
 }
