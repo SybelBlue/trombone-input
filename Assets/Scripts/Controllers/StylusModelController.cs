@@ -107,7 +107,7 @@ public class StylusModelController : MonoBehaviour
 
     void Update()
     {
-        var rectifiedAngles =
+        normalizedAngles =
             transform
             .rotation
             .eulerAngles
