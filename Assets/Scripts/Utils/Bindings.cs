@@ -39,15 +39,22 @@ namespace CustomInput
     //      <DOM> Joystick Quadrant     =>      Fast Switch Layouts
     public static class Bindings
     {
-        public const string DOMINANT_HAND = "Right"; // or "Left"
-        public static string _trigger = $"XRI_{DOMINANT_HAND}_TriggerButton";
-        public static string _grip = $"XRI_{DOMINANT_HAND}_GripButton";
+        public static bool LEFT_HANDED = false;
+        public static string _dominant_hand
+            => LEFT_HANDED ? "Left" : "Right"; // or "Left"
+        public static string _trigger
+            => $"XRI_{_dominant_hand}_TriggerButton";
+        public static string _grip
+            => $"XRI_{_dominant_hand}_GripButton";
 
         // Trackpad/Joystick labels based on HP WMR 1440^2
-        public static string _trackpad_vertical = $"XRI_{DOMINANT_HAND}_Primary2DAxis_Vertical";
+        public static string _trackpad_vertical
+            => $"XRI_{_dominant_hand}_Primary2DAxis_Vertical";
 
-        public static string _joystick_vertical = $"XRI_{DOMINANT_HAND}_Secondary2DAxis_Vertical";
-        public static string _joystick_horizontal = $"XRI_{DOMINANT_HAND}_Secondary2DAxis_Horizontal";
+        public static string _joystick_vertical
+            => $"XRI_{_dominant_hand}_Secondary2DAxis_Vertical";
+        public static string _joystick_horizontal
+            => $"XRI_{_dominant_hand}_Secondary2DAxis_Horizontal";
 
         public static bool inputThisFrame
             => touchCount > 0
@@ -133,26 +140,26 @@ namespace CustomInput
             {
                 float vert = GetAxis(_joystick_vertical);
                 float horz = GetAxis(_joystick_horizontal);
-                if (vert > 0.5f)
+                if (vert > 0.3f)
                 {
-                    if (horz > 0.5f)
+                    if (horz > 0.3f)
                     {
                         return 1;
                     }
-                    if (horz < -0.5f)
+                    if (horz < -0.3f)
                     {
                         return 2;
                     }
                     return null;
                 }
 
-                if (vert < -0.5f)
+                if (vert < -0.3f)
                 {
-                    if (horz > 0.5f)
+                    if (horz > 0.3f)
                     {
                         return 4;
                     }
-                    if (horz < -0.5f)
+                    if (horz < -0.3f)
                     {
                         return 3;
                     }

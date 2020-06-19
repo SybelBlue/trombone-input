@@ -8,6 +8,8 @@ using static CustomInput.VREventFactory;
 public class MainController : MonoBehaviour, VREventGenerator
 {
 
+    public bool leftHanded;
+
     // The LayoutManager that is in charge of loading the layout
     public LayoutController layoutManager;
 
@@ -31,6 +33,8 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public void Start()
     {
+        Bindings.LEFT_HANDED = leftHanded;
+
         VRMain.Instance.AddEventGenerator(this);
 
         VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, AnalogUpdate);

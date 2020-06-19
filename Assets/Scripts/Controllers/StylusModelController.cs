@@ -95,14 +95,19 @@ public class StylusModelController : MonoBehaviour
         }
     }
 
+    private float LowerBound(int i)
+    {
+        return i == 0 && !CustomInput.Bindings.LEFT_HANDED ? maxAngle[i] : minAngle[i];
+    }
+
     void Update()
     {
-        normalizedAngles =
+        var rectifiedAngles =
             transform
             .rotation
             .eulerAngles
             .Map(x => Utils.ModIntoRange(x, -180, 180))
-            .Map((i, x) => Mathf.InverseLerp(minAngle[i], maxAngle[i], x));
+            .Map((i, x) => Mathf.InverseLerp(LowerBound(i), maxAngle[i], x));
     }
 
     public CustomInput.InputData PackageData(string context, int? lastReportedValue)
@@ -115,6 +120,7 @@ public class StylusModelController : MonoBehaviour
                 backButtonDown,
                 orientation
             );
+
     private int lastFrame = -1;
     private (RaycastHit hit, IRaycastable obj)? lastFound;
 
