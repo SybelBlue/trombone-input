@@ -36,6 +36,9 @@ public class StylusModelController : MonoBehaviour
 
     public Vector3 normalizedAngles { get; private set; }
 
+    public Vector3 eulerAngles
+        => transform.eulerAngles;
+
 
     private bool highlightingFront, highlightingBack;
 
@@ -95,12 +98,12 @@ public class StylusModelController : MonoBehaviour
         }
     }
 
-    private float LowerBound(int i)
+    public float LowerBound(int i)
     {
         return i == 0 && !CustomInput.Bindings.LEFT_HANDED ? maxAngle[i] : minAngle[i];
     }
 
-    private float UpperBound(int i)
+    public float UpperBound(int i)
     {
         return i == 0 && !CustomInput.Bindings.LEFT_HANDED ? minAngle[i] : maxAngle[i];
     }
@@ -108,9 +111,7 @@ public class StylusModelController : MonoBehaviour
     void Update()
     {
         normalizedAngles =
-            transform
-            .rotation
-            .eulerAngles
+            eulerAngles
             .Map(x => Utils.ModIntoRange(x, -180, 180))
             .Map((i, x) => Mathf.InverseLerp(LowerBound(i), UpperBound(i), x));
     }
