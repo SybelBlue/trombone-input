@@ -100,6 +100,11 @@ public class StylusModelController : MonoBehaviour
         return i == 0 && !CustomInput.Bindings.LEFT_HANDED ? maxAngle[i] : minAngle[i];
     }
 
+    private float UpperBound(int i)
+    {
+        return i == 0 && !CustomInput.Bindings.LEFT_HANDED ? minAngle[i] : maxAngle[i];
+    }
+
     void Update()
     {
         var rectifiedAngles =
@@ -107,7 +112,7 @@ public class StylusModelController : MonoBehaviour
             .rotation
             .eulerAngles
             .Map(x => Utils.ModIntoRange(x, -180, 180))
-            .Map((i, x) => Mathf.InverseLerp(LowerBound(i), maxAngle[i], x));
+            .Map((i, x) => Mathf.InverseLerp(LowerBound(i), UpperBound(i), x));
     }
 
     public CustomInput.InputData PackageData(string context, int? lastReportedValue)
