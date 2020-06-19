@@ -31,6 +31,8 @@ public class MainController : MonoBehaviour, VREventGenerator
     // The place where typed guesses go
     public TextOutputController outputController;
 
+    public TextAsset trial0;
+
     public void Start()
     {
         Bindings.LEFT_HANDED = leftHanded;
@@ -46,6 +48,8 @@ public class MainController : MonoBehaviour, VREventGenerator
         VRMain.Instance.AddOnVRButtonUpCallback(_back_button_event_name, BackButtonUp);
 
         outputController.text = "";
+
+        Debug.Log($"Loaded {Testing.Utils.ReadTrialItems(trial0, false).Count} trial items");
     }
 
     // The most up-to-date value reported by the InputFieldController

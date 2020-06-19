@@ -5343,6 +5343,7 @@ MonoBehaviour:
   displayRect: {fileID: 1903087915}
   indicatorRect: {fileID: 2053574479}
   outputController: {fileID: 1708648835}
+  trial0: {fileID: 4900000, guid: 83f24e5bebd0b0c418296fc1d3b5ee9e, type: 3}
 --- !u!114 &1335849778
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,0 +1,6 @@
+!trial-number 0
+#arbitraily made by logan
+!randomize-layouts
+blind:THE DOG TOOK A LEAP
+!next-layout
+perfect:AND HIT THE GROUND SOFTLY

@@ -1,0 +1,5 @@
+!trial-number 1
+#arbitraily made by logan
+!randomize-layouts
+blind:ABCDE
+blind:123456
