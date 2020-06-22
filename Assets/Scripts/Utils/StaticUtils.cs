@@ -50,6 +50,23 @@ public static class Utils
     public static void SetFromEnd<T>(this T[] array, int i, T value)
         => array[Mathf.Max(0, array.Length - 1) - i] = value;
 
+    public static string Intercalate(this string[] strings, string inner)
+    {
+        string final = "";
+
+        for (int i = 0; i < strings.Length - 1; i++)
+        {
+            final += strings[i] + inner;
+        }
+
+        if (strings.Length > 0)
+        {
+            final += strings.Last();
+        }
+
+        return final;
+    }
+
     public static Vector3 Map(this Vector3 vec, System.Func<float, float> f)
         => new Vector3(f(vec.x), f(vec.y), f(vec.z));
 
