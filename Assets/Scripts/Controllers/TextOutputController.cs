@@ -24,14 +24,20 @@ public class TextOutputController : MonoBehaviour
 
     public SymSpell.Verbosity verbosity;
 
-    public virtual string text
+    public string text
     {
         get => rawOutput.text;
         protected set
         {
             rawOutput.text = value;
-            RefreshSuggestionsPanel(value);
+            RefreshSuggestionsPanel(suggestionSource);
         }
+    }
+
+    public virtual string suggestionSource
+    {
+        get => text;
+        protected set => text = value;
     }
 
     public List<string> suggestions;
@@ -54,20 +60,20 @@ public class TextOutputController : MonoBehaviour
                 var sugText = suggestedText.text.ToUpper();
                 if (sugText.Length > 0)
                 {
-                    if (text.EndsWith(" "))
+                    if (suggestionSource.EndsWith(" "))
                     {
-                        text += sugText;
+                        suggestionSource += sugText;
                     }
                     else
                     {
-                        string[] textWords = text.Split(' ');
+                        string[] textWords = suggestionSource.Split(' ');
                         string[] suggestionWords = sugText.Split(' ');
                         for (int i = 0; i < textWords.Length && i < suggestionWords.Length; i++)
                         {
                             textWords.SetFromEnd(i, suggestionWords.FromEnd(i));
                         }
 
-                        text = textWords.Intercalate(" ");
+                        suggestionSource = textWords.Intercalate(" ");
                     }
                 }
             });

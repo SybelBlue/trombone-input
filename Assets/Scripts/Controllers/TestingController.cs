@@ -10,8 +10,26 @@ public class TestingControllerEvent : UnityEngine.Events.UnityEvent<LayoutOption
 
 public class TestingController : TextOutputController
 {
+    private string _prompt;
     public string currentPrompt
-    { get; set; }
+    {
+        get => _prompt;
+        set
+        {
+            _prompt = value;
+            ResetText();
+        }
+    }
+
+    public override string suggestionSource
+    {
+        get => currentOutput;
+        protected set
+        {
+            currentOutput = value;
+            UpdateDisplay();
+        }
+    }
 
     public string currentOutput
     { get; private set; }
@@ -37,6 +55,25 @@ public class TestingController : TextOutputController
         => currentTrial?.items[_trialIndex];
 
     private Trial? currentTrial = null;
+
+    private bool completedChallenge
+    {
+        get
+        {
+            switch (currentChallengeType)
+            {
+                case null:
+                    return false;
+                case ChallengeType.Practice:
+                    return false;
+                case ChallengeType.Perfect:
+                    return currentOutput.Equals(currentPrompt);
+                case ChallengeType.Blind:
+                    return currentOutput.Length >= currentPrompt.Length;
+            }
+            throw new System.ArgumentException(currentChallengeType.ToString());
+        }
+    }
 
     public override void ResetText()
     {
@@ -82,6 +119,11 @@ public class TestingController : TextOutputController
 
     private void UpdateDisplay()
     {
+        if (completedChallenge)
+        {
+            AdvanceTrial();
+        }
+
         switch (currentChallengeType)
         {
             case null:
@@ -99,7 +141,8 @@ public class TestingController : TextOutputController
                 {
                     // get char and check if matches prompt
                     char c = currentOutput[i];
-                    bool correct = i < currentPrompt.Length && currentPrompt[i] == c;
+                    char target = currentPrompt[i];
+                    bool correct = i < currentPrompt.Length && target == c;
 
                     // if it is not the same correctness as the last character...
                     if (lastCorrect != correct || i == 0)
@@ -110,16 +153,27 @@ public class TestingController : TextOutputController
                         lastCorrect = correct;
                     }
 
-                    // either way, add the character to the string
-                    final += c;
+                    // add the character to the string, if it's wrong and ' ', use _
+                    if (!correct && c == ' ')
+                    {
+                        final += target != '_' ? "_" : "-";
+                    }
+                    else
+                    {
+                        final += c;
+                    }
                 }
-                // close the last color block
-                final += "</color>";
+
+                if (currentOutput.Length > 0)
+                {
+                    // close the last color block
+                    final += "</color>";
+                }
 
                 // add any remaining characters in the prompt
-                if (final.Length < currentPrompt.Length)
+                if (currentOutput.Length < currentPrompt.Length)
                 {
-                    final += currentPrompt.Substring(final.Length);
+                    final += currentPrompt.Substring(currentOutput.Length);
                 }
 
 
