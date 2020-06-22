@@ -63,7 +63,7 @@ public static class Utils
         => new Vector3(f(vec.x), f(vec.y), f(vec.z));
 
     public static Vector3 Map(this Vector3 vec, System.Func<int, float, float> f)
-        => new Vector3(f(0, vec.x), f(1, vec.y), f(2, vec.z));
+        => new Vector3(f(0, vec[0]), f(1, vec[1]), f(2, vec[2]));
 
     public static Vector3 WithZ(this Vector2 vec, float z)
         => new Vector3(vec.x, vec.y, z);

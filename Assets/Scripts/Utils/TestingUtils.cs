@@ -10,7 +10,7 @@ namespace Testing
     {
         public const char COMMAND_PREFIX = '!', COMMENT_PREFIX = '#', CHALLENGE_SEPERATOR = ':';
 
-        public static List<TrialItem> ReadTrialItems(TextAsset trialFile, bool logComments = true)
+        public static TrialItem[] ReadTrialItems(TextAsset trialFile, bool logComments = true)
         {
             List<TrialItem> items = new List<TrialItem>();
 
@@ -49,7 +49,8 @@ namespace Testing
                     items.Add(new Challenge(line.Substring(0, index), line.Substring(index + 1)));
                 }
             }
-            return items;
+
+            return items.ToArray();
         }
     }
 

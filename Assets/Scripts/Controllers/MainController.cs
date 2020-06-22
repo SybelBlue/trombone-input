@@ -31,7 +31,9 @@ public class MainController : MonoBehaviour, VREventGenerator
     // The place where typed guesses go
     public TextOutputController outputController;
 
-    public TextAsset trial0;
+    public TextAsset[] trialAssets;
+
+    public List<Testing.TrialItem[]> trials;
 
     public void Start()
     {
@@ -49,7 +51,13 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         outputController.text = "";
 
-        Debug.Log($"Loaded {Testing.Utils.ReadTrialItems(trial0, false).Count} trial items");
+        trials = new List<Testing.TrialItem[]>(trialAssets.Length);
+        foreach (TextAsset trial in trialAssets)
+        {
+            var items = Testing.Utils.ReadTrialItems(trial, false);
+            trials.Add(items);
+            Debug.Log($"Loaded {items.Length} trial items");
+        }
     }
 
     // The most up-to-date value reported by the InputFieldController
