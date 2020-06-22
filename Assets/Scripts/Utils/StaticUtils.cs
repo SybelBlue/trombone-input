@@ -42,7 +42,13 @@ public static class Utils
 
     // gets the last item of the list (or errs trying)
     public static T Last<T>(this T[] array)
-        => array[Mathf.Max(0, array.Length - 1)];
+        => array.FromEnd(0);
+
+    public static T FromEnd<T>(this T[] array, int i)
+        => array[Mathf.Max(0, array.Length - 1) - i];
+
+    public static void SetFromEnd<T>(this T[] array, int i, T value)
+        => array[Mathf.Max(0, array.Length - 1) - i] = value;
 
     public static Vector3 Map(this Vector3 vec, System.Func<float, float> f)
         => new Vector3(f(vec.x), f(vec.y), f(vec.z));

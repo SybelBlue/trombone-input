@@ -1,5 +1,5 @@
 !trial-number 1
 #arbitrarily made by logan
 !randomize-layouts
-blind:ABCDE
+practice:ABCDE
 blind:123456

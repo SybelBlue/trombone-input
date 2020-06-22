@@ -18,7 +18,7 @@ data Command = RandomizeLayoutOrder | NextLayout | TrialNumber Int deriving Show
 data Challenge = Blind Prompt | Perfect Prompt | Practice Prompt deriving Show
 
 -- | challenges and commands that are written into trial files
-data TrialEntry = Issue Command | Perform Challenge | Comment String deriving Show
+data TrialEntry = Do Command | Perform Challenge | Comment String deriving Show
 
 type Trial = [TrialEntry]
 
@@ -48,7 +48,7 @@ instance Writable Challenge where
     write (Practice p) = "practice" ++ [challengeSeperatorChar] ++ scrubPrompt p
 
 instance Writable TrialEntry where
-    write (Issue c) = commandPrefixChar : write c
+    write (Do c) = commandPrefixChar : write c
     write (Perform c) = write c
     write (Comment c) = commentPrefixChar : c
 
@@ -61,7 +61,7 @@ perform t s = Perform (t s)
 type Main = IO ()
 
 labelTrial :: Trial -> Int -> Trial
-labelTrial trial n = (Issue $ TrialNumber n) : trial
+labelTrial trial n = Do (TrialNumber n) : trial
 
 writeTrial :: Int -> Trial -> Main
 writeTrial n trial = writeFile ("Assets/Trials/trial" ++ show n ++ ".txt") (write trial)
@@ -89,16 +89,16 @@ trials =
 trialA :: Trial
 trialA =
     [ Comment "arbitrarily made by logan"
-    , Issue RandomizeLayoutOrder
+    , Do RandomizeLayoutOrder
     , perform Blind "the dog took a leap"
-    , Issue NextLayout
+    , Do NextLayout
     , perform Perfect "and hit the ground softly"
     ]
 
 trialB :: Trial
 trialB =
     [ Comment "arbitrarily made by logan"
-    , Issue RandomizeLayoutOrder
-    , perform Blind "abcde"
+    , Do RandomizeLayoutOrder
+    , perform Practice "abcde"
     , perform Blind "123456"
     ]

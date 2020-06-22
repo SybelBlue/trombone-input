@@ -54,7 +54,20 @@ public class TextOutputController : MonoBehaviour
                 var sugText = suggestedText.text.ToUpper();
                 if (sugText.Length > 0)
                 {
-                    text = sugText;
+                    string[] textWords = text.Split(' ');
+                    string[] suggestionWords = sugText.Split(' ');
+                    for (int i = 0; i < textWords.Length && i < suggestionWords.Length; i++)
+                    {
+                        textWords.SetFromEnd(i, suggestionWords.FromEnd(i));
+                    }
+
+                    string final = "";
+                    foreach (string s in textWords)
+                    {
+                        final += s;
+                    }
+
+                    text = final;
                 }
             });
         }
