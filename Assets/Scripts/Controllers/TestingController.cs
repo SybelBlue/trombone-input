@@ -1,10 +1,9 @@
 using System;
-using UnityEngine;
 using Testing;
 using CustomInput;
 using System.Linq;
 
-public class TestingController : MonoBehaviour
+public class TestingController : TextOutputController
 {
     public string currentPrompt
     { get; set; }
