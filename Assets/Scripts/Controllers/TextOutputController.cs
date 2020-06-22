@@ -94,7 +94,7 @@ public class TextOutputController : MonoBehaviour
         for (int i = 0; i < suggested.Length; i++)
         {
             suggested[i].text = (i >= suggestions.Count) ? "" : suggestions[i];
-            suggested[i].GetComponent<BoxCollider>().size = suggestionLayoutGroup.cellSize.Into3(0.2f);
+            suggested[i].GetComponent<BoxCollider>().size = suggestionLayoutGroup.cellSize.WithZ(0.2f);
         }
     }
 }
