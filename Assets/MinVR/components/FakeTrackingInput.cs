@@ -177,7 +177,7 @@ namespace MinVR
                 float angle = 0.1f * (x - lastx);
                 if (curTracker == 0)
                 {
-                    tracker1Rot = Quaternion.AngleAxis(angle, Vector3.down) * tracker1Rot;
+                    tracker1Rot = Quaternion.AngleAxis(angle, Vector3.back) * tracker1Rot;
                 }
                 else if (curTracker == 1)
                 {
