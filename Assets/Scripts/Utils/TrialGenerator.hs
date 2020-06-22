@@ -63,8 +63,8 @@ type Main = IO ()
 labelTrial :: Trial -> Int -> Trial
 labelTrial trial n = (Issue $ TrialNumber n) : trial
 
-writeTrial :: Writable w => Int -> w -> Main
-writeTrial n item = writeFile ("Assets/Trials/trial" ++ show n ++ ".txt") (write item)
+writeTrial :: Int -> Trial -> Main
+writeTrial n trial = writeFile ("Assets/Trials/trial" ++ show n ++ ".txt") (write trial)
 
 writeTrials :: [Main] -> Main
 writeTrials [] = putStr "done."
@@ -88,7 +88,7 @@ trials =
 
 trialA :: Trial
 trialA =
-    [ Comment "arbitraily made by logan"
+    [ Comment "arbitrarily made by logan"
     , Issue RandomizeLayoutOrder
     , perform Blind "the dog took a leap"
     , Issue NextLayout
@@ -97,7 +97,7 @@ trialA =
 
 trialB :: Trial
 trialB =
-    [ Comment "arbitraily made by logan"
+    [ Comment "arbitrarily made by logan"
     , Issue RandomizeLayoutOrder
     , perform Blind "abcde"
     , perform Blind "123456"

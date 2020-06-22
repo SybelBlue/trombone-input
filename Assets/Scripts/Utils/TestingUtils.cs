@@ -2,6 +2,7 @@ using StaticUtils = Utils;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System;
 
 namespace Testing
 {
@@ -56,6 +57,8 @@ namespace Testing
     {
         protected TrialItem()
         { }
+
+        public abstract void Apply(TestingController controller);
     }
 
     public class Command : TrialItem
@@ -71,6 +74,24 @@ namespace Testing
 
         public Command(string command, string num) : this(StringIntoType(command), StringIntoTrialNumber(num))
         { }
+
+        public override void Apply(TestingController controller)
+        {
+            switch (command)
+            {
+                case CommandType.RandomizeLayoutOrder:
+                    controller.RandomizeLayouts();
+                    return;
+                case CommandType.AdvanceLayout:
+                    controller.AdvanceLayout();
+                    return;
+                case CommandType.SetTrialNumber:
+                    controller.trialNumber = trialNumber.Value;
+                    return;
+            }
+
+            throw new ArgumentException(command.ToString() + " not recognized");
+        }
 
         public static int? StringIntoTrialNumber(string x)
         {
@@ -97,7 +118,7 @@ namespace Testing
                     return CommandType.SetTrialNumber;
             }
 
-            throw new System.ArgumentException(s);
+            throw new ArgumentException(s);
         }
 
         public enum CommandType
@@ -121,6 +142,12 @@ namespace Testing
         public Challenge(string type, string prompt) : this(StringIntoType(type), prompt)
         { }
 
+        public override void Apply(TestingController controller)
+        {
+            controller.currentPrompt = prompt;
+            controller.currentChallenge = type;
+        }
+
         public static ChallengeType StringIntoType(string type)
         {
             switch (type)
@@ -133,17 +160,17 @@ namespace Testing
                     return ChallengeType.Practice;
             }
 
-            throw new System.ArgumentException(type);
+            throw new ArgumentException(type);
         }
+    }
 
-        public enum ChallengeType
-        {
-            // no backspaces, no viewing output
-            Blind,
-            // must be 100% correct to advance
-            Perfect,
-            // may be skipped at any time
-            Practice,
-        }
+    public enum ChallengeType
+    {
+        // no backspaces, no viewing output
+        Blind,
+        // must be 100% correct to advance
+        Perfect,
+        // may be skipped at any time
+        Practice,
     }
 }
