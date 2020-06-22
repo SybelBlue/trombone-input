@@ -3,6 +3,7 @@ using Testing;
 using CustomInput;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class TestingControllerEvent : UnityEngine.Events.UnityEvent<LayoutOption>
@@ -36,6 +37,9 @@ public class TestingController : TextOutputController
 
     public int? trialNumber
         => currentTrial?.trialNumber;
+
+    [SerializeField]
+    private Button practiceEndButton;
 
     [UnityEngine.Tooltip("Called when the trial requests a layout change")]
     public TestingControllerEvent OnLayoutChange;
@@ -73,6 +77,12 @@ public class TestingController : TextOutputController
             }
             throw new System.ArgumentException(currentChallengeType.ToString());
         }
+    }
+
+    public override void Start()
+    {
+        base.Start();
+        practiceEndButton.onClick.AddListener(OnPracticeButtonDown);
     }
 
     public override void ResetText()
@@ -124,11 +134,14 @@ public class TestingController : TextOutputController
             AdvanceTrial();
         }
 
+        practiceEndButton.gameObject.SetActive(false);
+
         switch (currentChallengeType)
         {
             case null:
                 return;
             case ChallengeType.Practice:
+                practiceEndButton.gameObject.SetActive(true);
                 return;
             case ChallengeType.Blind:
                 int l = currentOutput.Length;
@@ -139,10 +152,15 @@ public class TestingController : TextOutputController
                 bool lastCorrect = false;
                 for (int i = 0; i < currentOutput.Length; i++)
                 {
-                    // get char and check if matches prompt
+                    // get char
                     char c = currentOutput[i];
-                    char target = currentPrompt[i];
-                    bool correct = i < currentPrompt.Length && target == c;
+
+                    // get target char
+                    bool exceedsPrompt = i >= currentPrompt.Length;
+                    char? target = exceedsPrompt ? (char?)null : currentPrompt[i];
+
+                    // check if correct
+                    bool correct = target == c;
 
                     // if it is not the same correctness as the last character...
                     if (lastCorrect != correct || i == 0)
@@ -153,7 +171,7 @@ public class TestingController : TextOutputController
                         lastCorrect = correct;
                     }
 
-                    // add the character to the string, if it's wrong and ' ', use _
+                    // add the character to the string, if it's wrong and ' ', use _ or -
                     if (!correct && c == ' ')
                     {
                         final += target != '_' ? "_" : "-";
@@ -222,5 +240,17 @@ public class TestingController : TextOutputController
         }
 
         AdvanceTrial();
+    }
+
+    private void OnPracticeButtonDown()
+    {
+        if (currentChallengeType == ChallengeType.Practice)
+        {
+            AdvanceTrial();
+        }
+        else
+        {
+            Debug.LogWarning("Practice End Button pressed outside of practice!");
+        }
     }
 }

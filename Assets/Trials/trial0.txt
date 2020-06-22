@@ -3,5 +3,5 @@
 !randomize-layouts
 blind:THE DOG TOOK A LEAP
 !next-layout
-perfect:AND HIT THE GROUND SOFTLY
-blind:UNUSUALLY LONG PROMPTS SHOULD RESCALE TO FIT THEIR BOX, I'D HOPE
+perfect:AND HIT THE
+practice:

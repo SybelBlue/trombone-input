@@ -42,7 +42,7 @@ public class TextOutputController : MonoBehaviour
 
     public List<string> suggestions;
 
-    public void Start()
+    public virtual void Start()
     {
         Auto.Correct.Instance.InitDictionary(dictionarySize, dict824765, dict243342);
 
