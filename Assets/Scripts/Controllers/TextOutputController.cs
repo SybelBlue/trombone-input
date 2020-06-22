@@ -66,14 +66,14 @@ public class TextOutputController : MonoBehaviour
                     }
                     else
                     {
-                        string[] textWords = suggestionSource.Split(' ');
+                        string[] sourceWords = suggestionSource.Split(' ');
                         string[] suggestionWords = sugText.Split(' ');
-                        for (int i = 0; i < textWords.Length && i < suggestionWords.Length; i++)
+                        for (int i = 0; i < sourceWords.Length && i < suggestionWords.Length; i++)
                         {
-                            textWords.SetFromEnd(i, suggestionWords.FromEnd(i));
+                            sourceWords.SetFromEnd(i, suggestionWords.FromEnd(i));
                         }
 
-                        suggestionSource = textWords.Intercalate(" ");
+                        suggestionSource = sourceWords.Intercalate(" ");
                     }
                 }
             });
