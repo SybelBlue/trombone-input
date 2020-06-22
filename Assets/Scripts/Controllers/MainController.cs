@@ -28,12 +28,12 @@ public class MainController : MonoBehaviour, VREventGenerator
     // The transform of the indicator
     public RectTransform indicatorRect;
 
-    // The place where typed guesses go
+    // The place where typed letters go
     public TextOutputController outputController;
 
     public TextAsset[] trialAssets;
 
-    public List<Testing.TrialItem[]> trials;
+    public List<Testing.Trial> trials;
 
     public void Start()
     {
@@ -49,14 +49,19 @@ public class MainController : MonoBehaviour, VREventGenerator
         VRMain.Instance.AddOnVRButtonDownCallback(_back_button_event_name, BackButtonDown);
         VRMain.Instance.AddOnVRButtonUpCallback(_back_button_event_name, BackButtonUp);
 
-        outputController.text = "";
+        outputController.ResetText();
 
-        trials = new List<Testing.TrialItem[]>(trialAssets.Length);
+        trials = new List<Testing.Trial>(trialAssets.Length);
         foreach (TextAsset trial in trialAssets)
         {
             var items = Testing.Utils.ReadTrialItems(trial, false);
             trials.Add(items);
             Debug.Log($"Loaded {items.Length} trial items");
+        }
+
+        if (outputController is TestingController)
+        {
+            (outputController as TestingController).RunTrial(trials[0]);
         }
     }
 
@@ -86,7 +91,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         // TODO: Map to stylus events
         if (outputController.text.Length > 0 && Bindings.spaceDown)
         {
-            outputController.text += ' ';
+            outputController.TypedChar(' ');
         }
 
         if (Bindings.backspaceDown)
@@ -152,7 +157,7 @@ public class MainController : MonoBehaviour, VREventGenerator
             {
                 Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
 
-                outputController.text += typed;
+                outputController.TypedChar(typed);
             }
         }
         else

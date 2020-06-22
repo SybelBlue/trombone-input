@@ -2,6 +2,7 @@ using System;
 using Testing;
 using CustomInput;
 using System.Linq;
+using UnityEngine;
 
 [Serializable]
 public class TestingControllerEvent : UnityEngine.Events.UnityEvent<LayoutOption>
@@ -15,68 +16,71 @@ public class TestingController : TextOutputController
     public string currentOutput
     { get; private set; }
 
-    public int trialNumber
-    { get; set; }
+    public int? trialNumber
+        => currentTrial?.trialNumber;
 
     [UnityEngine.Tooltip("Called when the trial requests a layout change")]
     public TestingControllerEvent OnLayoutChange;
 
-    public ChallengeType? currentChallenge;
+    public ChallengeType? currentChallengeType;
 
     private LayoutOption[] layoutOrder;
 
     private int _layoutIndex = 0;
 
+    private int _trialIndex;
+
     private LayoutOption currentLayout
         => layoutOrder[_layoutIndex];
 
-    public void TypedLetter(char c)
+    private TrialItem currentTrialItem
+        => currentTrial?.items[_trialIndex];
+
+    private Trial? currentTrial = null;
+
+    public override void ResetText()
     {
-        if (!currentChallenge.HasValue)
-        {
-            throw new System.InvalidOperationException("uninitialized challengeType");
-        }
+        base.ResetText();
+        currentOutput = "";
 
-        if (c == '\b')
+        if (currentChallengeType.HasValue)
         {
-            TypedBackspace();
+            UpdateDisplay();
         }
-        else
-        {
-            currentOutput += c;
-        }
+    }
 
+    public override void AppendLetter(char c)
+    {
+        currentOutput += c;
         UpdateDisplay();
     }
 
     public override void TypedBackspace()
     {
-        switch (currentChallenge)
+        switch (currentChallengeType)
         {
             case null:
                 throw new System.InvalidOperationException("uninitialized challengeType");
             case ChallengeType.Practice:
-                text = text.Backspace();
                 currentOutput = currentOutput.Backspace();
                 UpdateDisplay();
                 return;
             case ChallengeType.Blind:
                 // TODO: play noise? shake UI? vibrate controller?
-                UnityEngine.Debug.LogWarning("Disregarding Backspace!");
+                Debug.LogWarning("Disregarding Backspace!");
                 return;
             case ChallengeType.Perfect:
-                text = text.Backspace();
                 currentOutput = currentOutput.Backspace();
                 UpdateDisplay();
                 return;
         }
 
-        throw new System.ArgumentException(currentChallenge.ToString());
+        throw new System.ArgumentException(currentChallengeType.ToString());
     }
 
     private void UpdateDisplay()
     {
-        switch (currentChallenge)
+        switch (currentChallengeType)
         {
             case null:
                 throw new System.InvalidOperationException("uninitialized challengeType");
@@ -120,7 +124,7 @@ public class TestingController : TextOutputController
                 text = final;
                 return;
         }
-        throw new System.ArgumentException(currentChallenge.ToString());
+        throw new System.ArgumentException(currentChallengeType.ToString());
     }
 
     public void RandomizeLayouts()
@@ -133,5 +137,34 @@ public class TestingController : TextOutputController
     {
         _layoutIndex = (_layoutIndex + 1) % layoutOrder.Length;
         OnLayoutChange.Invoke(currentLayout);
+    }
+
+    public void RunTrial(Trial t)
+    {
+        currentTrial = t;
+        _trialIndex = -1;
+        AdvanceTrial();
+    }
+
+    private void AdvanceTrial()
+    {
+        if (!currentTrial.HasValue) return;
+
+        _trialIndex++;
+
+        if (_trialIndex >= currentTrial.Value.Length)
+        {
+            Debug.LogWarning($"Completed Trial {trialNumber}");
+            currentTrial = null;
+            return;
+        }
+
+        if (currentTrialItem.Apply(this))
+        {
+            UpdateDisplay();
+            return;
+        }
+
+        AdvanceTrial();
     }
 }

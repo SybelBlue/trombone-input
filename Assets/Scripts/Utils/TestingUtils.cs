@@ -6,11 +6,33 @@ using System;
 
 namespace Testing
 {
+    public struct Trial
+    {
+        public readonly TrialItem[] items;
+        public readonly int trialNumber;
+        public readonly int Length;
+
+        public Trial(params TrialItem[] items)
+        {
+            this.items = items;
+            this.Length = items.Length;
+            foreach (var item in items)
+            {
+                switch (item)
+                {
+                    case Command c when c.type == Command.CommandType.SetTrialNumber:
+                        trialNumber = c.trialNumber.Value;
+                        return;
+                }
+            }
+            throw new ArgumentException("TrialItems do not contain an Identifying TrialNumber");
+        }
+    }
     public static class Utils
     {
         public const char COMMAND_PREFIX = '!', COMMENT_PREFIX = '#', CHALLENGE_SEPERATOR = ':';
 
-        public static TrialItem[] ReadTrialItems(TextAsset trialFile, bool logComments = true)
+        public static Trial ReadTrialItems(TextAsset trialFile, bool logComments = true)
         {
             List<TrialItem> items = new List<TrialItem>();
 
@@ -50,7 +72,7 @@ namespace Testing
                 }
             }
 
-            return items.ToArray();
+            return new Trial(items.ToArray());
         }
     }
 
@@ -59,39 +81,39 @@ namespace Testing
         protected TrialItem()
         { }
 
-        public abstract void Apply(TestingController controller);
+        // returns wether or not this sets TrialController in a blocking state
+        public abstract bool Apply(TestingController controller);
     }
 
     public class Command : TrialItem
     {
-        public readonly CommandType command;
+        public readonly CommandType type;
         public readonly int? trialNumber;
 
         public Command(CommandType command, int? trialNumber = null) : base()
         {
-            this.command = command;
+            this.type = command;
             this.trialNumber = trialNumber;
         }
 
         public Command(string command, string num) : this(StringIntoType(command), StringIntoTrialNumber(num))
         { }
 
-        public override void Apply(TestingController controller)
+        public override bool Apply(TestingController controller)
         {
-            switch (command)
+            switch (type)
             {
                 case CommandType.RandomizeLayoutOrder:
                     controller.RandomizeLayouts();
-                    return;
+                    return false;
                 case CommandType.AdvanceLayout:
                     controller.AdvanceLayout();
-                    return;
+                    return false;
                 case CommandType.SetTrialNumber:
-                    controller.trialNumber = trialNumber.Value;
-                    return;
+                    return false;
             }
 
-            throw new ArgumentException(command.ToString() + " not recognized");
+            throw new ArgumentException(type.ToString() + " not recognized");
         }
 
         public static int? StringIntoTrialNumber(string x)
@@ -122,6 +144,7 @@ namespace Testing
             throw new ArgumentException(s);
         }
 
+        [Serializable]
         public enum CommandType
         {
             RandomizeLayoutOrder,
@@ -143,10 +166,11 @@ namespace Testing
         public Challenge(string type, string prompt) : this(StringIntoType(type), prompt)
         { }
 
-        public override void Apply(TestingController controller)
+        public override bool Apply(TestingController controller)
         {
             controller.currentPrompt = prompt;
-            controller.currentChallenge = type;
+            controller.currentChallengeType = type;
+            return true;
         }
 
         public static ChallengeType StringIntoType(string type)
@@ -165,6 +189,7 @@ namespace Testing
         }
     }
 
+    [Serializable]
     public enum ChallengeType
     {
         // no backspaces, no viewing output

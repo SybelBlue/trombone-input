@@ -27,7 +27,7 @@ public class TextOutputController : MonoBehaviour
     public virtual string text
     {
         get => rawOutput.text;
-        set
+        protected set
         {
             rawOutput.text = value;
             RefreshSuggestionsPanel(value);
@@ -98,7 +98,23 @@ public class TextOutputController : MonoBehaviour
         }
     }
 
+    public virtual void ResetText()
+        => text = "";
 
+    public void TypedChar(char c)
+    {
+        if (c == '\b')
+        {
+            TypedBackspace();
+        }
+        else
+        {
+            AppendLetter(c);
+        }
+    }
+
+    public virtual void AppendLetter(char c)
+        => text += c;
 
     public virtual void TypedBackspace()
         => text = text.Backspace();
