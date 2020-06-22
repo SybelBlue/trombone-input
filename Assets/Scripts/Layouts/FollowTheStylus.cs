@@ -20,6 +20,6 @@ public class FollowTheStylus : MonoBehaviour
         transform.position = stylusTransform.position;
         // transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, stylusTransform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
         Vector3 transAngles = transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(transAngles.x, stylusTransform.rotation.eulerAngles.y, transAngles.z);
+        transform.rotation = Quaternion.Euler(transAngles.x, stylusTransform.rotation.eulerAngles.y-90, transAngles.z);
     }
 }
