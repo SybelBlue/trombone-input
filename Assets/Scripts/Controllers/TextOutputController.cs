@@ -24,7 +24,7 @@ public class TextOutputController : MonoBehaviour
 
     public SymSpell.Verbosity verbosity;
 
-    public string text
+    public virtual string text
     {
         get => rawOutput.text;
         set
@@ -97,4 +97,9 @@ public class TextOutputController : MonoBehaviour
             suggested[i].GetComponent<BoxCollider>().size = suggestionLayoutGroup.cellSize.WithZ(0.2f);
         }
     }
+
+
+
+    public virtual void TypedBackspace()
+        => text = text.Backspace();
 }

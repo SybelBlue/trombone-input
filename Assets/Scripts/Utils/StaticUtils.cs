@@ -59,6 +59,12 @@ public static class Utils
         return final;
     }
 
+    public static string Repeat(this string s, int n)
+        => n > 0 ? s + s.Repeat(n - 1) : "";
+
+    public static string Backspace(this string s)
+        => s.Substring(0, Mathf.Max(0, s.Length - 1));
+
     public static Vector3 Map(this Vector3 vec, System.Func<float, float> f)
         => new Vector3(f(vec.x), f(vec.y), f(vec.z));
 

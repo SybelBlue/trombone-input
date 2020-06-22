@@ -91,7 +91,7 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         if (Bindings.backspaceDown)
         {
-            PerformBackspace();
+            outputController.TypedBackspace();
         }
 
         if (Bindings.emulatingLayoutSwitch.HasValue)
@@ -146,7 +146,7 @@ public class MainController : MonoBehaviour, VREventGenerator
             {
                 Debug.Log("Pressed Backspace");
 
-                PerformBackspace();
+                outputController.TypedBackspace();
             }
             else
             {
@@ -206,12 +206,6 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public void BackButtonUp()
         => stylusModel.backButtonDown = false;
-
-    private void PerformBackspace()
-    {
-        int endIndex = Mathf.Max(0, outputController.text.Length - 1);
-        outputController.text = outputController.text.Substring(0, endIndex);
-    }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
     {
@@ -276,4 +270,7 @@ public class MainController : MonoBehaviour, VREventGenerator
             eventList.Add(MakeButtonUpEvent(_back_button_event_name));
         }
     }
+
+    public void OnTestingLayoutChange(LayoutOption layout)
+        => layoutManager.layout = layout;
 }
