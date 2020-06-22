@@ -5412,6 +5412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leftHanded: 0
+  trialExecutionMode: 1
   layoutManager: {fileID: 1903087916}
   stylusModel: {fileID: 971101864}
   inputPanel: {fileID: 1125104903}

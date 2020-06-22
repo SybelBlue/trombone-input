@@ -51,6 +51,7 @@ public class TestingController : TextOutputController
 
     public override void AppendLetter(char c)
     {
+        base.AppendLetter(c);
         currentOutput += c;
         UpdateDisplay();
     }
@@ -60,14 +61,15 @@ public class TestingController : TextOutputController
         switch (currentChallengeType)
         {
             case null:
-                throw new System.InvalidOperationException("uninitialized challengeType");
+                base.TypedBackspace();
+                return;
             case ChallengeType.Practice:
                 currentOutput = currentOutput.Backspace();
                 UpdateDisplay();
                 return;
             case ChallengeType.Blind:
                 // TODO: play noise? shake UI? vibrate controller?
-                Debug.LogWarning("Disregarding Backspace!");
+                Debug.LogWarning("Disregarding Backspace during Blind Challenge!");
                 return;
             case ChallengeType.Perfect:
                 currentOutput = currentOutput.Backspace();
@@ -83,7 +85,7 @@ public class TestingController : TextOutputController
         switch (currentChallengeType)
         {
             case null:
-                throw new System.InvalidOperationException("uninitialized challengeType");
+                return;
             case ChallengeType.Practice:
                 return;
             case ChallengeType.Blind:

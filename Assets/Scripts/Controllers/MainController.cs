@@ -10,6 +10,8 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public bool leftHanded;
 
+    public TrialExecutionMode trialExecutionMode;
+
     // The LayoutManager that is in charge of loading the layout
     public LayoutController layoutManager;
 
@@ -59,7 +61,7 @@ public class MainController : MonoBehaviour, VREventGenerator
             Debug.Log($"Loaded {items.Length} trial items");
         }
 
-        if (outputController is TestingController)
+        if (outputController is TestingController && runTrial)
         {
             (outputController as TestingController).RunTrial(trials[0]);
         }
@@ -278,4 +280,16 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public void OnTestingLayoutChange(LayoutOption layout)
         => layoutManager.layout = layout;
+
+    [System.Serializable]
+    public enum TrialExecutionMode
+    {
+        Always,
+        OnlyInEditor,
+        Never,
+    }
+
+    public bool runTrial
+        => trialExecutionMode == TrialExecutionMode.Always
+        || (trialExecutionMode == TrialExecutionMode.OnlyInEditor && Application.isEditor);
 }
