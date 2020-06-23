@@ -245,7 +245,7 @@ namespace Testing
             Indent();
             foreach ((string key, float time) in keypresses)
             {
-                writer.WriteLine($"{indent}{bullet}\'{key}\': {time}");
+                writer.WriteLine($"{indent}{time}: \"{(key == "\b" ? "\\b" : key)}\"");
             }
             _indent = 0;
         }
