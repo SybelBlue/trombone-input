@@ -32,47 +32,47 @@ public static class Utils
     public static int NormalizedIntoIndex(float normalized, int length)
         => Mathf.FloorToInt(Mathf.LerpUnclamped(0, Mathf.Max(0, length - 1), normalized));
 
-    // gets the item normalized * 100% of the way into the array
-    public static T NormalizedIndex<T>(this T[] array, float normalized)
-        => array[NormalizedIntoIndex(normalized, array.Length)];
-
-    // gets the item normalized * 100% of the way into the list
-    public static T GetNormalized<T>(this System.Collections.Generic.List<T> list, float normalized)
-        => list[NormalizedIntoIndex(normalized, list.Count)];
-
     // gets the last item of the list (or errs trying)
     public static T Last<T>(this T[] array)
-        => array[Mathf.Max(0, array.Length - 1)];
+        => array.FromEnd(0);
+
+    public static T FromEnd<T>(this T[] array, int i)
+        => array[Mathf.Max(0, array.Length - 1) - i];
+
+    public static void SetFromEnd<T>(this T[] array, int i, T value)
+        => array[Mathf.Max(0, array.Length - 1) - i] = value;
+
+    public static string Intercalate(this string[] strings, string inner)
+    {
+        string final = "";
+
+        for (int i = 0; i < strings.Length - 1; i++)
+        {
+            final += strings[i] + inner;
+        }
+
+        if (strings.Length > 0)
+        {
+            final += strings.Last();
+        }
+
+        return final;
+    }
+
+    public static string Repeat(this string s, int n)
+        => n > 0 ? s + s.Repeat(n - 1) : "";
+
+    public static string Backspace(this string s)
+        => s.Substring(0, Mathf.Max(0, s.Length - 1));
 
     public static Vector3 Map(this Vector3 vec, System.Func<float, float> f)
         => new Vector3(f(vec.x), f(vec.y), f(vec.z));
 
     public static Vector3 Map(this Vector3 vec, System.Func<int, float, float> f)
-        => new Vector3(f(0, vec.x), f(1, vec.y), f(2, vec.z));
+        => new Vector3(f(0, vec[0]), f(1, vec[1]), f(2, vec[2]));
 
-    public static Vector3 Into3(this Vector2 vec, float z)
+    public static Vector3 WithZ(this Vector2 vec, float z)
         => new Vector3(vec.x, vec.y, z);
-
-    /// <summary>
-    /// Converts RectTransform.rect's local coordinates to world space
-    /// Usage example RectTransformExt.GetWorldRect(myRect, Vector2.one);
-    /// </summary>
-    /// <author>https://answers.unity.com/users/204640/ash-blue.html</author>
-    /// <returns>The world rect.</returns>
-    /// <param name="rt">RectangleTransform we want to convert to world coordinates.</param>
-    /// <param name="scale">Optional scale pulled from the CanvasScaler. Default to using Vector2.one.</param>
-    public static Rect GetWorldRect(this RectTransform rt, Vector2 scale)
-    {
-        // Convert the rectangle to world corners and grab the top left
-        Vector3[] corners = new Vector3[4];
-        rt.GetWorldCorners(corners);
-        Vector3 topLeft = corners[0];
-
-        // Rescale the size appropriately based on the current Canvas scale
-        Vector2 scaledSize = new Vector2(scale.x * rt.rect.size.x, scale.y * rt.rect.size.y);
-
-        return new Rect(topLeft, scaledSize);
-    }
 
     public static System.IO.MemoryStream StreamFromTextAsset(TextAsset asset)
         => new System.IO.MemoryStream(asset.bytes);

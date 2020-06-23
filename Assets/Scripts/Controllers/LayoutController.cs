@@ -18,7 +18,16 @@ namespace CustomInput
 #pragma warning disable 649
     public class LayoutController : MonoBehaviour
     {
-        public LayoutOption layout;
+        private LayoutOption _layout;
+        public LayoutOption layout
+        {
+            get => _layout;
+            set
+            {
+                _layout = value;
+                ActivateLayout();
+            }
+        }
 
         [SerializeField]
         private LayoutDropdownController dropdownController;
@@ -75,7 +84,8 @@ namespace CustomInput
             ActivateLayout();
         }
 
-        private void ActivateLayout() { 
+        private void ActivateLayout()
+        {
             foreach (var layoutOption in System.Enum.GetValues(typeof(LayoutOption)))
             {
                 var layout = fromOption((LayoutOption)layoutOption);

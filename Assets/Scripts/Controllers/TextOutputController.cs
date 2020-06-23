@@ -27,16 +27,22 @@ public class TextOutputController : MonoBehaviour
     public string text
     {
         get => rawOutput.text;
-        set
+        protected set
         {
             rawOutput.text = value;
-            RefreshSuggestionsPanel(value);
+            RefreshSuggestionsPanel(suggestionSource);
         }
+    }
+
+    public virtual string suggestionSource
+    {
+        get => text;
+        protected set => text = value;
     }
 
     public List<string> suggestions;
 
-    public void Start()
+    public virtual void Start()
     {
         Auto.Correct.Instance.InitDictionary(dictionarySize, dict824765, dict243342);
 
@@ -54,7 +60,21 @@ public class TextOutputController : MonoBehaviour
                 var sugText = suggestedText.text.ToUpper();
                 if (sugText.Length > 0)
                 {
-                    text = sugText;
+                    if (suggestionSource.EndsWith(" "))
+                    {
+                        suggestionSource += sugText;
+                    }
+                    else
+                    {
+                        string[] sourceWords = suggestionSource.Split(' ');
+                        string[] suggestionWords = sugText.Split(' ');
+                        for (int i = 0; i < sourceWords.Length && i < suggestionWords.Length; i++)
+                        {
+                            sourceWords.SetFromEnd(i, suggestionWords.FromEnd(i));
+                        }
+
+                        suggestionSource = sourceWords.Intercalate(" ");
+                    }
                 }
             });
         }
@@ -80,7 +100,28 @@ public class TextOutputController : MonoBehaviour
         for (int i = 0; i < suggested.Length; i++)
         {
             suggested[i].text = (i >= suggestions.Count) ? "" : suggestions[i];
-            suggested[i].GetComponent<BoxCollider>().size = suggestionLayoutGroup.cellSize.Into3(0.2f);
+            suggested[i].GetComponent<BoxCollider>().size = suggestionLayoutGroup.cellSize.WithZ(0.2f);
         }
     }
+
+    public virtual void ResetText()
+        => text = "";
+
+    public void TypedChar(char c)
+    {
+        if (c == '\b')
+        {
+            TypedBackspace();
+        }
+        else
+        {
+            AppendLetter(c);
+        }
+    }
+
+    public virtual void AppendLetter(char c)
+        => text += c;
+
+    public virtual void TypedBackspace()
+        => text = text.Backspace();
 }

@@ -2,14 +2,37 @@ using StaticUtils = Utils;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System;
 
 namespace Testing
 {
+    public struct Trial
+    {
+        public readonly TrialItem[] items;
+        public readonly int trialNumber;
+        public readonly int Length;
+
+        public Trial(params TrialItem[] items)
+        {
+            this.items = items;
+            this.Length = items.Length;
+            foreach (var item in items)
+            {
+                switch (item)
+                {
+                    case Command c when c.type == Command.CommandType.SetTrialNumber:
+                        trialNumber = c.trialNumber.Value;
+                        return;
+                }
+            }
+            throw new ArgumentException("TrialItems do not contain an Identifying TrialNumber");
+        }
+    }
     public static class Utils
     {
         public const char COMMAND_PREFIX = '!', COMMENT_PREFIX = '#', CHALLENGE_SEPERATOR = ':';
 
-        public static List<TrialItem> ReadTrialItems(TextAsset trialFile, bool logComments = true)
+        public static Trial ReadTrialItems(TextAsset trialFile, bool logComments = true)
         {
             List<TrialItem> items = new List<TrialItem>();
 
@@ -48,7 +71,8 @@ namespace Testing
                     items.Add(new Challenge(line.Substring(0, index), line.Substring(index + 1)));
                 }
             }
-            return items;
+
+            return new Trial(items.ToArray());
         }
     }
 
@@ -56,21 +80,41 @@ namespace Testing
     {
         protected TrialItem()
         { }
+
+        // returns wether or not this sets TrialController in a blocking state
+        public abstract bool Apply(TestingController controller);
     }
 
     public class Command : TrialItem
     {
-        public readonly CommandType command;
+        public readonly CommandType type;
         public readonly int? trialNumber;
 
         public Command(CommandType command, int? trialNumber = null) : base()
         {
-            this.command = command;
+            this.type = command;
             this.trialNumber = trialNumber;
         }
 
         public Command(string command, string num) : this(StringIntoType(command), StringIntoTrialNumber(num))
         { }
+
+        public override bool Apply(TestingController controller)
+        {
+            switch (type)
+            {
+                case CommandType.RandomizeLayoutOrder:
+                    controller.RandomizeLayouts();
+                    return false;
+                case CommandType.AdvanceLayout:
+                    controller.AdvanceLayout();
+                    return false;
+                case CommandType.SetTrialNumber:
+                    return false;
+            }
+
+            throw new ArgumentException(type.ToString() + " not recognized");
+        }
 
         public static int? StringIntoTrialNumber(string x)
         {
@@ -97,9 +141,10 @@ namespace Testing
                     return CommandType.SetTrialNumber;
             }
 
-            throw new System.ArgumentException(s);
+            throw new ArgumentException(s);
         }
 
+        [Serializable]
         public enum CommandType
         {
             RandomizeLayoutOrder,
@@ -121,6 +166,13 @@ namespace Testing
         public Challenge(string type, string prompt) : this(StringIntoType(type), prompt)
         { }
 
+        public override bool Apply(TestingController controller)
+        {
+            controller.currentPrompt = prompt;
+            controller.currentChallengeType = type;
+            return true;
+        }
+
         public static ChallengeType StringIntoType(string type)
         {
             switch (type)
@@ -133,17 +185,18 @@ namespace Testing
                     return ChallengeType.Practice;
             }
 
-            throw new System.ArgumentException(type);
+            throw new ArgumentException(type);
         }
+    }
 
-        public enum ChallengeType
-        {
-            // no backspaces, no viewing output
-            Blind,
-            // must be 100% correct to advance
-            Perfect,
-            // may be skipped at any time
-            Practice,
-        }
+    [Serializable]
+    public enum ChallengeType
+    {
+        // no backspaces, no viewing output
+        Blind,
+        // must be 100% correct to advance
+        Perfect,
+        // may be skipped at any time
+        Practice,
     }
 }

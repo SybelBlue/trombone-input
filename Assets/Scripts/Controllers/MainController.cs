@@ -10,6 +10,8 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public bool leftHanded;
 
+    public TrialExecutionMode trialExecutionMode;
+
     // The LayoutManager that is in charge of loading the layout
     public LayoutController layoutManager;
 
@@ -28,10 +30,12 @@ public class MainController : MonoBehaviour, VREventGenerator
     // The transform of the indicator
     public RectTransform indicatorRect;
 
-    // The place where typed guesses go
+    // The place where typed letters go
     public TextOutputController outputController;
 
-    public TextAsset trial0;
+    public TextAsset[] trialAssets;
+
+    public List<Testing.Trial> trials;
 
     public void Start()
     {
@@ -47,9 +51,20 @@ public class MainController : MonoBehaviour, VREventGenerator
         VRMain.Instance.AddOnVRButtonDownCallback(_back_button_event_name, BackButtonDown);
         VRMain.Instance.AddOnVRButtonUpCallback(_back_button_event_name, BackButtonUp);
 
-        outputController.text = "";
+        outputController.ResetText();
 
-        Debug.Log($"Loaded {Testing.Utils.ReadTrialItems(trial0, false).Count} trial items");
+        trials = new List<Testing.Trial>(trialAssets.Length);
+        foreach (TextAsset trial in trialAssets)
+        {
+            var items = Testing.Utils.ReadTrialItems(trial, false);
+            trials.Add(items);
+            Debug.Log($"Loaded {items.Length} trial items");
+        }
+
+        if (outputController is TestingController && runTrial)
+        {
+            (outputController as TestingController).RunTrial(trials[0]);
+        }
     }
 
     // The most up-to-date value reported by the InputFieldController
@@ -78,12 +93,12 @@ public class MainController : MonoBehaviour, VREventGenerator
         // TODO: Map to stylus events
         if (outputController.text.Length > 0 && Bindings.spaceDown)
         {
-            outputController.text += ' ';
+            outputController.TypedChar(' ');
         }
 
         if (Bindings.backspaceDown)
         {
-            PerformBackspace();
+            outputController.TypedBackspace();
         }
 
         if (Bindings.emulatingLayoutSwitch.HasValue)
@@ -138,13 +153,13 @@ public class MainController : MonoBehaviour, VREventGenerator
             {
                 Debug.Log("Pressed Backspace");
 
-                PerformBackspace();
+                outputController.TypedBackspace();
             }
             else
             {
                 Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
 
-                outputController.text += typed;
+                outputController.TypedChar(typed);
             }
         }
         else
@@ -198,12 +213,6 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public void BackButtonUp()
         => stylusModel.backButtonDown = false;
-
-    private void PerformBackspace()
-    {
-        int endIndex = Mathf.Max(0, outputController.text.Length - 1);
-        outputController.text = outputController.text.Substring(0, endIndex);
-    }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
     {
@@ -268,4 +277,19 @@ public class MainController : MonoBehaviour, VREventGenerator
             eventList.Add(MakeButtonUpEvent(_back_button_event_name));
         }
     }
+
+    public void OnTestingLayoutChange(LayoutOption layout)
+        => layoutManager.layout = layout;
+
+    [System.Serializable]
+    public enum TrialExecutionMode
+    {
+        Always,
+        OnlyInEditor,
+        Never,
+    }
+
+    public bool runTrial
+        => trialExecutionMode == TrialExecutionMode.Always
+        || (trialExecutionMode == TrialExecutionMode.OnlyInEditor && Application.isEditor);
 }
