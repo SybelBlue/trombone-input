@@ -155,6 +155,12 @@ namespace Testing
             EndLastChallenge(output);
             return results;
         }
+
+        public void AddKeypress(char c)
+            => lastChallenge.AddKeypress($"{c}");
+
+        public void AddKeypress(string c)
+            => lastChallenge.AddKeypress(c);
     }
 
     public interface ITrialResult
@@ -201,7 +207,7 @@ namespace Testing
 
         public string output;
 
-        public List<(char key, float time)> keypresses;
+        public List<(string key, float time)> keypresses;
 
         public ChallengeResult(Challenge source, string layoutName, float? start = null) : base(source)
         {
@@ -209,7 +215,7 @@ namespace Testing
             this.start = start ?? Time.time;
 
             output = "";
-            keypresses = new List<(char key, float time)>(source.prompt.Length * 2);
+            keypresses = new List<(string key, float time)>(source.prompt.Length * 2);
         }
 
         private int _indent = 0;
@@ -237,15 +243,18 @@ namespace Testing
             Unindent();
             writer.WriteLine($"{indent}keypresses:");
             Indent();
-            foreach ((char key, float time) in keypresses)
+            foreach ((string key, float time) in keypresses)
             {
-                writer.WriteLine($"{indent}{bullet}{key}: {time}");
+                writer.WriteLine($"{indent}{bullet}\'{key}\': {time}");
             }
             _indent = 0;
         }
 
         public void SetEndNow()
             => end = Time.time;
+
+        public void AddKeypress(string c)
+            => keypresses.Add((c, Time.time));
     }
 
     public abstract class TrialItem

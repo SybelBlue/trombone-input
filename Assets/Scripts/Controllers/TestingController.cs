@@ -13,6 +13,7 @@ public class TestingLayoutEvent : UnityEngine.Events.UnityEvent<LayoutOption>
 public class TestingTrialEvent : UnityEngine.Events.UnityEvent<bool>
 { }
 
+#pragma warning disable 649
 public class TestingController : TextOutputController
 {
     private string _prompt;
@@ -100,6 +101,12 @@ public class TestingController : TextOutputController
         practiceEndButton.onClick.AddListener(OnPracticeButtonDown);
     }
 
+    protected override void OnSuggestionButtonClick(string suggestionText)
+    {
+        builder?.AddKeypress(suggestionText);
+        base.OnSuggestionButtonClick(suggestionText);
+    }
+
     public override void ResetText()
     {
         base.ResetText();
@@ -115,11 +122,13 @@ public class TestingController : TextOutputController
     {
         base.AppendLetter(c);
         currentOutput += c;
+        builder?.AddKeypress(c);
         UpdateDisplay();
     }
 
     public override void TypedBackspace()
     {
+        builder?.AddKeypress('\b');
         switch (currentChallengeType)
         {
             case null:

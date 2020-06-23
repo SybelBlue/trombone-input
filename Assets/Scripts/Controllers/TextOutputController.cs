@@ -55,31 +55,32 @@ public class TextOutputController : MonoBehaviour
 
         foreach (var suggestedText in suggested)
         {
-            suggestedText.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                var sugText = suggestedText.text.ToUpper();
-                if (sugText.Length > 0)
-                {
-                    if (suggestionSource.EndsWith(" "))
-                    {
-                        suggestionSource += sugText;
-                    }
-                    else
-                    {
-                        string[] sourceWords = suggestionSource.Split(' ');
-                        string[] suggestionWords = sugText.Split(' ');
-                        for (int i = 0; i < sourceWords.Length && i < suggestionWords.Length; i++)
-                        {
-                            sourceWords.SetFromEnd(i, suggestionWords.FromEnd(i));
-                        }
-
-                        suggestionSource = sourceWords.Intercalate(" ");
-                    }
-                }
-            });
+            suggestedText.GetComponent<Button>().onClick.AddListener(() => OnSuggestionButtonClick(suggestedText.text.ToUpper()));
         }
 
         RefreshSuggestionsPanel("");
+    }
+
+    protected virtual void OnSuggestionButtonClick(string suggestionText)
+    {
+        if (suggestionText.Length > 0)
+        {
+            if (suggestionSource.EndsWith(" "))
+            {
+                suggestionSource += suggestionText;
+            }
+            else
+            {
+                string[] sourceWords = suggestionSource.Split(' ');
+                string[] suggestionWords = suggestionText.Split(' ');
+                for (int i = 0; i < sourceWords.Length && i < suggestionWords.Length; i++)
+                {
+                    sourceWords.SetFromEnd(i, suggestionWords.FromEnd(i));
+                }
+
+                suggestionSource = sourceWords.Intercalate(" ");
+            }
+        }
     }
 
     private void RefreshSuggestionsPanel(string value)
