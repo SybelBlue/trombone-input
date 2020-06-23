@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CustomInput
 {
@@ -14,7 +15,7 @@ namespace CustomInput
         private RectTransform rectTransform;
 
         [SerializeField]
-        private GameObject rowPrefab;
+        private GridLayoutGroup gridLayout;
 
         public override bool useAlternate
         {
@@ -29,20 +30,17 @@ namespace CustomInput
             }
         }
 
-        private GameObject[] rows;
-
         protected override void BeforeStart()
         {
-            rows = new GameObject[3];
-            for (int i = 0; i < rows.Length; i++)
-            {
-                rows[i] = Instantiate(rowPrefab, transform);
-            }
+            gridLayout.cellSize = new Vector2(rectTransform.rect.width / 10.0f, rectTransform.rect.height / 3.0f);
         }
 
-        protected override Transform ParentForNthChild(int n)
+        protected override void AfterStart()
         {
-            return rows[n / 10].transform;
+            foreach (var collider in GetComponentsInChildren<BoxCollider>())
+            {
+                collider.size = gridLayout.cellSize.WithZ(0.2f);
+            }
         }
 
         protected override int ChildIndexFor(InputData data)
