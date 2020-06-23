@@ -1,7 +1,0 @@
-!trial-number 0
-#arbitrarily made by logan
-!randomize-layouts
-practice: type anything, then end practice
-blind:THE DOG TOOK A LEAP
-!next-layout
-perfect:AND HIT THE FLOOR GENTLY

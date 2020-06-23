@@ -20,7 +20,7 @@ namespace Testing
             {
                 switch (item)
                 {
-                    case Command c when c.type == Command.CommandType.SetTrialNumber:
+                    case Command c when c.type == Command.Type.SetTrialNumber:
                         trialNumber = c.trialNumber.Value;
                         return;
                 }
@@ -74,6 +74,110 @@ namespace Testing
 
             return new Trial(items.ToArray());
         }
+
+        public static void Write(List<ITrialResult> t)
+        {
+            using (StreamWriter writer = new StreamWriter($"../../Results/trial-{DateTime.Now}.yaml"))
+            {
+                Write(t, writer);
+            }
+        }
+
+        public static void Write(List<ITrialResult> t, StreamWriter writer)
+        {
+            writer.WriteLine($"created: {DateTime.Now}");
+            writer.WriteLine("trial:");
+            foreach (var item in t)
+            {
+                item.Write(writer);
+            }
+        }
+    }
+
+    public interface ITrialResult
+    {
+        void Write(StreamWriter writer);
+    }
+
+    public abstract class TrialItemResult<T> : ITrialResult
+        where T : TrialItem
+    {
+        public readonly T source;
+
+        public TrialItemResult(T source)
+        {
+            this.source = source;
+        }
+
+        public abstract void Write(StreamWriter writer);
+    }
+
+    public class CommandResult : TrialItemResult<Command>
+    {
+        public CommandResult(Command source) : base(source)
+        { }
+
+        public override void Write(StreamWriter writer)
+        {
+            if (source.type == Command.Type.SetTrialNumber)
+            {
+                writer.WriteLine($"  - number: {source.trialNumber}");
+            }
+            else
+            {
+                writer.WriteLine($"  - command: {Command.TypeIntoString(source.type)}");
+            }
+        }
+    }
+
+    public class ChallengeResult : TrialItemResult<Challenge>
+    {
+        public readonly string layoutName;
+        public float start;
+        public float? end;
+
+        public string output;
+
+        public List<(char key, float time)> keypresses;
+
+        public ChallengeResult(Challenge source, string layoutName, float? start = null) : base(source)
+        {
+            this.layoutName = layoutName;
+            this.start = start ?? Time.time;
+
+            output = "";
+            keypresses = new List<(char key, float time)>(source.prompt.Length * 2);
+        }
+
+        private void Indent() => indent += "  ";
+        private void Unindent() => indent = indent.Backspace();
+        private string indent = "";
+        private const string bullet = "- ";
+
+        public override void Write(StreamWriter writer)
+        {
+            Indent();
+            writer.WriteLine($"{indent}{bullet}challenge:");
+            Indent();
+            Indent();
+            writer.WriteLine($"{indent}type: {source.type.ToString()}");
+            writer.WriteLine($"{indent}layout: {layoutName}");
+            writer.WriteLine($"{indent}prompt: \"{source.prompt}\"");
+            writer.WriteLine($"{indent}output: \"{output}\"");
+            writer.WriteLine($"{indent}time:");
+            Indent();
+            writer.WriteLine($"{indent}start: {start}");
+            writer.WriteLine($"{indent}stop: {end}");
+            writer.WriteLine($"{indent}duration: {(end.HasValue ? end - start : null)}");
+            Unindent();
+            writer.WriteLine($"{indent}keypresses:");
+            Indent();
+            foreach ((char key, float time) in keypresses)
+            {
+                writer.WriteLine($"{indent}{bullet}{key}: {time}");
+            }
+            indent = "";
+        }
     }
 
     public abstract class TrialItem
@@ -87,10 +191,11 @@ namespace Testing
 
     public class Command : TrialItem
     {
-        public readonly CommandType type;
+        public const string RANDOMIZE_KEY = "randomize-layouts", ADVANCE_KEY = "next-layout", NUMBER_KEY = "trial-number";
+        public readonly Type type;
         public readonly int? trialNumber;
 
-        public Command(CommandType command, int? trialNumber = null) : base()
+        public Command(Type command, int? trialNumber = null) : base()
         {
             this.type = command;
             this.trialNumber = trialNumber;
@@ -103,13 +208,13 @@ namespace Testing
         {
             switch (type)
             {
-                case CommandType.RandomizeLayoutOrder:
+                case Type.RandomizeLayoutOrder:
                     controller.RandomizeLayouts();
                     return false;
-                case CommandType.AdvanceLayout:
+                case Type.AdvanceLayout:
                     controller.AdvanceLayout();
                     return false;
-                case CommandType.SetTrialNumber:
+                case Type.SetTrialNumber:
                     return false;
             }
 
@@ -129,23 +234,26 @@ namespace Testing
             return null;
         }
 
-        public static CommandType StringIntoType(string s)
+        public static Type StringIntoType(string s)
         {
             switch (s)
             {
-                case "randomize-layouts":
-                    return CommandType.RandomizeLayoutOrder;
-                case "next-layout":
-                    return CommandType.AdvanceLayout;
-                case "trial-number":
-                    return CommandType.SetTrialNumber;
+                case RANDOMIZE_KEY:
+                    return Type.RandomizeLayoutOrder;
+                case ADVANCE_KEY:
+                    return Type.AdvanceLayout;
+                case NUMBER_KEY:
+                    return Type.SetTrialNumber;
             }
 
             throw new ArgumentException(s);
         }
 
+        public static string TypeIntoString(Type t)
+            => new string[] { RANDOMIZE_KEY, ADVANCE_KEY, NUMBER_KEY }[(int)t];
+
         [Serializable]
-        public enum CommandType
+        public enum Type
         {
             RandomizeLayoutOrder,
             AdvanceLayout,
@@ -155,9 +263,10 @@ namespace Testing
 
     public class Challenge : TrialItem
     {
+        public const string BLIND_KEY = "blind", PERFECT_KEY = "perfect", PRACTICE_KEY = "practice";
         public readonly string prompt;
-        public readonly ChallengeType type;
-        public Challenge(ChallengeType type, string prompt) : base()
+        public readonly Type type;
+        public Challenge(Type type, string prompt) : base()
         {
             this.prompt = prompt;
             this.type = type;
@@ -173,30 +282,33 @@ namespace Testing
             return true;
         }
 
-        public static ChallengeType StringIntoType(string type)
+        public static Type StringIntoType(string type)
         {
             switch (type)
             {
-                case "blind":
-                    return ChallengeType.Blind;
-                case "perfect":
-                    return ChallengeType.Perfect;
-                case "practice":
-                    return ChallengeType.Practice;
+                case BLIND_KEY:
+                    return Type.Blind;
+                case PERFECT_KEY:
+                    return Type.Perfect;
+                case PRACTICE_KEY:
+                    return Type.Practice;
             }
 
             throw new ArgumentException(type);
         }
-    }
 
-    [Serializable]
-    public enum ChallengeType
-    {
-        // no backspaces, no viewing output
-        Blind,
-        // must be 100% correct to advance
-        Perfect,
-        // may be skipped at any time
-        Practice,
+        public static string TypeIntoString(Type type)
+            => new string[] { BLIND_KEY, PERFECT_KEY, PRACTICE_KEY }[(int)type];
+
+        [Serializable]
+        public enum Type
+        {
+            // no backspaces, no viewing output
+            Blind,
+            // must be 100% correct to advance
+            Perfect,
+            // may be skipped at any time
+            Practice,
+        }
     }
 }

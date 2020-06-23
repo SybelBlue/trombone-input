@@ -31,7 +31,11 @@ challengeSeperatorChar :: Char
 challengeSeperatorChar = ':'
 
 scrubPrompt :: Prompt -> Prompt
-scrubPrompt = map toUpper
+scrubPrompt p = map mapper p
+    where
+        mapper c
+            | c == '\"' = error $ "prompt \'" ++ p ++ "\' cannot contain yaml delimiter \""
+            | otherwise = toUpper c
 
 -- a class for writing to files
 class Writable a where

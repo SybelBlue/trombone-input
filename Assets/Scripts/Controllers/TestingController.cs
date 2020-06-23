@@ -54,7 +54,7 @@ public class TestingController : TextOutputController
     [UnityEngine.Tooltip("Called when a trial finishes")]
     public TestingTrialEvent OnTrialEnd;
 
-    public ChallengeType? currentChallengeType;
+    public Challenge.Type? currentChallengeType;
 
     private LayoutOption[] layoutOrder;
 
@@ -78,11 +78,11 @@ public class TestingController : TextOutputController
             {
                 case null:
                     return false;
-                case ChallengeType.Practice:
+                case Challenge.Type.Practice:
                     return false;
-                case ChallengeType.Perfect:
+                case Challenge.Type.Perfect:
                     return currentOutput.Equals(currentPrompt);
-                case ChallengeType.Blind:
+                case Challenge.Type.Blind:
                     return currentOutput.Length >= currentPrompt.Length;
             }
             throw new System.ArgumentException(currentChallengeType.ToString());
@@ -120,15 +120,15 @@ public class TestingController : TextOutputController
             case null:
                 base.TypedBackspace();
                 return;
-            case ChallengeType.Practice:
+            case Challenge.Type.Practice:
                 currentOutput = currentOutput.Backspace();
                 UpdateDisplay();
                 return;
-            case ChallengeType.Blind:
+            case Challenge.Type.Blind:
                 // TODO: play noise? shake UI? vibrate controller?
                 Debug.LogWarning("Disregarding Backspace during Blind Challenge!");
                 return;
-            case ChallengeType.Perfect:
+            case Challenge.Type.Perfect:
                 currentOutput = currentOutput.Backspace();
                 UpdateDisplay();
                 return;
@@ -145,21 +145,21 @@ public class TestingController : TextOutputController
         }
 
         practiceEndButton.gameObject.SetActive(false);
-        challengeTypeIndicator.text = Enum.GetName(typeof(ChallengeType), currentChallengeType);
+        challengeTypeIndicator.text = Enum.GetName(typeof(Challenge.Type), currentChallengeType);
 
         switch (currentChallengeType)
         {
             case null:
                 return;
-            case ChallengeType.Practice:
+            case Challenge.Type.Practice:
                 practiceEndButton.gameObject.SetActive(true);
                 text = currentOutput.Length == 0 ? currentPrompt : currentOutput;
                 return;
-            case ChallengeType.Blind:
+            case Challenge.Type.Blind:
                 int l = currentOutput.Length;
                 text = $"<color=blue>{"*".Repeat(l)}</color>{currentPrompt.Substring(l)}";
                 return;
-            case ChallengeType.Perfect:
+            case Challenge.Type.Perfect:
                 string final = "";
                 bool lastCorrect = false;
                 for (int i = 0; i < currentOutput.Length; i++)
@@ -257,7 +257,7 @@ public class TestingController : TextOutputController
 
     private void OnPracticeButtonDown()
     {
-        if (currentChallengeType == ChallengeType.Practice)
+        if (currentChallengeType == Challenge.Type.Practice)
         {
             AdvanceTrial();
         }
