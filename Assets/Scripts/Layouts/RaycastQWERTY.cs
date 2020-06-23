@@ -132,7 +132,7 @@ namespace CustomInput
                 new RaycastKey('M', 2, '-'),
                 new RaycastKey(',', 2, '?'),
                 new RaycastKey('.', 2, '.'),
-                new RaycastKey(' ', 2, ' '),
+                new RaycastKey(' ', 2, '\b'),
             };
         }
     }

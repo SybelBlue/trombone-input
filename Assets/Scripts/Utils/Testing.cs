@@ -2,6 +2,7 @@ using StaticUtils = Utils;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.XR;
 using System;
 
 namespace Testing
@@ -76,24 +77,50 @@ namespace Testing
             return new Trial(items.ToArray());
         }
 
-        public static void Write(List<ITrialResult> t)
+        public static void Write(List<ITrialResult> t, bool locally = false)
         {
-            string path = $"Assets/Results/trial-{DateTime.Now.ToString(@"yyyy-MM-dd_HH-mm-ss")}.yaml";
+            string directory = locally ? "Assets/Results" : Application.persistentDataPath;
+            string path = $"{directory}/trial-{DateTime.Now.ToString(@"yyyy-MM-dd_HH-mm-ss")}.yaml";
 
+            // file should never exist yet
             File.Create(path).Close();
 
             using (StreamWriter writer = new StreamWriter(path))
             {
                 Write(t, writer);
             }
+
+            if (!locally)
+            {
+                Debug.Log(directory);
+            }
         }
 
         public static void Write(List<ITrialResult> t, StreamWriter writer)
         {
             if (t.Count == 0) return;
+            writer.WriteLine($"meta:");
+            writer.WriteLine($"  timestamp: \"{DateTime.Now}\"");
+            // https://stackoverflow.com/questions/17632584/how-to-get-the-unix-timestamp-in-c-sharp
+            writer.WriteLine($"  unixseconds: {DateTimeOffset.UtcNow.ToUnixTimeSeconds()}");
+            writer.WriteLine($"  platform: {Application.platform}");
+            List<InputDevice> devices = new List<InputDevice>();
+            InputDevices.GetDevices(devices);
+            writer.WriteLine($"  xrdevices: {(devices.Count > 0 ? "" : "[]")}");
+            foreach (var device in devices)
+            {
+                writer.WriteLine($"    {device.name}: {(device.characteristics == 0 ? "None" : "")}");
+                uint max = (uint)InputDeviceCharacteristics.Simulated6DOF;
+                for (int i = 1; i <= max; i <<= 1)
+                {
+                    var flag = (InputDeviceCharacteristics)i;
+                    if ((device.characteristics & flag) == flag)
+                    {
+                        writer.WriteLine($"      - {Enum.GetName(typeof(InputDeviceCharacteristics), flag)}");
+                    }
+                }
+            }
 
-            writer.WriteLine($"created: \"{DateTime.Now}\"");
-            writer.WriteLine($"platform: {Application.platform}");
             writer.WriteLine("trial:");
             foreach (var item in t)
             {

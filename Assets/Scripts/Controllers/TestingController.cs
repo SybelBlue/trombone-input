@@ -278,7 +278,7 @@ public class TestingController : TextOutputController
 
         try
         {
-            Testing.Utils.Write(builder.Finish(currentOutput));
+            Testing.Utils.Write(builder.Finish(currentOutput), Application.isEditor);
         }
         catch (Exception e)
         {
