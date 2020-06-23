@@ -35,6 +35,12 @@ namespace CustomInput
             gridLayout.cellSize = new Vector2(rectTransform.rect.width / 10.0f, rectTransform.rect.height / 3.0f);
         }
 
+        public override void ResizeAll()
+        {
+            gridLayout.cellSize = new Vector2(rectTransform.rect.width / 10.0f, rectTransform.rect.height / 3.0f);
+            base.ResizeAll();
+        }
+
         protected override void AfterStart()
         {
             foreach (var collider in GetComponentsInChildren<BoxCollider>())
