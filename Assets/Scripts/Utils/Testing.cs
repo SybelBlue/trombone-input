@@ -128,7 +128,7 @@ namespace Testing
             }
         }
 
-        public static object Accuracy(string prompt, string output)
+        public static float BlindAccuracy(string prompt, string output)
         {
             float count = 0;
             for (int i = 0; i < Mathf.Min(prompt.Length, output.Length); i++)
@@ -138,6 +138,9 @@ namespace Testing
 
             return count / Mathf.Max(prompt.Length, output.Length);
         }
+
+        public static float PerfectAccuracy(string prompt, List<(string key, float time)> keypresses)
+            => keypresses.Count / (float)prompt.Length;
     }
 
     public class ResultBuilder
@@ -251,6 +254,11 @@ namespace Testing
         private string indent => "  ".Repeat(_indent);
         private const string bullet = "- ";
 
+        private float accuracy =>
+            source.type == Challenge.Type.Perfect ?
+                Testing.Utils.PerfectAccuracy(source.prompt, keypresses) :
+                Testing.Utils.BlindAccuracy(source.prompt, output);
+
         public override void Write(StreamWriter writer)
         {
             Indent();
@@ -261,7 +269,7 @@ namespace Testing
             writer.WriteLine($"{indent}layout: {layoutName}");
             writer.WriteLine($"{indent}prompt: \"{source.prompt}\"");
             writer.WriteLine($"{indent}output: \"{output}\"");
-            writer.WriteLine($"{indent}accuracy: {Testing.Utils.Accuracy(source.prompt, output)}");
+            writer.WriteLine($"{indent}accuracy: {accuracy}");
             writer.WriteLine($"{indent}time:");
             Indent();
             writer.WriteLine($"{indent}start: {start}");
