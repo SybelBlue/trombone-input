@@ -99,6 +99,7 @@ public class TestingController : TextOutputController
     {
         base.Start();
         practiceEndButton.onClick.AddListener(OnPracticeButtonDown);
+        UpdateDisplay();
     }
 
     protected override void OnSuggestionButtonClick(string suggestionText)
@@ -159,7 +160,10 @@ public class TestingController : TextOutputController
         }
 
         practiceEndButton.gameObject.SetActive(false);
-        challengeTypeIndicator.text = Enum.GetName(typeof(Challenge.Type), currentChallengeType);
+        challengeTypeIndicator.text =
+            currentChallengeType == null ?
+                "Sandbox" :
+                Enum.GetName(typeof(Challenge.Type), currentChallengeType);
 
         switch (currentChallengeType)
         {
