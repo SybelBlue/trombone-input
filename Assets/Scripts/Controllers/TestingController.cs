@@ -65,10 +65,15 @@ public class TestingController : TextOutputController
     private LayoutOption currentLayout
         => layoutOrder[_layoutIndex];
 
+    private string currentLayoutName
+        => layoutOrder == null ? "" : Enum.GetName(typeof(LayoutOption), currentLayout);
+
     private TrialItem currentTrialItem
         => currentTrial?.items[_trialIndex];
 
     private Trial? currentTrial = null;
+
+    private ResultBuilder builder;
 
     private bool completedChallenge
     {
@@ -229,6 +234,7 @@ public class TestingController : TextOutputController
     {
         currentTrial = t;
         _trialIndex = -1;
+        builder = new ResultBuilder();
         AdvanceTrial();
     }
 
@@ -240,11 +246,11 @@ public class TestingController : TextOutputController
 
         if (_trialIndex >= currentTrial.Value.Length)
         {
-            Debug.LogWarning($"Completed Trial {trialNumber}");
-            currentTrial = null;
-            OnTrialEnd.Invoke(true);
+            FinishTrial();
             return;
         }
+
+        builder.Push(currentTrialItem, currentOutput, currentLayoutName);
 
         if (currentTrialItem.Apply(this))
         {
@@ -253,6 +259,28 @@ public class TestingController : TextOutputController
         }
 
         AdvanceTrial();
+    }
+
+    private void FinishTrial()
+    {
+        Debug.LogWarning($"Completed Trial {trialNumber}");
+
+        currentTrial = null;
+
+        try
+        {
+            Testing.Utils.Write(builder.Finish(currentOutput));
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
+        finally
+        {
+            builder = null;
+        }
+
+        OnTrialEnd.Invoke(true);
     }
 
     private void OnPracticeButtonDown()

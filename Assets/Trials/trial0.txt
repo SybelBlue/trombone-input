@@ -1,0 +1,7 @@
+!trial-number 0
+#arbitrarily made by logan
+!randomize-layouts
+blind:THE DOG TOOK A LEAP
+!next-layout
+perfect:AND THE
+practice:GROUND SOFTLY

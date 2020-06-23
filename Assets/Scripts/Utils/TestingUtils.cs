@@ -28,6 +28,7 @@ namespace Testing
             throw new ArgumentException("TrialItems do not contain an Identifying TrialNumber");
         }
     }
+
     public static class Utils
     {
         public const char COMMAND_PREFIX = '!', COMMENT_PREFIX = '#', CHALLENGE_SEPERATOR = ':';
@@ -77,7 +78,11 @@ namespace Testing
 
         public static void Write(List<ITrialResult> t)
         {
-            using (StreamWriter writer = new StreamWriter($"../../Results/trial-{DateTime.Now}.yaml"))
+            string path = $"Assets/Results/trial-{DateTime.Now.ToString(@"yyyy-MM-dd_HH-mm-ss")}.yaml";
+
+            File.Create(path).Close();
+
+            using (StreamWriter writer = new StreamWriter(path))
             {
                 Write(t, writer);
             }
@@ -85,12 +90,70 @@ namespace Testing
 
         public static void Write(List<ITrialResult> t, StreamWriter writer)
         {
-            writer.WriteLine($"created: {DateTime.Now}");
+            if (t.Count == 0) return;
+
+            writer.WriteLine($"created: \"{DateTime.Now}\"");
+            writer.WriteLine($"platform: {Application.platform}");
             writer.WriteLine("trial:");
             foreach (var item in t)
             {
                 item.Write(writer);
             }
+        }
+
+        public static object Accuracy(string prompt, string output)
+        {
+            float count = 0;
+            for (int i = 0; i < Mathf.Min(prompt.Length, output.Length); i++)
+            {
+                count += prompt[i] == output[i] ? 1 : 0;
+            }
+
+            return count / Mathf.Max(prompt.Length, output.Length);
+        }
+    }
+
+    public class ResultBuilder
+    {
+        private List<ITrialResult> results;
+
+        private ChallengeResult lastChallenge;
+
+        public ResultBuilder()
+            => results = new List<ITrialResult>();
+
+        public void Push(TrialItem item, string currentOutput, string currentLayoutName)
+        {
+            if (lastChallenge != null)
+            {
+                EndLastChallenge(currentOutput);
+            }
+
+            switch (item)
+            {
+                case Challenge challenge:
+                    results.Add(lastChallenge = new ChallengeResult(challenge, currentLayoutName));
+                    return;
+                case Command command:
+                    results.Add(new CommandResult(command));
+                    return;
+            }
+
+            throw new System.ArgumentException($"{item.GetType()} not recognized");
+        }
+
+        public void EndLastChallenge(string output)
+        {
+            if (lastChallenge == null) return;
+            lastChallenge.SetEndNow();
+            lastChallenge.output = output;
+            lastChallenge = null;
+        }
+
+        public List<ITrialResult> Finish(string output)
+        {
+            EndLastChallenge(output);
+            return results;
         }
     }
 
@@ -149,9 +212,10 @@ namespace Testing
             keypresses = new List<(char key, float time)>(source.prompt.Length * 2);
         }
 
-        private void Indent() => indent += "  ";
-        private void Unindent() => indent = indent.Backspace();
-        private string indent = "";
+        private int _indent = 0;
+        private void Indent() => _indent++;
+        private void Unindent() => _indent--;
+        private string indent => "  ".Repeat(_indent);
         private const string bullet = "- ";
 
         public override void Write(StreamWriter writer)
@@ -164,6 +228,7 @@ namespace Testing
             writer.WriteLine($"{indent}layout: {layoutName}");
             writer.WriteLine($"{indent}prompt: \"{source.prompt}\"");
             writer.WriteLine($"{indent}output: \"{output}\"");
+            writer.WriteLine($"{indent}accuracy: {Testing.Utils.Accuracy(source.prompt, output)}");
             writer.WriteLine($"{indent}time:");
             Indent();
             writer.WriteLine($"{indent}start: {start}");
@@ -176,8 +241,11 @@ namespace Testing
             {
                 writer.WriteLine($"{indent}{bullet}{key}: {time}");
             }
-            indent = "";
+            _indent = 0;
         }
+
+        public void SetEndNow()
+            => end = Time.time;
     }
 
     public abstract class TrialItem
