@@ -47,7 +47,7 @@ namespace CustomInput
         [SerializeField]
         private RaycastQWERTY raycastQWERTY;
 
-        public Layout currentLayout() => fromOption(layout);
+        public Layout currentLayout => fromOption(layout);
 
         public Layout fromOption(LayoutOption option)
         {
@@ -95,11 +95,7 @@ namespace CustomInput
                 }
             }
 
-            var current = currentLayout();
-            if (!current.gameObject.activeInHierarchy)
-            {
-                current.gameObject.SetActive(true);
-            }
+            currentLayout.gameObject.SetActive(true);
         }
     }
 }

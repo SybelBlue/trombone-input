@@ -19,7 +19,7 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     // The manager's current layout, or null if no manager exists
     private Layout layout
-        => layoutManager?.currentLayout();
+        => layoutManager?.currentLayout;
 
     // The simulated potentiometer input source
     public InputFieldController inputPanel;
@@ -61,10 +61,7 @@ public class MainController : MonoBehaviour, VREventGenerator
             Debug.Log($"Loaded {items.Length} trial items");
         }
 
-        if (outputController is TestingController && runTrial)
-        {
-            (outputController as TestingController).RunTrial(trials[0]);
-        }
+        RunNextTrial();
     }
 
     // The most up-to-date value reported by the InputFieldController
@@ -292,4 +289,26 @@ public class MainController : MonoBehaviour, VREventGenerator
     public bool runTrial
         => trialExecutionMode == TrialExecutionMode.Always
         || (trialExecutionMode == TrialExecutionMode.OnlyInEditor && Application.isEditor);
+
+    private int currentTrial = -1;
+    private void RunNextTrial()
+    {
+        currentTrial++;
+        if (currentTrial < trials.Count && outputController is TestingController && runTrial)
+        {
+            (outputController as TestingController).RunTrial(trials[currentTrial]);
+        }
+        else
+        {
+            Debug.LogWarning("Skipped running trial!");
+        }
+    }
+
+    public void OnTrialCompleted(bool success)
+    {
+        if (success)
+        {
+            RunNextTrial();
+        }
+    }
 }

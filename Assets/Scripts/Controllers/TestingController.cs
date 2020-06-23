@@ -6,7 +6,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [Serializable]
-public class TestingControllerEvent : UnityEngine.Events.UnityEvent<LayoutOption>
+public class TestingLayoutEvent : UnityEngine.Events.UnityEvent<LayoutOption>
+{ }
+
+[Serializable]
+public class TestingTrialEvent : UnityEngine.Events.UnityEvent<bool>
 { }
 
 public class TestingController : TextOutputController
@@ -41,8 +45,14 @@ public class TestingController : TextOutputController
     [SerializeField]
     private Button practiceEndButton;
 
+    [SerializeField]
+    private Text challengeTypeIndicator;
+
     [UnityEngine.Tooltip("Called when the trial requests a layout change")]
-    public TestingControllerEvent OnLayoutChange;
+    public TestingLayoutEvent OnLayoutChange;
+
+    [UnityEngine.Tooltip("Called when a trial finishes")]
+    public TestingTrialEvent OnTrialEnd;
 
     public ChallengeType? currentChallengeType;
 
@@ -135,6 +145,7 @@ public class TestingController : TextOutputController
         }
 
         practiceEndButton.gameObject.SetActive(false);
+        challengeTypeIndicator.text = Enum.GetName(typeof(ChallengeType), currentChallengeType);
 
         switch (currentChallengeType)
         {
@@ -142,6 +153,7 @@ public class TestingController : TextOutputController
                 return;
             case ChallengeType.Practice:
                 practiceEndButton.gameObject.SetActive(true);
+                text = currentOutput.Length == 0 ? currentPrompt : currentOutput;
                 return;
             case ChallengeType.Blind:
                 int l = currentOutput.Length;
@@ -230,6 +242,7 @@ public class TestingController : TextOutputController
         {
             Debug.LogWarning($"Completed Trial {trialNumber}");
             currentTrial = null;
+            OnTrialEnd.Invoke(true);
             return;
         }
 
