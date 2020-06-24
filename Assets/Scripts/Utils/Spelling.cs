@@ -26,7 +26,7 @@ namespace Auto
         public void InitDictionary(TextAsset frequencyDict, char separator)
         {
             trie = new PruningRadixTrie();
-            using (Stream corpusStream = Utils.StreamFromTextAsset(frequencyDict))
+            using (Stream corpusStream = frequencyDict.IntoMemoryStream())
             {
                 trie.ReadTermsFromStream(corpusStream, separator);
             }
@@ -121,7 +121,7 @@ namespace Auto
 
             var (termIndex, countIndex) = DictionaryTermAndCountIndices(size);
 
-            using (Stream corpusStream = Utils.StreamFromTextAsset(DictionaryTextAsset(size, dicts)))
+            using (Stream corpusStream = DictionaryTextAsset(size, dicts).IntoMemoryStream())
             {
                 if (!loader(corpusStream, termIndex, countIndex, SymSpell.defaultSeparatorChars))
                 {

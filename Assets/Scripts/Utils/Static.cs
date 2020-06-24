@@ -31,6 +31,11 @@ public static class Utils
     // Takes float normalized in [0.0, 1.0] and maps it to an index where 0.0 is 0 and the 1.0 is the length
     public static int NormalizedIntoIndex(float normalized, int length)
         => Mathf.FloorToInt(Mathf.LerpUnclamped(0, Mathf.Max(0, length - 1), normalized));
+}
+
+public static class Extensions
+{
+    #region Collections
 
     // gets the last item of the list (or errs trying)
     public static T Last<T>(this T[] array)
@@ -42,6 +47,9 @@ public static class Utils
     public static void SetFromEnd<T>(this T[] array, int i, T value)
         => array[Mathf.Max(0, array.Length - 1) - i] = value;
 
+    #endregion
+
+    #region Strings
     public static string Intercalate(this string[] strings, string inner)
     {
         string final = "";
@@ -65,6 +73,10 @@ public static class Utils
     public static string Backspace(this string s)
         => s.Substring(0, Mathf.Max(0, s.Length - 1));
 
+    #endregion
+
+    #region Vectors
+
     public static Vector3 Map(this Vector3 vec, System.Func<float, float> f)
         => new Vector3(f(vec.x), f(vec.y), f(vec.z));
 
@@ -74,6 +86,18 @@ public static class Utils
     public static Vector3 WithZ(this Vector2 vec, float z)
         => new Vector3(vec.x, vec.y, z);
 
-    public static System.IO.MemoryStream StreamFromTextAsset(TextAsset asset)
+    public static Vector3 ProjectTo(this Vector3 vec, bool x, bool y, bool z)
+        => vec.ProjectTo((x ? 1 << 0 : 0) | (y ? 1 << 1 : 0) | (z ? 1 << 2 : 0));
+
+    public static Vector3 ProjectTo(this Vector3 vec, int mask)
+        => vec.Map((i, v) => (mask & (1 << i)) != 0 ? v : 0);
+
+
+    public static float SignedAngle(this Vector3 a, Vector3 b, Vector3 axis)
+        => Vector3.SignedAngle(a, b, axis);
+
+    #endregion
+
+    public static System.IO.MemoryStream IntoMemoryStream(this TextAsset asset)
         => new System.IO.MemoryStream(asset.bytes);
 }

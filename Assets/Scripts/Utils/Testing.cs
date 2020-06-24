@@ -1,4 +1,3 @@
-using StaticUtils = Utils;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -38,7 +37,7 @@ namespace Testing
         {
             List<TrialItem> items = new List<TrialItem>();
 
-            using (StreamReader sr = new StreamReader(StaticUtils.StreamFromTextAsset(trialFile)))
+            using (StreamReader sr = new StreamReader(trialFile.IntoMemoryStream()))
             {
                 string line;
                 //process a single line at a time only for memory efficiency
@@ -77,10 +76,11 @@ namespace Testing
             return new Trial(items.ToArray());
         }
 
-        public static void Write(List<ITrialResult> t, bool locally = false)
+        public static (string directory, string name) Write(List<ITrialResult> t, bool locally = false)
         {
             string directory = locally ? "Assets/Results" : Application.persistentDataPath;
-            string path = $"{directory}/trial-{DateTime.Now.ToString(@"yyyy-MM-dd_HH-mm-ss")}.yaml";
+            string name = $"trial-{DateTime.Now.ToString(@"yyyy-MM-dd_HH-mm-ss")}.yaml";
+            string path = $"{directory}/{name}";
 
             // file should never exist yet
             File.Create(path).Close();
@@ -94,6 +94,8 @@ namespace Testing
             {
                 Debug.Log(directory);
             }
+
+            return (directory, name);
         }
 
         public static void Write(List<ITrialResult> t, StreamWriter writer)

@@ -49,6 +49,9 @@ public class TestingController : TextOutputController
     [SerializeField]
     private Text challengeTypeIndicator;
 
+    [SerializeField]
+    private TMPro.TMP_Text fileOutputIndicator;
+
     [UnityEngine.Tooltip("Called when the trial requests a layout change")]
     public TestingLayoutEvent OnLayoutChange;
 
@@ -98,6 +101,7 @@ public class TestingController : TextOutputController
     public override void Start()
     {
         base.Start();
+        fileOutputIndicator.text = "";
         practiceEndButton.onClick.AddListener(OnPracticeButtonDown);
         UpdateDisplay();
     }
@@ -278,11 +282,11 @@ public class TestingController : TextOutputController
     {
         Debug.LogWarning($"Completed Trial {trialNumber}");
 
-        currentTrial = null;
-
         try
         {
-            Testing.Utils.Write(builder.Finish(currentOutput), Application.isEditor);
+            var tup = Testing.Utils.Write(builder.Finish(currentOutput), Application.isEditor);
+
+            fileOutputIndicator.text += $"Trial {trialNumber} Completed!\nSaved in Directory: {tup.directory}\nIn File: {tup.name}\n";
         }
         catch (Exception e)
         {
@@ -290,6 +294,7 @@ public class TestingController : TextOutputController
         }
         finally
         {
+            currentTrial = null;
             builder = null;
         }
 

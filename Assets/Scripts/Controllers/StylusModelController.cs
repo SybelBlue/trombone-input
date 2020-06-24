@@ -3,6 +3,8 @@
 #pragma warning disable 649
 public class StylusModelController : MonoBehaviour
 {
+    public bool useUnityEulerAngles = false;
+
     [SerializeField]
     private GameObject potentiometerIndicator;
 
@@ -37,7 +39,17 @@ public class StylusModelController : MonoBehaviour
     public Vector3 normalizedAngles { get; private set; }
 
     public Vector3 eulerAngles
-        => transform.eulerAngles;
+        => useUnityEulerAngles ?
+            transform.eulerAngles :
+            new Vector3(
+            // transform.forward.SignedAngle(new Vector3(1, 0, 0), new Vector3(0, 0, 1)),
+            // transform.forward.SignedAngle(new Vector3(0, 1, 0), new Vector3(0, 1, 0)),
+            // transform.forward.SignedAngle(new Vector3(0, 0, 1), new Vector3(1, 0, 0))
+
+            transform.forward.ProjectTo(true, true, false).SignedAngle(new Vector3(1, 0, 0), new Vector3(0, 0, 1)),
+            transform.forward.ProjectTo(true, true, false).SignedAngle(new Vector3(0, 1, 0), new Vector3(0, 0, 1)),
+            transform.forward.ProjectTo(true, false, true).SignedAngle(new Vector3(0, 0, 1), new Vector3(0, 1, 0))
+            );
 
 
     private bool highlightingFront, highlightingBack;
@@ -112,7 +124,7 @@ public class StylusModelController : MonoBehaviour
     {
         normalizedAngles =
             eulerAngles
-            .Map(x => Utils.ModIntoRange(x, -180, 180))
+            .Map(x => useUnityEulerAngles ? Utils.ModIntoRange(x, -180, 180) : x)
             .Map((i, x) => Mathf.InverseLerp(LowerBound(i), UpperBound(i), x));
     }
 
