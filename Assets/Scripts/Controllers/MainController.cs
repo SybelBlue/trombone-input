@@ -116,7 +116,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         }
 
         // TODO: Map to stylus events
-        if (outputController.text.Length > 0 && Bindings.spaceDown)
+        if (!outputController.emptyText && Bindings.spaceDown)
         {
             outputController.TypedChar(' ');
         }

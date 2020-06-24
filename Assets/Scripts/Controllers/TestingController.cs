@@ -46,6 +46,8 @@ public class TestingController : TextOutputController
     private LayoutOption currentLayout
         => layoutOrder[_layoutIndex];
 
+    public override bool emptyText => currentOutput.Length == 0;
+
     private string currentLayoutName
         => layoutOrder == null ? "" : Enum.GetName(typeof(LayoutOption), currentLayout);
 
