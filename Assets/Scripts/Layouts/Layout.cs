@@ -6,36 +6,32 @@ namespace CustomInput
 
     public readonly struct InputData
     {
-        public const int MAX_RAW_VALUE = 64;
-
-        public readonly string context;
-
         public readonly Vector3 normalizedAngles;
 
         public readonly float? normalizedSlider;
 
         public readonly int? rawValue;
 
-        public readonly bool frontButtonDown, backButtonDown;
-
         public readonly (Vector3 origin, Vector3 direction) orientation;
 
+        public InputData(int? rawValue, StylusModelController stylusModel) : this(
+                rawValue,
+                stylusModel.normalizedAngles,
+                stylusModel.normalizedSlider,
+                stylusModel.orientation
+            )
+        { }
+
         public InputData(
-            string context,
             int? rawValue,
             Vector3 normalizedAngles,
             float? normalizedSlider,
-            bool frontButtonDown,
-            bool backButtonDown,
             (Vector3 origin, Vector3 direction) orientation
             )
         {
             this.rawValue = rawValue;
-            this.context = context;
             this.normalizedAngles = normalizedAngles;
             this.normalizedSlider = normalizedSlider;
-            this.frontButtonDown = frontButtonDown;
-            this.backButtonDown = backButtonDown;
             this.orientation = orientation;
         }
     }

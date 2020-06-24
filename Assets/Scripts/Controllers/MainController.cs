@@ -72,8 +72,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         => trialExecutionMode == TrialExecutionMode.Always
         || (trialExecutionMode == TrialExecutionMode.OnlyInEditor && Application.isEditor);
 
-    private InputData currentInputData
-        => stylusModel.BundleData(outputController.text, lastReportedValue);
+    private InputData currentInputData => new InputData(lastReportedValue, stylusModel);
 
     private void Start()
     {
