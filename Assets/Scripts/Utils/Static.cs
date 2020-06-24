@@ -33,7 +33,7 @@ public static class Utils
         => Mathf.FloorToInt(Mathf.LerpUnclamped(0, Mathf.Max(0, length - 1), normalized));
 
 
-    public static float CustomSignedAngle(Vector3 forward, Vector3 target, Vector3 axis)
+    public static float SignedAngle(Vector3 forward, Vector3 target, Vector3 axis)
     {
         // Vector3 projectedToXYPlane = new Vector3(modelController.transform.forward.x, modelController.transform.forward.y, 0);
         float dot = Vector3.Dot(forward.normalized, target.normalized);
@@ -44,6 +44,12 @@ public static class Utils
 
         return sign * degrees;
     }
+
+    public static float SignedAngleFromAxis(Vector3 forward, Vector3 target, int axis)
+        => Utils.SignedAngle(forward.Flatten(axis), target, VectorFrom(i => i == axis ? 1 : 0));
+
+    public static Vector3 VectorFrom(System.Func<int, float> f)
+        => new Vector3(f(0), f(1), f(2));
 }
 
 public static class Extensions
@@ -100,13 +106,16 @@ public static class Extensions
         => new Vector3(vec.x, vec.y, z);
 
     public static Vector3 ProjectTo(this Vector3 vec, bool x, bool y, bool z)
-        => vec.ProjectTo((x ? 1 << 0 : 0) | (y ? 1 << 1 : 0) | (z ? 1 << 2 : 0));
+        => vec.ProjectTo(((x ? 1 << 0 : 0)) | (y ? 1 << 1 : 0) | (z ? 1 << 2 : 0));
 
-    public static Vector3 ProjectTo(this Vector3 vec, int mask)
-        => vec.Map((i, v) => (mask & (1 << i)) != 0 ? v : 0);
+    public static Vector3 ProjectTo(this Vector3 vec, int axisMask)
+        // if axis mask has a 1 in the ith place, keep ith value, else 0
+        => vec.Map((i, v) => ((axisMask >> i) & 0x1) * v);
+
+    public static Vector3 Flatten(this Vector3 vec, int axis)
+        => vec.ProjectTo(~(1 << axis));
 
     #endregion
-
     public static System.IO.MemoryStream IntoMemoryStream(this TextAsset asset)
         => new System.IO.MemoryStream(asset.bytes);
 }

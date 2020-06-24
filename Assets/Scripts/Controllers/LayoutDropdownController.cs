@@ -6,7 +6,8 @@ public class LayoutDropdownController : IRaycastable
 {
     public Dropdown dropdown;
 
-    public Image image;
+    [SerializeField]
+    private Image image;
 
     [SerializeField]
     private Color highlightColor;

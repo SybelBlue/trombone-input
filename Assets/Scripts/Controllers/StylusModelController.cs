@@ -3,6 +3,7 @@
 #pragma warning disable 649
 public class StylusModelController : MonoBehaviour
 {
+    #region EditorSet
     public bool useUnityEulerAngles = false;
 
     [SerializeField]
@@ -22,16 +23,17 @@ public class StylusModelController : MonoBehaviour
 
     [SerializeField]
     private Vector2 sliderBounds;
+    #endregion
 
+    private (int? frame, RaycastHit? hit, IRaycastable obj) lastFound;
+    private (bool front, bool back) highlighting;
+
+    #region Properties
     public bool useLaser
     {
         get => laserPointer.active;
         set => laserPointer.active = value;
     }
-
-    public Vector3 origin { get; private set; }
-
-    public Vector3 direction { get; private set; }
 
     public (Vector3 origin, Vector3 direction) orientation
         => (transform.position, transform.forward);
@@ -46,13 +48,14 @@ public class StylusModelController : MonoBehaviour
             // Vector3.SignedAngle(new Vector3(0, 0, 1), transform.forward.ProjectTo(true, false, true).normalized, new Vector3(0, 1, 0)),
             // Vector3.SignedAngle(new Vector3(0, 1, 0), transform.forward.ProjectTo(true, true, false).normalized, new Vector3(0, 0, 1))
 
-            Utils.CustomSignedAngle(transform.forward.ProjectTo(false, true, true), new Vector3(0, 1, 0), new Vector3(1, 0, 0)),
-            Utils.CustomSignedAngle(transform.forward.ProjectTo(true, false, true), new Vector3(0, 0, 1), new Vector3(0, 1, 0)),
-            Utils.CustomSignedAngle(transform.forward.ProjectTo(true, true, false), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
+            // Utils.SignedAngle(transform.forward.ProjectTo(false, true, true), new Vector3(0, 1, 0), new Vector3(1, 0, 0)),
+            // Utils.SignedAngle(transform.forward.ProjectTo(true, false, true), new Vector3(0, 0, 1), new Vector3(0, 1, 0)),
+            // Utils.SignedAngle(transform.forward.ProjectTo(true, true, false), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
+
+            Utils.SignedAngleFromAxis(transform.forward, new Vector3(0, 1, 0), 0),
+            Utils.SignedAngleFromAxis(transform.forward, new Vector3(0, 0, 1), 1),
+            Utils.SignedAngleFromAxis(transform.forward, new Vector3(0, 1, 0), 2)
             );
-
-
-    private bool highlightingFront, highlightingBack;
 
     public float? normalizedSlider
     {
@@ -86,10 +89,10 @@ public class StylusModelController : MonoBehaviour
 
     public bool frontButtonDown
     {
-        get => highlightingFront;
+        get => highlighting.front;
         set
         {
-            highlightingFront = value;
+            highlighting.front = value;
             frontButtonRenderer.material =
                 value ?
                     highlightMaterial :
@@ -99,64 +102,49 @@ public class StylusModelController : MonoBehaviour
 
     public bool backButtonDown
     {
-        get => highlightingBack;
+        get => highlighting.back;
         set
         {
-            highlightingBack = value;
+            highlighting.back = value;
             backButtonRenderer.material =
                 value ?
                     highlightMaterial :
                     defaultMaterial;
         }
     }
+    #endregion
 
-    public float LowerBound(int i)
+    private void Update()
     {
-        return i == 0 && !CustomInput.Bindings.LEFT_HANDED ? maxAngle[i] : minAngle[i];
+        if (transform.hasChanged)
+        {
+            normalizedAngles =
+                eulerAngles
+                .Map(x => useUnityEulerAngles ? Utils.ModIntoRange(x, -180, 180) : x)
+                .Map((i, x) => Mathf.InverseLerp(LowerBound(i), UpperBound(i), x));
+        }
     }
 
-    public float UpperBound(int i)
-    {
-        return i == 0 && !CustomInput.Bindings.LEFT_HANDED ? minAngle[i] : maxAngle[i];
-    }
+    public float LowerBound(int axis)
+        => axis == 0 && !CustomInput.Bindings.LEFT_HANDED ? maxAngle[axis] : minAngle[axis];
 
-    void Update()
-    {
-        normalizedAngles =
-            eulerAngles
-            .Map(x => useUnityEulerAngles ? Utils.ModIntoRange(x, -180, 180) : x)
-            .Map((i, x) => Mathf.InverseLerp(LowerBound(i), UpperBound(i), x));
-    }
-
-    public CustomInput.InputData PackageData(string context, int? lastReportedValue)
-        => new CustomInput.InputData(
-                context,
-                lastReportedValue,
-                normalizedAngles,
-                normalizedSlider,
-                frontButtonDown,
-                backButtonDown,
-                orientation
-            );
-
-    private int lastFrame = -1;
-    private (RaycastHit hit, IRaycastable obj)? lastFound;
+    public float UpperBound(int axis)
+        => axis == 0 && !CustomInput.Bindings.LEFT_HANDED ? minAngle[axis] : maxAngle[axis];
 
     public IRaycastable Raycast(out RaycastHit? hit)
     {
-        if (lastFrame == Time.frameCount)
+        if (lastFound.frame == Time.frameCount)
         {
-            hit = lastFound?.hit;
-            return lastFound?.obj;
+            hit = lastFound.hit;
+            return lastFound.obj;
         }
 
-        lastFrame = Time.frameCount;
         foreach (RaycastHit h in Physics.RaycastAll(transform.position, transform.forward, Mathf.Infinity))
         {
             IRaycastable r = h.transform.gameObject.GetComponent<IRaycastable>();
             if (r)
             {
-                lastFound = (h, r);
+                lastFound = (Time.frameCount, h, r);
                 hit = h;
                 return r;
             }
@@ -166,8 +154,19 @@ public class StylusModelController : MonoBehaviour
             }
         }
 
-        lastFound = null;
+        lastFound = (Time.frameCount, null, null);
         hit = null;
         return null;
     }
+
+    public CustomInput.InputData BundleData(string context, int? lastReportedValue)
+        => new CustomInput.InputData(
+                context,
+                lastReportedValue,
+                normalizedAngles,
+                normalizedSlider,
+                frontButtonDown,
+                backButtonDown,
+                orientation
+            );
 }

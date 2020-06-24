@@ -29,6 +29,7 @@ namespace CustomInput
             }
         }
 
+        #region EditorSet
         [SerializeField]
         private LayoutDropdownController dropdownController;
 
@@ -46,6 +47,7 @@ namespace CustomInput
 
         [SerializeField]
         private RaycastQWERTY raycastQWERTY;
+        #endregion
 
         public Layout currentLayout => fromOption(layout);
 
@@ -77,6 +79,7 @@ namespace CustomInput
             ActivateLayout();
         }
 
+        // used in editor!
         public void DropdownValueSelected(int index)
         {
             layout = (LayoutOption)index;

@@ -5,39 +5,73 @@ using UnityEngine;
 using UnityEngine.UI;
 using static CustomInput.VREventFactory;
 
+[System.Serializable]
+public enum TrialExecutionMode
+{
+    Always,
+    OnlyInEditor,
+    Never,
+}
+
 public class MainController : MonoBehaviour, VREventGenerator
 {
+    #region EditorSet
+    [SerializeField]
+    private bool leftHanded;
 
-    public bool leftHanded;
+    [SerializeField]
+    private TrialExecutionMode trialExecutionMode;
 
-    public TrialExecutionMode trialExecutionMode;
-
+    [SerializeField]
     // The LayoutManager that is in charge of loading the layout
-    public LayoutController layoutManager;
+    private LayoutController layoutManager;
 
-    public StylusModelController stylusModel;
+    [SerializeField]
+    private StylusModelController stylusModel;
+
+    // The simulated potentiometer input source
+    [SerializeField]
+    private InputFieldController inputPanel;
+
+    // The transform of the layout display
+    [SerializeField]
+    private RectTransform displayRect;
+
+    // The transform of the indicator
+    [SerializeField]
+    private RectTransform indicatorRect;
+
+    // The place where typed letters go
+    [SerializeField]
+    private TextOutputController outputController;
+
+    [SerializeField]
+    private TextAsset[] trialAssets;
+
+    [SerializeField]
+    private List<Testing.Trial> trials;
+    #endregion
+
+    // The most up-to-date value reported by the InputFieldController
+    private int? lastReportedValue;
+
+    private int currentTrial = -1;
 
     // The manager's current layout, or null if no manager exists
     private Layout layout
         => layoutManager?.currentLayout;
 
-    // The simulated potentiometer input source
-    public InputFieldController inputPanel;
+    private bool usingIndicator
+    {
+        get => indicatorRect.gameObject.activeInHierarchy;
+        set => indicatorRect.gameObject.SetActive(value);
+    }
 
-    // The transform of the layout display
-    public RectTransform displayRect;
+    public bool runTrial
+        => trialExecutionMode == TrialExecutionMode.Always
+        || (trialExecutionMode == TrialExecutionMode.OnlyInEditor && Application.isEditor);
 
-    // The transform of the indicator
-    public RectTransform indicatorRect;
-
-    // The place where typed letters go
-    public TextOutputController outputController;
-
-    public TextAsset[] trialAssets;
-
-    public List<Testing.Trial> trials;
-
-    public void Start()
+    private void Start()
     {
         Bindings.LEFT_HANDED = leftHanded;
 
@@ -64,16 +98,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         RunNextTrial();
     }
 
-    // The most up-to-date value reported by the InputFieldController
-    private int? lastReportedValue;
-
-    private bool usingIndicator
-    {
-        get => indicatorRect.gameObject.activeInHierarchy;
-        set => indicatorRect.gameObject.SetActive(value);
-    }
-
-    public void Update()
+    private void Update()
     {
         bool indicator = layout.usesSlider && Bindings.inputThisFrame;
         if (indicator != usingIndicator)
@@ -176,7 +201,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         => OnInputEnd(value);
 
     private InputData currentInputData
-        => stylusModel.PackageData(outputController.text, lastReportedValue);
+        => stylusModel.BundleData(outputController.text, lastReportedValue);
 
     private void AnalogUpdate(float value)
         => OnInputValueChange(Mathf.RoundToInt(value));
@@ -275,22 +300,10 @@ public class MainController : MonoBehaviour, VREventGenerator
         }
     }
 
+    // used in editor!
     public void OnTestingLayoutChange(LayoutOption layout)
         => layoutManager.layout = layout;
 
-    [System.Serializable]
-    public enum TrialExecutionMode
-    {
-        Always,
-        OnlyInEditor,
-        Never,
-    }
-
-    public bool runTrial
-        => trialExecutionMode == TrialExecutionMode.Always
-        || (trialExecutionMode == TrialExecutionMode.OnlyInEditor && Application.isEditor);
-
-    private int currentTrial = -1;
     private void RunNextTrial()
     {
         currentTrial++;
