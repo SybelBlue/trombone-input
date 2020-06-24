@@ -74,12 +74,11 @@ namespace CustomInput
             return null;
         }
 
-        public override (char letter, bool certain)? GetSelectedLetter(InputData data)
+        public override char? GetSelectedLetter(InputData data)
         {
             var raycastKey = RaycastKeyFor(data);
             if (raycastKey == null) return null;
-            char c = raycastKey.CharWithAlternate(useAlternate);
-            return (c, true);
+            return raycastKey.CharWithAlternate(useAlternate);
         }
 
         private SimpleKey RaycastKeyFor(InputData data)

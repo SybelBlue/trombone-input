@@ -158,15 +158,4 @@ public class StylusModelController : MonoBehaviour
         hit = null;
         return null;
     }
-
-    public CustomInput.InputData BundleData(string context, int? lastReportedValue)
-        => new CustomInput.InputData(
-                context,
-                lastReportedValue,
-                normalizedAngles,
-                normalizedSlider,
-                frontButtonDown,
-                backButtonDown,
-                orientation
-            );
 }

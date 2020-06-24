@@ -40,11 +40,11 @@
         protected override int ChildIndexFor(InputData data)
             => data.rawValue ?? -1;
 
-        public override (char, bool)? GetSelectedLetter(InputData data)
+        public override char? GetSelectedLetter(InputData data)
         {
             var s = LayoutKeyFor(data)?.label ?? "";
             if (s == null || s.Length != 1) return null;
-            return (s.ToCharArray()[0], true);
+            return s.ToCharArray()[0];
         }
 
         // Auto-generated 

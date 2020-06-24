@@ -16,6 +16,47 @@ public class TestingTrialEvent : UnityEngine.Events.UnityEvent<bool>
 #pragma warning disable 649
 public class TestingController : TextOutputController
 {
+    #region EditorSet
+    [SerializeField]
+    private Button practiceEndButton;
+
+    [SerializeField]
+    private Text challengeTypeIndicator;
+
+    [SerializeField]
+    private TMPro.TMP_Text fileOutputIndicator;
+
+    [UnityEngine.Tooltip("Called when the trial requests a layout change")]
+    public TestingLayoutEvent OnLayoutChange;
+
+    [UnityEngine.Tooltip("Called when a trial finishes")]
+    public TestingTrialEvent OnTrialEnd;
+    #endregion
+
+    public Challenge.Type? currentChallengeType;
+
+    private LayoutOption[] layoutOrder;
+
+    private Trial? currentTrial = null;
+
+    private ResultBuilder builder;
+
+    #region Properties
+    private int _layoutIndex = 0;
+    private LayoutOption currentLayout
+        => layoutOrder[_layoutIndex];
+
+    public override bool emptyText => currentOutput.Length == 0;
+
+    private string currentLayoutName
+        => layoutOrder == null ? "" : Enum.GetName(typeof(LayoutOption), currentLayout);
+
+    private int _trialIndex;
+    private TrialItem currentTrialItem
+        => currentTrial?.items[_trialIndex];
+    public int? trialNumber
+        => currentTrial?.trialNumber;
+
     private string _prompt;
     public string currentPrompt
     {
@@ -37,47 +78,7 @@ public class TestingController : TextOutputController
         }
     }
 
-    public string currentOutput
-    { get; private set; }
-
-    public int? trialNumber
-        => currentTrial?.trialNumber;
-
-    [SerializeField]
-    private Button practiceEndButton;
-
-    [SerializeField]
-    private Text challengeTypeIndicator;
-
-    [SerializeField]
-    private TMPro.TMP_Text fileOutputIndicator;
-
-    [UnityEngine.Tooltip("Called when the trial requests a layout change")]
-    public TestingLayoutEvent OnLayoutChange;
-
-    [UnityEngine.Tooltip("Called when a trial finishes")]
-    public TestingTrialEvent OnTrialEnd;
-
-    public Challenge.Type? currentChallengeType;
-
-    private LayoutOption[] layoutOrder;
-
-    private int _layoutIndex = 0;
-
-    private int _trialIndex;
-
-    private LayoutOption currentLayout
-        => layoutOrder[_layoutIndex];
-
-    private string currentLayoutName
-        => layoutOrder == null ? "" : Enum.GetName(typeof(LayoutOption), currentLayout);
-
-    private TrialItem currentTrialItem
-        => currentTrial?.items[_trialIndex];
-
-    private Trial? currentTrial = null;
-
-    private ResultBuilder builder;
+    public string currentOutput { get; private set; }
 
     private bool completedChallenge
     {
@@ -97,6 +98,7 @@ public class TestingController : TextOutputController
             throw new System.ArgumentException(currentChallengeType.ToString());
         }
     }
+    #endregion
 
     public override void Start()
     {

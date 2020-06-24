@@ -49,10 +49,11 @@ namespace CustomInput
             return null;
         }
 
-        public override (char, bool)? GetSelectedLetter(InputData data)
+        public override char? GetSelectedLetter(InputData data)
         {
             var (parent, inner) = FetchInnerKey(data);
-            return inner == null ? (parent.label[0], false) : (inner.CharWithAlternate(useAlternate), true);
+            if (inner == null) return null;
+            return inner.CharWithAlternate(useAlternate);
         }
 
         public override void SetHighlightedKey(InputData data)

@@ -24,15 +24,17 @@ public class TextOutputController : MonoBehaviour
 
     public SymSpell.Verbosity verbosity;
 
-    public string text
+    protected string text
     {
         get => rawOutput.text;
-        protected set
+        set
         {
             rawOutput.text = value;
             RefreshSuggestionsPanel(suggestionSource);
         }
     }
+
+    public virtual bool emptyText => text.Length == 0;
 
     public virtual string suggestionSource
     {
