@@ -71,6 +71,9 @@ public class MainController : MonoBehaviour, VREventGenerator
         => trialExecutionMode == TrialExecutionMode.Always
         || (trialExecutionMode == TrialExecutionMode.OnlyInEditor && Application.isEditor);
 
+    private InputData currentInputData
+        => stylusModel.BundleData(outputController.text, lastReportedValue);
+
     private void Start()
     {
         Bindings.LEFT_HANDED = leftHanded;
@@ -79,11 +82,11 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, AnalogUpdate);
 
-        VRMain.Instance.AddOnVRButtonDownCallback(_front_button_event_name, FrontButtonDown);
-        VRMain.Instance.AddOnVRButtonUpCallback(_front_button_event_name, FrontButtonUp);
+        VRMain.Instance.AddOnVRButtonDownCallback(_front_button_event_name, OnFrontButtonDown);
+        VRMain.Instance.AddOnVRButtonUpCallback(_front_button_event_name, OnFrontButtonUp);
 
-        VRMain.Instance.AddOnVRButtonDownCallback(_back_button_event_name, BackButtonDown);
-        VRMain.Instance.AddOnVRButtonUpCallback(_back_button_event_name, BackButtonUp);
+        VRMain.Instance.AddOnVRButtonDownCallback(_back_button_event_name, OnBackButtonDown);
+        VRMain.Instance.AddOnVRButtonUpCallback(_back_button_event_name, OnBackButtonUp);
 
         outputController.ResetText();
 
@@ -145,6 +148,28 @@ public class MainController : MonoBehaviour, VREventGenerator
         layout.UpdateState(currentInputData);
     }
 
+    public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
+    {
+        int minValue = 0;
+        int gestureStartValue = lastReportedValue ?? inputPanel.maxValue / 2;
+        Bindings.CaptureEmulatedSliderInput(ref eventList, gestureStartValue, lastReportedValue, minValue, inputPanel.maxValue);
+        Bindings.CaptureEmulatedButtonInput(ref eventList, layout.usesSlider);
+    }
+
+    private void RunNextTrial()
+    {
+        currentTrial++;
+        if (currentTrial < trials.Count && outputController is TestingController && runTrial)
+        {
+            (outputController as TestingController).RunTrial(trials[currentTrial]);
+        }
+        else
+        {
+            Debug.LogWarning("Skipped running trial!");
+        }
+    }
+
+    #region Callbacks
     // Callback for when the InputFieldController value changes due to user input
     public void OnInputValueChange(int value)
     {
@@ -200,13 +225,10 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void OnSimulatedFingerUp(int value)
         => OnInputEnd(value);
 
-    private InputData currentInputData
-        => stylusModel.BundleData(outputController.text, lastReportedValue);
-
     private void AnalogUpdate(float value)
         => OnInputValueChange(Mathf.RoundToInt(value));
 
-    public void FrontButtonDown()
+    public void OnFrontButtonDown()
     {
         stylusModel.frontButtonDown = true;
         if (OnInputEnd(lastReportedValue)) return;
@@ -224,98 +246,21 @@ public class MainController : MonoBehaviour, VREventGenerator
         }
     }
 
-    public void FrontButtonUp()
+    public void OnFrontButtonUp()
         => stylusModel.frontButtonDown = false;
 
-    public void BackButtonDown()
+    public void OnBackButtonDown()
     {
         stylusModel.backButtonDown = true;
         layout.useAlternate = !layout.useAlternate;
     }
 
-    public void BackButtonUp()
+    public void OnBackButtonUp()
         => stylusModel.backButtonDown = false;
-
-    public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
-    {
-        CaptureEmulatedSliderInput(ref eventList);
-        CaptureEmulatedButtonInput(ref eventList);
-    }
-
-    // If Right click is held and the mouse wheel is scrolled to emulate potentiometer,
-    // will be less sensitive if either Shift key is held.
-    private void CaptureEmulatedSliderInput(ref List<VREvent> eventList)
-    {
-        if (Bindings.beginEmulatedSlide)
-        {
-            int value = lastReportedValue ?? inputPanel.maxValue / 2;
-            eventList.Add(MakePotentiometerEvent(value));
-            return;
-        }
-
-        float delta = Bindings.emulatedSlideDelta;
-        if (!Bindings.precisionMode)
-        {
-            delta *= 4;
-        }
-
-        int rawNext = Mathf.RoundToInt(lastReportedValue + delta ?? 0);
-        int next = Mathf.Clamp(rawNext, 0, inputPanel.maxValue);
-
-        if (delta == 0)
-        {
-            next = Bindings.emulatedSlideValue;
-        }
-
-        if (Bindings.emulatingSlide)
-        {
-            eventList.Add(MakePotentiometerEvent(next));
-        }
-    }
-
-
-    // If BackQuote is hit or Right click is released when the layout accepts potentiometer input,
-    // then it emulates the forward button down.
-    // If Tab is hit then it emulates back button down
-    private void CaptureEmulatedButtonInput(ref List<VREvent> eventList)
-    {
-        if (Bindings.emulatingFrontDown || (Bindings.endEmulatedSlide && layout.usesSlider))
-        {
-            eventList.Add(MakeButtonDownEvent(_front_button_event_name));
-        }
-
-        if (Bindings.emulatingFrontUp)
-        {
-            eventList.Add(MakeButtonUpEvent(_front_button_event_name));
-        }
-
-        if (Bindings.emulatingBackDown)
-        {
-            eventList.Add(MakeButtonDownEvent(_back_button_event_name));
-        }
-
-        if (Bindings.emulatingBackUp)
-        {
-            eventList.Add(MakeButtonUpEvent(_back_button_event_name));
-        }
-    }
 
     // used in editor!
     public void OnTestingLayoutChange(LayoutOption layout)
         => layoutManager.layout = layout;
-
-    private void RunNextTrial()
-    {
-        currentTrial++;
-        if (currentTrial < trials.Count && outputController is TestingController && runTrial)
-        {
-            (outputController as TestingController).RunTrial(trials[currentTrial]);
-        }
-        else
-        {
-            Debug.LogWarning("Skipped running trial!");
-        }
-    }
 
     public void OnTrialCompleted(bool success)
     {
@@ -324,4 +269,5 @@ public class MainController : MonoBehaviour, VREventGenerator
             RunNextTrial();
         }
     }
+    #endregion
 }

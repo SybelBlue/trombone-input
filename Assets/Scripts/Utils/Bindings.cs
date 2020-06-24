@@ -167,6 +167,70 @@ namespace CustomInput
                 return null;
             }
         }
+
+
+        // If emulatingFront or endEmulatedSlide when the layout accepts potentiometer input,
+        // then it emulates the forward button down.
+        // If emulatingBack then it emulates back button
+        public static void CaptureEmulatedButtonInput(ref System.Collections.Generic.List<VREvent> eventList, bool layoutUsesSlider)
+        {
+            if (emulatingFrontDown || (endEmulatedSlide && layoutUsesSlider))
+            {
+                eventList.Add(VREventFactory.MakeButtonDownEvent(VREventFactory._front_button_event_name));
+            }
+
+            if (emulatingFrontUp)
+            {
+                eventList.Add(VREventFactory.MakeButtonUpEvent(VREventFactory._front_button_event_name));
+            }
+
+            if (emulatingBackDown)
+            {
+                eventList.Add(VREventFactory.MakeButtonDownEvent(VREventFactory._back_button_event_name));
+            }
+
+            if (emulatingBackUp)
+            {
+                eventList.Add(VREventFactory.MakeButtonUpEvent(VREventFactory._back_button_event_name));
+            }
+        }
+
+
+        // Starts, updates, and ends emulated slider input when appropriate
+        // Also accounts for precision mode
+        public static void CaptureEmulatedSliderInput(
+            ref System.Collections.Generic.List<VREvent> eventList,
+            int slideStartValue,
+            int? currentValue,
+            int minValue,
+            int maxValue
+            )
+        {
+            if (beginEmulatedSlide)
+            {
+                eventList.Add(VREventFactory.MakePotentiometerEvent(slideStartValue));
+                return;
+            }
+
+            float delta = emulatedSlideDelta;
+            if (!precisionMode)
+            {
+                delta *= 4;
+            }
+
+            int rawNext = UnityEngine.Mathf.RoundToInt(currentValue + delta ?? minValue);
+            int next = UnityEngine.Mathf.Clamp(rawNext, minValue, maxValue);
+
+            if (delta == 0)
+            {
+                next = emulatedSlideValue;
+            }
+
+            if (emulatingSlide)
+            {
+                eventList.Add(VREventFactory.MakePotentiometerEvent(next));
+            }
+        }
     }
 
     public static class VREventFactory
