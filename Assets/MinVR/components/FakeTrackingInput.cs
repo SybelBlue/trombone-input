@@ -218,6 +218,9 @@ namespace MinVR
 
             }
 
+            tracker1Rot = Quaternion.Normalize(tracker1Rot);
+            tracker2Rot = Quaternion.Normalize(tracker2Rot);
+
             // for fake traker 1
             Matrix4x4 m1 = Matrix4x4.TRS(tracker1Pos, tracker1Rot, Vector3.one);
             float[] d1 = VRConvert.ToFloatArray(m1);

@@ -42,13 +42,13 @@ public class StylusModelController : MonoBehaviour
         => useUnityEulerAngles ?
             transform.eulerAngles :
             new Vector3(
-            // transform.forward.SignedAngle(new Vector3(1, 0, 0), new Vector3(0, 0, 1)),
-            // transform.forward.SignedAngle(new Vector3(0, 1, 0), new Vector3(0, 1, 0)),
-            // transform.forward.SignedAngle(new Vector3(0, 0, 1), new Vector3(1, 0, 0))
+            // Vector3.SignedAngle(new Vector3(0, 1, 0), transform.forward.ProjectTo(false, true, true).normalized, new Vector3(1, 0, 0)),
+            // Vector3.SignedAngle(new Vector3(0, 0, 1), transform.forward.ProjectTo(true, false, true).normalized, new Vector3(0, 1, 0)),
+            // Vector3.SignedAngle(new Vector3(0, 1, 0), transform.forward.ProjectTo(true, true, false).normalized, new Vector3(0, 0, 1))
 
-            transform.forward.ProjectTo(true, true, false).SignedAngle(new Vector3(1, 0, 0), new Vector3(0, 0, 1)),
-            transform.forward.ProjectTo(true, true, false).SignedAngle(new Vector3(0, 1, 0), new Vector3(0, 0, 1)),
-            transform.forward.ProjectTo(true, false, true).SignedAngle(new Vector3(0, 0, 1), new Vector3(0, 1, 0))
+            Utils.CustomSignedAngle(transform.forward.ProjectTo(false, true, true), new Vector3(0, 1, 0), new Vector3(1, 0, 0)),
+            Utils.CustomSignedAngle(transform.forward.ProjectTo(true, false, true), new Vector3(0, 0, 1), new Vector3(0, 1, 0)),
+            Utils.CustomSignedAngle(transform.forward.ProjectTo(true, true, false), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
             );
 
 

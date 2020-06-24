@@ -31,11 +31,24 @@ public static class Utils
     // Takes float normalized in [0.0, 1.0] and maps it to an index where 0.0 is 0 and the 1.0 is the length
     public static int NormalizedIntoIndex(float normalized, int length)
         => Mathf.FloorToInt(Mathf.LerpUnclamped(0, Mathf.Max(0, length - 1), normalized));
+
+
+    public static float CustomSignedAngle(Vector3 forward, Vector3 target, Vector3 axis)
+    {
+        // Vector3 projectedToXYPlane = new Vector3(modelController.transform.forward.x, modelController.transform.forward.y, 0);
+        float dot = Vector3.Dot(forward.normalized, target.normalized);
+        float degrees = Mathf.Rad2Deg * Mathf.Acos(dot);
+
+        Vector3 derivedAxis = Vector3.Cross(forward, target);
+        float sign = Mathf.Sign(Vector3.Dot(axis, derivedAxis));
+
+        return sign * degrees;
+    }
 }
 
 public static class Extensions
 {
-    #region Collections
+    #region Arrays
 
     // gets the last item of the list (or errs trying)
     public static T Last<T>(this T[] array)
@@ -91,10 +104,6 @@ public static class Extensions
 
     public static Vector3 ProjectTo(this Vector3 vec, int mask)
         => vec.Map((i, v) => (mask & (1 << i)) != 0 ? v : 0);
-
-
-    public static float SignedAngle(this Vector3 a, Vector3 b, Vector3 axis)
-        => Vector3.SignedAngle(a, b, axis);
 
     #endregion
 
