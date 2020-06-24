@@ -166,7 +166,7 @@ namespace CustomInput
         // Gets the letter for the keypress at index, given the context, and a boolean representing
         // certainty, or null if the index is out of bounds.
         // May alter state of layout and return null.
-        public abstract (char letter, bool certain)? GetSelectedLetter(InputData data);
+        public abstract char? GetSelectedLetter(InputData data);
 
         // The method to fill the keys field on this, called in Start
         protected abstract LayoutKey[] FillKeys();

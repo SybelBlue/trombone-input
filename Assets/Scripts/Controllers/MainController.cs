@@ -194,9 +194,9 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         if (success)
         {
-            (char typed, bool certain) = layout.GetSelectedLetter(currentInputData) ?? ('-', false);
+            char? typed = layout.GetSelectedLetter(currentInputData);
 
-            if (typed == '\b' && certain)
+            if (typed == '\b')
             {
                 Debug.Log("Pressed Backspace");
 
@@ -204,9 +204,12 @@ public class MainController : MonoBehaviour, VREventGenerator
             }
             else
             {
-                Debug.Log($"Pressed {parentKey} @ {simpleKey} => {(typed, certain)}");
+                Debug.Log($"Pressed {parentKey} @ {simpleKey} => {typed}");
 
-                outputController.TypedChar(typed);
+                if (typed.HasValue)
+                {
+                    outputController.TypedChar(typed.Value);
+                }
             }
         }
         else
