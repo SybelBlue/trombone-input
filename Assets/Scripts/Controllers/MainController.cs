@@ -13,6 +13,7 @@ public enum TrialExecutionMode
     Never,
 }
 
+#pragma warning disable 649
 public class MainController : MonoBehaviour, VREventGenerator
 {
     #region EditorSet
