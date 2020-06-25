@@ -14,12 +14,13 @@ public class MainToLobbyChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      if(Input.GetKeyDown(KeyCode.Space))
-      {
-        Application.LoadLevel("Lobby");
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene
+    ("Lobby");
 
-        // SceneManager.LoadScene("Lobby");
-      }
+            // SceneManager.LoadScene("Lobby");
+        }
 
     }
 }

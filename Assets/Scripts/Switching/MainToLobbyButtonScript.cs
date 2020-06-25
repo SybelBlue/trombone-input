@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MainToLobbyButtonScript : MonoBehaviour
 {
-  public void changeToLobby()
-  {
-    Application.LoadLevel("Lobby");
+    public void changeToLobby()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
 
-  }
+    }
     // // Start is called before the first frame update
     // void Start()
     // {
