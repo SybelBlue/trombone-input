@@ -146,6 +146,8 @@ public class MainController : MonoBehaviour, VREventGenerator
         }
 
         layout.UpdateState(currentInputData);
+        DontDestroyOnLoad(stylusModel.gameObject);
+
     }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)

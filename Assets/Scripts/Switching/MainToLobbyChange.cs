@@ -16,7 +16,9 @@ public class MainToLobbyChange : MonoBehaviour
     {
       if(Input.GetKeyDown(KeyCode.Space))
       {
-        SceneManager.LoadScene("Lobby");
+        Application.LoadLevel("Lobby");
+
+        // SceneManager.LoadScene("Lobby");
       }
 
     }
