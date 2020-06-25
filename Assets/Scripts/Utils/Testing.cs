@@ -76,19 +76,13 @@ namespace Testing
             return new Trial(items.ToArray());
         }
 
-        public static (string directory, string name) Write(List<ITrialResult> t, bool locally = false)
+        public static (string directory, string name) WriteTrialResults(List<ITrialResult> t, bool locally = false)
         {
             string directory = locally ? "Assets/Results" : Application.persistentDataPath;
-            string name = $"trial-{DateTime.Now.ToString(@"yyyy-MM-dd_HH-mm-ss")}.yaml";
+            string name = UniqueYamlName("trial");
             string path = $"{directory}/{name}";
 
-            // file should never exist yet
-            File.Create(path).Close();
-
-            using (StreamWriter writer = new StreamWriter(path))
-            {
-                Write(t, writer);
-            }
+            UsingStream(path, writer => WriteTrialResults(t, writer), append: false);
 
             if (!locally)
             {
@@ -98,7 +92,23 @@ namespace Testing
             return (directory, name);
         }
 
-        public static void Write(List<ITrialResult> t, StreamWriter writer)
+        public static string UniqueYamlName(string stub)
+            => $"{stub}-{DateTime.Now.ToString(@"yyyy-MM-dd_HH-mm-ss")}.yaml";
+
+        public static void UsingStream(string path, Action<StreamWriter> WriterCallback, bool append = true)
+        {
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
+            }
+
+            using (StreamWriter writer = new StreamWriter(path, append))
+            {
+                WriterCallback(writer);
+            }
+        }
+
+        public static void WriteTrialResults(List<ITrialResult> t, StreamWriter writer)
         {
             if (t.Count == 0) return;
             writer.WriteLine($"meta:");

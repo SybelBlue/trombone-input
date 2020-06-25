@@ -4,7 +4,8 @@
 public class StylusModelController : MonoBehaviour
 {
     #region EditorSet
-    public bool useUnityEulerAngles = false;
+    public bool recordSliderData;
+    public bool useUnityEulerAngles;
 
     [SerializeField]
     private GameObject potentiometerIndicator;
@@ -27,6 +28,8 @@ public class StylusModelController : MonoBehaviour
 
     private (int? frame, RaycastHit? hit, IRaycastable obj) lastFound;
     private (bool front, bool back) highlighting;
+    private (string path, float? last) saveData = (null, null);
+
 
     #region Properties
     public bool useLaser
@@ -114,14 +117,40 @@ public class StylusModelController : MonoBehaviour
     }
     #endregion
 
+    private void Start()
+    {
+        if (!recordSliderData) return;
+
+        saveData = ($"{Application.persistentDataPath}/{Testing.Utils.UniqueYamlName("stylus-output")}", null);
+    }
+
     private void Update()
     {
-        if (transform.hasChanged)
+        if (!transform.hasChanged) return;
+
+        normalizedAngles =
+            eulerAngles
+            .Map(x => useUnityEulerAngles ? Utils.ModIntoRange(x, -180, 180) : x)
+            .Map((i, x) => Mathf.InverseLerp(LowerBound(i), UpperBound(i), x));
+
+        if (!recordSliderData) return;
+
+        if (saveData.last == normalizedSlider) return;
+
+        Testing.Utils.UsingStream(saveData.path, WriteSliderData);
+
+        saveData.last = normalizedSlider;
+    }
+
+    private void OnDestroy()
+    {
+        if (recordSliderData)
         {
-            normalizedAngles =
-                eulerAngles
-                .Map(x => useUnityEulerAngles ? Utils.ModIntoRange(x, -180, 180) : x)
-                .Map((i, x) => Mathf.InverseLerp(LowerBound(i), UpperBound(i), x));
+            Debug.LogWarning($"Saved data to:\n{saveData.path}");
+        }
+        else if (saveData.path != null)
+        {
+            System.IO.File.Delete(saveData.path);
         }
     }
 
@@ -158,4 +187,7 @@ public class StylusModelController : MonoBehaviour
         hit = null;
         return null;
     }
+
+    private void WriteSliderData(System.IO.StreamWriter writer)
+        => writer.WriteLine($"{Time.time}: {normalizedSlider}");
 }
