@@ -54,7 +54,7 @@ public static class Utils
 
 public static class Extensions
 {
-    #region Arrays
+    #region Collections
 
     // gets the last item of the list (or errs trying)
     public static T Last<T>(this T[] array)
@@ -65,6 +65,15 @@ public static class Extensions
 
     public static void SetFromEnd<T>(this T[] array, int i, T value)
         => array[Mathf.Max(0, array.Length - 1) - i] = value;
+
+    public static void OptionalAdd<T>(this System.Collections.Generic.List<T> list, T? value)
+        where T : struct
+    {
+        if (value.HasValue)
+        {
+            list.Add(value.Value);
+        }
+    }
 
     #endregion
 
