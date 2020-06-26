@@ -56,10 +56,13 @@ namespace CustomInput
         // Map of value to GameObject
         protected readonly List<GameObject> childMap = new List<GameObject>(64);
 
+        protected RectTransform rectTransform;
+
         protected void Start()
         {
             BeforeStart();
 
+            rectTransform = gameObject.GetComponent<RectTransform>();
             keys = FillKeys();
 
             var objectDict = new Dictionary<LayoutObjectType, GameObject>
@@ -74,7 +77,7 @@ namespace CustomInput
             {
                 var key = keys[i];
 
-                var newChild = key.Representation(ParentForNthChild(i), objectDict);
+                var newChild = key.Representation(transform, objectDict);
 
                 var controller = newChild.GetComponent<IKeyController>();
 
@@ -97,9 +100,6 @@ namespace CustomInput
         protected virtual void BeforeStart()
         { }
 
-        protected virtual Transform ParentForNthChild(int n)
-            => transform;
-
         protected virtual void AfterStart()
         { }
 
@@ -111,7 +111,7 @@ namespace CustomInput
 
         private void Update()
         {
-            var width = gameObject.GetComponent<RectTransform>().rect.width;
+            var width = rectTransform.rect.width;
 
             if (lastWidth == width) return;
 
@@ -131,9 +131,9 @@ namespace CustomInput
         // Resize all child GameObjects to fit within this and to scale
         public virtual void ResizeAll()
         {
-            var width = gameObject.GetComponent<RectTransform>().rect.width;
-            var height = gameObject.GetComponent<RectTransform>().rect.height;
-            var unitWidth = width / 64.0f;
+            var width = rectTransform.rect.width;
+            var height = rectTransform.rect.height;
+            var unitWidth = width / (float)Bindings._slider_max_value;
             var unitHeight = height / 22.0f;
 
             foreach (var child in gameObject.GetComponentsInChildren<IKeyController>())
