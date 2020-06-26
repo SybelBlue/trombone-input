@@ -150,7 +150,8 @@ public class StylusModelController : MonoBehaviour
         }
         else if (saveData.path != null)
         {
-            System.IO.File.Delete(saveData.path);
+            Debug.LogWarning("Deleted saved data.");
+            Testing.Utils.DeleteFile(saveData.path);
         }
     }
 
