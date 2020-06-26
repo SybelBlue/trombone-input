@@ -36,10 +36,15 @@ namespace CustomInput
         }
     }
 
+#pragma warning disable 649
     public abstract class Layout : MonoBehaviour
     {
+        [SerializeField]
+        protected RectTransform rectTransform;
+
+        [SerializeField]
         // Prefabs for the basic layout key and basic block key
-        public GameObject simpleKeyPrefab, binnedKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab, raycastKeyPrefab;
+        private GameObject simpleKeyPrefab, binnedKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab, raycastKeyPrefab;
 
         // All of the keys in this layout
         protected LayoutKey[] keys;
@@ -58,8 +63,6 @@ namespace CustomInput
 
         protected void Start()
         {
-            BeforeStart();
-
             keys = FillKeys();
 
             var objectDict = new Dictionary<LayoutObjectType, GameObject>
@@ -74,7 +77,7 @@ namespace CustomInput
             {
                 var key = keys[i];
 
-                var newChild = key.Representation(ParentForNthChild(i), objectDict);
+                var newChild = key.Representation(transform, objectDict);
 
                 var controller = newChild.GetComponent<IKeyController>();
 
@@ -90,18 +93,7 @@ namespace CustomInput
             }
 
             ResizeAll();
-
-            AfterStart();
         }
-
-        protected virtual void BeforeStart()
-        { }
-
-        protected virtual Transform ParentForNthChild(int n)
-            => transform;
-
-        protected virtual void AfterStart()
-        { }
 
         public void UpdateState(InputData data)
             => SetHighlightedKey(data);
@@ -111,7 +103,7 @@ namespace CustomInput
 
         private void Update()
         {
-            var width = gameObject.GetComponent<RectTransform>().rect.width;
+            var width = rectTransform.rect.width;
 
             if (lastWidth == width) return;
 
@@ -131,9 +123,9 @@ namespace CustomInput
         // Resize all child GameObjects to fit within this and to scale
         public virtual void ResizeAll()
         {
-            var width = gameObject.GetComponent<RectTransform>().rect.width;
-            var height = gameObject.GetComponent<RectTransform>().rect.height;
-            var unitWidth = width / 64.0f;
+            var width = rectTransform.rect.width;
+            var height = rectTransform.rect.height;
+            var unitWidth = width / (float)Bindings._slider_max_value;
             var unitHeight = height / 22.0f;
 
             foreach (var child in gameObject.GetComponentsInChildren<IKeyController>())

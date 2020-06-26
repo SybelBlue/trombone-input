@@ -150,15 +150,16 @@ public class StylusModelController : MonoBehaviour
         }
         else if (saveData.path != null)
         {
-            System.IO.File.Delete(saveData.path);
+            Debug.LogWarning("Deleted saved data.");
+            Testing.Utils.DeleteFile(saveData.path);
         }
     }
 
     public float LowerBound(int axis)
-        => axis == 0 && !CustomInput.Bindings.LEFT_HANDED ? maxAngle[axis] : minAngle[axis];
+        => axis == 0 && !CustomInput.Bindings._left_handed ? maxAngle[axis] : minAngle[axis];
 
     public float UpperBound(int axis)
-        => axis == 0 && !CustomInput.Bindings.LEFT_HANDED ? minAngle[axis] : maxAngle[axis];
+        => axis == 0 && !CustomInput.Bindings._left_handed ? minAngle[axis] : maxAngle[axis];
 
     public IRaycastable Raycast(out RaycastHit? hit)
     {

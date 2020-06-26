@@ -4,13 +4,23 @@ using UnityEngine;
 public class SuggestionController : IRaycastable
 {
     [SerializeField]
-    protected TMPro.TMP_Text text;
+    private TMPro.TMP_Text tmpText;
 
     [SerializeField]
-    protected TextOutputController textOutputController;
+    private TextOutputController textOutputController;
+
+    [SerializeField]
+    public BoxCollider boxCollider;
+
+    public string text
+    {
+        get => tmpText.text;
+        set => tmpText.text = value;
+    }
 
     protected override void OnRaycastFocusChange(bool value)
-        => text.fontStyle = value ?
-            TMPro.FontStyles.Bold :
-            TMPro.FontStyles.Italic;
+        => tmpText.fontStyle =
+            value ?
+                TMPro.FontStyles.Bold :
+                TMPro.FontStyles.Italic;
 }

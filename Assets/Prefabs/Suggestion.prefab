@@ -239,5 +239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e3f72f56fb7fde469cc4385a52fc159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 6504709705166453301}
+  tmpText: {fileID: 6504709705166453301}
   textOutputController: {fileID: 0}
+  boxCollider: {fileID: 3175998587753219090}

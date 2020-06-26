@@ -38,9 +38,10 @@ namespace CustomInput
     //      <DOM> Joystick Quadrant     =>      Fast Switch Layouts
     public static class Bindings
     {
-        public static bool LEFT_HANDED = false;
+        public static readonly int _slider_max_value = 64;
+        public static bool _left_handed = false;
         public static string _dominant_hand
-            => LEFT_HANDED ? "Left" : "Right"; // or "Left"
+            => _left_handed ? "Left" : "Right"; // or "Left"
         public static string _trigger
             => $"XRI_{_dominant_hand}_TriggerButton";
         public static string _grip
@@ -79,7 +80,7 @@ namespace CustomInput
             => mouseScrollDelta.y * 2;
 
         public static int emulatedSlideValue
-            => UnityEngine.Mathf.FloorToInt((1 + GetAxis(_trackpad_vertical)) * 64 / 2);
+            => UnityEngine.Mathf.FloorToInt((1 + GetAxis(_trackpad_vertical)) * _slider_max_value / 2);
 
         // either shift key held
         public static bool precisionMode

@@ -12,7 +12,7 @@ public class TextOutputController : MonoBehaviour
     private GameObject suggestionsContainer;
 
     [SerializeField]
-    private TMPro.TMP_Text[] suggested;
+    private SuggestionController[] suggestions;
 
     [SerializeField]
     private GridLayoutGroup suggestionLayoutGroup;
@@ -42,8 +42,6 @@ public class TextOutputController : MonoBehaviour
         protected set => text = value;
     }
 
-    public List<string> suggestions;
-
     public virtual void Start()
     {
         Auto.Correct.Instance.InitDictionary(dictionarySize, dict824765, dict243342);
@@ -53,11 +51,9 @@ public class TextOutputController : MonoBehaviour
             Auto.Complete.Instance.InitDictionary(dict824765, ' ');
         }
 
-        suggested = suggestionsContainer.GetComponentsInChildren<TMPro.TMP_Text>();
-
-        foreach (var suggestedText in suggested)
+        foreach (var suggestion in suggestions)
         {
-            suggestedText.GetComponent<Button>().onClick.AddListener(() => OnSuggestionButtonClick(suggestedText.text.ToUpper()));
+            suggestion.GetComponent<Button>().onClick.AddListener(() => OnSuggestionButtonClick(suggestion.text.ToUpper()));
         }
 
         RefreshSuggestionsPanel("");
@@ -87,23 +83,23 @@ public class TextOutputController : MonoBehaviour
 
     private void RefreshSuggestionsPanel(string value)
     {
-        suggestions = new List<string>();
+        List<string> sugStrings = new List<string>();
 
         if (Auto.Correct.Instance.dictionaryLoaded)
         {
-            suggestions = Auto.Correct.Instance.Suggestions(value, verbosity);
+            sugStrings = Auto.Correct.Instance.Suggestions(value, verbosity);
         }
 
         if (Auto.Complete.Instance.dictionaryLoaded)
         {
             string lastWord = value.Split(' ').Last();
-            suggestions.AddRange(Auto.Complete.Instance.Completions(lastWord));
+            sugStrings.AddRange(Auto.Complete.Instance.Completions(lastWord));
         }
 
-        for (int i = 0; i < suggested.Length; i++)
+        for (int i = 0; i < suggestions.Length; i++)
         {
-            suggested[i].text = (i >= suggestions.Count) ? "" : suggestions[i];
-            suggested[i].GetComponent<BoxCollider>().size = suggestionLayoutGroup.cellSize.WithZ(0.2f);
+            suggestions[i].text = (i >= sugStrings.Count) ? "" : sugStrings[i];
+            suggestions[i].boxCollider.size = suggestionLayoutGroup.cellSize.WithZ(0.2f);
         }
     }
 

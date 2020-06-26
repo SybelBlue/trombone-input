@@ -13,6 +13,10 @@ public class TestingLayoutEvent : UnityEngine.Events.UnityEvent<LayoutOption>
 public class TestingTrialEvent : UnityEngine.Events.UnityEvent<bool>
 { }
 
+[Serializable]
+public class TestingChallengeEvent : UnityEngine.Events.UnityEvent
+{ }
+
 #pragma warning disable 649
 public class TestingController : TextOutputController
 {
@@ -26,11 +30,14 @@ public class TestingController : TextOutputController
     [SerializeField]
     private TMPro.TMP_Text fileOutputIndicator;
 
-    [UnityEngine.Tooltip("Called when the trial requests a layout change")]
+    [Tooltip("Called when the trial requests a layout change")]
     public TestingLayoutEvent OnLayoutChange;
 
-    [UnityEngine.Tooltip("Called when a trial finishes")]
+    [Tooltip("Called when a trial ends")]
     public TestingTrialEvent OnTrialEnd;
+
+    [Tooltip("Called when a challenge ends")]
+    public TestingChallengeEvent OnChallengeEnd;
     #endregion
 
     public Challenge.Type? currentChallengeType;
@@ -260,6 +267,11 @@ public class TestingController : TextOutputController
     private void AdvanceTrial()
     {
         if (!currentTrial.HasValue) return;
+
+        if (_trialIndex > -1)
+        {
+            OnChallengeEnd.Invoke();
+        }
 
         _trialIndex++;
 
