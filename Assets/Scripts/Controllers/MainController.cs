@@ -147,6 +147,11 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         layout.UpdateState(currentInputData);
         DontDestroyOnLoad(stylusModel.gameObject);
+        // DontDestroyOnLoad(layoutManager.gameObject);
+        // DontDestroyOnLoad(inputPanel.gameObject);
+        // DontDestroyOnLoad(displayRect.gameObject);
+        // DontDestroyOnLoad(indicatorRect.gameObject);
+        // DontDestroyOnLoad(outputController.gameObject);
 
     }
 
