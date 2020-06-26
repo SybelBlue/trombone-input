@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+#pragma warning disable 649
 public class TrialProgresssController : MonoBehaviour
 {
     [SerializeField]

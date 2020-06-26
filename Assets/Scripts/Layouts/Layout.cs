@@ -36,10 +36,15 @@ namespace CustomInput
         }
     }
 
+#pragma warning disable 649
     public abstract class Layout : MonoBehaviour
     {
+        [SerializeField]
+        protected RectTransform rectTransform;
+
+        [SerializeField]
         // Prefabs for the basic layout key and basic block key
-        public GameObject simpleKeyPrefab, binnedKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab, raycastKeyPrefab;
+        private GameObject simpleKeyPrefab, binnedKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab, raycastKeyPrefab;
 
         // All of the keys in this layout
         protected LayoutKey[] keys;
@@ -56,14 +61,8 @@ namespace CustomInput
         // Map of value to GameObject
         protected readonly List<GameObject> childMap = new List<GameObject>(64);
 
-        protected RectTransform rectTransform;
-
         protected void Start()
         {
-            rectTransform = gameObject.GetComponent<RectTransform>();
-
-            BeforeStart();
-
             keys = FillKeys();
 
             var objectDict = new Dictionary<LayoutObjectType, GameObject>
@@ -94,15 +93,7 @@ namespace CustomInput
             }
 
             ResizeAll();
-
-            AfterStart();
         }
-
-        protected virtual void BeforeStart()
-        { }
-
-        protected virtual void AfterStart()
-        { }
 
         public void UpdateState(InputData data)
             => SetHighlightedKey(data);

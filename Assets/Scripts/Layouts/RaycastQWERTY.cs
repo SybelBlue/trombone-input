@@ -27,19 +27,10 @@ namespace CustomInput
             }
         }
 
-        protected override void BeforeStart()
-        {
-            gridLayout.cellSize = new Vector2(rectTransform.rect.width / 10.0f, rectTransform.rect.height / 3.0f);
-        }
-
         public override void ResizeAll()
         {
-            gridLayout.cellSize = new Vector2(rectTransform.rect.width / 10.0f, rectTransform.rect.height / 3.0f);
             base.ResizeAll();
-        }
-
-        protected override void AfterStart()
-        {
+            gridLayout.cellSize = new Vector2(rectTransform.rect.width / 10.0f, rectTransform.rect.height / 3.0f);
             foreach (var collider in GetComponentsInChildren<BoxCollider>())
             {
                 collider.size = gridLayout.cellSize.WithZ(0.2f);
