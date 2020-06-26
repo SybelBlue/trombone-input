@@ -60,9 +60,10 @@ namespace CustomInput
 
         protected void Start()
         {
+            rectTransform = gameObject.GetComponent<RectTransform>();
+
             BeforeStart();
 
-            rectTransform = gameObject.GetComponent<RectTransform>();
             keys = FillKeys();
 
             var objectDict = new Dictionary<LayoutObjectType, GameObject>

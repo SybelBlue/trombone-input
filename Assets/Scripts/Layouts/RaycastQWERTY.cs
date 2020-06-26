@@ -12,9 +12,6 @@ namespace CustomInput
         private bool _useAlternate;
 
         [SerializeField]
-        private RectTransform rectTransform;
-
-        [SerializeField]
         private GridLayoutGroup gridLayout;
 
         public override bool useAlternate

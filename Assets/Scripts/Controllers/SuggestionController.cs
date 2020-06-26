@@ -19,7 +19,8 @@ public class SuggestionController : IRaycastable
     }
 
     protected override void OnRaycastFocusChange(bool value)
-        => tmpText.fontStyle = value ?
-            TMPro.FontStyles.Bold :
-            TMPro.FontStyles.Italic;
+        => tmpText.fontStyle =
+            value ?
+                TMPro.FontStyles.Bold :
+                TMPro.FontStyles.Italic;
 }
