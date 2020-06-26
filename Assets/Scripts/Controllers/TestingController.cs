@@ -286,7 +286,7 @@ public class TestingController : TextOutputController
 
         try
         {
-            var tup = Testing.Utils.Write(builder.Finish(currentOutput), Application.isEditor);
+            var tup = Testing.Utils.WriteTrialResults(builder.Finish(currentOutput), Application.isEditor);
 
             fileOutputIndicator.text += $"Trial {trialNumber} Completed!\nSaved in Directory: {tup.directory}\nIn File: {tup.name}\n";
         }

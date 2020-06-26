@@ -4038,6 +4038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa71232015b797c4b81b0d6673a47879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recordSliderData: 1
   useUnityEulerAngles: 0
   potentiometerIndicator: {fileID: 1634427602}
   laserPointer: {fileID: 420008069}
@@ -7160,7 +7161,7 @@ MonoBehaviour:
   suggestionLayoutGroup: {fileID: 475702033}
   dict824765: {fileID: 4900000, guid: 4b1ac01248eaf0044a2df83df7098e17, type: 3}
   dict243342: {fileID: 4900000, guid: 0097bfaadfd0ee8439cb206c6b430d48, type: 3}
-  dictionarySize: 1
+  dictionarySize: 0
   verbosity: 2
   suggestions: []
   practiceEndButton: {fileID: 1722262923}

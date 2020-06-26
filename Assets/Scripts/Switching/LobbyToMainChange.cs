@@ -14,14 +14,14 @@ public class LobbyToMainChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      if(Input.GetKeyDown(KeyCode.Space))
-      {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // SceneManager.LoadScene("_MAIN");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("_MAIN");
+
+        }
+
         // SceneManager.LoadScene("_MAIN");
-        Application.LoadLevel("_MAIN");
-
-      }
-
-      // Application.LoadLevel("_MAIN");
 
     }
 }
