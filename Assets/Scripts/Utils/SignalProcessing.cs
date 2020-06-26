@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 namespace SignalProcessing
 {
-
     public class Filter : AbstractFilter
     {
         private bool midDrop;
@@ -15,20 +14,22 @@ namespace SignalProcessing
         public override uint? Push(uint rawIn)
         {
             AdvanceCurrent();
-            current = new IOPair { input = rawIn, output = rawIn };
 
-            // if in deadzone -> 0
-            // if just jumping from 0 -> 0
-            // if did jump from 0 -> can't jump again, raw
-            // if dropping to 0 -> prev = pprev
-            // if near prev and pprev inputs -> prev + pprev / 2
-            // else raw
             bool inDeadzone = rawIn < deadzone;
             bool jumpingFromZero = prev.output == 0 && deadzone + epsilon <= rawIn;
-            bool steepDrop = 2.5f * epsilon + current.input <= prev.output;
-            bool steepJump = 1.5f * epsilon + prev.input <= current.input;
-            bool inNeighborhood = currentNeighbor(prev.input) && currentNeighbor(pprev.input);
+            bool steepDrop = 2.5f * epsilon + rawIn <= prev.output;
+            bool steepJump = 1.5f * epsilon + prev.input <= rawIn;
+            bool inNeighborhood = currentNeighbor(prev.output) && currentNeighbor(pprev.output);
             midDrop = midDrop && !inDeadzone && !inNeighborhood;
+
+            uint? currentOutput;
+            // if in deadzone or mid-drop -> 0
+            // if just jumping from 0 -> 0
+            // if did jump from 0 -> can't jump again, rawIn
+            // if jumping quickly -> preempt rise, rawIn + 0.75 * last rise
+            // if dropping quickly -> prev = pprev, set mid-drop, 0
+            // if near prev and pprev inputs -> prev + pprev / 2
+            // else raw
 
             if (inDeadzone || midDrop)
             {
@@ -41,7 +42,7 @@ namespace SignalProcessing
             }
             else if (steepJump)
             {
-                currentOutput = rawIn + (3 * (current.input - prev.input)) / 4;
+                currentOutput = rawIn + (3 * (rawIn - prev.input)) / 4;
             }
             else if (steepDrop)
             {
@@ -53,56 +54,12 @@ namespace SignalProcessing
             {
                 currentOutput = (pprev.output + prev.output) / 2;
             }
-            // else leave currentOuput as default (rawIn)
-
-            return pprev.output;
-        }
-    }
-
-    public class OldFilter : AbstractFilter
-    {
-        public OldFilter(uint epsilon, uint deadzone) : base(epsilon, deadzone)
-        { }
-
-        public override uint? Push(uint rawIn)
-        {
-            AdvanceCurrent();
-            current = new IOPair { input = rawIn, output = null };
-
-            // if in deadzone -> 0
-            // if just jumping from 0 -> 0
-            // if did jump from 0 -> can't jump again, raw
-            // if dropping to 0 -> prev = pprev
-            // if near prev and pprev inputs -> prev + pprev / 2
-            // else raw
-            bool inDeadzone = rawIn < deadzone;
-            bool jumpingFromZero = prev.output == 0 && rawIn >= deadzone + epsilon;
-            bool steepDrop = prev.output >= 2.5f * epsilon + current.input;
-            bool inNeighborhood = currentNeighbor(prev.input) && currentNeighbor(pprev.input);
-
-            if (inDeadzone)
-            {
-                currentOutput = 0;
-            }
-            else if (jumpingFromZero)
-            {
-                currentOutput = jumpedFromZero ? rawIn : 0;
-                jumpedFromZero = !jumpedFromZero;
-            }
-            else if (steepDrop)
-            {
-                currentOutput = 0;
-                prevOutput = pprev.output;
-            }
-            else if (inNeighborhood)
-            {
-                currentOutput = (pprev.input + prev.input) / 2;
-            }
             else
             {
                 currentOutput = rawIn;
             }
 
+            current = new IOPair { input = rawIn, output = currentOutput };
             return pprev.output;
         }
     }
@@ -157,8 +114,8 @@ namespace SignalProcessing
         }
 
         // is within radius epsilon of currentInput
-        protected bool currentNeighbor(uint value)
-            => current.input - epsilon <= value && value <= current.input + epsilon;
+        protected bool currentNeighbor(uint? value)
+            => value.HasValue && current.input - epsilon <= value && value <= current.input + epsilon;
 
         protected void AdvanceCurrent()
             => _curr = (_curr + 1) % queue_length;
@@ -187,7 +144,7 @@ namespace SignalProcessing
         // returns a filtered list of the provided data, constructing a new filter from the optional arguments
         public static List<uint> BatchFilter(IEnumerable<uint> data, uint epsilon = 2, uint deadzone = 8)
         {
-            AbstractFilter filter = new OldFilter(epsilon, deadzone);
+            AbstractFilter filter = new Filter(epsilon, deadzone);
             return BatchFilter(ref filter, data);
         }
 
