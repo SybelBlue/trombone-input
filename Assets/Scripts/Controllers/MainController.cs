@@ -46,6 +46,9 @@ public class MainController : MonoBehaviour, VREventGenerator
     private TextAsset[] trialAssets;
 
     [SerializeField]
+    private TrialProgresssController trialProgresssController;
+
+    [SerializeField]
     private List<Testing.Trial> trials;
     #endregion
 
@@ -53,6 +56,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     private int? lastReportedValue;
 
     private int currentTrial = -1;
+    private int completedChallenges = -1;
 
     // The manager's current layout, or null if no manager exists
     private Layout layout
@@ -158,8 +162,11 @@ public class MainController : MonoBehaviour, VREventGenerator
     private void RunNextTrial()
     {
         currentTrial++;
+        completedChallenges = -1;
         if (currentTrial < trials.Count && outputController is TestingController && runTrial)
         {
+            trialProgresssController.trialCount = (currentTrial, trials.Count);
+            OnChallengeEnd();
             (outputController as TestingController).RunTrial(trials[currentTrial]);
         }
         else
@@ -263,6 +270,9 @@ public class MainController : MonoBehaviour, VREventGenerator
     // used in editor!
     public void OnTestingLayoutChange(LayoutOption layout)
         => layoutManager.layout = layout;
+
+    public void OnChallengeEnd()
+        => trialProgresssController.trialProgress = (++completedChallenges) / (float)trials[currentTrial].Length;
 
     public void OnTrialCompleted(bool success)
     {
