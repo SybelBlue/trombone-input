@@ -15,6 +15,7 @@ namespace CustomInput
     //      Tab                         =>      Stylus Back Button
     //      7/8/9/0                     =>      Fast Switch Layouts
     //      Shift                       =>      Hold for Precise Emulation
+    //      Return                      =>      Switch to/from Lobby
     //    From MainController.cs
     //      Backspace                   =>      Force Backspace
     //      Space                       =>      Force Space
@@ -38,6 +39,7 @@ namespace CustomInput
     //      <DOM> Secondary Button      =>      Stylus Front Button
     //      <DOM> Grip Button           =>      Stylus Back Button
     //      <DOM> Joystick Quadrant     =>      Fast Switch Layouts
+    //      Return                      =>      Switch to/from Lobby
     public static class Bindings
     {
         public static readonly int _slider_max_value = 64;
@@ -114,6 +116,12 @@ namespace CustomInput
 
         public static bool backspaceDown
             => GetKeyDown(Backspace);
+
+        public static bool advanceToMain
+            => GetKeyDown(Return);
+
+        public static bool returnToLobby
+            => GetKeyDown(Return);
 
         public static int? emulatingLayoutSwitch
         {

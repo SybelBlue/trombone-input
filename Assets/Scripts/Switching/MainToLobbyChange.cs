@@ -14,9 +14,9 @@ public class MainToLobbyChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (CustomInput.Bindings.returnToLobby)
         {
-          UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("Stylus Trial");
+            UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("Stylus Trial");
 
             // SceneManager.LoadScene("Lobby");
         }
