@@ -2,10 +2,8 @@ using System.Collections.Generic;
 
 namespace SignalProcessing
 {
-    public class Filter
+    public struct Filter
     {
-        private static readonly int queue_length = 3;
-
         private readonly uint epsilon, deadzone;
 
         private IOPair pprev, prev;
@@ -14,6 +12,9 @@ namespace SignalProcessing
 
         public Filter(uint epsilon, uint deadzone)
         {
+            this.pprev = new IOPair { input = 0, output = null };
+            this.prev = new IOPair { input = 0, output = null };
+
             this.midDrop = false;
             this.jumpedFromZero = false;
 
@@ -95,7 +96,7 @@ namespace SignalProcessing
         }
     }
 
-    public static class Utils
+    public static partial class Utils
     {
         // returns a filtered list of the provided data, constructing a new filter from the optional arguments
         public static List<uint> BatchFilter(IEnumerable<uint> data, uint epsilon = 2, uint deadzone = 8)
