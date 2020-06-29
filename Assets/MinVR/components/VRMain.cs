@@ -17,7 +17,7 @@ namespace MinVR {
      *  itself enforces this by using a Singleton pattern.  You can access VRMain from any other script using
      *  VRMain.Instance.
      *
-     * 
+     *
      *  Using VRMain with VRDevices:
      *
      *  You should define one or more VRDevices in your application for VRMain to use by attaching a VRDevice
@@ -54,7 +54,7 @@ namespace MinVR {
      *  functions.  For example:
      *
      *  public class MyClass : MonoBehavior {
-     *  
+     *
      *      public void Start() {
 	 *          MinVR.VRMain.Instance.AddOnVRAnalogUpdateCallback("ArduinoAnalog01_Update", this.OnSliderUpdate);
      *      }
@@ -62,7 +62,7 @@ namespace MinVR {
      *      public void OnSliderUpdate(float val) {
 	 *          Debug.Log("New slider value = " + val);
      *      }
-     * 
+     *
      *  }
      *
      */
@@ -241,7 +241,7 @@ namespace MinVR {
         public void AddEventGenerator(VREventGenerator dev) {
             _inputDevices.Add(dev);
         }
-    
+
 
         // As an alternative to making your class a virtual input device that gets polled each frame for
         // new events by implementing the "EventGenerator" interface, if you're class only occasionally
@@ -479,7 +479,7 @@ namespace MinVR {
                         for (int j=0; j<aliases.Count; j++)
 						{
 							output = output + aliases[j] + " ";
-						}   
+						}
 					}
 					output = output + _inputEvents[i].ToString();
 					Debug.Log(output);
@@ -661,7 +661,7 @@ namespace MinVR {
 					buttonUpCallbacks[e.Name][cb].Invoke();
 				}
 			}
-			
+
 			if ((cursorCallbacks.ContainsKey(e.Name)) &&
                 (e.ContainsStringField("EventType")) &&
                 (e.GetStringData("EventType") == "CursorMove"))
@@ -673,7 +673,7 @@ namespace MinVR {
 					cursorCallbacks[e.Name][cb].Invoke(new Vector3(pos[0], pos[1], pos[2]), new Vector3(npos[0], npos[1], npos[2]));
 				}
 			}
-			
+
 			if ((trackerCallbacks.ContainsKey(e.Name)) &&
                 (e.ContainsStringField("EventType")) &&
                 (e.GetStringData("EventType") == "TrackerMove"))
@@ -687,7 +687,7 @@ namespace MinVR {
 					trackerCallbacks[e.Name][cb].Invoke(pos, rot);
 				}
 			}
-		
+
 		}
 
 
@@ -708,6 +708,7 @@ namespace MinVR {
                 instance = this;
             }
             else if (instance != this) {
+              // instance = this;
                 DestroyImmediate(this.gameObject);
             }
         }
@@ -757,7 +758,7 @@ namespace MinVR {
                 }
             }
         }
-        
+
         /*
         void OnPostRender()
         {
@@ -767,7 +768,7 @@ namespace MinVR {
             }
         }
         */
-        
+
 
 
         // gets all objects in the scene, even if the objects are inactive
@@ -808,7 +809,7 @@ namespace MinVR {
             return list;
         }
 
-        
+
 
 
     } // class VRMain
