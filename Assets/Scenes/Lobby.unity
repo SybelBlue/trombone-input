@@ -284,7 +284,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1326522650}
-        m_MethodName: changeToMain
+        m_MethodName: StartTrialScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -293,7 +293,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
 --- !u!114 &753604663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,7 +424,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1326522646}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99e4ea509691440ae9a6ae785f3baf21, type: 3}
+  m_Script: {fileID: 11500000, guid: b06718a6f0c25429098e63eeea0d1c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1364169799
