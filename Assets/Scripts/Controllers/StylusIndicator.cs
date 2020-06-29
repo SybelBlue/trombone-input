@@ -29,5 +29,7 @@ public class StylusIndicator : MonoBehaviour
                     modelController.eulerAngles[i],
                     modelController.normalizedAngles[i]);
         }
+
+        display.text += string.Format("Slider Unfiltered: {0, 3:N3}", modelController.normalizedSlider);
     }
 }

@@ -40,11 +40,14 @@ namespace CustomInput
     //      <DOM> Grip Button           =>      Stylus Back Button
     //      <DOM> Joystick Quadrant     =>      Fast Switch Layouts
     //      Return                      =>      Switch to/from Lobby
+    //      7/8/9/0                     =>      Fast Switch Layouts
     public static class Bindings
     {
         public static readonly int _slider_max_value = 64;
         public static readonly UnityEngine.KeyCode[] _layout_switch_bindings
             = new UnityEngine.KeyCode[] { Alpha7, Alpha8, Alpha9, Alpha0 };
+
+        public static readonly UnityEngine.KeyCode _scene_advance_key = Return;
 
         public static bool _left_handed = false;
         public static string _dominant_hand
@@ -118,10 +121,10 @@ namespace CustomInput
             => GetKeyDown(Backspace);
 
         public static bool advanceToMain
-            => GetKeyDown(Return);
+            => GetKeyDown(_scene_advance_key);
 
         public static bool returnToLobby
-            => GetKeyDown(Return);
+            => GetKeyDown(_scene_advance_key);
 
         public static int? emulatingLayoutSwitch
         {
@@ -180,6 +183,7 @@ namespace CustomInput
             {
                 UnityEngine.Debug.LogWarning("Provided VRDevice to initialize for MinVR Layout switching does not have vrNodeType NetServer!");
             }
+
             foreach (var item in _layout_switch_bindings)
             {
                 server.unityKeysToVREvents.Add(item.ToString());
@@ -191,9 +195,12 @@ namespace CustomInput
             for (int i = 0; i < _layout_switch_bindings.Length; i++)
             {
                 var binding = _layout_switch_bindings[i];
-                VRMain.Instance.AddOnVRButtonDownCallback($"Kbd{binding.ToString()}_Down", LayoutHandlers(i));
+                VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(binding), LayoutHandlers(i));
             }
         }
+
+        public static string KeyCodeToMinVRButtonDownName(UnityEngine.KeyCode binding)
+            => $"Kbd{binding}_Down";
 
 
         // If emulatingFront or endEmulatedSlide when the layout accepts potentiometer input,
@@ -239,10 +246,10 @@ namespace CustomInput
                 delta *= 4;
             }
 
-            int rawNext = UnityEngine.Mathf.RoundToInt(currentValue + delta ?? 0);
+            int rawNext = UnityEngine.Mathf.RoundToInt((currentValue ?? 0) + delta);
             int next = UnityEngine.Mathf.Clamp(rawNext, 0, _slider_max_value);
 
-            if (delta == 0)
+            if (!UnityEngine.Application.isEditor && delta == 0)
             {
                 next = emulatedSlideValue;
             }

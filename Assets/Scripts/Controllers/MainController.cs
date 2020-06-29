@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using CustomInput;
 using MinVR;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static CustomInput.VREventFactory;
@@ -93,6 +93,7 @@ public class MainController : MonoBehaviour, VREventGenerator
         VRMain.Instance.AddVRButtonCallbacks(_back_button_event_name, OnBackButtonUp, OnBackButtonDown);
 
         Bindings.InitializeMinVRLayoutSwitching(server);
+
         Bindings.AddMinVRLayoutSwitchingHandlers(i => delegate { layoutManager.DropdownValueSelected(i); });
 
         outputController.ResetText();
@@ -105,7 +106,7 @@ public class MainController : MonoBehaviour, VREventGenerator
             Debug.Log($"Loaded {items.Length} trial items");
         }
 
-        autoFilter.FilterOutputHandler += OnSliderEvent;
+        autoFilter.OnFilterOutput.AddListener(OnFilterEvent);
 
         RunNextTrial();
     }
@@ -160,7 +161,6 @@ public class MainController : MonoBehaviour, VREventGenerator
         // DontDestroyOnLoad(displayRect.gameObject);
         // DontDestroyOnLoad(indicatorRect.gameObject);
         // DontDestroyOnLoad(outputController.gameObject);
-
     }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
@@ -187,13 +187,37 @@ public class MainController : MonoBehaviour, VREventGenerator
     }
 
     #region Callbacks
-    public void OnSliderEvent(SignalProcessing.SliderEvent e)
+    public void OnFilterEvent(SignalProcessing.FilterEventData e)
     {
-
+        switch (e.type)
+        {
+            case SignalProcessing.EventType.NoTouches:
+                return;
+            case SignalProcessing.EventType.FingerUp:
+                // if (e.value.HasValue)
+                // {
+                //     OnInputEnd((int)e.value.Value);
+                // }
+                // else
+                // {
+                //     OnInputEnd(null);
+                // }
+                Debug.LogWarning("Click!");
+                return;
+            default:
+                if (e.value.HasValue)
+                {
+                    OnInputValueChange((int)e.value.Value);
+                }
+                return;
+        }
     }
 
+    private void OnAnalogUpdate(float value)
+        => autoFilter.Provide((uint)Mathf.RoundToInt(value));
+
     // Callback for when the InputFieldController value changes due to user input
-    public void OnInputValueChange(int value)
+    private void OnInputValueChange(int value)
     {
         lastReportedValue = value;
         float width = displayRect.rect.width;
@@ -249,9 +273,6 @@ public class MainController : MonoBehaviour, VREventGenerator
     // Callback for when the InputFieldController register a completed gesture
     public void OnSimulatedFingerUp(int value)
         => OnInputEnd(value);
-
-    private void OnAnalogUpdate(float value)
-        => OnInputValueChange(Mathf.RoundToInt(value));
 
     public void OnFrontButtonDown()
     {
