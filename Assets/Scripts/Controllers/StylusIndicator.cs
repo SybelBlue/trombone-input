@@ -23,7 +23,7 @@ public class StylusIndicator : MonoBehaviour
         {
             display.text +=
                 string.Format("{0}: [{1,3:N0},{2,3:N0}] {3,3:N0} => {4,5:N3}\n",
-                    (char)((int)'x' + i),
+                    (char)('x' + i),
                     modelController.LowerBound(i),
                     modelController.UpperBound(i),
                     modelController.eulerAngles[i],
