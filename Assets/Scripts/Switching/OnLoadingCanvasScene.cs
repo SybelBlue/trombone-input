@@ -30,4 +30,7 @@ public class OnLoadingCanvasScene : MonoBehaviour
 
     }
 
+    // SceneManager.LoadScene(sceneIndex, LoadSceneMode.Additive);
+    // SceneManager.sceneLoaded += OnSceneLoaded;
+
 }
