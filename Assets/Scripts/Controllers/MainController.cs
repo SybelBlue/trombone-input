@@ -23,6 +23,9 @@ public class MainController : MonoBehaviour, VREventGenerator
     [SerializeField]
     private TrialExecutionMode trialExecutionMode;
 
+    [SerializeField, Tooltip("Is CaveFronWall_Top in MinVR example, _MAIN")]
+    private VRDevice server;
+
     [SerializeField]
     // The LayoutManager that is in charge of loading the layout
     private LayoutController layoutManager;
@@ -47,6 +50,9 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     [SerializeField]
     private TrialProgresssController trialProgresssController;
+
+    [SerializeField]
+    private AutoFilter autoFilter;
 
     [SerializeField]
     private List<Testing.Trial> trials;
@@ -80,13 +86,14 @@ public class MainController : MonoBehaviour, VREventGenerator
 
         VRMain.Instance.AddEventGenerator(this);
 
-        VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, AnalogUpdate);
+        VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, OnAnalogUpdate);
 
-        VRMain.Instance.AddOnVRButtonDownCallback(_front_button_event_name, OnFrontButtonDown);
-        VRMain.Instance.AddOnVRButtonUpCallback(_front_button_event_name, OnFrontButtonUp);
+        VRMain.Instance.AddVRButtonCallbacks(_front_button_event_name, OnFrontButtonUp, OnFrontButtonDown);
 
-        VRMain.Instance.AddOnVRButtonDownCallback(_back_button_event_name, OnBackButtonDown);
-        VRMain.Instance.AddOnVRButtonUpCallback(_back_button_event_name, OnBackButtonUp);
+        VRMain.Instance.AddVRButtonCallbacks(_back_button_event_name, OnBackButtonUp, OnBackButtonDown);
+
+        Bindings.InitializeMinVRLayoutSwitching(server);
+        Bindings.AddMinVRLayoutSwitchingHandlers(i => delegate { layoutManager.DropdownValueSelected(i); });
 
         outputController.ResetText();
 
@@ -97,6 +104,8 @@ public class MainController : MonoBehaviour, VREventGenerator
             trials.Add(items);
             Debug.Log($"Loaded {items.Length} trial items");
         }
+
+        autoFilter.FilterOutputHandler += OnSliderEvent;
 
         RunNextTrial();
     }
@@ -156,10 +165,8 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
     {
-        int maxValue = Bindings._slider_max_value;
-        int minValue = 0;
-        int gestureStartValue = lastReportedValue ?? maxValue / 2;
-        Bindings.CaptureEmulatedSliderInput(ref eventList, gestureStartValue, lastReportedValue, minValue, maxValue);
+        int gestureStartValue = lastReportedValue ?? Bindings._slider_max_value / 2;
+        Bindings.CaptureEmulatedSliderInput(ref eventList, gestureStartValue, lastReportedValue);
         Bindings.CaptureEmulatedButtonInput(ref eventList, layout.usesSlider);
     }
 
@@ -243,7 +250,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     public void OnSimulatedFingerUp(int value)
         => OnInputEnd(value);
 
-    private void AnalogUpdate(float value)
+    private void OnAnalogUpdate(float value)
         => OnInputValueChange(Mathf.RoundToInt(value));
 
     public void OnFrontButtonDown()

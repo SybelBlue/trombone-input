@@ -1,6 +1,8 @@
+using System;
 using MinVR;
 using static UnityEngine.Input;
 using static UnityEngine.KeyCode;
+using VREventList = System.Collections.Generic.List<MinVR.VREvent>;
 
 namespace CustomInput
 {
@@ -39,6 +41,9 @@ namespace CustomInput
     public static class Bindings
     {
         public static readonly int _slider_max_value = 64;
+        public static readonly UnityEngine.KeyCode[] _layout_switch_bindings
+            = new UnityEngine.KeyCode[] { Alpha7, Alpha8, Alpha9, Alpha0 };
+
         public static bool _left_handed = false;
         public static string _dominant_hand
             => _left_handed ? "Left" : "Right"; // or "Left"
@@ -114,22 +119,14 @@ namespace CustomInput
         {
             get
             {
-                if (GetKeyDown(Alpha7))
+                for (int i = 0; i < _layout_switch_bindings.Length; i++)
                 {
-                    return 0;
+                    if (GetKeyDown(_layout_switch_bindings[i]))
+                    {
+                        return i;
+                    }
                 }
-                if (GetKeyDown(Alpha8))
-                {
-                    return 1;
-                }
-                if (GetKeyDown(Alpha9))
-                {
-                    return 2;
-                }
-                if (GetKeyDown(Alpha0))
-                {
-                    return 3;
-                }
+
                 return joystickQuadrant - 1;
             }
         }
@@ -169,11 +166,32 @@ namespace CustomInput
             }
         }
 
+        public static void InitializeMinVRLayoutSwitching(VRDevice server)
+        {
+            if (server.vrNodeType != VRDevice.VRNodeType.NetServer)
+            {
+                UnityEngine.Debug.LogWarning("Provided VRDevice to initialize for MinVR Layout switching does not have vrNodeType NetServer!");
+            }
+            foreach (var item in _layout_switch_bindings)
+            {
+                server.unityKeysToVREvents.Add(item.ToString());
+            }
+        }
+
+        public static void AddMinVRLayoutSwitchingHandlers(Func<int, VRMain.OnVRButtonDownEventDelegate> LayoutHandlers)
+        {
+            for (int i = 0; i < _layout_switch_bindings.Length; i++)
+            {
+                var binding = _layout_switch_bindings[i];
+                VRMain.Instance.AddOnVRButtonDownCallback($"Kbd{binding.ToString()}_Down", LayoutHandlers(i));
+            }
+        }
+
 
         // If emulatingFront or endEmulatedSlide when the layout accepts potentiometer input,
         // then it emulates the forward button down.
         // If emulatingBack then it emulates back button
-        public static void CaptureEmulatedButtonInput(ref System.Collections.Generic.List<VREvent> eventList, bool layoutUsesSlider)
+        public static void CaptureEmulatedButtonInput(ref VREventList eventList, bool layoutUsesSlider)
         {
             if (emulatingFrontDown || (endEmulatedSlide && layoutUsesSlider))
             {
@@ -199,13 +217,7 @@ namespace CustomInput
 
         // Starts, updates, and ends emulated slider input when appropriate
         // Also accounts for precision mode
-        public static void CaptureEmulatedSliderInput(
-            ref System.Collections.Generic.List<VREvent> eventList,
-            int slideStartValue,
-            int? currentValue,
-            int minValue,
-            int maxValue
-            )
+        public static void CaptureEmulatedSliderInput(ref VREventList eventList, int slideStartValue, int? currentValue)
         {
             if (beginEmulatedSlide)
             {
@@ -219,8 +231,8 @@ namespace CustomInput
                 delta *= 4;
             }
 
-            int rawNext = UnityEngine.Mathf.RoundToInt(currentValue + delta ?? minValue);
-            int next = UnityEngine.Mathf.Clamp(rawNext, minValue, maxValue);
+            int rawNext = UnityEngine.Mathf.RoundToInt(currentValue + delta ?? 0);
+            int next = UnityEngine.Mathf.Clamp(rawNext, 0, _slider_max_value);
 
             if (delta == 0)
             {
