@@ -574,7 +574,7 @@ namespace MinVR {
 					e.AddData("EventType", "ButtonDown");
 					eventList.Add(e);
 				}
-				if (Input.GetKeyDown(vrDevice.unityKeysToVREvents[i]))
+				if (Input.GetKeyUp(vrDevice.unityKeysToVREvents[i]))
 				{
                     VREvent e = new VREvent("Kbd" + vrDevice.unityKeysToVREvents[i] + "_Up");
                     e.AddData("EventType", "ButtonUp");
