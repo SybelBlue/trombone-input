@@ -14,10 +14,10 @@ public class LobbyToMainChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             // SceneManager.LoadScene("_MAIN");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("_MAIN");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Stylus Trial", LoadSceneMode.Additive);
 
         }
 
