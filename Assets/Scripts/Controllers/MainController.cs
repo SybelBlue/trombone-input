@@ -115,7 +115,6 @@ public class MainController : MonoBehaviour, VREventGenerator
             stylusModel.useLaser = layout.usesRaycasting;
         }
 
-        // TODO: Map to stylus events
         if (!outputController.emptyText && Bindings.spaceDown)
         {
             outputController.TypedChar(' ');
@@ -181,6 +180,11 @@ public class MainController : MonoBehaviour, VREventGenerator
     }
 
     #region Callbacks
+    public void OnSliderEvent(SignalProcessing.SliderEvent e)
+    {
+
+    }
+
     // Callback for when the InputFieldController value changes due to user input
     public void OnInputValueChange(int value)
     {
@@ -199,7 +203,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     private bool OnInputEnd(int? value)
     {
         lastReportedValue = value;
-        (LayoutKey parentKey, SimpleKey simpleKey) = layout.KeysFor(currentInputData) ?? (null, null);
+        LayoutKey parentKey = layout.KeysFor(currentInputData)?.parent;
 
         bool success = parentKey != null;
 
@@ -215,7 +219,7 @@ public class MainController : MonoBehaviour, VREventGenerator
             }
             else
             {
-                Debug.Log($"Pressed {parentKey} @ {simpleKey} => {typed}");
+                Debug.Log($"Pressed {parentKey} @ {typed}");
 
                 if (typed.HasValue)
                 {

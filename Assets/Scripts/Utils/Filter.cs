@@ -6,17 +6,17 @@ namespace SignalProcessing
     {
         private readonly uint epsilon, deadzone;
 
-        private IOPair pprev, prev;
+        private (uint input, uint? output) pprev, prev;
 
         private bool jumpedFromZero, midDrop;
 
         public Filter(uint epsilon, uint deadzone)
         {
-            this.pprev = new IOPair { input = 0, output = null };
-            this.prev = new IOPair { input = 0, output = null };
+            pprev = (0, null);
+            prev = (0, null);
 
-            this.midDrop = false;
-            this.jumpedFromZero = false;
+            midDrop = false;
+            jumpedFromZero = false;
 
             this.epsilon = epsilon;
             this.deadzone = deadzone;
@@ -71,7 +71,7 @@ namespace SignalProcessing
             uint? output = pprev.output;
 
             pprev = prev;
-            prev = new IOPair { input = rawIn, output = currentOutput };
+            prev = (rawIn, currentOutput);
 
             return output;
         }
@@ -88,12 +88,6 @@ namespace SignalProcessing
         // value is within radius epsilon of rawin
         private bool isNeighbor(uint rawin, uint? value)
             => value.HasValue && rawin - epsilon <= value && value <= rawin + epsilon;
-
-        private struct IOPair
-        {
-            public uint input; // default 0 - no input is an ok assumption
-            public uint? output; // default null
-        }
     }
 
     public static partial class Utils
