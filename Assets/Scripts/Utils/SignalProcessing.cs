@@ -20,7 +20,6 @@ namespace SignalProcessing
         NoTouches,
     }
 
-    [Serializable]
     public readonly struct FilterEventData
     {
         public readonly EventType type;

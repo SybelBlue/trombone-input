@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using CustomInput;
 using MinVR;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static CustomInput.VREventFactory;
