@@ -1,6 +1,7 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
-public class StylusIndicator : UnityEngine.MonoBehaviour
+public class StylusIndicator : MonoBehaviour
 {
     public Slider xSlider, ySlider, zSlider;
 
@@ -10,6 +11,7 @@ public class StylusIndicator : UnityEngine.MonoBehaviour
 
     void Update()
     {
+        if (modelController == null || xSlider == null || ySlider == null || zSlider == null || display == null) return;
         if (!modelController.transform.hasChanged) return;
 
         xSlider.value = modelController.normalizedAngles.x;
