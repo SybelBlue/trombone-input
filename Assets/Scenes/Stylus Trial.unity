@@ -6137,10 +6137,10 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  fDistance: 114
+  fDistance: 85
   MinAngle: 230
-  MaxAngle: 120
-  StartAngle: 90
+  MaxAngle: 165
+  StartAngle: 45
   OnlyLayoutVisible: 0
 --- !u!114 &2096338481
 MonoBehaviour:
