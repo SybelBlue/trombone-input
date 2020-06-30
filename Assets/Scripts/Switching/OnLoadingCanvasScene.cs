@@ -10,6 +10,7 @@ namespace SceneSwitching
         public void StartTrialScene()
         {
           UnityEngine.SceneManagement.SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
+          // UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         }
 
     }
