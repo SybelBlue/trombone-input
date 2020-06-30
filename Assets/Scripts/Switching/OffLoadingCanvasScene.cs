@@ -1,23 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public class OffLoadingCanvasScene : MonoBehaviour
+﻿public class OffLoadingCanvasScene : UnityEngine.MonoBehaviour
 {
-    // // Start is called before the first frame update
-    // void Start()
-    // {
-    //
-    // }
-    //
-    // // Update is called once per frame
-    // void Update()
-    // {
-    //
-    // }
-    public void endTrialScene()
+    public void EndTrialScene()
     {
-      UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
+        UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
     }
 }

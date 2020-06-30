@@ -1,25 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public class MainToLobbyButtonScript : MonoBehaviour
+public class MainToLobbyButtonScript : UnityEngine.MonoBehaviour
 {
-    public void changeToLobby()
+    public void ChangeToLobby()
     {
         // UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
         UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
 
     }
-    // // Start is called before the first frame update
-    // void Start()
-    // {
-    //
-    // }
-    //
-    // // Update is called once per frame
-    // void Update()
-    // {
-    //
-    // }
 }
