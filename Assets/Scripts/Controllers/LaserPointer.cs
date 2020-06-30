@@ -9,9 +9,6 @@ namespace Controller
         [SerializeField]
         private Stylus modelController;
 
-        [SerializeField]
-        private LineRenderer renderer;
-
         public bool active
         {
             get => gameObject.activeInHierarchy;
@@ -24,8 +21,13 @@ namespace Controller
 
             RaycastHit? hit;
             modelController.Raycast(out hit);
+            float length = Mathf.Max(0.005f, hit?.distance ?? 10);
 
-            renderer.SetPosition(1, (hit?.distance ?? 50) * Vector3.forward);
+            transform.localScale = new Vector3(0.005f, length, 0.005f);
+
+            var pos = transform.position;
+            pos.z = length / 2.0f + 0.06f;
+            transform.position = pos;
         }
     }
 }
