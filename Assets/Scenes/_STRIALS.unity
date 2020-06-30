@@ -4206,8 +4206,8 @@ GameObject:
   - component: {fileID: 1335849779}
   - component: {fileID: 1335849778}
   - component: {fileID: 1335849777}
-  - component: {fileID: 1335849782}
   - component: {fileID: 1335849783}
+  - component: {fileID: 1335849782}
   m_Layer: 5
   m_Name: MainBackground
   m_TagString: Untagged
@@ -4239,7 +4239,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 83f24e5bebd0b0c418296fc1d3b5ee9e, type: 3}
   - {fileID: 4900000, guid: 1eb8621f8d963ff4bbb33d281670b93d, type: 3}
   trialProgresssController: {fileID: 831725282}
-  autoFilter: {fileID: 0}
+  autoFilter: {fileID: 1335849783}
 --- !u!114 &1335849778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4363,7 +4363,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnFilterOutput:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1335849777}
+        m_MethodName: OnFilterEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   epsilon: 2
   deadzone: 8
   type: 1
