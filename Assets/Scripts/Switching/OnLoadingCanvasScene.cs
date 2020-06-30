@@ -34,7 +34,7 @@ public class OnLoadingCanvasScene : MonoBehaviour
     {
       // if (!SceneManager.GetActiveScene().name.Equals("Stylus Trial"))
       // {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Stylus Trial", LoadSceneMode.Additive);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
       // }
 
     }

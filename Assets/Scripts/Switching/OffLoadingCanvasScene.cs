@@ -17,6 +17,6 @@ public class OffLoadingCanvasScene : MonoBehaviour
     // }
     public void endTrialScene()
     {
-      UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("Stylus Trial");
+      UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
     }
 }

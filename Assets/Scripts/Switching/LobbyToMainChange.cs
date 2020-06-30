@@ -12,10 +12,10 @@ public class LobbyToMainChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (CustomInput.Bindings.advanceToMain)
+        if (CustomInput.Bindings.advanceToMain)//TODO: EXPLORE THIS
         {
             // SceneManager.LoadScene("_MAIN");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Stylus Trial", LoadSceneMode.Additive);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
 
         }
 

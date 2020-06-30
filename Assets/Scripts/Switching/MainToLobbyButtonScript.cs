@@ -6,7 +6,8 @@ public class MainToLobbyButtonScript : MonoBehaviour
 {
     public void changeToLobby()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
+        // UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
+        UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
 
     }
     // // Start is called before the first frame update

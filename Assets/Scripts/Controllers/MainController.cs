@@ -23,7 +23,8 @@ public class MainController : MonoBehaviour, VREventGenerator
     [SerializeField]
     private TrialExecutionMode trialExecutionMode;
 
-    [SerializeField, Tooltip("Is CaveFronWall_Top in MinVR example, _MAIN")]
+    // [SerializeField, Tooltip("Is CaveFronWall_Top in MinVR example, _MAIN")]
+    [SerializeField, Tooltip("Is CaveFronWall_Top in MinVR example, _LOBBY")]
     private VRDevice server;
 
     [SerializeField]

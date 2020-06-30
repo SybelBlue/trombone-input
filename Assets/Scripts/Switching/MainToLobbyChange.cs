@@ -16,7 +16,8 @@ public class MainToLobbyChange : MonoBehaviour
     {
         if (CustomInput.Bindings.returnToLobby)
         {
-            UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("Stylus Trial");
+          UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
+            // UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("Trials");
 
             // SceneManager.LoadScene("Lobby");
         }
