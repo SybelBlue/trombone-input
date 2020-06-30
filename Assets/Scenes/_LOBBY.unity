@@ -715,7 +715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ec83bd6298fea4f94444216ce174a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  device: stylusLeft
+  device: stylusBlue
   server: 127.0.0.1:3884
   sensor: 0
   eventName: BlueStylus_Move
@@ -739,7 +739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f22451c395acd4db75dfc8612d74d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  device: OVRStylusLeft
+  device: OVRStylusBlue
   server: 127.0.0.1:3883
   button: 1
   eventName: BlueStylusFrontBtn
@@ -759,7 +759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f22451c395acd4db75dfc8612d74d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  device: OVRStylusLeft
+  device: OVRStylusBlue
   server: 127.0.0.1:3883
   button: 0
   eventName: BlueStylusBackBtn
@@ -779,7 +779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddf6e1b7d6b3c434ca325cfba644913d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  device: OVRStylusLeft
+  device: OVRStylusBlue
   server: 127.0.0.1:3883
   channel: 0
   eventName: BlueStylusAnalog
