@@ -2,57 +2,59 @@
 
 namespace CustomInput
 {
-    public class LinearABCDE : Layout
+    namespace Layout
     {
-
-        public override bool usesSlider => true;
-        public override bool usesRaycasting => false;
-
-        private bool _useAlternate;
-
-        public override bool useAlternate
+        public class LinearABCDE : AbstractLayout
         {
-            get => _useAlternate;
-            set
+
+            public override bool usesSlider => true;
+            public override bool usesRaycasting => false;
+
+            private bool _useAlternate;
+
+            public override bool useAlternate
             {
-                _useAlternate = value;
-                foreach (var controller in gameObject.GetComponentsInChildren<AbstractSimple>())
+                get => _useAlternate;
+                set
                 {
-                    controller.useAlternate = value;
+                    _useAlternate = value;
+                    foreach (var controller in gameObject.GetComponentsInChildren<AbstractSimple>())
+                    {
+                        controller.useAlternate = value;
+                    }
                 }
             }
-        }
 
-        public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
-        {
-            var lKey = LayoutKeyFor(data);
-            return (lKey, (SimpleKey)lKey);
-        }
-
-        public override void SetHighlightedKey(InputData data)
-        {
-            UnhighlightAll();
-
-            if (Bindings.inputThisFrame)
+            public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
             {
-                ChildFor(data)?.GetComponent<IKey>()?.SetHighlight(true);
+                var lKey = LayoutKeyFor(data);
+                return (lKey, (SimpleKey)lKey);
             }
-        }
 
-        protected override int ChildIndexFor(InputData data)
-            => data.rawValue ?? -1;
+            public override void SetHighlightedKey(InputData data)
+            {
+                UnhighlightAll();
 
-        public override char? GetSelectedLetter(InputData data)
-        {
-            var s = LayoutKeyFor(data)?.label ?? "";
-            if (s == null || s.Length != 1) return null;
-            return s.ToCharArray()[0];
-        }
+                if (Bindings.inputThisFrame)
+                {
+                    ChildFor(data)?.GetComponent<IKey>()?.SetHighlight(true);
+                }
+            }
 
-        // Auto-generated 
-        protected override LayoutKey[] FillKeys()
-        {
-            return new LayoutKey[] {
+            protected override int ChildIndexFor(InputData data)
+                => data.rawValue ?? -1;
+
+            public override char? GetSelectedLetter(InputData data)
+            {
+                var s = LayoutKeyFor(data)?.label ?? "";
+                if (s == null || s.Length != 1) return null;
+                return s.ToCharArray()[0];
+            }
+
+            // Auto-generated 
+            protected override LayoutKey[] FillKeys()
+            {
+                return new LayoutKey[] {
                     new SimpleKey('A', 3),
                     new SimpleKey('B', 2),
                     new SimpleKey('C', 2),
@@ -80,6 +82,7 @@ namespace CustomInput
                     new SimpleKey('Y', 2),
                     new SimpleKey('Z', 2)
                 };
+            }
         }
     }
 }

@@ -5,97 +5,100 @@ using CustomExtensions;
 
 namespace CustomInput
 {
-#pragma warning disable 649
-    public sealed class RaycastQWERTY : Layout
+
+    namespace Layout
     {
-        public override bool usesSlider => false;
-        public override bool usesRaycasting => true;
-
-        private bool _useAlternate;
-
-        [SerializeField]
-        private GridLayoutGroup gridLayout;
-
-        public override bool useAlternate
+#pragma warning disable 649
+        public sealed class RaycastQWERTY : AbstractLayout
         {
-            get => _useAlternate;
-            set
+            public override bool usesSlider => false;
+            public override bool usesRaycasting => true;
+
+            private bool _useAlternate;
+
+            [SerializeField]
+            private GridLayoutGroup gridLayout;
+
+            public override bool useAlternate
             {
-                _useAlternate = value;
-                foreach (var controller in gameObject.GetComponentsInChildren<Stylus>())
+                get => _useAlternate;
+                set
                 {
-                    controller.useAlternate = value;
-                }
-            }
-        }
-
-        public override void ResizeAll()
-        {
-            base.ResizeAll();
-            gridLayout.cellSize = new Vector2(rectTransform.rect.width / 10.0f, rectTransform.rect.height / 3.0f);
-            foreach (var collider in GetComponentsInChildren<BoxCollider>())
-            {
-                collider.size = gridLayout.cellSize.WithZ(0.2f);
-            }
-        }
-
-        protected override int ChildIndexFor(InputData data)
-        {
-            throw new System.InvalidOperationException("Should not be used");
-        }
-
-        public override GameObject ChildFor(InputData data)
-        {
-            // should be UI layer
-            (Vector3 origin, Vector3 direction) = data.orientation;
-
-            foreach (RaycastHit hit in Physics.RaycastAll(origin, direction, Mathf.Infinity))
-            {
-                if (hit.transform.gameObject.GetComponent<Raycast>())
-                {
-                    return hit.transform.gameObject;
-                }
-                else
-                {
-                    Debug.DrawLine(data.orientation.origin, hit.point, Color.red, 0.2f);
+                    _useAlternate = value;
+                    foreach (var controller in gameObject.GetComponentsInChildren<Stylus>())
+                    {
+                        controller.useAlternate = value;
+                    }
                 }
             }
 
-            return null;
-        }
+            public override void ResizeAll()
+            {
+                base.ResizeAll();
+                gridLayout.cellSize = new Vector2(rectTransform.rect.width / 10.0f, rectTransform.rect.height / 3.0f);
+                foreach (var collider in GetComponentsInChildren<BoxCollider>())
+                {
+                    collider.size = gridLayout.cellSize.WithZ(0.2f);
+                }
+            }
 
-        public override char? GetSelectedLetter(InputData data)
-        {
-            var raycastKey = RaycastKeyFor(data);
-            if (raycastKey == null) return null;
-            return raycastKey.CharWithAlternate(useAlternate);
-        }
+            protected override int ChildIndexFor(InputData data)
+            {
+                throw new System.InvalidOperationException("Should not be used");
+            }
 
-        private SimpleKey RaycastKeyFor(InputData data)
-            => ChildFor(data)?.GetComponent<Raycast>().data;
+            public override GameObject ChildFor(InputData data)
+            {
+                // should be UI layer
+                (Vector3 origin, Vector3 direction) = data.orientation;
 
-        public override (LayoutKey parent, SimpleKey simple)? KeysFor(InputData data)
-        {
-            var raycastKey = RaycastKeyFor(data);
-            if (raycastKey == null) return null;
-            return (raycastKey, raycastKey);
-        }
+                foreach (RaycastHit hit in Physics.RaycastAll(origin, direction, Mathf.Infinity))
+                {
+                    if (hit.transform.gameObject.GetComponent<Raycast>())
+                    {
+                        return hit.transform.gameObject;
+                    }
+                    else
+                    {
+                        Debug.DrawLine(data.orientation.origin, hit.point, Color.red, 0.2f);
+                    }
+                }
 
-        public override void SetHighlightedKey(InputData data)
-        {
-            UnhighlightAll();
+                return null;
+            }
 
-            var controller = ChildFor(data)?.GetComponent<Raycast>();
-            if (controller == null) return;
+            public override char? GetSelectedLetter(InputData data)
+            {
+                var raycastKey = RaycastKeyFor(data);
+                if (raycastKey == null) return null;
+                return raycastKey.CharWithAlternate(useAlternate);
+            }
 
-            controller.SetHighlight(true);
-        }
+            private SimpleKey RaycastKeyFor(InputData data)
+                => ChildFor(data)?.GetComponent<Raycast>().data;
+
+            public override (LayoutKey parent, SimpleKey simple)? KeysFor(InputData data)
+            {
+                var raycastKey = RaycastKeyFor(data);
+                if (raycastKey == null) return null;
+                return (raycastKey, raycastKey);
+            }
+
+            public override void SetHighlightedKey(InputData data)
+            {
+                UnhighlightAll();
+
+                var controller = ChildFor(data)?.GetComponent<Raycast>();
+                if (controller == null) return;
+
+                controller.SetHighlight(true);
+            }
 
 
-        // Auto-generated 
-        protected override LayoutKey[] FillKeys()
-        {
-            return new LayoutKey[] {
+            // Auto-generated 
+            protected override LayoutKey[] FillKeys()
+            {
+                return new LayoutKey[] {
                 new RaycastKey('Q', 2, '1'),
                 new RaycastKey('W', 2, '2'),
                 new RaycastKey('E', 2, '3'),
@@ -127,6 +130,7 @@ namespace CustomInput
                 new RaycastKey('.', 2, '.'),
                 new RaycastKey(' ', 2, '\b'),
             };
+            }
         }
     }
 }

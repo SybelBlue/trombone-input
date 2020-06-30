@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public class Comment : MonoBehaviour
-{ }
+namespace Utils
+{
+    public class Comment : MonoBehaviour
+    { }
+}
 
 #if (UNITY_EDITOR)
 namespace CustomEditor
 {
-    [UnityEditor.CustomEditor(typeof(Comment))]
+    [UnityEditor.CustomEditor(typeof(Utils.Comment))]
     public class CommentEditor : Editor
     {
         public override void OnInspectorGUI()

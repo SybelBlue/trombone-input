@@ -8,16 +8,19 @@ using Utils;
 using CustomExtensions;
 using static CustomInput.VREventFactory;
 
-[System.Serializable]
-public enum TrialExecutionMode
+namespace Utils
 {
-    Always,
-    OnlyInEditor,
-    Never,
+    [System.Serializable]
+    public enum TrialExecutionMode
+    {
+        Always,
+        OnlyInEditor,
+        Never,
+    }
 }
 
 #pragma warning disable 649
-public class MainController : MonoBehaviour, VREventGenerator
+public class Main : MonoBehaviour, VREventGenerator
 {
     #region EditorSet
     [SerializeField]
@@ -69,7 +72,7 @@ public class MainController : MonoBehaviour, VREventGenerator
     private int completedChallenges = -1;
 
     // The manager's current layout, or null if no manager exists
-    private Layout layout
+    private CustomInput.Layout.AbstractLayout layout
         => layoutManager?.currentLayout;
 
     private bool usingIndicator

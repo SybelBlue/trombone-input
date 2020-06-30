@@ -2,88 +2,90 @@ using Controller.Key;
 
 namespace CustomInput
 {
-    public class StylusBinnedABCDE : Layout
+    namespace Layout
     {
-        public override bool usesSlider => true;
-        public override bool usesRaycasting => false;
-
-        private bool _useAlternate;
-
-        public override bool useAlternate
+        public class StylusBinnedABCDE : AbstractLayout
         {
-            get => _useAlternate;
-            set
+            public override bool usesSlider => true;
+            public override bool usesRaycasting => false;
+
+            private bool _useAlternate;
+
+            public override bool useAlternate
             {
-                _useAlternate = value;
-                foreach (var controller in gameObject.GetComponentsInChildren<StylusBinned>())
+                get => _useAlternate;
+                set
                 {
-                    controller.useAlternate = value;
+                    _useAlternate = value;
+                    foreach (var controller in gameObject.GetComponentsInChildren<StylusBinned>())
+                    {
+                        controller.useAlternate = value;
+                    }
                 }
             }
-        }
 
-        protected virtual int? InnerIndex(InputData data, int parentSize)
-            => data.normalizedSlider.HasValue ?
-                (int?)Utils.Static.NormalizedIntoIndex(1 - data.normalizedSlider.Value, parentSize) :
-                null;
+            protected virtual int? InnerIndex(InputData data, int parentSize)
+                => data.normalizedSlider.HasValue ?
+                    (int?)Utils.Static.NormalizedIntoIndex(1 - data.normalizedSlider.Value, parentSize) :
+                    null;
 
-        protected override int ChildIndexFor(InputData data)
-            => Utils.Static.NormalizedIntoIndex(data.normalizedAngles.z, childMap.Count);
+            protected override int ChildIndexFor(InputData data)
+                => Utils.Static.NormalizedIntoIndex(data.normalizedAngles.z, childMap.Count);
 
-        private (LayoutKey, SimpleKey) FetchInnerKey(InputData data)
-        {
-            StylusBinnedKey parent = (StylusBinnedKey)LayoutKeyFor(data);
-
-            var inner = InnerIndex(data, parent.size);
-
-            if (!inner.HasValue || parent.size == 0) return (parent, null);
-
-            return (parent, parent.ItemAt(inner.Value));
-        }
-
-        public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
-        {
-            var (parent, inner) = FetchInnerKey(data);
-            if (inner != null)
+            private (LayoutKey, SimpleKey) FetchInnerKey(InputData data)
             {
-                return (parent, inner);
+                StylusBinnedKey parent = (StylusBinnedKey)LayoutKeyFor(data);
+
+                var inner = InnerIndex(data, parent.size);
+
+                if (!inner.HasValue || parent.size == 0) return (parent, null);
+
+                return (parent, parent.ItemAt(inner.Value));
             }
-            return null;
-        }
 
-        public override char? GetSelectedLetter(InputData data)
-        {
-            var (parent, inner) = FetchInnerKey(data);
-            if (inner == null) return null;
-            return inner.CharWithAlternate(useAlternate);
-        }
-
-        public override void SetHighlightedKey(InputData data)
-        {
-            UnhighlightAll();
-
-            var binnedKey = ChildFor(data)?.GetComponent<StylusBinned>();
-
-            if (binnedKey == null) return;
-
-            binnedKey.SetHighlight(true);
-            var Controller = binnedKey.GetComponentsInChildren<Stylus>();
-            var inner = InnerIndex(data, binnedKey.data.size);
-
-            if (!inner.HasValue) return;
-
-            var highlightedData = binnedKey.data.ItemAt(inner.Value);
-
-            foreach (var cont in Controller)
+            public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
             {
-                cont.SetHighlight(cont.data.label == highlightedData.label);
+                var (parent, inner) = FetchInnerKey(data);
+                if (inner != null)
+                {
+                    return (parent, inner);
+                }
+                return null;
             }
-        }
 
-        // Auto-generated
-        protected override LayoutKey[] FillKeys()
-        {
-            return new LayoutKey[] {
+            public override char? GetSelectedLetter(InputData data)
+            {
+                var (parent, inner) = FetchInnerKey(data);
+                if (inner == null) return null;
+                return inner.CharWithAlternate(useAlternate);
+            }
+
+            public override void SetHighlightedKey(InputData data)
+            {
+                UnhighlightAll();
+
+                var binnedKey = ChildFor(data)?.GetComponent<StylusBinned>();
+
+                if (binnedKey == null) return;
+
+                binnedKey.SetHighlight(true);
+                var Controller = binnedKey.GetComponentsInChildren<Stylus>();
+                var inner = InnerIndex(data, binnedKey.data.size);
+
+                if (!inner.HasValue) return;
+
+                var highlightedData = binnedKey.data.ItemAt(inner.Value);
+
+                foreach (var cont in Controller)
+                {
+                    cont.SetHighlight(cont.data.label == highlightedData.label);
+                }
+            }
+
+            // Auto-generated
+            protected override LayoutKey[] FillKeys()
+            {
+                return new LayoutKey[] {
                 new StylusBinnedKey(true,
                         new StylusKey('A', 4, '1'),
                         new StylusKey('B', 4, '4'),
@@ -127,6 +129,7 @@ namespace CustomInput
                         new StylusKey(' ', 4, '\b')
                 ),
             };
+            }
         }
     }
 }

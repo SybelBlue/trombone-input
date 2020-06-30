@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using CustomInput.Layout;
 
 namespace CustomInput
 {
@@ -49,9 +50,9 @@ namespace CustomInput
         private RaycastQWERTY raycastQWERTY;
         #endregion
 
-        public Layout currentLayout => fromOption(layout);
+        public AbstractLayout currentLayout => fromOption(layout);
 
-        public Layout fromOption(LayoutOption option)
+        public AbstractLayout fromOption(LayoutOption option)
         {
             switch (option)
             {
