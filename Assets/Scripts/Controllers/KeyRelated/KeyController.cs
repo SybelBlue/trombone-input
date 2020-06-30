@@ -3,9 +3,9 @@ using UnityEngine.UI;
 using static UnityEngine.RectTransform;
 
 
-namespace Controllers
+namespace Controller
 {
-    namespace Keys
+    namespace Key
     {
         // The interface for all KeyControllers
         public abstract class IKey : IRaycastable

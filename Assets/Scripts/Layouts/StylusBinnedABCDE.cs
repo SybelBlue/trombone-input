@@ -1,4 +1,4 @@
-using Controllers.Keys;
+using Controller.Key;
 
 namespace CustomInput
 {
@@ -67,14 +67,14 @@ namespace CustomInput
             if (binnedKey == null) return;
 
             binnedKey.SetHighlight(true);
-            var controllers = binnedKey.GetComponentsInChildren<Stylus>();
+            var Controller = binnedKey.GetComponentsInChildren<Stylus>();
             var inner = InnerIndex(data, binnedKey.data.size);
 
             if (!inner.HasValue) return;
 
             var highlightedData = binnedKey.data.ItemAt(inner.Value);
 
-            foreach (var cont in controllers)
+            foreach (var cont in Controller)
             {
                 cont.SetHighlight(cont.data.label == highlightedData.label);
             }

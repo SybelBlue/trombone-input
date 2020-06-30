@@ -1,7 +1,7 @@
 
-namespace Controllers
+namespace Controller
 {
-    namespace Keys
+    namespace Key
     {
         public class Raycast : Stylus
         { }

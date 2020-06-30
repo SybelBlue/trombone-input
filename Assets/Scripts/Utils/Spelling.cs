@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SymSpell;
 using UnityEngine;
 
 namespace Auto
 {
+    using static SymSpell.SymSpell;
     using Loader = System.Func<Stream, int, int, char[], bool>;
 
     public class Complete
@@ -59,7 +61,7 @@ namespace Auto
         private const int INIT_CAPACITY = 82765;
         private const int MAX_EDIT_DISTANCE_DICT = 2;
 
-        private readonly SymSpell symSpell = new SymSpell(INIT_CAPACITY, MAX_EDIT_DISTANCE_DICT);
+        private readonly SymSpell.SymSpell symSpell = new SymSpell.SymSpell(INIT_CAPACITY, MAX_EDIT_DISTANCE_DICT);
 
         private TextAsset DictionaryTextAsset(DictionarySize size, params TextAsset[] dicts)
         {
@@ -123,7 +125,7 @@ namespace Auto
 
             using (Stream corpusStream = DictionaryTextAsset(size, dicts).IntoMemoryStream())
             {
-                if (!loader(corpusStream, termIndex, countIndex, SymSpell.defaultSeparatorChars))
+                if (!loader(corpusStream, termIndex, countIndex, defaultSeparatorChars))
                 {
                     throw new Exception("Could not load dictionary!");
                 }
@@ -149,18 +151,18 @@ namespace Auto
             return null;
         }
 
-        public List<SymSpell.SuggestItem> Lookup(string inputTerm, SymSpell.Verbosity verbosity)
+        public List<SuggestItem> Lookup(string inputTerm, Verbosity verbosity)
         {
             int maxEditDistanceLookup = Mathf.Min(inputTerm.Length, MAX_EDIT_DISTANCE_DICT);
             // Assert.IsTrue(maxEditDistanceLookup <= MAX_EDIT_DISTANCE_DICT);
-            if (inputTerm.Length == 0) return new List<SymSpell.SuggestItem>();
+            if (inputTerm.Length == 0) return new List<SuggestItem>();
 
             // use LookupCompound?
             return symSpell.LookupCompound(inputTerm, maxEditDistanceLookup).Union(symSpell.Lookup(inputTerm, verbosity, maxEditDistanceLookup).Take(5)).ToList();
             // return symSpell.Lookup(inputTerm, verbosity, maxEditDistanceLookup);
         }
 
-        public List<string> Suggestions(string inputTerm, SymSpell.Verbosity verbosity)
+        public List<string> Suggestions(string inputTerm, Verbosity verbosity)
             => Lookup(inputTerm, verbosity).Select(suggestion => suggestion.term).Where(s => !s.ToUpper().Equals(inputTerm)).ToList();
     }
 }

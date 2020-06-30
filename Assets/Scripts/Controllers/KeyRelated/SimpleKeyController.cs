@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 
-namespace Controllers
+namespace Controller
 {
-    namespace Keys
+    namespace Key
     {
 #pragma warning disable 649
         public class Simple : AbstractSimple

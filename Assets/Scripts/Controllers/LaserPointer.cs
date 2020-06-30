@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Controllers
+namespace Controller
 {
 #pragma warning disable 108
 #pragma warning disable 649

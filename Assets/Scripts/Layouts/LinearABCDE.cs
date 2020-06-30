@@ -1,4 +1,4 @@
-﻿using Controllers.Keys;
+﻿using Controller.Key;
 
 namespace CustomInput
 {

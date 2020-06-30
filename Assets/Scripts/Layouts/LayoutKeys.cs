@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine.Assertions;
 using System;
 using System.Collections.Generic;
-using Controllers.Keys;
+using Controller.Key;
 
 namespace CustomInput
 {
@@ -89,7 +89,7 @@ namespace CustomInput
             => useAlternate && alt.HasValue ? alt.Value : c;
     }
 
-    // The Base class for all keys with binned labeling
+    // The Base class for all Key with binned labeling
     public class BinnedKey : LayoutKey
     {
         public override string typeName => "BinnedKey";

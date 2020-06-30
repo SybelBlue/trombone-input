@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Controllers
+namespace Controller
 {
 #pragma warning disable 649
     public class LayoutDropdown : IRaycastable

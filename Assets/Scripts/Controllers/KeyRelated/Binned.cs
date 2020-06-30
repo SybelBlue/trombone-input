@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Controllers
+namespace Controller
 {
-    namespace Keys
+    namespace Key
     {
         public class Binned : AbstractBinned<CustomInput.BinnedKey>
         {

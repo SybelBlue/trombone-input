@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Controllers
+namespace Controller
 {
 #pragma warning disable 649
     public class TextOutputDisplay : MonoBehaviour
@@ -24,7 +24,7 @@ namespace Controllers
 
         public Auto.DictionarySize dictionarySize;
 
-        public SymSpell.Verbosity verbosity;
+        public SymSpell.SymSpell.Verbosity verbosity;
 
         protected string text
         {

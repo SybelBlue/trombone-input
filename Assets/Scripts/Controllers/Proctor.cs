@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CustomEvents
+namespace CustomEvent
 {
     [Serializable]
     public class TestingLayoutEvent : UnityEngine.Events.UnityEvent<LayoutOption>
@@ -20,7 +20,7 @@ namespace CustomEvents
     { }
 }
 
-namespace Controllers
+namespace Controller
 {
 
 #pragma warning disable 649
@@ -37,13 +37,13 @@ namespace Controllers
         private TMPro.TMP_Text fileOutputIndicator;
 
         [Tooltip("Called when the trial requests a layout change")]
-        public CustomEvents.TestingLayoutEvent OnLayoutChange;
+        public CustomEvent.TestingLayoutEvent OnLayoutChange;
 
         [Tooltip("Called when a trial ends")]
-        public CustomEvents.TestingTrialEvent OnTrialEnd;
+        public CustomEvent.TestingTrialEvent OnTrialEnd;
 
         [Tooltip("Called when a challenge ends")]
-        public CustomEvents.TestingChallengeEvent OnChallengeEnd;
+        public CustomEvent.TestingChallengeEvent OnChallengeEnd;
         #endregion
 
         public Challenge.Type? currentChallengeType;

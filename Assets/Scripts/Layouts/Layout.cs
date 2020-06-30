@@ -1,4 +1,4 @@
-using Controllers.Keys;
+using Controller.Key;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace CustomInput
 
         public readonly (Vector3 origin, Vector3 direction) orientation;
 
-        public InputData(int? rawValue, Controllers.Stylus stylusModel) : this(
+        public InputData(int? rawValue, Controller.Stylus stylusModel) : this(
                 rawValue,
                 stylusModel.normalizedAngles,
                 stylusModel.normalizedSlider,
@@ -47,8 +47,8 @@ namespace CustomInput
         // Prefabs for the basic layout key and basic block key
         private GameObject simpleKeyPrefab, binnedKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab, raycastKeyPrefab;
 
-        // All of the keys in this layout
-        protected LayoutKey[] keys;
+        // All of the Key in this layout
+        protected LayoutKey[] Key;
 
         // True if this layout uses the slider on the stylus
         public abstract bool usesSlider { get; }
@@ -64,7 +64,7 @@ namespace CustomInput
 
         protected void Start()
         {
-            keys = FillKeys();
+            Key = FillKeys();
 
             var objectDict = new Dictionary<LayoutObjectType, GameObject>
                 { { LayoutObjectType.BinnedKeyPrefab, binnedKeyPrefab }
@@ -74,9 +74,9 @@ namespace CustomInput
                 , { LayoutObjectType.RaycastKeyPrefab, raycastKeyPrefab }
                 };
 
-            for (int i = 0; i < keys.Length; i++)
+            for (int i = 0; i < Key.Length; i++)
             {
-                var key = keys[i];
+                var key = Key[i];
 
                 var newChild = key.Representation(transform, objectDict);
 
@@ -161,7 +161,7 @@ namespace CustomInput
         // May alter state of layout and return null.
         public abstract char? GetSelectedLetter(InputData data);
 
-        // The method to fill the keys field on this, called in Start
+        // The method to fill the Key field on this, called in Start
         protected abstract LayoutKey[] FillKeys();
     }
 }
