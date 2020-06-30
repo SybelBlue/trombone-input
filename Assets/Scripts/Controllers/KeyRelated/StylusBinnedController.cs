@@ -1,5 +1,12 @@
-public class StylusBinnedController : AbstractBinnedController<CustomInput.StylusBinnedKey>
+
+namespace Controllers
 {
-    public override void SetSlant(bool forward)
-    { }
+    namespace Key
+    {
+        public class StylusBinnedController : AbstractBinnedController<CustomInput.StylusBinnedKey>
+        {
+            public override void SetSlant(bool forward)
+            { }
+        }
+    }
 }

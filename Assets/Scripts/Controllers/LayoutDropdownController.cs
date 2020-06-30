@@ -1,27 +1,28 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-#pragma warning disable 649
-public class LayoutDropdownController : IRaycastable
+namespace Controllers
 {
-    public Dropdown dropdown;
-
-    [SerializeField]
-    private Image image;
-
-    [SerializeField]
-    private Color highlightColor;
-
-    private Color normalColor;
-
-
-    private void Start()
+#pragma warning disable 649
+    public class LayoutDropdownController : IRaycastable
     {
-        normalColor = image.color;
+        public Dropdown dropdown;
+
+        [SerializeField]
+        private Image image;
+
+        [SerializeField]
+        private Color highlightColor;
+
+        private Color normalColor;
+
+
+        private void Start()
+        {
+            normalColor = image.color;
+        }
+
+        protected override void OnRaycastFocusChange(bool value)
+            => image.color = value ? highlightColor : normalColor;
     }
-
-    protected override void OnRaycastFocusChange(bool value)
-        => image.color = value ? highlightColor : normalColor;
-
-
 }

@@ -1,35 +1,38 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class StylusIndicator : MonoBehaviour
+namespace Controllers
 {
-    public Slider xSlider, ySlider, zSlider;
-
-    public Text display;
-
-    public StylusModelController modelController;
-
-    void Update()
+    public class StylusIndicator : MonoBehaviour
     {
-        if (modelController == null || xSlider == null || ySlider == null || zSlider == null || display == null) return;
-        if (!modelController.transform.hasChanged) return;
+        public Slider xSlider, ySlider, zSlider;
 
-        xSlider.value = modelController.normalizedAngles.x;
-        ySlider.value = modelController.normalizedAngles.y;
-        zSlider.value = modelController.normalizedAngles.z;
+        public Text display;
 
-        display.text = "";
-        for (int i = 0; i < 3; i++)
+        public StylusModelController modelController;
+
+        void Update()
         {
-            display.text +=
-                string.Format("{0}: [{1,3:N0},{2,3:N0}] {3,3:N0} => {4,5:N3}\n",
-                    (char)('x' + i),
-                    modelController.LowerBound(i),
-                    modelController.UpperBound(i),
-                    modelController.eulerAngles[i],
-                    modelController.normalizedAngles[i]);
-        }
+            if (modelController == null || xSlider == null || ySlider == null || zSlider == null || display == null) return;
+            if (!modelController.transform.hasChanged) return;
 
-        display.text += string.Format("Slider Unfiltered: {0, 3:N3}", modelController.normalizedSlider);
+            xSlider.value = modelController.normalizedAngles.x;
+            ySlider.value = modelController.normalizedAngles.y;
+            zSlider.value = modelController.normalizedAngles.z;
+
+            display.text = "";
+            for (int i = 0; i < 3; i++)
+            {
+                display.text +=
+                    string.Format("{0}: [{1,3:N0},{2,3:N0}] {3,3:N0} => {4,5:N3}\n",
+                        (char)('x' + i),
+                        modelController.LowerBound(i),
+                        modelController.UpperBound(i),
+                        modelController.eulerAngles[i],
+                        modelController.normalizedAngles[i]);
+            }
+
+            display.text += string.Format("Slider Unfiltered: {0, 3:N3}", modelController.normalizedSlider);
+        }
     }
 }

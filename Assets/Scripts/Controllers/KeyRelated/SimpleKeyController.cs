@@ -1,20 +1,27 @@
 ﻿using UnityEngine;
 
-#pragma warning disable 649
-public class SimpleKeyController : AbstractSimpleKeyController
+
+namespace Controllers
 {
-    [SerializeField]
-    private UnityEngine.UI.Text childText;
-
-    public TextAnchor alignment
+    namespace Key
     {
-        get => childText.alignment;
-        set => childText.alignment = value;
-    }
+#pragma warning disable 649
+        public class SimpleKeyController : AbstractSimpleKeyController
+        {
+            [SerializeField]
+            private UnityEngine.UI.Text childText;
 
-    public override string text
-    {
-        get => childText.text;
-        set => childText.text = value;
+            public TextAnchor alignment
+            {
+                get => childText.alignment;
+                set => childText.alignment = value;
+            }
+
+            public override string text
+            {
+                get => childText.text;
+                set => childText.text = value;
+            }
+        }
     }
 }

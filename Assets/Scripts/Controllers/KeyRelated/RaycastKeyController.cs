@@ -1,2 +1,9 @@
-public class RaycastKeyController : StylusKeyController
-{ }
+
+namespace Controllers
+{
+    namespace Key
+    {
+        public class RaycastKeyController : StylusKeyController
+        { }
+    }
+}

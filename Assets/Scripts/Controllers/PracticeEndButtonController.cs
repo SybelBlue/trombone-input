@@ -1,8 +1,11 @@
-#pragma warning disable 649
-public class PracticeEndButtonController : IRaycastable
+namespace Controllers
 {
-    [UnityEngine.SerializeField]
-    private UnityEngine.UI.Image background;
-    protected override void OnRaycastFocusChange(bool value)
-        => background.color = value ? UnityEngine.Color.gray : UnityEngine.Color.white;
+#pragma warning disable 649
+    public class PracticeEndButtonController : IRaycastable
+    {
+        [UnityEngine.SerializeField]
+        private UnityEngine.UI.Image background;
+        protected override void OnRaycastFocusChange(bool value)
+            => background.color = value ? UnityEngine.Color.gray : UnityEngine.Color.white;
+    }
 }

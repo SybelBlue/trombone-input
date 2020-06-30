@@ -1,28 +1,31 @@
 ﻿using UnityEngine;
 
+namespace Controllers
+{
 #pragma warning disable 108
 #pragma warning disable 649
-public class LaserController : MonoBehaviour
-{
-    [SerializeField]
-    private StylusModelController modelController;
-
-    [SerializeField]
-    private LineRenderer renderer;
-
-    public bool active
+    public class LaserController : MonoBehaviour
     {
-        get => gameObject.activeInHierarchy;
-        set => gameObject.SetActive(value);
-    }
+        [SerializeField]
+        private StylusModelController modelController;
 
-    void Update()
-    {
-        if (!transform.hasChanged) return;
+        [SerializeField]
+        private LineRenderer renderer;
 
-        RaycastHit? hit;
-        modelController.Raycast(out hit);
+        public bool active
+        {
+            get => gameObject.activeInHierarchy;
+            set => gameObject.SetActive(value);
+        }
 
-        renderer.SetPosition(1, (hit?.distance ?? 50) * Vector3.forward);
+        void Update()
+        {
+            if (!transform.hasChanged) return;
+
+            RaycastHit? hit;
+            modelController.Raycast(out hit);
+
+            renderer.SetPosition(1, (hit?.distance ?? 50) * Vector3.forward);
+        }
     }
 }
