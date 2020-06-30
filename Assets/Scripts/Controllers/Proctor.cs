@@ -24,7 +24,7 @@ namespace Controllers
 {
 
 #pragma warning disable 649
-    public class TestingController : TextOutputController
+    public class Proctor : TextOutputDisplay
     {
         #region EditorSet
         [SerializeField]

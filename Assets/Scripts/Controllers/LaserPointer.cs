@@ -4,10 +4,10 @@ namespace Controllers
 {
 #pragma warning disable 108
 #pragma warning disable 649
-    public class LaserController : MonoBehaviour
+    public class LaserPointer : MonoBehaviour
     {
         [SerializeField]
-        private StylusModelController modelController;
+        private Stylus modelController;
 
         [SerializeField]
         private LineRenderer renderer;

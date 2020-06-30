@@ -3,10 +3,10 @@
 
 namespace Controllers
 {
-    namespace Key
+    namespace Keys
     {
 #pragma warning disable 649
-        public class SimpleKeyController : AbstractSimpleKeyController
+        public class Simple : AbstractSimple
         {
             [SerializeField]
             private UnityEngine.UI.Text childText;

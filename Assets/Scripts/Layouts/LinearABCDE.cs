@@ -1,4 +1,6 @@
-﻿namespace CustomInput
+﻿using Controllers.Keys;
+
+namespace CustomInput
 {
     public class LinearABCDE : Layout
     {
@@ -14,7 +16,7 @@
             set
             {
                 _useAlternate = value;
-                foreach (var controller in gameObject.GetComponentsInChildren<AbstractSimpleKeyController>())
+                foreach (var controller in gameObject.GetComponentsInChildren<AbstractSimple>())
                 {
                     controller.useAlternate = value;
                 }
@@ -33,7 +35,7 @@
 
             if (Bindings.inputThisFrame)
             {
-                ChildFor(data)?.GetComponent<IKeyController>()?.SetHighlight(true);
+                ChildFor(data)?.GetComponent<IKey>()?.SetHighlight(true);
             }
         }
 

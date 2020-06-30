@@ -3,13 +3,13 @@ using UnityEngine.UI;
 
 namespace Controllers
 {
-    namespace Key
+    namespace Keys
     {
-        public class BinnedKeyController : AbstractBinnedController<CustomInput.BinnedKey>
+        public class Binned : AbstractBinned<CustomInput.BinnedKey>
         {
             public override void SetSlant(bool forward)
             {
-                var children = transform.GetComponentsInChildren<SimpleKeyController>();
+                var children = transform.GetComponentsInChildren<Simple>();
                 for (int i = 0; i < children.Length; i++)
                 {
                     var child = children[i];
@@ -29,7 +29,7 @@ namespace Controllers
             }
         }
 
-        public abstract class AbstractBinnedController<T> : KeyController<T>
+        public abstract class AbstractBinned<T> : Key<T>
             where T : CustomInput.BinnedKey
         {
             public Color highlightColor;
@@ -58,7 +58,7 @@ namespace Controllers
             {
                 set
                 {
-                    foreach (var controller in gameObject.GetComponentsInChildren<AbstractSimpleKeyController>())
+                    foreach (var controller in gameObject.GetComponentsInChildren<AbstractSimple>())
                     {
                         controller.useAlternate = value;
                     }

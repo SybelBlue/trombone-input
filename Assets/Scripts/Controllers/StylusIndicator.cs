@@ -9,7 +9,7 @@ namespace Controllers
 
         public Text display;
 
-        public StylusModelController modelController;
+        public Stylus modelController;
 
         void Update()
         {

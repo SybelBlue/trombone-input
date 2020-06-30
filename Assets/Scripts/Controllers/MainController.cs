@@ -30,10 +30,10 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     [SerializeField]
     // The LayoutManager that is in charge of loading the layout
-    private LayoutController layoutManager;
+    private LayoutManager layoutManager;
 
     [SerializeField]
-    private StylusModelController stylusModel;
+    private Stylus stylusModel;
 
     // The transform of the layout display
     [SerializeField]
@@ -45,13 +45,13 @@ public class MainController : MonoBehaviour, VREventGenerator
 
     // The place where typed letters go
     [SerializeField]
-    private TextOutputController outputController;
+    private TextOutputDisplay outputController;
 
     [SerializeField]
     private TextAsset[] trialAssets;
 
     [SerializeField]
-    private TrialProgresssController trialProgresssController;
+    private TrialProgress trialProgresssController;
 
     [SerializeField]
     private AutoFilter autoFilter;
@@ -176,11 +176,11 @@ public class MainController : MonoBehaviour, VREventGenerator
     {
         currentTrial++;
         completedChallenges = -1;
-        if (currentTrial < trials.Count && outputController is TestingController && runTrial)
+        if (currentTrial < trials.Count && outputController is Proctor && runTrial)
         {
             trialProgresssController.trialCount = (currentTrial, trials.Count);
             OnChallengeEnd();
-            (outputController as TestingController).RunTrial(trials[currentTrial]);
+            (outputController as Proctor).RunTrial(trials[currentTrial]);
         }
         else
         {

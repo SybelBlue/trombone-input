@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Controllers
 {
 #pragma warning disable 649
-    public class TextOutputController : MonoBehaviour
+    public class TextOutputDisplay : MonoBehaviour
     {
         [SerializeField]
         private TMPro.TMP_Text rawOutput;
@@ -14,7 +14,7 @@ namespace Controllers
         private GameObject suggestionsContainer;
 
         [SerializeField]
-        private SuggestionController[] suggestions;
+        private Suggestion[] suggestions;
 
         [SerializeField]
         private GridLayoutGroup suggestionLayoutGroup;

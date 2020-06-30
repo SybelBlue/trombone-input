@@ -1,3 +1,4 @@
+using Controllers.Keys;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +21,7 @@ namespace CustomInput
             set
             {
                 _useAlternate = value;
-                foreach (var controller in gameObject.GetComponentsInChildren<StylusKeyController>())
+                foreach (var controller in gameObject.GetComponentsInChildren<Stylus>())
                 {
                     controller.useAlternate = value;
                 }
@@ -49,7 +50,7 @@ namespace CustomInput
 
             foreach (RaycastHit hit in Physics.RaycastAll(origin, direction, Mathf.Infinity))
             {
-                if (hit.transform.gameObject.GetComponent<RaycastKeyController>())
+                if (hit.transform.gameObject.GetComponent<Raycast>())
                 {
                     return hit.transform.gameObject;
                 }
@@ -70,7 +71,7 @@ namespace CustomInput
         }
 
         private SimpleKey RaycastKeyFor(InputData data)
-            => ChildFor(data)?.GetComponent<RaycastKeyController>().data;
+            => ChildFor(data)?.GetComponent<Raycast>().data;
 
         public override (LayoutKey parent, SimpleKey simple)? KeysFor(InputData data)
         {
@@ -83,7 +84,7 @@ namespace CustomInput
         {
             UnhighlightAll();
 
-            var controller = ChildFor(data)?.GetComponent<RaycastKeyController>();
+            var controller = ChildFor(data)?.GetComponent<Raycast>();
             if (controller == null) return;
 
             controller.SetHighlight(true);

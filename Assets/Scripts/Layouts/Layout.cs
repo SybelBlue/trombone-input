@@ -1,3 +1,4 @@
+using Controllers.Keys;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace CustomInput
 
         public readonly (Vector3 origin, Vector3 direction) orientation;
 
-        public InputData(int? rawValue, StylusModelController stylusModel) : this(
+        public InputData(int? rawValue, Controllers.Stylus stylusModel) : this(
                 rawValue,
                 stylusModel.normalizedAngles,
                 stylusModel.normalizedSlider,
@@ -79,7 +80,7 @@ namespace CustomInput
 
                 var newChild = key.Representation(transform, objectDict);
 
-                var controller = newChild.GetComponent<IKeyController>();
+                var controller = newChild.GetComponent<IKey>();
 
                 if (controller)
                 {
@@ -114,7 +115,7 @@ namespace CustomInput
         // SetHighlight(false) on all AbstractDisplayItemControllers
         protected void UnhighlightAll()
         {
-            foreach (var cont in gameObject.GetComponentsInChildren<IKeyController>())
+            foreach (var cont in gameObject.GetComponentsInChildren<IKey>())
             {
                 cont.SetHighlight(false);
             }
@@ -128,7 +129,7 @@ namespace CustomInput
             var unitWidth = width / (float)Bindings._slider_max_value;
             var unitHeight = height / 22.0f;
 
-            foreach (var child in gameObject.GetComponentsInChildren<IKeyController>())
+            foreach (var child in gameObject.GetComponentsInChildren<IKey>())
             {
                 child.Resize(unitWidth);
                 child.ResizeHeight(unitHeight);
@@ -146,7 +147,7 @@ namespace CustomInput
 
         // Equivalent to
         // ```ChildAt(index)?.GetComponent<LayoutKey>()```
-        protected LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<IKeyController>().layoutKey;
+        protected LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<IKey>().layoutKey;
 
         // Sets the item at index (or no item if null) to be highlighted and all others to be unhiglighted
         public abstract void SetHighlightedKey(InputData data);

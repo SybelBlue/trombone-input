@@ -1,10 +1,10 @@
 ﻿
 namespace Controllers
 {
-    namespace Key
+    namespace Keys
     {
 #pragma warning disable 649
-        public class StylusKeyController : AbstractSimpleKeyController
+        public class Stylus : AbstractSimple
         {
             [UnityEngine.SerializeField]
             private TMPro.TMP_Text textMeshPro;

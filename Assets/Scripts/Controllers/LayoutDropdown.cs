@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Controllers
 {
 #pragma warning disable 649
-    public class LayoutDropdownController : IRaycastable
+    public class LayoutDropdown : IRaycastable
     {
         public Dropdown dropdown;
 

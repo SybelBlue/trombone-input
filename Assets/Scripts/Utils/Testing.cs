@@ -319,7 +319,7 @@ namespace Testing
         { }
 
         // returns wether or not this sets TrialController in a blocking state
-        public abstract bool Apply(TestingController controller);
+        public abstract bool Apply(Proctor controller);
     }
 
     public class Command : TrialItem
@@ -337,7 +337,7 @@ namespace Testing
         public Command(string command, string num) : this(StringIntoType(command), StringIntoTrialNumber(num))
         { }
 
-        public override bool Apply(TestingController controller)
+        public override bool Apply(Proctor controller)
         {
             switch (type)
             {
@@ -408,7 +408,7 @@ namespace Testing
         public Challenge(string type, string prompt) : this(StringIntoType(type), prompt)
         { }
 
-        public override bool Apply(TestingController controller)
+        public override bool Apply(Proctor controller)
         {
             controller.currentPrompt = prompt;
             controller.currentChallengeType = type;

@@ -3,7 +3,7 @@
 namespace Controllers
 {
 #pragma warning disable 649
-    public class StylusModelController : MonoBehaviour
+    public class Stylus : MonoBehaviour
     {
         #region EditorSet
         public bool recordSliderData;
@@ -13,7 +13,7 @@ namespace Controllers
         private GameObject potentiometerIndicator;
 
         [SerializeField]
-        private LaserController laserPointer;
+        private LaserPointer laserPointer;
 
         [SerializeField]
         private MeshRenderer frontButtonRenderer, backButtonRenderer;

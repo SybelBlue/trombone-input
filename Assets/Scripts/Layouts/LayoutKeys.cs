@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine.Assertions;
 using System;
 using System.Collections.Generic;
+using Controllers.Keys;
 
 namespace CustomInput
 {
@@ -67,11 +68,11 @@ namespace CustomInput
         }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
-            => RepresentationUsing<SimpleKeyController>(parent, objectDict[LayoutObjectType.SimpleKeyPrefab]);
+            => RepresentationUsing<Simple>(parent, objectDict[LayoutObjectType.SimpleKeyPrefab]);
 
         // Used in SimpleKey.Representation to make a default key and set the new object's T.symbol to this.c
         protected GameObject RepresentationUsing<T>(Transform parent, GameObject prefab)
-            where T : AbstractSimpleKeyController
+            where T : AbstractSimple
         {
             var newItem = GameObject.Instantiate(prefab, parent);
             newItem.GetComponent<T>().symbol = c;
@@ -132,12 +133,12 @@ namespace CustomInput
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
             var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.BinnedKeyPrefab], parent);
-            var controller = newItem.GetComponent<BinnedKeyController>();
+            var controller = newItem.GetComponent<Binned>();
             foreach (var item in items)
             {
                 var newChild = item.Representation(parent, objectDict);
 
-                newChild.GetComponent<SimpleKeyController>().data = item;
+                newChild.GetComponent<Simple>().data = item;
 
                 controller.AddChild(newChild);
             }
@@ -155,7 +156,7 @@ namespace CustomInput
         { }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
-            => RepresentationUsing<StylusKeyController>(parent, objectDict[LayoutObjectType.StylusKeyPrefab]);
+            => RepresentationUsing<Stylus>(parent, objectDict[LayoutObjectType.StylusKeyPrefab]);
     }
 
     // The BinnedKey for Stylus canvases
@@ -169,12 +170,12 @@ namespace CustomInput
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
         {
             var newItem = GameObject.Instantiate(objectDict[LayoutObjectType.StylusBinnedPrefab], parent);
-            var controller = newItem.GetComponent<StylusBinnedController>();
+            var controller = newItem.GetComponent<StylusBinned>();
             foreach (var i in items)
             {
                 var newChild = i.Representation(parent, objectDict);
 
-                newChild.GetComponent<StylusKeyController>().data = i;
+                newChild.GetComponent<Stylus>().data = i;
 
                 controller.AddChild(newChild);
             }
@@ -190,6 +191,6 @@ namespace CustomInput
         { }
 
         public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
-            => RepresentationUsing<RaycastKeyController>(parent, objectDict[LayoutObjectType.RaycastKeyPrefab]);
+            => RepresentationUsing<Raycast>(parent, objectDict[LayoutObjectType.RaycastKeyPrefab]);
     }
 }

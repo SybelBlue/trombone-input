@@ -5,10 +5,10 @@ using static UnityEngine.RectTransform;
 
 namespace Controllers
 {
-    namespace Key
+    namespace Keys
     {
         // The interface for all KeyControllers
-        public abstract class IKeyController : IRaycastable
+        public abstract class IKey : IRaycastable
         {
             // set can cause cast exception!
             public abstract CustomInput.LayoutKey layoutKey { get; set; }
@@ -33,7 +33,7 @@ namespace Controllers
         // a key in a Layout's GUI.
         //
         // See Layouts/LayoutKets.cs for usage
-        public abstract class KeyController<T> : IKeyController
+        public abstract class Key<T> : IKey
             where T : CustomInput.LayoutKey
         {
             // this.gameObject's RectTransform (filled in Inspector)
@@ -64,7 +64,7 @@ namespace Controllers
         }
 
 #pragma warning disable 649
-        public abstract class AbstractSimpleKeyController : KeyController<CustomInput.SimpleKey>
+        public abstract class AbstractSimple : Key<CustomInput.SimpleKey>
         {
             [SerializeField]
             private Color highlightColor;

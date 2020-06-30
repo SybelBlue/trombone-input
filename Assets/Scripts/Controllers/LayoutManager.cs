@@ -16,7 +16,7 @@ namespace CustomInput
     }
 
 #pragma warning disable 649
-    public class LayoutController : MonoBehaviour
+    public class LayoutManager : MonoBehaviour
     {
         private LayoutOption _layout;
         public LayoutOption layout
@@ -31,7 +31,7 @@ namespace CustomInput
 
         #region EditorSet
         [SerializeField]
-        private LayoutDropdownController dropdownController;
+        private Controllers.LayoutDropdown dropdownController;
 
         private Dropdown dropdown
             => dropdownController.dropdown;

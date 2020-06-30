@@ -1,3 +1,5 @@
+using Controllers.Keys;
+
 namespace CustomInput
 {
     public class StylusBinnedABCDE : Layout
@@ -13,7 +15,7 @@ namespace CustomInput
             set
             {
                 _useAlternate = value;
-                foreach (var controller in gameObject.GetComponentsInChildren<StylusBinnedController>())
+                foreach (var controller in gameObject.GetComponentsInChildren<StylusBinned>())
                 {
                     controller.useAlternate = value;
                 }
@@ -60,12 +62,12 @@ namespace CustomInput
         {
             UnhighlightAll();
 
-            var binnedKey = ChildFor(data)?.GetComponent<StylusBinnedController>();
+            var binnedKey = ChildFor(data)?.GetComponent<StylusBinned>();
 
             if (binnedKey == null) return;
 
             binnedKey.SetHighlight(true);
-            var controllers = binnedKey.GetComponentsInChildren<StylusKeyController>();
+            var controllers = binnedKey.GetComponentsInChildren<Stylus>();
             var inner = InnerIndex(data, binnedKey.data.size);
 
             if (!inner.HasValue) return;

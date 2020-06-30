@@ -3,7 +3,7 @@
 namespace Controllers
 {
 #pragma warning disable 649
-    public class TrialProgresssController : MonoBehaviour
+    public class TrialProgress : MonoBehaviour
     {
         [SerializeField]
         private UnityEngine.UI.Text counter, percent;

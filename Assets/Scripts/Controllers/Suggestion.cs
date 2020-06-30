@@ -3,13 +3,13 @@ using UnityEngine;
 namespace Controllers
 {
 #pragma warning disable 649
-    public class SuggestionController : IRaycastable
+    public class Suggestion : IRaycastable
     {
         [SerializeField]
         private TMPro.TMP_Text tmpText;
 
         [SerializeField]
-        private TextOutputController textOutputController;
+        private TextOutputDisplay textOutputController;
 
         [SerializeField]
         public BoxCollider boxCollider;
