@@ -570,13 +570,13 @@ namespace MinVR {
 			{
 				if (Input.GetKeyDown(vrDevice.unityKeysToVREvents[i]))
 				{
-                    VREvent e = new VREvent("Kbd" + vrDevice.unityKeysToVREvents[i] + "_Down");
+                    VREvent e = new VREvent("Kbd" + vrDevice.unityKeysToVREvents[i].ToString() + "_Down");
 					e.AddData("EventType", "ButtonDown");
 					eventList.Add(e);
 				}
 				if (Input.GetKeyUp(vrDevice.unityKeysToVREvents[i]))
 				{
-                    VREvent e = new VREvent("Kbd" + vrDevice.unityKeysToVREvents[i] + "_Up");
+                    VREvent e = new VREvent("Kbd" + vrDevice.unityKeysToVREvents[i].ToString() + "_Up");
                     e.AddData("EventType", "ButtonUp");
                     eventList.Add(e);
 				}
