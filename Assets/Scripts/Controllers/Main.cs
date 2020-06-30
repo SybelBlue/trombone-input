@@ -38,11 +38,7 @@ public class Main : MonoBehaviour, VREventGenerator
     private LayoutManager layoutManager;
 
     [SerializeField]
-    private Stylus stylusModel;
-
-    // The transform of the layout display
-    [SerializeField]
-    private RectTransform displayRect;
+    private Stylus stylus;
 
     // The transform of the indicator
     [SerializeField]
@@ -50,13 +46,13 @@ public class Main : MonoBehaviour, VREventGenerator
 
     // The place where typed letters go
     [SerializeField]
-    private TextOutputDisplay outputController;
+    private TextOutputDisplay outputDisplay;
 
     [SerializeField]
     private TextAsset[] trialAssets;
 
     [SerializeField]
-    private TrialProgress trialProgresssController;
+    private TrialProgress trialProgresss;
 
     [SerializeField]
     private AutoFilter autoFilter;
@@ -77,15 +73,24 @@ public class Main : MonoBehaviour, VREventGenerator
 
     private bool usingIndicator
     {
-        get => indicatorRect.gameObject.activeInHierarchy;
+        get => indicatorRect && indicatorRect.gameObject.activeInHierarchy;
         set => indicatorRect.gameObject.SetActive(value);
     }
 
-    public bool runTrial
+    public TextOutputDisplay textOutput
+    {
+        set
+        {
+            outputDisplay = value;
+            outputDisplay?.ResetText();
+        }
+    }
+
+    private bool runTrial
         => trialExecutionMode == TrialExecutionMode.Always
         || (trialExecutionMode == TrialExecutionMode.OnlyInEditor && Application.isEditor);
 
-    private InputData currentInputData => new InputData(lastReportedValue, stylusModel);
+    private InputData currentInputData => new InputData(lastReportedValue, stylus);
 
     private void Start()
     {
@@ -103,7 +108,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
         Bindings.AddMinVRLayoutSwitchingHandlers(i => delegate { layoutManager.DropdownValueSelected(i); });
 
-        outputController.ResetText();
+        outputDisplay?.ResetText();
 
         trials = new List<Testing.Trial>(trialAssets.Length);
         foreach (TextAsset trial in trialAssets)
@@ -116,41 +121,49 @@ public class Main : MonoBehaviour, VREventGenerator
         autoFilter.OnFilterOutput.AddListener(OnFilterEvent);
 
         RunNextTrial();
+
+        DontDestroyOnLoad(stylus.gameObject);
+
+        DontDestroyOnLoad(gameObject);
+
+        // DontDestroyOnLoad(layoutManager.gameObject);
+        // DontDestroyOnLoad(inputPanel.gameObject);
+        // DontDestroyOnLoad(displayRect.gameObject);
+        // DontDestroyOnLoad(indicatorRect.gameObject);
+        // DontDestroyOnLoad(outputController.gameObject);
     }
 
     private void Update()
     {
-        bool indicator = layout.usesSlider && Bindings.inputThisFrame;
+        bool indicator = layout && layout.usesSlider && Bindings.inputThisFrame;
         if (indicator != usingIndicator)
         {
             usingIndicator = indicator;
         }
 
-
-        if (stylusModel.useLaser != layout.usesRaycasting)
+        if (layout && stylus && stylus.useLaser != layout.usesRaycasting)
         {
-            stylusModel.useLaser = layout.usesRaycasting;
+            stylus.useLaser = layout.usesRaycasting;
         }
 
-        if (!outputController.emptyText && Bindings.spaceDown)
+        if (outputDisplay && !outputDisplay.emptyText && Bindings.spaceDown)
         {
-            outputController.TypedChar(' ');
+            outputDisplay.TypedChar(' ');
         }
 
-        if (Bindings.backspaceDown)
+        if (outputDisplay && Bindings.backspaceDown)
         {
-            outputController.TypedBackspace();
+            outputDisplay.TypedBackspace();
         }
 
-        if (Bindings.emulatingLayoutSwitch.HasValue)
+        if (layoutManager && Bindings.emulatingLayoutSwitch.HasValue)
         {
             layoutManager.DropdownValueSelected(Bindings.emulatingLayoutSwitch.Value);
         }
 
-        if (stylusModel.transform.hasChanged)
+        if (stylus && stylus.transform.hasChanged)
         {
-            RaycastHit? hit;
-            var raycastable = stylusModel.Raycast(out hit);
+            var raycastable = stylus.Raycast(out _);
             if (raycastable)
             {
                 raycastable.hasRaycastFocus = true;
@@ -161,31 +174,33 @@ public class Main : MonoBehaviour, VREventGenerator
             }
         }
 
-        layout.UpdateState(currentInputData);
-        DontDestroyOnLoad(stylusModel.gameObject);
-        // DontDestroyOnLoad(layoutManager.gameObject);
-        // DontDestroyOnLoad(inputPanel.gameObject);
-        // DontDestroyOnLoad(displayRect.gameObject);
-        // DontDestroyOnLoad(indicatorRect.gameObject);
-        // DontDestroyOnLoad(outputController.gameObject);
+        if (layout && stylus)
+        {
+            layout.UpdateState(currentInputData);
+        }
     }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
     {
         int gestureStartValue = lastReportedValue ?? Bindings._slider_max_value / 2;
         Bindings.CaptureEmulatedSliderInput(ref eventList, gestureStartValue, lastReportedValue);
-        Bindings.CaptureEmulatedButtonInput(ref eventList, layout.usesSlider);
+        Bindings.CaptureEmulatedButtonInput(ref eventList, layout && layout.usesSlider);
     }
 
     private void RunNextTrial()
     {
+        if (!outputDisplay)
+        {
+            Debug.LogWarning("Skipped running trial because outputDisplay is null.");
+            return;
+        }
         currentTrial++;
         completedChallenges = -1;
-        if (currentTrial < trials.Count && outputController is Proctor && runTrial)
+        if (currentTrial < trials.Count && outputDisplay is Proctor && runTrial)
         {
-            trialProgresssController.trialCount = (currentTrial, trials.Count);
+            trialProgresss.trialCount = (currentTrial, trials.Count);
             OnChallengeEnd();
-            (outputController as Proctor).RunTrial(trials[currentTrial]);
+            (outputDisplay as Proctor).RunTrial(trials[currentTrial]);
         }
         else
         {
@@ -201,14 +216,17 @@ public class Main : MonoBehaviour, VREventGenerator
             case Utils.SignalProcessing.EventType.NoTouches:
                 return;
             case Utils.SignalProcessing.EventType.FingerUp:
-                // if (e.value.HasValue)
-                // {
-                //     OnInputEnd((int)e.value.Value);
-                // }
-                // else
-                // {
-                //     OnInputEnd(null);
-                // }
+                if (!Application.isEditor)
+                {
+                    if (e.value.HasValue)
+                    {
+                        OnInputEnd((int)e.value.Value);
+                    }
+                    else
+                    {
+                        OnInputEnd(null);
+                    }
+                }
                 Debug.LogWarning("Click!");
                 return;
             default:
@@ -227,21 +245,23 @@ public class Main : MonoBehaviour, VREventGenerator
     private void OnInputValueChange(int value)
     {
         lastReportedValue = value;
-        float width = displayRect.rect.width;
+        float normalized = value / (float)Bindings._slider_max_value;
+        stylus.normalizedSlider = normalized;
+
+        if (!layout || !indicatorRect) return;
+
+        float width = layout.rectTransform.rect.width;
         var pos = indicatorRect.localPosition;
 
-        float normalized = value / (float)Bindings._slider_max_value;
         pos.x = width * (normalized - 0.5f);
 
         indicatorRect.localPosition = pos;
-
-        stylusModel.normalizedSlider = normalized;
     }
 
     private bool OnInputEnd(int? value)
     {
         lastReportedValue = value;
-        LayoutKey parentKey = layout.KeysFor(currentInputData)?.parent;
+        LayoutKey parentKey = layout?.KeysFor(currentInputData)?.parent;
 
         bool success = parentKey != null;
 
@@ -253,7 +273,7 @@ public class Main : MonoBehaviour, VREventGenerator
             {
                 Debug.Log("Pressed Backspace");
 
-                outputController.TypedBackspace();
+                outputDisplay.TypedBackspace();
             }
             else
             {
@@ -261,7 +281,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
                 if (typed.HasValue)
                 {
-                    outputController.TypedChar(typed.Value);
+                    outputDisplay.TypedChar(typed.Value);
                 }
             }
         }
@@ -270,7 +290,7 @@ public class Main : MonoBehaviour, VREventGenerator
             Debug.LogWarning(value.HasValue ? $"Ended gesture in empty zone: {value}" : "Ended gesture on invalid key");
         }
 
-        stylusModel.normalizedSlider = null;
+        stylus.normalizedSlider = null;
 
         lastReportedValue = null;
 
@@ -283,11 +303,11 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void OnFrontButtonDown()
     {
-        stylusModel.frontButtonDown = true;
+        stylus.frontButtonDown = true;
         if (OnInputEnd(lastReportedValue)) return;
 
         RaycastHit? hit;
-        var raycastable = stylusModel.Raycast(out hit);
+        var raycastable = stylus.Raycast(out hit);
         if (raycastable)
         {
             raycastable.GetComponent<Button>()?.onClick.Invoke();
@@ -300,23 +320,26 @@ public class Main : MonoBehaviour, VREventGenerator
     }
 
     public void OnFrontButtonUp()
-        => stylusModel.frontButtonDown = false;
+        => stylus.frontButtonDown = false;
 
     public void OnBackButtonDown()
     {
-        stylusModel.backButtonDown = true;
-        layout.useAlternate = !layout.useAlternate;
+        stylus.backButtonDown = true;
+        if (layout)
+        {
+            layout.useAlternate = !layout.useAlternate;
+        }
     }
 
     public void OnBackButtonUp()
-        => stylusModel.backButtonDown = false;
+        => stylus.backButtonDown = false;
 
     // used in editor!
     public void OnTestingLayoutChange(LayoutOption layout)
         => layoutManager.layout = layout;
 
     public void OnChallengeEnd()
-        => trialProgresssController.trialProgress = (++completedChallenges) / (float)trials[currentTrial].Length;
+        => trialProgresss.trialProgress = (++completedChallenges) / (float)trials[currentTrial].Length;
 
     public void OnTrialCompleted(bool success)
     {

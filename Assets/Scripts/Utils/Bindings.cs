@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using MinVR;
 using static UnityEngine.Input;
 using static UnityEngine.KeyCode;
@@ -179,9 +180,14 @@ namespace CustomInput
 
         public static void InitializeMinVRLayoutSwitching(VRDevice server)
         {
+            if (server == null)
+            {
+                throw new ArgumentNullException("server", "Provided VRDevice was null! Failed to initialize for MinVR Layout Switching!");
+            }
+
             if (server.vrNodeType != VRDevice.VRNodeType.NetServer)
             {
-                UnityEngine.Debug.LogWarning("Provided VRDevice to initialize for MinVR Layout switching does not have vrNodeType NetServer!");
+                UnityEngine.Debug.LogWarning("Provided VRDevice to initialize for MinVR Layout Switching does not have vrNodeType NetServer!");
             }
 
             foreach (var item in _layout_switch_bindings)

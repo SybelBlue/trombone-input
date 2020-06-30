@@ -8,7 +8,7 @@ using CustomExtensions;
 
 namespace Testing
 {
-    public struct Trial
+    public readonly struct Trial
     {
         public readonly TrialItem[] items;
         public readonly int trialNumber;
@@ -191,7 +191,7 @@ namespace Testing
                     return;
             }
 
-            throw new System.ArgumentException($"{item.GetType()} not recognized");
+            throw new ArgumentException($"{item.GetType()} not recognized");
         }
 
         public void EndLastChallenge(string output)

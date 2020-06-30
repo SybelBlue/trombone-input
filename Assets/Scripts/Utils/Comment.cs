@@ -6,5 +6,7 @@ namespace Utils
     {
         [TextArea]
         public string notes;
+
+        public string[] issues;
     }
 }
