@@ -1568,7 +1568,6 @@ GameObject:
   - component: {fileID: 971101859}
   - component: {fileID: 971101864}
   - component: {fileID: 971101866}
-  - component: {fileID: 971101865}
   m_Layer: 2
   m_Name: Stylus
   m_TagString: Untagged
@@ -1680,24 +1679,6 @@ MonoBehaviour:
   minAngle: {x: 0, y: 60, z: -80}
   maxAngle: {x: 80, y: -30, z: 80}
   sliderBounds: {x: 0, y: 0.15}
---- !u!114 &971101865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971101858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Device: 1
-  m_PoseSource: 5
-  m_PoseProviderComponent: {fileID: 0}
-  m_TrackingType: 0
-  m_UpdateType: 0
-  m_UseRelativeTransform: 0
 --- !u!114 &971101866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2242,6 +2223,7 @@ GameObject:
   - component: {fileID: 1326522648}
   - component: {fileID: 1326522647}
   - component: {fileID: 1326522650}
+  - component: {fileID: 1326522651}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2326,6 +2308,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b06718a6f0c25429098e63eeea0d1c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1326522651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326522646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 235f6df60d7254a6281274b7cf39ad85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultVRDevice: {fileID: 0}
+  editorCmdLineArgs: -vrdevice Desktop
+  debugLogEvents: 0
 --- !u!1 &1364169799
 GameObject:
   m_ObjectHideFlags: 0
@@ -3659,7 +3656,6 @@ GameObject:
   - component: {fileID: 2084761340}
   - component: {fileID: 2084761343}
   - component: {fileID: 2084761342}
-  - component: {fileID: 2084761341}
   m_Layer: 0
   m_Name: Desktop
   m_TagString: Untagged
@@ -3681,20 +3677,6 @@ Transform:
   m_Father: {fileID: 2085561072}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2084761341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2084761339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 722691c380190442ea7aeaa289765bfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trackingEvent: Head_Move
-  cam: {fileID: 0}
 --- !u!114 &2084761342
 MonoBehaviour:
   m_ObjectHideFlags: 0
