@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SceneSwitching
 {
-    public class MainToLobbyChange : MonoBehaviour
+    public class STRIALSToLobbyChange : MonoBehaviour
     {
         // Start is called before the first frame update
         void Start()

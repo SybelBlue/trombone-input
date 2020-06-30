@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace SceneSwitching
 {
-    public class LobbyToMainChange : MonoBehaviour
+    public class LobbyToSTRIALSChange : MonoBehaviour
     {
         // Start is called before the first frame update
         void Start()
