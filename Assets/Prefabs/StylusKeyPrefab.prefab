@@ -85,11 +85,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2312528965249368717}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fb1b44545ef70c49a037eb735514cc3, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ed31d4aa833114458bb686c2a5d992c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 2312528965249368714}
-  highlightColor: {r: 0.12993948, g: 0.17117594, b: 0.3773585, a: 0.94509804}
+  highlightColor: {r: 0, g: 0, b: 0, a: 0}
   background: {fileID: 2312528965249368715}
   _symbol: 0
   textMeshPro: {fileID: 2510543507103869357}

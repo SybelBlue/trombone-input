@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using MinVR;
 using static UnityEngine.Input;
 using static UnityEngine.KeyCode;
