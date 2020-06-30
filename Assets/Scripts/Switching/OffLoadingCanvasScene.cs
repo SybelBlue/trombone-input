@@ -1,7 +1,10 @@
-﻿public class OffLoadingCanvasScene : UnityEngine.MonoBehaviour
+﻿namespace SceneSwitching
 {
-    public void EndTrialScene()
+    public class OffLoadingCanvasScene : UnityEngine.MonoBehaviour
     {
-        UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
+        public void EndTrialScene()
+        {
+            UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
+        }
     }
 }

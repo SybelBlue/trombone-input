@@ -1,9 +1,12 @@
 ﻿using UnityEngine.SceneManagement;
 
-public class LobbyToMainButtonScript : UnityEngine.MonoBehaviour
+namespace SceneSwitching
 {
-    public void ChangeToSTrial()
+    public class LobbyToMainButtonScript : UnityEngine.MonoBehaviour
     {
-        SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
+        public void ChangeToSTrial()
+        {
+            SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
+        }
     }
 }

@@ -1,26 +1,27 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class MainToLobbyChange : MonoBehaviour
+namespace SceneSwitching
 {
-    // Start is called before the first frame update
-    void Start()
+    public class MainToLobbyChange : MonoBehaviour
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (CustomInput.Bindings.returnToLobby)
+        // Start is called before the first frame update
+        void Start()
         {
-          UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
-            // UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("Trials");
 
-            // SceneManager.LoadScene("Lobby");
         }
 
+        // Update is called once per frame
+        void Update()
+        {
+            if (CustomInput.Bindings.returnToLobby)
+            {
+                UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
+                // UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("Trials");
+
+                // SceneManager.LoadScene("Lobby");
+            }
+
+        }
     }
 }

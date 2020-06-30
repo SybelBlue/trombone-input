@@ -1,9 +1,12 @@
-public class MainToLobbyButtonScript : UnityEngine.MonoBehaviour
+namespace SceneSwitching
 {
-    public void ChangeToLobby()
+    public class MainToLobbyButtonScript : UnityEngine.MonoBehaviour
     {
-        // UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
-        UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
+        public void ChangeToLobby()
+        {
+            // UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
+            UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
 
+        }
     }
 }

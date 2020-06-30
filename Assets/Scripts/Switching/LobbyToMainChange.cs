@@ -1,27 +1,29 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LobbyToMainChange : MonoBehaviour
+namespace SceneSwitching
 {
-    // Start is called before the first frame update
-    void Start()
+    public class LobbyToMainChange : MonoBehaviour
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (CustomInput.Bindings.advanceToMain)//TODO: EXPLORE THIS
+        // Start is called before the first frame update
+        void Start()
         {
-            // SceneManager.LoadScene("_MAIN");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
 
         }
 
-        // SceneManager.LoadScene("_MAIN");
+        // Update is called once per frame
+        void Update()
+        {
+            if (CustomInput.Bindings.advanceToMain)//TODO: EXPLORE THIS
+            {
+                // SceneManager.LoadScene("_MAIN");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
 
+            }
+
+            // SceneManager.LoadScene("_MAIN");
+
+        }
     }
 }
