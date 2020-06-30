@@ -3915,7 +3915,7 @@ GameObject:
   - component: {fileID: 1267187126}
   - component: {fileID: 1267187125}
   - component: {fileID: 1267187124}
-  - component: {fileID: 1267187123}
+  - component: {fileID: 1267187129}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3923,18 +3923,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1267187123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1267187122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b06718a6f0c25429098e63eeea0d1c7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1267187124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4033,6 +4021,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1267187129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267187122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca89632b01a04cb1aac009869455a57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1274682215
 GameObject:
   m_ObjectHideFlags: 0
@@ -4375,6 +4375,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  logOutput: 0
   epsilon: 2
   deadzone: 8
   type: 1
@@ -5490,8 +5491,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: endTrialScene
+      - m_Target: {fileID: 1267187129}
+        m_MethodName: EndTrialScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

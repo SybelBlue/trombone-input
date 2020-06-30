@@ -10,7 +10,7 @@ namespace Utils
 
         void Start()
         {
-            stylusTransform = GameObject.Find("Stylus").transform;
+            stylusTransform = GameObject.FindWithTag("StylusTag").transform;
         }
 
         // Update is called once per frame

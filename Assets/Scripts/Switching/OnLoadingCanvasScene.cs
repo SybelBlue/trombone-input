@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 
 namespace SceneSwitching
 {
-    public class OnLoadingCanvasScene : MonoBehaviour
+    public class OnLoadingCanvasScene : UnityEngine.MonoBehaviour
     {
 
         public void StartTrialScene()
         {
-            SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
+          UnityEngine.SceneManagement.SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
         }
 
     }
