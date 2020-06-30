@@ -1263,6 +1263,8 @@ GameObject:
   - component: {fileID: 753604664}
   - component: {fileID: 753604663}
   - component: {fileID: 753604662}
+  - component: {fileID: 753604666}
+  - component: {fileID: 753604665}
   m_Layer: 5
   m_Name: StartPracticeButton
   m_TagString: Untagged
@@ -1357,7 +1359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.95979214, g: 1, b: 0.9481132, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1381,6 +1383,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 753604660}
   m_CullTransparentMesh: 0
+--- !u!65 &753604665
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753604660}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 150, y: 150, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &753604666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753604660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f874c82cc544004e933286ae9179e46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  background: {fileID: 753604663}
 --- !u!1 &858238970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1452,7 +1480,6 @@ GameObject:
   - component: {fileID: 971101866}
   - component: {fileID: 971101865}
   - component: {fileID: 971101860}
-  - component: {fileID: 971101865}
   m_Layer: 2
   m_Name: Stylus
   m_TagString: Untagged
@@ -1594,7 +1621,7 @@ MonoBehaviour:
   OnFilterOutput:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1565969190}
         m_MethodName: OnFilterEvent
         m_Mode: 0
         m_Arguments:
@@ -1610,24 +1637,6 @@ MonoBehaviour:
   deadzone: 8
   type: 1
   period: 0.2
---- !u!114 &971101866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971101858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Device: 0
-  m_PoseSource: 2
-  m_PoseProviderComponent: {fileID: 0}
-  m_TrackingType: 0
-  m_UpdateType: 0
-  m_UseRelativeTransform: 0
 --- !u!114 &971101866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2842,7 +2851,6 @@ MonoBehaviour:
   server: {fileID: 1671901940}
   layoutManager: {fileID: 0}
   stylus: {fileID: 971101864}
-  displayRect: {fileID: 0}
   indicatorRect: {fileID: 0}
   outputDisplay: {fileID: 0}
   trialAssets:

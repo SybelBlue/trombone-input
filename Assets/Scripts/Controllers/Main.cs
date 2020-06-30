@@ -261,7 +261,7 @@ public class Main : MonoBehaviour, VREventGenerator
     private bool OnInputEnd(int? value)
     {
         lastReportedValue = value;
-        LayoutKey parentKey = layout.KeysFor(currentInputData)?.parent;
+        LayoutKey parentKey = layout?.KeysFor(currentInputData)?.parent;
 
         bool success = parentKey != null;
 
@@ -325,7 +325,10 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnBackButtonDown()
     {
         stylus.backButtonDown = true;
-        layout.useAlternate = !layout.useAlternate;
+        if (layout)
+        {
+            layout.useAlternate = !layout.useAlternate;
+        }
     }
 
     public void OnBackButtonUp()

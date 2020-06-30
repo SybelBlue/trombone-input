@@ -8,7 +8,7 @@ using CustomExtensions;
 
 namespace Testing
 {
-    public struct Trial
+    public readonly struct Trial
     {
         public readonly TrialItem[] items;
         public readonly int trialNumber;
