@@ -59,7 +59,7 @@ namespace MinVR {
         [Tooltip("Other unity inputs, like key presses can be converted to VREvents so that they can be handled with " +
             "MinVR's event system, just like tracker buttons.  This is the list of Unity buttons accessible via " +
             "Input.GetKeyDown() that MinVR should listen for and convert to button up/down VREvents.")]
-        public List<string> unityKeysToVREvents = new List<string>();
+        public List<KeyCode> unityKeysToVREvents = new List<KeyCode>();
 
         [Tooltip("Other unity inputs, like joystick values can be converted to VREvents so that they can be handled with " +
             "MinVR's event system, just like analog sensors.  This is the list of Unity axes accessible via " +

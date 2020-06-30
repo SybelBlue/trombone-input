@@ -191,7 +191,7 @@ namespace CustomInput
 
             foreach (var item in _layout_switch_bindings)
             {
-                server.unityKeysToVREvents.Add(item.ToString());
+                server.unityKeysToVREvents.Add(item);
             }
         }
 
