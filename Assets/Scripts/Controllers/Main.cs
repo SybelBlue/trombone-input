@@ -103,6 +103,7 @@ public class Main : MonoBehaviour, VREventGenerator
         else
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
 
         Bindings._left_handed = leftHanded;
@@ -134,8 +135,6 @@ public class Main : MonoBehaviour, VREventGenerator
         RunNextTrial();
 
         DontDestroyOnLoad(stylus.gameObject);
-
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Update()
