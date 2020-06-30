@@ -22,6 +22,8 @@ namespace Utils
 #pragma warning disable 649
 public class Main : MonoBehaviour, VREventGenerator
 {
+    private static Main Instance;
+
     #region EditorSet
     [SerializeField]
     private bool leftHanded;
@@ -94,6 +96,15 @@ public class Main : MonoBehaviour, VREventGenerator
 
     private void Start()
     {
+        if (Instance)
+        {
+            Debug.LogWarning("A second Main script has been created while another exists!");
+        }
+        else
+        {
+            Instance = this;
+        }
+
         Bindings._left_handed = leftHanded;
 
         VRMain.Instance.AddEventGenerator(this);
@@ -125,12 +136,6 @@ public class Main : MonoBehaviour, VREventGenerator
         DontDestroyOnLoad(stylus.gameObject);
 
         DontDestroyOnLoad(gameObject);
-
-        // DontDestroyOnLoad(layoutManager.gameObject);
-        // DontDestroyOnLoad(inputPanel.gameObject);
-        // DontDestroyOnLoad(displayRect.gameObject);
-        // DontDestroyOnLoad(indicatorRect.gameObject);
-        // DontDestroyOnLoad(outputController.gameObject);
     }
 
     private void Update()

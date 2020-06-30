@@ -199,8 +199,8 @@ namespace CustomInput
         {
             for (int i = 0; i < _layout_switch_bindings.Length; i++)
             {
-                var binding = _layout_switch_bindings[i];
-                VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(binding), LayoutHandlers(i));
+                var bindingName = KeyCodeToMinVRButtonDownName(_layout_switch_bindings[i]);
+                VRMain.Instance.AddOnVRButtonDownCallback(bindingName, LayoutHandlers(i));
             }
         }
 
