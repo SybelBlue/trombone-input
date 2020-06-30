@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace Utils
 {
+    using CustomExtensions;
+
     namespace SignalProcessing
     {
         [Serializable]

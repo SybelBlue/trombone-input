@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
+using CustomExtensions;
 using static CustomInput.VREventFactory;
 
 [System.Serializable]

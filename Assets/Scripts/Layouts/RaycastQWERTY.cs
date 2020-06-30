@@ -1,6 +1,7 @@
 using Controller.Key;
 using UnityEngine;
 using UnityEngine.UI;
+using CustomExtensions;
 
 namespace CustomInput
 {
