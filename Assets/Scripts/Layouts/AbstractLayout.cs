@@ -42,8 +42,8 @@ namespace CustomInput
 #pragma warning disable 649
         public abstract class AbstractLayout : MonoBehaviour
         {
-            [SerializeField]
-            protected RectTransform rectTransform;
+            public RectTransform rectTransform
+            { get; protected set; }
 
             [SerializeField]
             // Prefabs for the basic layout key and basic block key
@@ -66,6 +66,8 @@ namespace CustomInput
 
             protected void Start()
             {
+                rectTransform = GetComponent<RectTransform>();
+
                 Key = FillKeys();
 
                 var objectDict = new Dictionary<LayoutObjectType, GameObject>
