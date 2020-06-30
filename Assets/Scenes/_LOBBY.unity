@@ -1450,6 +1450,7 @@ GameObject:
   - component: {fileID: 971101859}
   - component: {fileID: 971101864}
   - component: {fileID: 971101866}
+  - component: {fileID: 971101860}
   m_Layer: 2
   m_Name: Stylus
   m_TagString: Untagged
@@ -1473,6 +1474,20 @@ MonoBehaviour:
   translationalOffset: {x: 0, y: 0, z: 0}
   rotationalOffset: {x: 0, y: 0, z: 0}
   trackedObjects: []
+--- !u!114 &971101860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971101858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7acecf74f524f6a448fdcf0d63ca44ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  notes: StylusIndicator now functions with all fields set to None. It will NOT automatically
+    detect when the objects are created. The Stylus is fully encapsulated.
 --- !u!23 &971101861
 MeshRenderer:
   m_ObjectHideFlags: 0
