@@ -4,6 +4,7 @@ using MinVR;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 using static CustomInput.VREventFactory;
 
 [System.Serializable]
@@ -189,13 +190,13 @@ public class MainController : MonoBehaviour, VREventGenerator
     }
 
     #region Callbacks
-    public void OnFilterEvent(SignalProcessing.FilterEventData e)
+    public void OnFilterEvent(Utils.SignalProcessing.FilterEventData e)
     {
         switch (e.type)
         {
-            case SignalProcessing.EventType.NoTouches:
+            case Utils.SignalProcessing.EventType.NoTouches:
                 return;
-            case SignalProcessing.EventType.FingerUp:
+            case Utils.SignalProcessing.EventType.FingerUp:
                 // if (e.value.HasValue)
                 // {
                 //     OnInputEnd((int)e.value.Value);

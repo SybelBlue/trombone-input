@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Controller
 {
 #pragma warning disable 649
-    public class Suggestion : IRaycastable
+    public class Suggestion : Utils.IRaycastable
     {
         [SerializeField]
         private TMPro.TMP_Text tmpText;

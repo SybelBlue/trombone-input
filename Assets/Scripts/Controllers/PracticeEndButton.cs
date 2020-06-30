@@ -1,7 +1,7 @@
 namespace Controller
 {
 #pragma warning disable 649
-    public class PracticeEndButton : IRaycastable
+    public class PracticeEndButton : Utils.IRaycastable
     {
         [UnityEngine.SerializeField]
         private UnityEngine.UI.Image background;

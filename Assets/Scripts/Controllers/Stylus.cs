@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Utils;
 
 namespace Controller
 {
@@ -57,9 +58,9 @@ namespace Controller
                 // Utils.SignedAngle(transform.forward.ProjectTo(true, false, true), new Vector3(0, 0, 1), new Vector3(0, 1, 0)),
                 // Utils.SignedAngle(transform.forward.ProjectTo(true, true, false), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
 
-                Utils.SignedAngleFromAxis(transform.forward, new Vector3(0, 1, 0), 0),
-                Utils.SignedAngleFromAxis(transform.forward, new Vector3(0, 0, 1), 1),
-                Utils.SignedAngleFromAxis(transform.forward, new Vector3(0, 1, 0), 2)
+                Static.SignedAngleFromAxis(transform.forward, new Vector3(0, 1, 0), 0),
+                Static.SignedAngleFromAxis(transform.forward, new Vector3(0, 0, 1), 1),
+                Static.SignedAngleFromAxis(transform.forward, new Vector3(0, 1, 0), 2)
                 );
 
         public float? normalizedSlider
@@ -132,7 +133,7 @@ namespace Controller
 
             normalizedAngles =
                 eulerAngles
-                .Map(x => useUnityEulerAngles ? Utils.ModIntoRange(x, -180, 180) : x)
+                .Map(x => useUnityEulerAngles ? Static.ModIntoRange(x, -180, 180) : x)
                 .Map((i, x) => Mathf.InverseLerp(LowerBound(i), UpperBound(i), x));
 
             if (!recordSliderData) return;

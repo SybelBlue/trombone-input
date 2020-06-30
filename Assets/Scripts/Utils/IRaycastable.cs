@@ -1,36 +1,39 @@
 using UnityEngine;
 
-public abstract class IRaycastable : MonoBehaviour
+namespace Utils
 {
-    public static IRaycastable last;
-
-    public static IRaycastable current => last.hasRaycastFocus ? last : null;
-
-    private bool _inFocus;
-
-    public bool hasRaycastFocus
+    public abstract class IRaycastable : MonoBehaviour
     {
-        get => _inFocus;
-        set
-        {
-            if (_inFocus != value)
-            {
-                OnRaycastFocusChange(value);
-            }
+        public static IRaycastable last;
 
-            if (value)
+        public static IRaycastable current => last.hasRaycastFocus ? last : null;
+
+        private bool _inFocus;
+
+        public bool hasRaycastFocus
+        {
+            get => _inFocus;
+            set
             {
-                if (last && last != this && last._inFocus)
+                if (_inFocus != value)
                 {
-                    last.hasRaycastFocus = false;
+                    OnRaycastFocusChange(value);
                 }
 
-                last = this;
+                if (value)
+                {
+                    if (last && last != this && last._inFocus)
+                    {
+                        last.hasRaycastFocus = false;
+                    }
+
+                    last = this;
+                }
+
+                _inFocus = value;
             }
-
-            _inFocus = value;
         }
-    }
 
-    protected abstract void OnRaycastFocusChange(bool value);
+        protected abstract void OnRaycastFocusChange(bool value);
+    }
 }

@@ -1,17 +1,20 @@
 using UnityEngine;
-using SignalProcessing;
+using Utils.SignalProcessing;
 using System;
-using EventType = SignalProcessing.EventType;
+using EventType = Utils.SignalProcessing.EventType;
 using UnityEngine.Events;
 
-[Serializable]
-public class FilterEvent : UnityEvent<FilterEventData>
-{ }
+namespace CustomEvent
+{
+    [Serializable]
+    public class FilterEvent : UnityEvent<FilterEventData>
+    { }
+}
 
 #pragma warning disable 649
 public class AutoFilter : MonoBehaviour
 {
-    public FilterEvent OnFilterOutput;
+    public CustomEvent.FilterEvent OnFilterOutput;
 
     [SerializeField]
     private uint epsilon, deadzone;
@@ -26,8 +29,7 @@ public class AutoFilter : MonoBehaviour
 
     private (uint? value, double time, int frame) last;
 
-    private double currentTime =>
-        SignalProcessing.Utils.GetCurrentTime(type);
+    private double currentTime => GetCurrentTime(type);
 
     private void Start()
     {
@@ -95,5 +97,18 @@ public class AutoFilter : MonoBehaviour
             return current.HasValue ? EventType.Touching : EventType.NoTouches;
         }
         return current.HasValue ? EventType.FingerDown : EventType.FingerUp;
+    }
+
+
+    public static double GetCurrentTime(FrequencyType type)
+    {
+        switch (type)
+        {
+            case FrequencyType.Frames:
+                return Time.frameCount;
+            case FrequencyType.Seconds:
+                return Time.time;
+        }
+        throw new ArgumentException(type.ToString());
     }
 }

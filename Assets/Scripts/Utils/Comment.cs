@@ -4,13 +4,16 @@ using UnityEditor;
 public class Comment : MonoBehaviour
 { }
 
-#if (UNITY_EDITOR) 
-[CustomEditor(typeof(Comment))]
-public class CommentEditor : Editor
+#if (UNITY_EDITOR)
+namespace CustomEditor
 {
-    public override void OnInspectorGUI()
+    [UnityEditor.CustomEditor(typeof(Comment))]
+    public class CommentEditor : Editor
     {
-        EditorGUILayout.TextArea("");
+        public override void OnInspectorGUI()
+        {
+            EditorGUILayout.TextArea("");
+        }
     }
 }
 #endif

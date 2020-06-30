@@ -24,11 +24,11 @@ namespace CustomInput
 
         protected virtual int? InnerIndex(InputData data, int parentSize)
             => data.normalizedSlider.HasValue ?
-                (int?)Utils.NormalizedIntoIndex(1 - data.normalizedSlider.Value, parentSize) :
+                (int?)Utils.Static.NormalizedIntoIndex(1 - data.normalizedSlider.Value, parentSize) :
                 null;
 
         protected override int ChildIndexFor(InputData data)
-            => Utils.NormalizedIntoIndex(data.normalizedAngles.z, childMap.Count);
+            => Utils.Static.NormalizedIntoIndex(data.normalizedAngles.z, childMap.Count);
 
         private (LayoutKey, SimpleKey) FetchInnerKey(InputData data)
         {

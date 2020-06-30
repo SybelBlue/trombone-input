@@ -8,7 +8,7 @@ namespace Controller
     namespace Key
     {
         // The interface for all KeyControllers
-        public abstract class IKey : IRaycastable
+        public abstract class IKey : Utils.IRaycastable
         {
             // set can cause cast exception!
             public abstract CustomInput.LayoutKey layoutKey { get; set; }
