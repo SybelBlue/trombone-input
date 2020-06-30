@@ -1,13 +1,15 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LobbyToMainButtonScript : MonoBehaviour
+public class STRIALSToLobbyButtonScript : MonoBehaviour
 {
-    public void changeToSTrial()
+    public void changeToLobby()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
+        // UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
+        UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
+
     }
     // // Start is called before the first frame update
     // void Start()
