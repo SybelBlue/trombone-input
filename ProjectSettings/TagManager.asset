@@ -6,6 +6,7 @@ TagManager:
   tags:
   - HideInCave
   - StylusTag
+  - StartButtonTag
   layers:
   - Default
   - TransparentFX
