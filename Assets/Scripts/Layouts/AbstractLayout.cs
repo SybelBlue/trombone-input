@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace CustomInput
 {
-
     public readonly struct InputData
     {
         public readonly Vector3 normalizedAngles;
@@ -116,7 +115,7 @@ namespace CustomInput
                 ResizeAll();
             }
 
-            // SetHighlight(false) on all AbstractDisplayItemControllers
+            // SetHighlight(false) on all IKeys
             protected void UnhighlightAll()
             {
                 foreach (var cont in gameObject.GetComponentsInChildren<IKey>())
@@ -146,6 +145,10 @@ namespace CustomInput
                 var index = ChildIndexFor(data);
                 return childMap.Count <= index || index < 0 ? null : childMap[index];
             }
+
+            // Boundaries for valid stylus angles
+            public virtual (Vector3 minima, Vector3 maxima)? StylusRotationBounds()
+                  => null;
 
             protected abstract int ChildIndexFor(InputData data);
 

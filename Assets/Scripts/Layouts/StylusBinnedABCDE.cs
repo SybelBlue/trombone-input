@@ -1,4 +1,5 @@
 using Controller.Key;
+using UnityEngine;
 
 namespace CustomInput
 {
@@ -8,6 +9,9 @@ namespace CustomInput
         {
             public override bool usesSlider => true;
             public override bool usesRaycasting => false;
+
+            [SerializeField]
+            protected Vector3 minAngle, maxAngle;
 
             private bool _useAlternate;
 
@@ -23,6 +27,9 @@ namespace CustomInput
                     }
                 }
             }
+
+            public override (Vector3 minima, Vector3 maxima)? StylusRotationBounds()
+                => (minAngle, maxAngle);
 
             protected virtual int? InnerIndex(InputData data, int parentSize)
                 => data.normalizedSlider.HasValue ?
@@ -55,7 +62,7 @@ namespace CustomInput
 
             public override char? GetSelectedLetter(InputData data)
             {
-                var (parent, inner) = FetchInnerKey(data);
+                var (_, inner) = FetchInnerKey(data);
                 if (inner == null) return null;
                 return inner.CharWithAlternate(useAlternate);
             }

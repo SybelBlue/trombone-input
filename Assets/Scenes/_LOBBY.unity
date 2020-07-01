@@ -241,7 +241,7 @@ MonoBehaviour:
   activateVRPNInputObjects: 0
   unityMouseBtnsToVREvents: 0
   unityMouseMovesToVREvents: 0
-  unityKeysToVREvents: []
+  unityKeysToVREvents: 
   unityAxesToVREvents: []
   eventAliases: []
 --- !u!1 &64718941
@@ -937,7 +937,7 @@ MonoBehaviour:
   activateVRPNInputObjects: 0
   unityMouseBtnsToVREvents: 0
   unityMouseMovesToVREvents: 0
-  unityKeysToVREvents: []
+  unityKeysToVREvents: 
   unityAxesToVREvents: []
   eventAliases: []
 --- !u!1 &507898596
@@ -1016,7 +1016,7 @@ MonoBehaviour:
   activateVRPNInputObjects: 0
   unityMouseBtnsToVREvents: 0
   unityMouseMovesToVREvents: 0
-  unityKeysToVREvents: []
+  unityKeysToVREvents: 
   unityAxesToVREvents: []
   eventAliases: []
 --- !u!1 &536311306
@@ -1451,8 +1451,8 @@ MonoBehaviour:
   backButtonRenderer: {fileID: 281251436}
   highlightMaterial: {fileID: 2100000, guid: ea5906402a6b7fb40a9b9f4d8af4ff17, type: 2}
   defaultMaterial: {fileID: 2100000, guid: 7ff72e74ddb75334a966aadc768d4de0, type: 2}
-  minAngle: {x: 0, y: 60, z: -80}
-  maxAngle: {x: 80, y: -30, z: 80}
+  defaultMinAngle: {x: 0, y: 60, z: -80}
+  defaultMaxAngle: {x: 80, y: 30, z: 80}
   sliderBounds: {x: 0, y: 0.15}
 --- !u!114 &971101865
 MonoBehaviour:
@@ -2128,7 +2128,7 @@ MonoBehaviour:
   trialAssets:
   - {fileID: 4900000, guid: 83f24e5bebd0b0c418296fc1d3b5ee9e, type: 3}
   - {fileID: 4900000, guid: 1eb8621f8d963ff4bbb33d281670b93d, type: 3}
-  trialProgresss: {fileID: 0}
+  trialProgress: {fileID: 0}
   autoFilter: {fileID: 971101865}
 --- !u!1 &1351352543
 GameObject:
@@ -2498,7 +2498,7 @@ MonoBehaviour:
   activateVRPNInputObjects: 0
   unityMouseBtnsToVREvents: 0
   unityMouseMovesToVREvents: 0
-  unityKeysToVREvents: []
+  unityKeysToVREvents: 
   unityAxesToVREvents: []
   eventAliases: []
 --- !u!1 &1472804464
@@ -2613,7 +2613,7 @@ MonoBehaviour:
   activateVRPNInputObjects: 0
   unityMouseBtnsToVREvents: 0
   unityMouseMovesToVREvents: 0
-  unityKeysToVREvents: []
+  unityKeysToVREvents: 
   unityAxesToVREvents: []
   eventAliases: []
 --- !u!1 &1497507909
@@ -3056,7 +3056,7 @@ MonoBehaviour:
   activateVRPNInputObjects: 0
   unityMouseBtnsToVREvents: 1
   unityMouseMovesToVREvents: 1
-  unityKeysToVREvents: []
+  unityKeysToVREvents: 
   unityAxesToVREvents: []
   eventAliases: []
 --- !u!1 &1744486744
@@ -3252,7 +3252,7 @@ MonoBehaviour:
   activateVRPNInputObjects: 0
   unityMouseBtnsToVREvents: 0
   unityMouseMovesToVREvents: 0
-  unityKeysToVREvents: []
+  unityKeysToVREvents: 
   unityAxesToVREvents: []
   eventAliases: []
 --- !u!1 &1821045580
@@ -3419,7 +3419,7 @@ MonoBehaviour:
   activateVRPNInputObjects: 0
   unityMouseBtnsToVREvents: 0
   unityMouseMovesToVREvents: 0
-  unityKeysToVREvents: []
+  unityKeysToVREvents: 
   unityAxesToVREvents: []
   eventAliases: []
 --- !u!1 &1897617634
@@ -3700,7 +3700,7 @@ MonoBehaviour:
   activateVRPNInputObjects: 0
   unityMouseBtnsToVREvents: 1
   unityMouseMovesToVREvents: 1
-  unityKeysToVREvents: []
+  unityKeysToVREvents: 
   unityAxesToVREvents: []
   eventAliases: []
 --- !u!1 &2085561071

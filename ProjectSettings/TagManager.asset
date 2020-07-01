@@ -6,6 +6,10 @@ TagManager:
   tags:
   - HideInCave
   - StylusTag
+  - OutputDisplay
+  - LayoutManager
+  - SliderIndicator
+  - TrialProgress
   layers:
   - Default
   - TransparentFX

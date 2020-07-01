@@ -380,6 +380,8 @@ MonoBehaviour:
     type: 3}
   raycastKeyPrefab: {fileID: 236652873365184703, guid: 72134ec246700974a9e25ce2f000ad6f,
     type: 3}
+  minAngle: {x: 0, y: 60, z: -80}
+  maxAngle: {x: 80, y: -30, z: 80}
 --- !u!114 &168735321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2487,7 +2489,7 @@ GameObject:
   - component: {fileID: 831725282}
   m_Layer: 5
   m_Name: TrialProgressContainer
-  m_TagString: Untagged
+  m_TagString: TrialProgress
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5915,7 +5917,7 @@ GameObject:
   - component: {fileID: 1903087916}
   m_Layer: 5
   m_Name: LayoutContainer
-  m_TagString: Untagged
+  m_TagString: LayoutManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6186,7 +6188,7 @@ GameObject:
   - component: {fileID: 2053574480}
   m_Layer: 5
   m_Name: Indicator
-  m_TagString: Untagged
+  m_TagString: SliderIndicator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6308,6 +6310,8 @@ MonoBehaviour:
     type: 3}
   raycastKeyPrefab: {fileID: 236652873365184703, guid: 72134ec246700974a9e25ce2f000ad6f,
     type: 3}
+  minAngle: {x: 0, y: 60, z: -80}
+  maxAngle: {x: 60, y: -30, z: 80}
 --- !u!222 &2096338479
 CanvasRenderer:
   m_ObjectHideFlags: 0

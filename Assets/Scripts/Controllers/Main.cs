@@ -32,7 +32,7 @@ public class Main : MonoBehaviour, VREventGenerator
     private TrialExecutionMode trialExecutionMode;
 
     // [SerializeField, Tooltip("Is CaveFronWall_Top in MinVR example, _MAIN")]
-    [SerializeField, Tooltip("Is CaveFronWall_Top in MinVR example, _LOBBY")]
+    [SerializeField, Tooltip("Is CaveFronWall_Top in MinVR example, _LOBBY, required to run")]
     private VRDevice server;
 
     [SerializeField]
@@ -54,7 +54,7 @@ public class Main : MonoBehaviour, VREventGenerator
     private TextAsset[] trialAssets;
 
     [SerializeField]
-    private TrialProgress trialProgresss;
+    private TrialProgress trialProgress;
 
     [SerializeField]
     private AutoFilter autoFilter;
@@ -180,7 +180,28 @@ public class Main : MonoBehaviour, VREventGenerator
 
         if (layout && stylus)
         {
+            stylus.angleProvider = layout.StylusRotationBounds;
             layout.UpdateState(currentInputData);
+        }
+    }
+
+    public void LoadNoneFields()
+    {
+        if (!outputDisplay)
+        {
+            outputDisplay = GameObject.FindGameObjectWithTag("OutputDisplay")?.GetComponent<TextOutputDisplay>();
+        }
+        if (!layoutManager)
+        {
+            layoutManager = GameObject.FindGameObjectWithTag("LayoutManager")?.GetComponent<LayoutManager>();
+        }
+        if (!trialProgress)
+        {
+            trialProgress = GameObject.FindGameObjectWithTag("TrialProgress")?.GetComponent<TrialProgress>();
+        }
+        if (!indicatorRect)
+        {
+            indicatorRect = GameObject.FindGameObjectWithTag("SliderIndicator")?.GetComponent<RectTransform>();
         }
     }
 
@@ -202,7 +223,7 @@ public class Main : MonoBehaviour, VREventGenerator
         completedChallenges = -1;
         if (currentTrial < trials.Count && outputDisplay is Proctor && runTrial)
         {
-            trialProgresss.trialCount = (currentTrial, trials.Count);
+            trialProgress.trialCount = (currentTrial, trials.Count);
             OnChallengeEnd();
             (outputDisplay as Proctor).RunTrial(trials[currentTrial]);
         }
@@ -343,7 +364,7 @@ public class Main : MonoBehaviour, VREventGenerator
         => layoutManager.layout = layout;
 
     public void OnChallengeEnd()
-        => trialProgresss.trialProgress = (++completedChallenges) / (float)trials[currentTrial].Length;
+        => trialProgress.trialProgress = (++completedChallenges) / (float)trials[currentTrial].Length;
 
     public void OnTrialCompleted(bool success)
     {

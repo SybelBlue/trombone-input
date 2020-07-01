@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Utils;
 using CustomExtensions;
+using System;
 
 namespace Controller
 {
@@ -24,11 +25,23 @@ namespace Controller
         private Material highlightMaterial, defaultMaterial;
 
         [SerializeField]
-        private Vector3 minAngle, maxAngle;
+        private Vector3 defaultMinAngle, defaultMaxAngle;
 
         [SerializeField]
         private Vector2 sliderBounds;
         #endregion
+
+        public Func<(Vector3 min, Vector3 max)?> angleProvider;
+
+        public Vector3 minAngle
+            => angleProvider == null ?
+                    defaultMinAngle :
+                    angleProvider()?.min ?? defaultMinAngle;
+
+        public Vector3 maxAngle
+            => angleProvider == null ?
+                    defaultMaxAngle :
+                    angleProvider()?.max ?? defaultMaxAngle;
 
         private (int? frame, RaycastHit? hit, IRaycastable obj) lastFound;
         private (bool front, bool back) highlighting;
@@ -51,14 +64,6 @@ namespace Controller
             => useUnityEulerAngles ?
                 transform.eulerAngles :
                 new Vector3(
-                // Vector3.SignedAngle(new Vector3(0, 1, 0), transform.forward.ProjectTo(false, true, true).normalized, new Vector3(1, 0, 0)),
-                // Vector3.SignedAngle(new Vector3(0, 0, 1), transform.forward.ProjectTo(true, false, true).normalized, new Vector3(0, 1, 0)),
-                // Vector3.SignedAngle(new Vector3(0, 1, 0), transform.forward.ProjectTo(true, true, false).normalized, new Vector3(0, 0, 1))
-
-                // Utils.SignedAngle(transform.forward.ProjectTo(false, true, true), new Vector3(0, 1, 0), new Vector3(1, 0, 0)),
-                // Utils.SignedAngle(transform.forward.ProjectTo(true, false, true), new Vector3(0, 0, 1), new Vector3(0, 1, 0)),
-                // Utils.SignedAngle(transform.forward.ProjectTo(true, true, false), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
-
                 Static.SignedAngleFromAxis(transform.forward, new Vector3(0, 1, 0), 0),
                 Static.SignedAngleFromAxis(transform.forward, new Vector3(0, 0, 1), 1),
                 Static.SignedAngleFromAxis(transform.forward, new Vector3(0, 1, 0), 2)
