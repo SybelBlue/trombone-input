@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using CustomExtensions;
+using UnityExtensions;
 
 namespace Controller
 {
