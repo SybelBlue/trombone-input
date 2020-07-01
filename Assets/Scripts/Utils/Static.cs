@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityExtensions;
+using Utils.UnityExtensions;
 
 namespace Utils
 {
@@ -62,6 +62,5 @@ namespace Utils
         public static bool FillWithTaggedIfNull<T>(ref T obj, string name) 
             where T : Component
             => obj ? false : (obj = FindTaggedComponent<T>(name));
-
     }
 }

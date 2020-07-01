@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityExtensions;
+using Utils.UnityExtensions;
 
 namespace Auto
 {

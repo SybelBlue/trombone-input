@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.XR;
 using System;
 using Controller;
-using SystemExtensions;
-using UnityExtensions;
+using Utils.SystemExtensions;
+using Utils.UnityExtensions;
 
 namespace Testing
 {

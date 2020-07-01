@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using Utils;
-using UnityExtensions;
+using Utils.UnityExtensions;
 using System;
 
 namespace Controller

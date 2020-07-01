@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using SystemExtensions;
+using Utils.SystemExtensions;
 
 namespace Utils
 {

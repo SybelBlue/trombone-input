@@ -1,18 +1,21 @@
 ﻿using MinVR;
 using static MinVR.VRMain;
 
-namespace CustomExtensions
+namespace Utils
 {
-    public static class MinVRExtensions
+    namespace CustomExtensions
     {
-        public static void AddVRButtonCallbacks(
-            this VRMain instance,
-            string eventName,
-            OnVRButtonUpEventDelegate onButtonUp,
-            OnVRButtonDownEventDelegate onButtonDown)
+        public static class MinVRExtensions
         {
-            instance.AddOnVRButtonUpCallback(eventName, onButtonUp);
-            instance.AddOnVRButtonDownCallback(eventName, onButtonDown);
+            public static void AddVRButtonCallbacks(
+                this VRMain instance,
+                string eventName,
+                OnVRButtonUpEventDelegate onButtonUp,
+                OnVRButtonDownEventDelegate onButtonDown)
+            {
+                instance.AddOnVRButtonUpCallback(eventName, onButtonUp);
+                instance.AddOnVRButtonDownCallback(eventName, onButtonDown);
+            }
         }
     }
 }

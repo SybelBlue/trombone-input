@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityExtensions;
+using Utils.UnityExtensions;
 
 namespace Controller
 {

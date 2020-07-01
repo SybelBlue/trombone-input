@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using SystemExtensions;
-using UnityExtensions;
+using Utils.SystemExtensions;
+using Utils.UnityExtensions;
 
 namespace Controller
 {
