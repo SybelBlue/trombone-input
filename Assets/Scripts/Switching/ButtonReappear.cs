@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class ButtonReappear : MonoBehaviour
 {
+  GameObject button;
+  public Camera skybox;
+
   public void ButtonReClick()
   {
-    var newColor = new Color (235,255,255,1.0f);
+    var newColor = new Color (184,158,195,0.0f);
     button = GameObject.FindWithTag("StartButtonTag");
-    button.SetActive(false);
+    button.SetActive(true);
 
     // skybox = GameObject.FindWithTag("MainCamera");
     skybox = GetComponent<Camera>();
