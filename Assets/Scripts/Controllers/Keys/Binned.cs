@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using CustomInput.KeyData;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Controller
 {
     namespace Key
     {
-        public class Binned : AbstractBinned<CustomInput.BinnedKey>
+        public class Binned : AbstractBinned<BinnedData>
         {
             public override void SetSlant(bool forward)
             {
@@ -30,7 +31,7 @@ namespace Controller
         }
 
         public abstract class AbstractBinned<T> : Key<T>
-            where T : CustomInput.BinnedKey
+            where T : BinnedData
         {
             public Color highlightColor;
 

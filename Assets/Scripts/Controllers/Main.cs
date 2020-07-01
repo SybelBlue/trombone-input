@@ -1,14 +1,16 @@
-using Controller;
-using CustomInput;
-using MinVR;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
-using CustomExtensions;
-using static CustomInput.VREventFactory;
 using UnityEngine.SceneManagement;
-using System;
+
+#region ProjectNamespaces
+using Controller;
+using CustomInput;
+using MinVR;
+using Utils.MinVRExtensions;
+using Utils;
+using static CustomInput.VREventFactory;
+#endregion
 
 namespace Utils
 {
@@ -70,6 +72,7 @@ public class Main : MonoBehaviour, VREventGenerator
     private int currentTrial = -1;
     private int completedChallenges = -1;
 
+    #region Properties
     // The manager's current layout, or null if no manager exists
     private CustomInput.Layout.AbstractLayout layout
         => layoutManager?.currentLayout;
@@ -85,6 +88,7 @@ public class Main : MonoBehaviour, VREventGenerator
         || (trialExecutionMode == TrialExecutionMode.OnlyInEditor && Application.isEditor);
 
     private InputData currentInputData => new InputData(lastReportedValue, stylus);
+    #endregion
 
     private void Start()
     {
@@ -128,7 +132,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
         DontDestroyOnLoad(stylus.gameObject);
 
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneChange;
+        SceneManager.sceneLoaded += OnSceneChange;
     }
 
     private void Update()
@@ -179,11 +183,11 @@ public class Main : MonoBehaviour, VREventGenerator
         }
     }
 
-    public void LoadNoneFields()
+    public void LoadNullFields()
     {
-        LoadNoneField(ref layoutManager, "LayoutManager");
-        LoadNoneField(ref trialProgress, "TrialProgress");
-        LoadNoneField(ref indicatorRect, "SliderIndicator");
+        LoadFieldIfNull(ref layoutManager, "LayoutManager");
+        LoadFieldIfNull(ref trialProgress, "TrialProgress");
+        LoadFieldIfNull(ref indicatorRect, "SliderIndicator");
 
         stylus.FillIndicatorDisplayIfNull();
         
@@ -208,13 +212,13 @@ public class Main : MonoBehaviour, VREventGenerator
         }
     }
 
-    private bool LoadNoneField<T>(ref T obj, string name)
+    private bool LoadFieldIfNull<T>(ref T obj, string name)
         where T : Component
     {
         bool result = Static.FillWithTaggedIfNull(ref obj, name);
         if (result)
         {
-            Debug.Log($"Found \"{name}\" in scene and loaded into main.");
+            Debug.Log($"Found \"{name}\" in scene and loaded into Main.");
         }
         return result;
     }
@@ -252,7 +256,7 @@ public class Main : MonoBehaviour, VREventGenerator
     {
         if (!scene.name.Equals(SceneSwitching.Utils._STRIALS_name)) return;
 
-        LoadNoneFields();
+        LoadNullFields();
 
         if (layout && trialProgress)
         {
@@ -269,14 +273,8 @@ public class Main : MonoBehaviour, VREventGenerator
             case Utils.SignalProcessing.EventType.FingerUp:
                 if (!Application.isEditor)
                 {
-                    if (e.value.HasValue)
-                    {
-                        OnInputEnd((int)e.value.Value);
-                    }
-                    else
-                    {
-                        OnInputEnd(null);
-                    }
+                    // TODO: probably needs changing
+                    OnInputEnd((int?)e.value);
                 }
                 Debug.LogWarning("Click!");
                 return;
@@ -312,7 +310,7 @@ public class Main : MonoBehaviour, VREventGenerator
     private bool OnInputEnd(int? value)
     {
         lastReportedValue = value;
-        LayoutKey parentKey = layout?.KeysFor(currentInputData)?.parent;
+        CustomInput.KeyData.AbstractData parentKey = layout?.KeysFor(currentInputData)?.parent;
 
         bool success = parentKey != null;
 

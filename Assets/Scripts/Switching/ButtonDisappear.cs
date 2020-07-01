@@ -1,46 +1,46 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-// using UnityEngine.Camera;
 
-public class ButtonDisappear : MonoBehaviour
+namespace SceneSwitching
 {
-  GameObject button;
-  public Camera skybox;
-  // GameObject skybox;
-  // public Button StartPracticeButton;
-    // // Start is called before the first frame update
-    // void Start()
-    // {
-    //   button = GameObject.FindWithTag("StartButtonTag");
-    //   // ButtonClick();
-    //
-    //   // button.onClick.AddListener(Butt)
-    //   // Button sButton = StartPracticeButton.GetComponent<Button>();
-    //   // sButton.onClick.AddListener(TaskOnClick);
-    // }
-
-    public void ButtonClick()
+    public class ButtonDisappear : MonoBehaviour
     {
-      var newColor = new Color (235,255,255,1.0f);
-      button = GameObject.FindWithTag("StartButtonTag");
-      button.SetActive(false);
+        GameObject button;
+        public Camera skybox;
+        // GameObject skybox;
+        // public Button StartPracticeButton;
+        // // Start is called before the first frame update
+        // void Start()
+        // {
+        //   button = GameObject.FindWithTag("StartButtonTag");
+        //   // ButtonClick();
+        //
+        //   // button.onClick.AddListener(Butt)
+        //   // Button sButton = StartPracticeButton.GetComponent<Button>();
+        //   // sButton.onClick.AddListener(TaskOnClick);
+        // }
 
-      // skybox = GameObject.FindWithTag("MainCamera");
-      skybox = GetComponent<Camera>();
-      skybox = Camera.main;
-      skybox.clearFlags = CameraClearFlags.Skybox;
-      skybox.backgroundColor = newColor;
+        public void ButtonClick()
+        {
+            var newColor = new Color(235, 255, 255, 1.0f);
+            button = GameObject.FindWithTag("StartButtonTag");
+            button.SetActive(false);
 
-      //TODO: Set skybox to EBFFFF
-      // skybox = GameObject.FindWithTag("MainCamera");
-      // skybox.SetBackgroundColor("EBFFFF");
+            // skybox = GameObject.FindWithTag("MainCamera");
+            skybox = GetComponent<Camera>();
+            skybox = Camera.main;
+            skybox.clearFlags = CameraClearFlags.Skybox;
+            skybox.backgroundColor = newColor;
+
+            //TODO: Set skybox to EBFFFF
+            // skybox = GameObject.FindWithTag("MainCamera");
+            // skybox.SetBackgroundColor("EBFFFF");
+        }
+
+        // // Update is called once per frame
+        // void Update()
+        // {
+        //
+        // }
     }
-
-    // // Update is called once per frame
-    // void Update()
-    // {
-    //
-    // }
 }

@@ -1,4 +1,5 @@
 using Controller.Key;
+using CustomInput.KeyData;
 using UnityEngine;
 
 namespace CustomInput
@@ -39,9 +40,9 @@ namespace CustomInput
             protected override int ChildIndexFor(InputData data)
                 => Utils.Static.NormalizedIntoIndex(data.normalizedAngles.z, childMap.Count);
 
-            private (LayoutKey, SimpleKey) FetchInnerKey(InputData data)
+            private (AbstractData, SimpleData) FetchInnerKey(InputData data)
             {
-                StylusBinnedKey parent = (StylusBinnedKey)LayoutKeyFor(data);
+                StylusBinnedData parent = (StylusBinnedData)LayoutKeyFor(data);
 
                 var inner = InnerIndex(data, parent.size);
 
@@ -50,7 +51,7 @@ namespace CustomInput
                 return (parent, parent.ItemAt(inner.Value));
             }
 
-            public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
+            public override (AbstractData, SimpleData)? KeysFor(InputData data)
             {
                 var (parent, inner) = FetchInnerKey(data);
                 if (inner != null)
@@ -90,50 +91,50 @@ namespace CustomInput
             }
 
             // Auto-generated
-            protected override LayoutKey[] FillKeys()
+            protected override AbstractData[] FillKeys()
             {
-                return new LayoutKey[] {
-                new StylusBinnedKey(true,
-                        new StylusKey('A', 4, '1'),
-                        new StylusKey('B', 4, '4'),
-                        new StylusKey('C', 4, '7'),
-                        new StylusKey('D', 4, '*')
+                return new AbstractData[] {
+                new StylusBinnedData(true,
+                        new StylusData('A', 4, '1'),
+                        new StylusData('B', 4, '4'),
+                        new StylusData('C', 4, '7'),
+                        new StylusData('D', 4, '*')
                 ),
-                new StylusBinnedKey(true,
-                        new StylusKey('E', 4, '2'),
-                        new StylusKey('F', 4, '5'),
-                        new StylusKey('G', 4, '8'),
-                        new StylusKey('H', 4, '+')
+                new StylusBinnedData(true,
+                        new StylusData('E', 4, '2'),
+                        new StylusData('F', 4, '5'),
+                        new StylusData('G', 4, '8'),
+                        new StylusData('H', 4, '+')
                 ),
-                new StylusBinnedKey(true,
-                        new StylusKey('I', 4, '3'),
-                        new StylusKey('J', 4, '6'),
-                        new StylusKey('K', 4, '9'),
-                        new StylusKey('L', 4, '.')
+                new StylusBinnedData(true,
+                        new StylusData('I', 4, '3'),
+                        new StylusData('J', 4, '6'),
+                        new StylusData('K', 4, '9'),
+                        new StylusData('L', 4, '.')
                 ),
-                new StylusBinnedKey(true,
-                        new StylusKey('M', 4, '/'),
-                        new StylusKey('N', 4, '%'),
-                        new StylusKey('O', 4, '#'),
-                        new StylusKey('P', 4, '(')
+                new StylusBinnedData(true,
+                        new StylusData('M', 4, '/'),
+                        new StylusData('N', 4, '%'),
+                        new StylusData('O', 4, '#'),
+                        new StylusData('P', 4, '(')
                 ),
-                new StylusBinnedKey(true,
-                        new StylusKey('Q', 4, '@'),
-                        new StylusKey('R', 4, '\''),
-                        new StylusKey('S', 4, '\"'),
-                        new StylusKey('T', 4, ')')
+                new StylusBinnedData(true,
+                        new StylusData('Q', 4, '@'),
+                        new StylusData('R', 4, '\''),
+                        new StylusData('S', 4, '\"'),
+                        new StylusData('T', 4, ')')
                 ),
-                new StylusBinnedKey(true,
-                        new StylusKey('U', 4, '-'),
-                        new StylusKey('V', 4, '&'),
-                        new StylusKey('W', 4, '?'),
-                        new StylusKey('X', 4, '!')
+                new StylusBinnedData(true,
+                        new StylusData('U', 4, '-'),
+                        new StylusData('V', 4, '&'),
+                        new StylusData('W', 4, '?'),
+                        new StylusData('X', 4, '!')
                 ),
-                new StylusBinnedKey(true,
-                        new StylusKey('Y', 4, ';'),
-                        new StylusKey('Z', 4, ':'),
-                        new StylusKey('.', 4, ','),
-                        new StylusKey(' ', 4, '\b')
+                new StylusBinnedData(true,
+                        new StylusData('Y', 4, ';'),
+                        new StylusData('Z', 4, ':'),
+                        new StylusData('.', 4, ','),
+                        new StylusData(' ', 4, '\b')
                 ),
             };
             }

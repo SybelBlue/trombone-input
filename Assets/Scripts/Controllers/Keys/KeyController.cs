@@ -1,3 +1,4 @@
+using CustomInput.KeyData;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.RectTransform;
@@ -11,7 +12,7 @@ namespace Controller
         public abstract class IKey : Utils.IRaycastable
         {
             // set can cause cast exception!
-            public abstract CustomInput.LayoutKey layoutKey { get; set; }
+            public abstract AbstractData layoutKey { get; set; }
 
 
             // defines the behavior of this.gameObject when it recieves a new
@@ -34,13 +35,13 @@ namespace Controller
         //
         // See Layouts/LayoutKets.cs for usage
         public abstract class Key<T> : IKey
-            where T : CustomInput.LayoutKey
+            where T : AbstractData
         {
             // this.gameObject's RectTransform (filled in Inspector)
             [SerializeField]
             protected RectTransform rectTransform;
 
-            public override CustomInput.LayoutKey layoutKey
+            public override AbstractData layoutKey
             {
                 get => data;
                 set => data = (T)value;
@@ -64,7 +65,7 @@ namespace Controller
         }
 
 #pragma warning disable 649
-        public abstract class AbstractSimple : Key<CustomInput.SimpleKey>
+        public abstract class AbstractSimple : Key<SimpleData>
         {
             [SerializeField]
             private Color highlightColor;

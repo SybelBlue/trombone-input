@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Utils.SystemExtensions;
 
 namespace Utils
 {
-    using CustomExtensions;
-
     namespace SignalProcessing
     {
         [Serializable]

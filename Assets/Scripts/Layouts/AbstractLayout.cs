@@ -38,6 +38,7 @@ namespace CustomInput
 
     namespace Layout
     {
+        using CustomInput.KeyData;
 #pragma warning disable 649
         public abstract class AbstractLayout : MonoBehaviour
         {
@@ -49,7 +50,7 @@ namespace CustomInput
             private GameObject simpleKeyPrefab, binnedKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab, raycastKeyPrefab;
 
             // All of the Key in this layout
-            protected LayoutKey[] Key;
+            protected AbstractData[] Key;
 
             // True if this layout uses the slider on the stylus
             public abstract bool usesSlider { get; }
@@ -154,14 +155,14 @@ namespace CustomInput
 
             // Equivalent to
             // ```ChildAt(index)?.GetComponent<LayoutKey>()```
-            protected LayoutKey LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<IKey>().layoutKey;
+            protected AbstractData LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<IKey>().layoutKey;
 
             // Sets the item at index (or no item if null) to be highlighted and all others to be unhiglighted
             public abstract void SetHighlightedKey(InputData data);
 
             // Gets the largest key and smallest key that are situated at index, or null if the index is out of bounds
             // (if this is not a binned key, then the tuple items should be equal)
-            public abstract (LayoutKey parent, SimpleKey simple)? KeysFor(InputData data);
+            public abstract (AbstractData parent, SimpleData simple)? KeysFor(InputData data);
 
             // Gets the letter for the keypress at index, given the context, and a boolean representing
             // certainty, or null if the index is out of bounds.
@@ -169,7 +170,7 @@ namespace CustomInput
             public abstract char? GetSelectedLetter(InputData data);
 
             // The method to fill the Key field on this, called in Start
-            protected abstract LayoutKey[] FillKeys();
+            protected abstract AbstractData[] FillKeys();
         }
     }
 }
