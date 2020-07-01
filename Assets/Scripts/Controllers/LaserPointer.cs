@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using CustomExtensions;
 
 namespace Controller
 {
@@ -8,6 +9,8 @@ namespace Controller
     {
         [SerializeField]
         private Stylus modelController;
+
+        private float lastLength = 0;
 
         public bool active
         {
@@ -23,11 +26,12 @@ namespace Controller
             modelController.Raycast(out hit);
             float length = Mathf.Max(0.005f, hit?.distance ?? 10);
 
-            transform.localScale = new Vector3(0.005f, length, 0.005f);
+            if (Mathf.Abs(lastLength - length) < 0.1f) return;
+            lastLength = length;
 
-            var pos = transform.position;
-            pos.z = length / 2.0f + 0.06f;
-            transform.position = pos;
+            transform.localScale = transform.localScale.WithY(length);
+
+            transform.localPosition = transform.localPosition.WithZ(length + 0.06f);
         }
     }
 }

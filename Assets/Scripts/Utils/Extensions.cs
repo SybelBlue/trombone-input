@@ -64,6 +64,11 @@ namespace CustomExtensions
         public static Vector3 WithZ(this Vector2 vec, float z)
             => new Vector3(vec.x, vec.y, z);
 
+        public static Vector3 WithZ(this Vector3 vec, float z)
+            => new Vector3(vec.x, vec.y, z);
+        public static Vector3 WithY(this Vector3 vec, float y)
+            => new Vector3(vec.x, y, vec.z);
+
         public static Vector3 ProjectTo(this Vector3 vec, bool x, bool y, bool z)
             => vec.ProjectTo(((x ? 1 << 0 : 0)) | (y ? 1 << 1 : 0) | (z ? 1 << 2 : 0));
 
