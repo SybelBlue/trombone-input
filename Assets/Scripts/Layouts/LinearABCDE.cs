@@ -1,4 +1,5 @@
 ﻿using Controller.Key;
+using CustomInput.KeyData;
 
 namespace CustomInput
 {
@@ -6,7 +7,6 @@ namespace CustomInput
     {
         public class LinearABCDE : AbstractLayout
         {
-
             public override bool usesSlider => true;
             public override bool usesRaycasting => false;
 
@@ -25,10 +25,10 @@ namespace CustomInput
                 }
             }
 
-            public override (LayoutKey, SimpleKey)? KeysFor(InputData data)
+            public override (AbstractData, SimpleData)? KeysFor(InputData data)
             {
                 var lKey = LayoutKeyFor(data);
-                return (lKey, (SimpleKey)lKey);
+                return (lKey, (SimpleData)lKey);
             }
 
             public override void SetHighlightedKey(InputData data)
@@ -52,35 +52,35 @@ namespace CustomInput
             }
 
             // Auto-generated 
-            protected override LayoutKey[] FillKeys()
+            protected override AbstractData[] FillKeys()
             {
-                return new LayoutKey[] {
-                    new SimpleKey('A', 3),
-                    new SimpleKey('B', 2),
-                    new SimpleKey('C', 2),
-                    new SimpleKey('D', 2),
-                    new SimpleKey('E', 3),
-                    new SimpleKey('F', 2),
-                    new SimpleKey('G', 2),
-                    new SimpleKey('H', 2),
-                    new SimpleKey('I', 3),
-                    new SimpleKey('J', 2),
-                    new SimpleKey('K', 2),
-                    new SimpleKey('L', 2),
-                    new SimpleKey('M', 2),
-                    new SimpleKey('N', 3),
-                    new SimpleKey('O', 3),
-                    new SimpleKey('P', 2),
-                    new SimpleKey('Q', 2),
-                    new SimpleKey('R', 3),
-                    new SimpleKey('S', 2),
-                    new SimpleKey('T', 3),
-                    new SimpleKey('U', 2),
-                    new SimpleKey('V', 2),
-                    new SimpleKey('W', 2),
-                    new SimpleKey('X', 2),
-                    new SimpleKey('Y', 2),
-                    new SimpleKey('Z', 2)
+                return new AbstractData[] {
+                    new SimpleData('A', 3),
+                    new SimpleData('B', 2),
+                    new SimpleData('C', 2),
+                    new SimpleData('D', 2),
+                    new SimpleData('E', 3),
+                    new SimpleData('F', 2),
+                    new SimpleData('G', 2),
+                    new SimpleData('H', 2),
+                    new SimpleData('I', 3),
+                    new SimpleData('J', 2),
+                    new SimpleData('K', 2),
+                    new SimpleData('L', 2),
+                    new SimpleData('M', 2),
+                    new SimpleData('N', 3),
+                    new SimpleData('O', 3),
+                    new SimpleData('P', 2),
+                    new SimpleData('Q', 2),
+                    new SimpleData('R', 3),
+                    new SimpleData('S', 2),
+                    new SimpleData('T', 3),
+                    new SimpleData('U', 2),
+                    new SimpleData('V', 2),
+                    new SimpleData('W', 2),
+                    new SimpleData('X', 2),
+                    new SimpleData('Y', 2),
+                    new SimpleData('Z', 2)
                 };
             }
         }

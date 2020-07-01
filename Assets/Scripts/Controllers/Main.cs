@@ -310,7 +310,7 @@ public class Main : MonoBehaviour, VREventGenerator
     private bool OnInputEnd(int? value)
     {
         lastReportedValue = value;
-        LayoutKey parentKey = layout?.KeysFor(currentInputData)?.parent;
+        CustomInput.KeyData.AbstractData parentKey = layout?.KeysFor(currentInputData)?.parent;
 
         bool success = parentKey != null;
 
