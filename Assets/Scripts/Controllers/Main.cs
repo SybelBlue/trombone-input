@@ -8,7 +8,6 @@ using Utils;
 using CustomExtensions;
 using static CustomInput.VREventFactory;
 using UnityEngine.SceneManagement;
-using System;
 
 namespace Utils
 {
@@ -128,7 +127,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
         DontDestroyOnLoad(stylus.gameObject);
 
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneChange;
+        SceneManager.sceneLoaded += OnSceneChange;
     }
 
     private void Update()
@@ -214,7 +213,7 @@ public class Main : MonoBehaviour, VREventGenerator
         bool result = Static.FillWithTaggedIfNull(ref obj, name);
         if (result)
         {
-            Debug.Log($"Found \"{name}\" in scene and loaded into main.");
+            Debug.Log($"Found \"{name}\" in scene and loaded into Main.");
         }
         return result;
     }
@@ -269,14 +268,8 @@ public class Main : MonoBehaviour, VREventGenerator
             case Utils.SignalProcessing.EventType.FingerUp:
                 if (!Application.isEditor)
                 {
-                    if (e.value.HasValue)
-                    {
-                        OnInputEnd((int)e.value.Value);
-                    }
-                    else
-                    {
-                        OnInputEnd(null);
-                    }
+                    // TODO: probably needs changing
+                    OnInputEnd((int?)e.value);
                 }
                 Debug.LogWarning("Click!");
                 return;
