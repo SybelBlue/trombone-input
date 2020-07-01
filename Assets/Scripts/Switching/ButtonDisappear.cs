@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+// using UnityEngine.Camera;
 
 public class ButtonDisappear : MonoBehaviour
 {
   GameObject button;
+  public Camera skybox;
+  // GameObject skybox;
   // public Button StartPracticeButton;
     // // Start is called before the first frame update
     // void Start()
@@ -20,13 +23,24 @@ public class ButtonDisappear : MonoBehaviour
 
     public void ButtonClick()
     {
+      var newColor = new Color (235,255,255,1.0f);
       button = GameObject.FindWithTag("StartButtonTag");
       button.SetActive(false);
+
+      // skybox = GameObject.FindWithTag("MainCamera");
+      skybox = GetComponent<Camera>();
+      skybox = Camera.main;
+      skybox.clearFlags = CameraClearFlags.Skybox;
+      skybox.backgroundColor = newColor;
+
+      //TODO: Set skybox to EBFFFF
+      // skybox = GameObject.FindWithTag("MainCamera");
+      // skybox.SetBackgroundColor("EBFFFF");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    // // Update is called once per frame
+    // void Update()
+    // {
+    //
+    // }
 }
