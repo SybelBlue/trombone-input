@@ -13,7 +13,7 @@ namespace Controller
         public bool useUnityEulerAngles;
 
         [SerializeField]
-        private GameObject potentiometerIndicator;
+        private GameObject sliderIndicator;
 
         [SerializeField]
         private LaserPointer laserPointer;
@@ -62,9 +62,9 @@ namespace Controller
         {
             get
             {
-                if (potentiometerIndicator.activeInHierarchy)
+                if (sliderIndicator.activeInHierarchy)
                 {
-                    return Mathf.InverseLerp(sliderBounds.x, sliderBounds.y, -potentiometerIndicator.transform.localPosition.z);
+                    return Mathf.InverseLerp(sliderBounds.x, sliderBounds.y, -sliderIndicator.transform.localPosition.z);
                 }
                 return null;
             }
@@ -73,18 +73,18 @@ namespace Controller
             {
                 if (!value.HasValue)
                 {
-                    potentiometerIndicator.SetActive(false);
+                    sliderIndicator.SetActive(false);
                     return;
                 }
 
-                if (!potentiometerIndicator.activeInHierarchy)
+                if (!sliderIndicator.activeInHierarchy)
                 {
-                    potentiometerIndicator.SetActive(true);
+                    sliderIndicator.SetActive(true);
                 }
 
-                var pos = potentiometerIndicator.transform.localPosition;
+                var pos = sliderIndicator.transform.localPosition;
                 pos.z = -Mathf.Lerp(sliderBounds.x, sliderBounds.y, value.Value);
-                potentiometerIndicator.transform.localPosition = pos;
+                sliderIndicator.transform.localPosition = pos;
             }
         }
 
@@ -195,6 +195,15 @@ namespace Controller
             lastFound = (Time.frameCount, null, null);
             hit = null;
             return null;
+        }
+
+        public void FillIndicatorDisplayIfNull()
+        {
+            var indicator = GetComponent<StylusIndicator>();
+            if (indicator)
+            {
+                Static.FillWithTaggedIfNull(ref indicator.display, "AngleAndSliderIndicator");
+            }
         }
 
         private void WriteSliderData(System.IO.StreamWriter writer)

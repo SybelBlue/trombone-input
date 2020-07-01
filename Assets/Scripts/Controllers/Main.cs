@@ -184,6 +184,8 @@ public class Main : MonoBehaviour, VREventGenerator
         LoadNoneField(ref layoutManager, "LayoutManager");
         LoadNoneField(ref trialProgress, "TrialProgress");
         LoadNoneField(ref indicatorRect, "SliderIndicator");
+
+        stylus.FillIndicatorDisplayIfNull();
         
         if (Static.FillWithTaggedIfNull(ref outputDisplay, "OutputDisplay"))
         {

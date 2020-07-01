@@ -1371,6 +1371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f6e4ccf819674af0a08eed1aadcbad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skybox: {fileID: 0}
 --- !u!1 &971101858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1504,7 +1505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recordSliderData: 0
   useUnityEulerAngles: 0
-  potentiometerIndicator: {fileID: 1634427602}
+  sliderIndicator: {fileID: 1634427602}
   laserPointer: {fileID: 1534082765}
   frontButtonRenderer: {fileID: 64718944}
   backButtonRenderer: {fileID: 281251436}
@@ -1574,7 +1575,7 @@ GameObject:
   - component: {fileID: 1126700222}
   - component: {fileID: 1126700221}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

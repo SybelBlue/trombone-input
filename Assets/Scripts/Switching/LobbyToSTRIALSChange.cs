@@ -4,12 +4,6 @@ using UnityEngine.SceneManagement;
 
 namespace SceneSwitching
 {
-    public static class Utils
-    {
-        public static readonly string _STRIALS_name = "_STRIALS";
-        public static readonly string _LOBBY_name = "_LOBBY";
-    }
-
     public class LobbyToSTRIALSChange : MonoBehaviour
     {
         // Start is called before the first frame update
