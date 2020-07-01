@@ -186,11 +186,11 @@ namespace CustomInput
             }
         }
 
-        public class RaycastData : StylusData
+        public class RaycastKeyData : StylusData
         {
             public override string typeName => "RaycastKey";
 
-            public RaycastData(char data, int size, char? alt = null) : base(data, size, alt)
+            public RaycastKeyData(char data, int size, char? alt = null) : base(data, size, alt)
             { }
 
             public override GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict)
