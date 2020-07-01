@@ -61,7 +61,7 @@ namespace Utils
             var output = type == EventType.FingerUp ? last.value : filtered;
             FilterEventData e = new FilterEventData(type, output);
 
-            last = (output, currentTime, Time.frameCount);
+            last = (filtered, currentTime, Time.frameCount);
 
             OnFilterOutput.Invoke(e);
         }
