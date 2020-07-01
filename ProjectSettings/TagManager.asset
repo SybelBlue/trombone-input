@@ -10,6 +10,7 @@ TagManager:
   - LayoutManager
   - SliderIndicator
   - TrialProgress
+  - StartButtonTag
   layers:
   - Default
   - TransparentFX
