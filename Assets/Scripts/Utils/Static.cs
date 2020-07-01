@@ -53,5 +53,15 @@ namespace Utils
 
         public static Vector3 VectorFrom(System.Func<int, float> f)
             => new Vector3(f(0), f(1), f(2));
+
+        public static T FindTaggedComponent<T>(string name) 
+            where T : Component
+            => GameObject.FindGameObjectWithTag(name)?.GetComponent<T>();
+
+        // returns true if the obj reference has been changed
+        public static bool FillWithTaggedIfNull<T>(ref T obj, string name) 
+            where T : Component
+            => obj ? false : (obj = FindTaggedComponent<T>(name));
+
     }
 }

@@ -16,7 +16,7 @@ namespace SceneSwitching
         {
             if (CustomInput.Bindings.returnToLobby)
             {
-                UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("_STRIALS");
+                UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(Utils._STRIALS_name);
                 // UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("Trials");
 
                 // SceneManager.LoadScene("Lobby");

@@ -33,20 +33,9 @@ namespace Controller
 
         public Func<(Vector3 min, Vector3 max)?> angleProvider;
 
-        public Vector3 minAngle
-            => angleProvider == null ?
-                    defaultMinAngle :
-                    angleProvider()?.min ?? defaultMinAngle;
-
-        public Vector3 maxAngle
-            => angleProvider == null ?
-                    defaultMaxAngle :
-                    angleProvider()?.max ?? defaultMaxAngle;
-
         private (int? frame, RaycastHit? hit, IRaycastable obj) lastFound;
         private (bool front, bool back) highlighting;
-        private (string path, float? last) saveData = (null, null);
-
+        private (string path, float? last) saveData;
 
         #region Properties
         public bool useLaser
@@ -124,6 +113,16 @@ namespace Controller
                         defaultMaterial;
             }
         }
+
+        public Vector3 minAngle
+            => angleProvider == null ?
+                    defaultMinAngle :
+                    angleProvider()?.min ?? defaultMinAngle;
+
+        public Vector3 maxAngle
+            => angleProvider == null ?
+                    defaultMaxAngle :
+                    angleProvider()?.max ?? defaultMaxAngle;
         #endregion
 
         private void Start()

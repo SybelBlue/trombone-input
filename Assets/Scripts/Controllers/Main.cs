@@ -7,6 +7,8 @@ using UnityEngine.UI;
 using Utils;
 using CustomExtensions;
 using static CustomInput.VREventFactory;
+using UnityEngine.SceneManagement;
+using System;
 
 namespace Utils
 {
@@ -31,7 +33,6 @@ public class Main : MonoBehaviour, VREventGenerator
     [SerializeField]
     private TrialExecutionMode trialExecutionMode;
 
-    // [SerializeField, Tooltip("Is CaveFronWall_Top in MinVR example, _MAIN")]
     [SerializeField, Tooltip("Is CaveFronWall_Top in MinVR example, _LOBBY, required to run")]
     private VRDevice server;
 
@@ -77,15 +78,6 @@ public class Main : MonoBehaviour, VREventGenerator
     {
         get => indicatorRect && indicatorRect.gameObject.activeInHierarchy;
         set => indicatorRect.gameObject.SetActive(value);
-    }
-
-    public TextOutputDisplay textOutput
-    {
-        set
-        {
-            outputDisplay = value;
-            outputDisplay?.ResetText();
-        }
     }
 
     private bool runTrial
@@ -135,6 +127,8 @@ public class Main : MonoBehaviour, VREventGenerator
         RunNextTrial();
 
         DontDestroyOnLoad(stylus.gameObject);
+
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneChange;
     }
 
     private void Update()
@@ -187,22 +181,40 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void LoadNoneFields()
     {
-        if (!outputDisplay)
+        LoadNoneField(ref layoutManager, "LayoutManager");
+        LoadNoneField(ref trialProgress, "TrialProgress");
+        LoadNoneField(ref indicatorRect, "SliderIndicator");
+        
+        if (Static.FillWithTaggedIfNull(ref outputDisplay, "OutputDisplay"))
         {
-            outputDisplay = GameObject.FindGameObjectWithTag("OutputDisplay")?.GetComponent<TextOutputDisplay>();
+            outputDisplay.ResetText();
+
+            if (outputDisplay is Proctor)
+            {
+                var casted = outputDisplay as Proctor;
+
+                casted.OnTrialEnd.AddListener(OnTrialEnd);
+                casted.OnLayoutChange.AddListener(OnTestingLayoutChange);
+                casted.OnChallengeEnd.AddListener(OnChallengeEnd);
+
+                Debug.Log("Found \"OutputDisplay\" in scene and loaded into main as Proctor.");
+            }
+            else
+            {
+                Debug.Log("Found \"OutputDisplay\" in scene and loaded into main as TextOutputDisplay.");
+            }
         }
-        if (!layoutManager)
+    }
+
+    private bool LoadNoneField<T>(ref T obj, string name)
+        where T : Component
+    {
+        bool result = Static.FillWithTaggedIfNull(ref obj, name);
+        if (result)
         {
-            layoutManager = GameObject.FindGameObjectWithTag("LayoutManager")?.GetComponent<LayoutManager>();
+            Debug.Log($"Found \"{name}\" in scene and loaded into main.");
         }
-        if (!trialProgress)
-        {
-            trialProgress = GameObject.FindGameObjectWithTag("TrialProgress")?.GetComponent<TrialProgress>();
-        }
-        if (!indicatorRect)
-        {
-            indicatorRect = GameObject.FindGameObjectWithTag("SliderIndicator")?.GetComponent<RectTransform>();
-        }
+        return result;
     }
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
@@ -234,6 +246,18 @@ public class Main : MonoBehaviour, VREventGenerator
     }
 
     #region Callbacks
+    private void OnSceneChange(Scene scene, LoadSceneMode _)
+    {
+        if (!scene.name.Equals(SceneSwitching.Utils._STRIALS_name)) return;
+
+        LoadNoneFields();
+
+        if (layout && trialProgress)
+        {
+            RunNextTrial();
+        }
+    }
+
     public void OnFilterEvent(Utils.SignalProcessing.FilterEventData e)
     {
         switch (e.type)
@@ -366,7 +390,7 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnChallengeEnd()
         => trialProgress.trialProgress = (++completedChallenges) / (float)trials[currentTrial].Length;
 
-    public void OnTrialCompleted(bool success)
+    public void OnTrialEnd(bool success)
     {
         if (success)
         {
