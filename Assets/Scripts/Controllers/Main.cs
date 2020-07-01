@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using Controller;
 using CustomInput;
 using MinVR;
-using Utils.CustomExtensions;
+using Utils.MinVRExtensions;
 using Utils;
 using static CustomInput.VREventFactory;
 #endregion

@@ -4,7 +4,6 @@ using Utils.SystemExtensions;
 
 namespace Utils
 {
-
     namespace SignalProcessing
     {
         [Serializable]

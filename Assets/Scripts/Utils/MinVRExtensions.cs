@@ -3,7 +3,7 @@ using static MinVR.VRMain;
 
 namespace Utils
 {
-    namespace CustomExtensions
+    namespace MinVRExtensions
     {
         public static class MinVRExtensions
         {
