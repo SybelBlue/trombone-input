@@ -19,13 +19,16 @@ namespace CustomInput
 #pragma warning disable 649
     public class LayoutManager : MonoBehaviour
     {
+        [SerializeField]
         private LayoutOption _layout;
+        private LayoutOption _memoizedLayout;
         public LayoutOption layout
         {
             get => _layout;
             set
             {
                 _layout = value;
+                _memoizedLayout = value;
                 ActivateLayout();
             }
         }
@@ -77,7 +80,16 @@ namespace CustomInput
             dropdown.ClearOptions();
             dropdown.AddOptions(new List<string>(Enum.GetNames(typeof(LayoutOption))));
             dropdown.value = (int)layout;
+            _memoizedLayout = _layout;
             ActivateLayout();
+        }
+
+        public void Update()
+        {
+            if (_memoizedLayout != _layout)
+            {
+                layout = _layout;
+            }
         }
 
         // used in editor!
