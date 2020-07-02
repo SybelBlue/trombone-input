@@ -1137,7 +1137,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.25}
+  m_AnchoredPosition: {x: 0, y: 4}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &753604662
@@ -1320,7 +1320,7 @@ MonoBehaviour:
   trackingMode: 0
   reportType: 0
   threadingMode: 1
-  positionAdjustment: {x: 0, y: 0, z: 0}
+  positionAdjustment: {x: 0, y: 4, z: 0}
   rotationAdjustment: {x: 0, y: 0, z: 0}
   scaleAdjustment: {x: 3.28084, y: 3.28084, z: 3.28084}
 --- !u!1 &898566983
