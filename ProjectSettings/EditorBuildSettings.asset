@@ -18,6 +18,8 @@ EditorBuildSettings:
     path: Assets/MinVR/scenes/MacCave.unity
     guid: 48b3cb91bbdb7c14a8289e934f1f5462
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: c35475af6cab148cb8bf05e9cd5bc892,
+      type: 2}
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: b9ef7a31428bff74ca04be6bcfb0305e,
       type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: ce7b9e6ad6cc48840a319ac2a8c7e6e2,
