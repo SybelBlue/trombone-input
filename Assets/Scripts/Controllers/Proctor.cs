@@ -333,5 +333,10 @@ namespace Controller
                 Debug.LogWarning("Practice End Button pressed outside of practice!");
             }
         }
+
+        internal void SetLayout(LayoutOption value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

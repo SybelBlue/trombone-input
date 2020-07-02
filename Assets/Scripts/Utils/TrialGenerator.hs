@@ -1,13 +1,17 @@
 {-# LANGUAGE LambdaCase #-}
 
-import Data.List (intercalate)
+import Data.List (intercalate, elemIndex)
 import Data.Char (toUpper)
+import Data.Maybe (fromJust)
 
 -- | text prompts in the main scene
 type Prompt = String
 
+-- all of the trombone-input layouts
+data Layout = Linear | StylusBinned | TwoAxis | Raycast deriving (Eq, Show)
+
 -- | commands that are entered into the file for Unity to perform
-data Command = RandomizeLayoutOrder | NextLayout | TrialNumber Int deriving Show
+data Command = RandomizeLayoutOrder | NextLayout | TrialNumber Int | SetLayout Layout deriving Show
 
 {- |
     Challenges are individual items in the Trial file that Unity will read
@@ -37,14 +41,22 @@ scrubPrompt p = map mapper p
             | c == '\"' = error $ "prompt \'" ++ p ++ "\' cannot contain yaml delimiter \""
             | otherwise = toUpper c
 
+
+layoutNumber :: Layout -> Int
+layoutNumber = fromJust . flip elemIndex [Linear, StylusBinned, TwoAxis, Raycast]
+
 -- a class for writing to files
 class Writable a where
     write :: a -> String
+
+instance Writable Layout where
+    write = show . layoutNumber
 
 instance Writable Command where
     write RandomizeLayoutOrder = "randomize-layouts"
     write NextLayout = "next-layout"
     write (TrialNumber n) = "trial-number " ++ show n
+    write (SetLayout l) = "set-layout " ++ write l
 
 instance Writable Challenge where
     write (Blind p) = "blind" ++ [challengeSeperatorChar] ++ scrubPrompt p

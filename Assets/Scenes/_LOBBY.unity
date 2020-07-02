@@ -1544,7 +1544,7 @@ MonoBehaviour:
   epsilon: 2
   deadzone: 8
   type: 1
-  period: 0.2
+  period: 0.25
 --- !u!114 &971101866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1592,7 +1592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plane: {fileID: 1126700220}
-  player: {fileID: 0}
+  player: {fileID: 1326522646}
 --- !u!4 &1046767175
 Transform:
   m_ObjectHideFlags: 0

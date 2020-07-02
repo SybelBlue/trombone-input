@@ -6,6 +6,7 @@ using System;
 using Controller;
 using Utils.SystemExtensions;
 using Utils.UnityExtensions;
+using CustomInput;
 
 namespace Testing
 {
@@ -18,13 +19,14 @@ namespace Testing
         public Trial(params TrialItem[] items)
         {
             this.items = items;
-            this.Length = items.Length;
+            Length = items.Length;
+
             foreach (var item in items)
             {
                 switch (item)
                 {
-                    case Command c when c.type == Command.Type.SetTrialNumber:
-                        trialNumber = c.trialNumber.Value;
+                    case SetTrialCommand c:
+                        trialNumber = c.data;
                         return;
                 }
             }
@@ -43,7 +45,6 @@ namespace Testing
             using (StreamReader sr = new StreamReader(trialFile.IntoMemoryStream()))
             {
                 string line;
-                //process a single line at a time only for memory efficiency
                 while ((line = sr.ReadLine()) != null)
                 {
                     if (line.StartsWith(COMMENT_PREFIX.ToString()))
@@ -60,7 +61,7 @@ namespace Testing
                         line = line.Substring(1);
                         string[] parts = line.Split(new char[] { ' ' });
 
-                        items.Add(new Command(parts[0], parts.Length > 1 ? parts[1] : null));
+                        items.Add(Command.fromString(parts[0], parts.Length > 1 ? parts[1] : null));
                         continue;
                     }
 
@@ -96,7 +97,7 @@ namespace Testing
         }
 
         public static string UniqueYamlName(string stub)
-            => $"{stub}-{DateTime.Now.ToString(@"yyyy-MM-dd_HH-mm-ss")}.yaml";
+            => $"{stub}-{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.yaml";
 
         public static void UsingStream(string path, Action<StreamWriter> WriterCallback, bool append = true)
         {
@@ -241,13 +242,10 @@ namespace Testing
 
         public override void Write(StreamWriter writer)
         {
-            if (source.type == Command.Type.SetTrialNumber)
+            writer.WriteLine($"  - command: {source.key}");
+            if (source is CommandWithData)
             {
-                writer.WriteLine($"  - number: {source.trialNumber}");
-            }
-            else
-            {
-                writer.WriteLine($"  - command: {Command.TypeIntoString(source.type)}");
+                writer.WriteLine($"    - data: {(source as CommandWithData).data}");
             }
         }
     }
@@ -321,78 +319,104 @@ namespace Testing
         { }
 
         // returns wether or not this sets TrialController in a blocking state
-        public abstract bool Apply(Proctor controller);
+        public abstract bool Apply(Proctor proctor);
     }
 
-    public class Command : TrialItem
+    public abstract class Command : TrialItem
     {
-        public const string RANDOMIZE_KEY = "randomize-layouts", ADVANCE_KEY = "next-layout", NUMBER_KEY = "trial-number";
-        public readonly Type type;
-        public readonly int? trialNumber;
+        public const string RANDOMIZE_KEY = "randomize-layouts", ADVANCE_KEY = "next-layout", SET_TRIAL_KEY = "trial-number", SET_LAYOUT_KEY = "set-layout";
+        
+        public abstract string key { get; }
 
-        public Command(Type command, int? trialNumber = null) : base()
-        {
-            this.type = command;
-            this.trialNumber = trialNumber;
-        }
-
-        public Command(string command, string num) : this(StringIntoType(command), StringIntoTrialNumber(num))
+        public Command() : base()
         { }
 
-        public override bool Apply(Proctor controller)
+        public static Command fromString(string key, string maybeValue)
         {
-            switch (type)
-            {
-                case Type.RandomizeLayoutOrder:
-                    controller.RandomizeLayouts();
-                    return false;
-                case Type.AdvanceLayout:
-                    controller.AdvanceLayout();
-                    return false;
-                case Type.SetTrialNumber:
-                    return false;
-            }
-
-            throw new ArgumentException(type.ToString() + " not recognized");
-        }
-
-        public static int? StringIntoTrialNumber(string x)
-        {
-            if (x == null) return null;
-
-            int n;
-            if (int.TryParse(x, out n))
-            {
-                return n;
-            }
-
-            return null;
-        }
-
-        public static Type StringIntoType(string s)
-        {
-            switch (s)
+            switch (key)
             {
                 case RANDOMIZE_KEY:
-                    return Type.RandomizeLayoutOrder;
+                    return new RandomizeLayoutsCommand();
                 case ADVANCE_KEY:
-                    return Type.AdvanceLayout;
-                case NUMBER_KEY:
-                    return Type.SetTrialNumber;
+                    return new AdvanceLayoutCommand();
+                case SET_TRIAL_KEY:
+                    return new SetTrialCommand(maybeValue);
+                case SET_LAYOUT_KEY:
+                    return new SetLayoutCommand(maybeValue);
             }
+            throw new ArgumentException($"Invalid key: {key} (with data {maybeValue})");
+        }
+    }
 
-            throw new ArgumentException(s);
+    public class RandomizeLayoutsCommand : Command
+    {
+        public override string key => RANDOMIZE_KEY;
+
+        public RandomizeLayoutsCommand() : base()
+        { }
+
+        public override bool Apply(Proctor proctor)
+        {
+            proctor.RandomizeLayouts();
+            return false;
+        }
+    }
+
+    public class AdvanceLayoutCommand : Command
+    {
+        public override string key => ADVANCE_KEY;
+
+        public AdvanceLayoutCommand() : base()
+        { }
+
+        public override bool Apply(Proctor proctor)
+        {
+            proctor.AdvanceLayout();
+            return false;
+        }
+    }
+
+    public abstract class CommandWithData : Command
+    {
+        public readonly int data;
+
+        public CommandWithData(int data) : base()
+        {
+            this.data = data;
         }
 
-        public static string TypeIntoString(Type t)
-            => new string[] { RANDOMIZE_KEY, ADVANCE_KEY, NUMBER_KEY }[(int)t];
-
-        [Serializable]
-        public enum Type
+        public static int fromString(string s)
         {
-            RandomizeLayoutOrder,
-            AdvanceLayout,
-            SetTrialNumber,
+            if (!int.TryParse(s, out int o))
+            {
+                throw new ArgumentException("invalid int literal");
+            }
+            return o;
+        }
+    }
+
+    public class SetTrialCommand : CommandWithData
+    {
+        public override string key => SET_TRIAL_KEY;
+
+        public SetTrialCommand(string s) : base(fromString(s))
+        { }
+
+        public override bool Apply(Proctor _)
+            => false;
+    }
+
+    public class SetLayoutCommand : CommandWithData
+    {
+        public override string key => SET_LAYOUT_KEY;
+
+        public SetLayoutCommand(string s) : base(fromString(s))
+        { }
+
+        public override bool Apply(Proctor proctor)
+        {
+            proctor.SetLayout((LayoutOption)data);
+            return false;
         }
     }
 
@@ -410,10 +434,10 @@ namespace Testing
         public Challenge(string type, string prompt) : this(StringIntoType(type), prompt)
         { }
 
-        public override bool Apply(Proctor controller)
+        public override bool Apply(Proctor proctor)
         {
-            controller.currentPrompt = prompt;
-            controller.currentChallengeType = type;
+            proctor.currentPrompt = prompt;
+            proctor.currentChallengeType = type;
             return true;
         }
 

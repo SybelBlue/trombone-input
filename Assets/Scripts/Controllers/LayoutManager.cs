@@ -8,12 +8,12 @@ namespace CustomInput
 {
 
     [Serializable]
-    public enum LayoutOption
+    public enum LayoutOption : int
     {
-        LinearABCDE,
-        StylusBinnedABCDE,
-        TwoRotBinnedABCDE,
-        RaycastQWERTY,
+        LinearABCDE = 0,
+        StylusBinnedABCDE = 1,
+        TwoRotBinnedABCDE = 2,
+        RaycastQWERTY = 3,
     }
 
 #pragma warning disable 649
