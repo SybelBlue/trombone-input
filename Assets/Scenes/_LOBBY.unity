@@ -2121,6 +2121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leftHanded: 0
+  useAutofilter: 1
   trialExecutionMode: 1
   server: {fileID: 1671901940}
   layoutManager: {fileID: 0}

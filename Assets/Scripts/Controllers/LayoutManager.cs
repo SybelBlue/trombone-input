@@ -95,8 +95,8 @@ namespace CustomInput
         // used in editor!
         public void DropdownValueSelected(int index)
         {
-            dropdown.value = (int)layout;
             layout = (LayoutOption)index;
+            dropdown.value = index;
         }
 
         private void ActivateLayout()
