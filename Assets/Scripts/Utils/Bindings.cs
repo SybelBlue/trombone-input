@@ -41,6 +41,7 @@ namespace CustomInput
     //      <DOM> Joystick Quadrant     =>      Fast Switch Layouts
     //      Return                      =>      Switch to/from Lobby
     //      7/8/9/0                     =>      Fast Switch Layouts
+    using static VREventFactory;
     public static class Bindings
     {
         public static readonly uint _slider_max_value = 64;
@@ -215,22 +216,22 @@ namespace CustomInput
         {
             if (emulatingFrontDown || (endEmulatedSlide && layoutUsesSlider))
             {
-                eventList.Add(VREventFactory.MakeButtonDownEvent(VREventFactory._front_button_event_name));
+                eventList.Add(MakeButtonDownEvent(_front_button_event_name));
             }
 
             if (emulatingFrontUp)
             {
-                eventList.Add(VREventFactory.MakeButtonUpEvent(VREventFactory._front_button_event_name));
+                eventList.Add(MakeButtonUpEvent(_front_button_event_name));
             }
 
             if (emulatingBackDown)
             {
-                eventList.Add(VREventFactory.MakeButtonDownEvent(VREventFactory._back_button_event_name));
+                eventList.Add(MakeButtonDownEvent(_back_button_event_name));
             }
 
             if (emulatingBackUp)
             {
-                eventList.Add(VREventFactory.MakeButtonUpEvent(VREventFactory._back_button_event_name));
+                eventList.Add(MakeButtonUpEvent(_back_button_event_name));
             }
         }
 
@@ -241,7 +242,7 @@ namespace CustomInput
         {
             if (beginEmulatedSlide)
             {
-                eventList.Add(VREventFactory.MakePotentiometerEvent(slideStartValue));
+                eventList.Add(MakePotentiometerEvent(slideStartValue));
                 return;
             }
 
@@ -261,7 +262,7 @@ namespace CustomInput
 
             if (emulatingSlide)
             {
-                eventList.Add(VREventFactory.MakePotentiometerEvent(next));
+                eventList.Add(MakePotentiometerEvent(next));
             }
         }
     }
