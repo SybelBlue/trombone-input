@@ -12,6 +12,7 @@ TagManager:
   - TrialProgress
   - StartButtonTag
   - AngleAndSliderIndicator
+  - MainBackground
   layers:
   - Default
   - TransparentFX
