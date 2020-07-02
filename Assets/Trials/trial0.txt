@@ -1,7 +1,6 @@
 !trial-number 0
 #arbitrarily made by logan
-!randomize-layouts
+!set-layout 2
 blind:THE DOG TOOK A LEAP
-!next-layout
-perfect:AND THE
-practice:GROUND SOFTLY
+!set-layout 3
+perfect:AND HIT THE GROUND SOFTLY

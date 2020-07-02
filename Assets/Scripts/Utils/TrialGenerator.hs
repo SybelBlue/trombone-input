@@ -43,7 +43,11 @@ scrubPrompt p = map mapper p
 
 
 layoutNumber :: Layout -> Int
-layoutNumber = fromJust . flip elemIndex [Linear, StylusBinned, TwoAxis, Raycast]
+layoutNumber = \case
+    Linear -> 0
+    StylusBinned -> 1
+    TwoAxis -> 2
+    Raycast -> 3
 
 -- a class for writing to files
 class Writable a where
@@ -105,9 +109,9 @@ trials =
 trialA :: Trial
 trialA =
     [ Comment "arbitrarily made by logan"
-    , Do RandomizeLayoutOrder
+    , Do (SetLayout TwoAxis)
     , perform Blind "the dog took a leap"
-    , Do NextLayout
+    , Do (SetLayout Raycast)
     , perform Perfect "and hit the ground softly"
     ]
 

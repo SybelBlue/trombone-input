@@ -49,7 +49,13 @@ namespace Controller
 
         public Challenge.Type? currentChallengeType;
 
-        private LayoutOption[] layoutOrder;
+        private LayoutOption[] layoutOrder 
+            = new LayoutOption[] { 
+                LayoutOption.LinearABCDE, 
+                LayoutOption.StylusBinnedABCDE, 
+                LayoutOption.TwoRotBinnedABCDE, 
+                LayoutOption.RaycastQWERTY 
+            };
 
         private Trial? currentTrial = null;
 
@@ -109,7 +115,7 @@ namespace Controller
                     case Challenge.Type.Blind:
                         return currentOutput.Length >= currentPrompt.Length;
                 }
-                throw new System.ArgumentException(currentChallengeType.ToString());
+                throw new ArgumentException(currentChallengeType.ToString());
             }
         }
         #endregion
@@ -259,7 +265,7 @@ namespace Controller
 
         public void AdvanceLayout()
         {
-            _layoutIndex = (_layoutIndex + 1) % layoutOrder.Length;
+            AdvanceIndexCyclic();
             OnLayoutChange.Invoke(currentLayout);
         }
 
@@ -270,6 +276,18 @@ namespace Controller
             builder = new ResultBuilder();
             AdvanceTrial();
         }
+
+        public void SetLayout(LayoutOption value)
+        {
+            while (currentLayout != value)
+            {
+                AdvanceIndexCyclic();
+            }
+            OnLayoutChange.Invoke(currentLayout);
+        }
+
+        private void AdvanceIndexCyclic()
+            => _layoutIndex = (_layoutIndex + 1) % layoutOrder.Length;
 
         private void AdvanceTrial()
         {
@@ -332,11 +350,6 @@ namespace Controller
             {
                 Debug.LogWarning("Practice End Button pressed outside of practice!");
             }
-        }
-
-        internal void SetLayout(LayoutOption value)
-        {
-            throw new NotImplementedException();
         }
     }
 }
