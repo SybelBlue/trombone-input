@@ -3670,7 +3670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fakeHeadTrackerEvent: Head_Move
-  initialHeadPos: {x: 0, y: 1, z: -2}
+  initialHeadPos: {x: 0, y: 4, z: -2}
   initialHeadRot: {x: 0, y: 0, z: 0}
   fakeTracker1Event: BlueStylus_Move
   initialTracker1Pos: {x: 0, y: 0, z: 0}
