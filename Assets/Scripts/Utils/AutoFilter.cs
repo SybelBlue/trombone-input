@@ -42,6 +42,7 @@ namespace Utils
         {
             last = (null, 0, 0);
             filter = new Filter(epsilon, deadzone);
+            filter.Clear();
             OnFilterOutput.AddListener(DefaultHandler);
         }
 

@@ -8,6 +8,7 @@ namespace CustomInput
         public class LinearABCDE : AbstractLayout
         {
             public override bool usesSlider => true;
+            public override bool keyOnFingerUp => true;
             public override bool usesRaycasting => false;
 
             private bool _useAlternate;
@@ -42,7 +43,7 @@ namespace CustomInput
             }
 
             protected override int ChildIndexFor(InputData data)
-                => data.rawValue ?? -1;
+                => (int?)data.rawValue ?? -1;
 
             public override char? GetSelectedLetter(InputData data)
             {

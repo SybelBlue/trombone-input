@@ -43,7 +43,7 @@ namespace CustomInput
     //      7/8/9/0                     =>      Fast Switch Layouts
     public static class Bindings
     {
-        public static readonly int _slider_max_value = 64;
+        public static readonly uint _slider_max_value = 64;
         public static readonly UnityEngine.KeyCode[] _layout_switch_bindings
             = new UnityEngine.KeyCode[] { Alpha7, Alpha8, Alpha9, Alpha0 };
 
@@ -237,7 +237,7 @@ namespace CustomInput
 
         // Starts, updates, and ends emulated slider input when appropriate
         // Also accounts for precision mode
-        public static void CaptureEmulatedSliderInput(ref VREventList eventList, int slideStartValue, int? currentValue)
+        public static void CaptureEmulatedSliderInput(ref VREventList eventList, uint slideStartValue, uint? currentValue)
         {
             if (beginEmulatedSlide)
             {
@@ -252,7 +252,7 @@ namespace CustomInput
             }
 
             int rawNext = UnityEngine.Mathf.RoundToInt((currentValue ?? 0) + delta);
-            int next = UnityEngine.Mathf.Clamp(rawNext, 0, _slider_max_value);
+            int next = (int)UnityEngine.Mathf.Clamp(rawNext, 0, _slider_max_value);
 
             if (!UnityEngine.Application.isEditor && delta == 0)
             {

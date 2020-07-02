@@ -13,6 +13,7 @@ namespace CustomInput
         public sealed class RaycastQWERTY : AbstractLayout
         {
             public override bool usesSlider => false;
+            public override bool keyOnFingerUp => false;
             public override bool usesRaycasting => true;
 
             private bool _useAlternate;

@@ -9,6 +9,7 @@ namespace CustomInput
         public class StylusBinnedABCDE : AbstractLayout
         {
             public override bool usesSlider => true;
+            public override bool keyOnFingerUp => false;
             public override bool usesRaycasting => false;
 
             [SerializeField]

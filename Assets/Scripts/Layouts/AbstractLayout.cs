@@ -10,11 +10,11 @@ namespace CustomInput
 
         public readonly float? normalizedSlider;
 
-        public readonly int? rawValue;
+        public readonly uint? rawValue;
 
         public readonly (Vector3 origin, Vector3 direction) orientation;
 
-        public InputData(int? rawValue, Controller.Stylus stylusModel) : this(
+        public InputData(uint? rawValue, Controller.Stylus stylusModel) : this(
                 rawValue,
                 stylusModel.normalizedAngles,
                 stylusModel.normalizedSlider,
@@ -23,7 +23,7 @@ namespace CustomInput
         { }
 
         public InputData(
-            int? rawValue,
+            uint? rawValue,
             Vector3 normalizedAngles,
             float? normalizedSlider,
             (Vector3 origin, Vector3 direction) orientation
@@ -54,6 +54,9 @@ namespace CustomInput
 
             // True if this layout uses the slider on the stylus
             public abstract bool usesSlider { get; }
+
+            // True if this layout provides a key on lifting a finger from the slider
+            public abstract bool keyOnFingerUp { get; }
 
             // True if this layout raycasts
             public abstract bool usesRaycasting { get; }

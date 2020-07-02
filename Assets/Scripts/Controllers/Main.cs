@@ -67,12 +67,11 @@ public class Main : MonoBehaviour, VREventGenerator
     #endregion
 
     // The most up-to-date value reported by the InputFieldController
-    private int? lastReportedValue;
+    private uint? lastReportedValue;
 
     private int currentTrial = -1;
     private int completedChallenges = -1;
 
-    #region Properties
     // The manager's current layout, or null if no manager exists
     private CustomInput.Layout.AbstractLayout layout
         => layoutManager?.currentLayout;
@@ -87,14 +86,11 @@ public class Main : MonoBehaviour, VREventGenerator
         => trialExecutionMode == TrialExecutionMode.Always
         || (trialExecutionMode == TrialExecutionMode.OnlyInEditor && Application.isEditor);
 
-    private InputData currentInputData => new InputData(lastReportedValue, stylus);
-    #endregion
-
     private void Start()
     {
         if (Instance)
         {
-            Debug.LogWarning("A second Main script has been created while another exists!");
+            Debug.LogWarning("A second Main script has been created while another exists! This instance will not be saved!");
         }
         else
         {
@@ -106,10 +102,9 @@ public class Main : MonoBehaviour, VREventGenerator
 
         VRMain.Instance.AddEventGenerator(this);
 
-        VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, OnAnalogUpdate);
+        VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, ProvideToAutoFilter);
 
         VRMain.Instance.AddVRButtonCallbacks(_front_button_event_name, OnFrontButtonUp, OnFrontButtonDown);
-
         VRMain.Instance.AddVRButtonCallbacks(_back_button_event_name, OnBackButtonUp, OnBackButtonDown);
 
         Bindings.InitializeMinVRLayoutSwitching(server);
@@ -179,7 +174,7 @@ public class Main : MonoBehaviour, VREventGenerator
         if (layout && stylus)
         {
             stylus.angleProvider = layout.StylusRotationBounds;
-            layout.UpdateState(currentInputData);
+            layout.UpdateState(new InputData(lastReportedValue, stylus));
         }
     }
 
@@ -225,7 +220,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
     {
-        int gestureStartValue = lastReportedValue ?? Bindings._slider_max_value / 2;
+        var gestureStartValue = lastReportedValue ?? Bindings._slider_max_value / 2;
         Bindings.CaptureEmulatedSliderInput(ref eventList, gestureStartValue, lastReportedValue);
         Bindings.CaptureEmulatedButtonInput(ref eventList, layout && layout.usesSlider);
     }
@@ -271,27 +266,30 @@ public class Main : MonoBehaviour, VREventGenerator
             case Utils.SignalProcessing.EventType.NoTouches:
                 return;
             case Utils.SignalProcessing.EventType.FingerUp:
-                if (!Application.isEditor)
+                if (!layout.keyOnFingerUp)
+                {
+                    lastReportedValue = e.value;
+                }
+                else
                 {
                     // TODO: probably needs changing
-                    OnInputEnd((int?)e.value);
+                    TryFindKey(e.value);
                 }
                 Debug.LogWarning("Click!");
                 return;
             default:
                 if (e.value.HasValue)
                 {
-                    OnInputValueChange((int)e.value.Value);
+                    UpdateValue(e.value.Value);
                 }
                 return;
         }
     }
 
-    private void OnAnalogUpdate(float value)
+    private void ProvideToAutoFilter(float value)
         => autoFilter.Provide((uint)Mathf.RoundToInt(value));
 
-    // Callback for when the InputFieldController value changes due to user input
-    private void OnInputValueChange(int value)
+    private void UpdateValue(uint value)
     {
         lastReportedValue = value;
         float normalized = value / (float)Bindings._slider_max_value;
@@ -307,9 +305,9 @@ public class Main : MonoBehaviour, VREventGenerator
         indicatorRect.localPosition = pos;
     }
 
-    private bool OnInputEnd(int? value)
+    private bool TryFindKey(uint? value)
     {
-        lastReportedValue = value;
+        var currentInputData = new InputData(value, stylus);
         CustomInput.KeyData.AbstractData parentKey = layout?.KeysFor(currentInputData)?.parent;
 
         bool success = parentKey != null;
@@ -346,17 +344,12 @@ public class Main : MonoBehaviour, VREventGenerator
         return success;
     }
 
-    // Callback for when the InputFieldController register a completed gesture
-    public void OnSimulatedFingerUp(int value)
-        => OnInputEnd(value);
-
     public void OnFrontButtonDown()
     {
         stylus.frontButtonDown = true;
-        if (OnInputEnd(lastReportedValue)) return;
+        if (TryFindKey(lastReportedValue)) return;
 
-        RaycastHit? hit;
-        var raycastable = stylus.Raycast(out hit);
+        var raycastable = stylus.Raycast(out _);
         if (raycastable)
         {
             raycastable.GetComponent<Button>()?.onClick.Invoke();
@@ -383,7 +376,6 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnBackButtonUp()
         => stylus.backButtonDown = false;
 
-    // used in editor!
     public void OnTestingLayoutChange(LayoutOption layout)
         => layoutManager.layout = layout;
 

@@ -56,6 +56,8 @@ namespace Utils
                 this.deadzone = deadzone;
             }
 
+            // only null when not enough input has been provided to yield a filtered output
+            // use Clear() to force values to be outputed
             public uint? Push(uint rawIn)
             {
                 bool inDeadzone = rawIn < deadzone;
@@ -122,6 +124,13 @@ namespace Utils
             // value is within radius epsilon of rawin
             private bool isNeighbor(uint rawin, uint? value)
                 => value.HasValue && rawin - epsilon <= value && value <= rawin + epsilon;
+
+            public void Clear()
+            {
+                Push(0);
+                Push(0);
+                Push(0);
+            }
 
 
             // returns a filtered list of the provided data, constructing a new filter from the optional arguments
