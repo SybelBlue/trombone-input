@@ -1320,7 +1320,7 @@ MonoBehaviour:
   trackingMode: 0
   reportType: 0
   threadingMode: 1
-  positionAdjustment: {x: 0, y: 4, z: 0}
+  positionAdjustment: {x: 0, y: 0, z: 0}
   rotationAdjustment: {x: 0, y: 0, z: 0}
   scaleAdjustment: {x: 3.28084, y: 3.28084, z: 3.28084}
 --- !u!1 &898566983
@@ -1512,8 +1512,8 @@ MonoBehaviour:
   backButtonRenderer: {fileID: 281251436}
   highlightMaterial: {fileID: 2100000, guid: ea5906402a6b7fb40a9b9f4d8af4ff17, type: 2}
   defaultMaterial: {fileID: 2100000, guid: 7ff72e74ddb75334a966aadc768d4de0, type: 2}
-  defaultMinAngle: {x: 0, y: 60, z: -80}
-  defaultMaxAngle: {x: 80, y: 30, z: 80}
+  defaultMinAngle: {x: 0, y: 60, z: 135}
+  defaultMaxAngle: {x: 80, y: 30, z: -140}
   sliderBounds: {x: 0, y: 0.15}
 --- !u!114 &971101865
 MonoBehaviour:
