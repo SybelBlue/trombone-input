@@ -1512,8 +1512,8 @@ MonoBehaviour:
   backButtonRenderer: {fileID: 281251436}
   highlightMaterial: {fileID: 2100000, guid: ea5906402a6b7fb40a9b9f4d8af4ff17, type: 2}
   defaultMaterial: {fileID: 2100000, guid: 7ff72e74ddb75334a966aadc768d4de0, type: 2}
-  defaultMinAngle: {x: 0, y: 60, z: 135}
-  defaultMaxAngle: {x: 80, y: 30, z: -140}
+  defaultMinAngle: {x: 0, y: 60, z: -80}
+  defaultMaxAngle: {x: 80, y: 30, z: 80}
   sliderBounds: {x: 0, y: 0.15}
 --- !u!114 &971101865
 MonoBehaviour:
@@ -2121,6 +2121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leftHanded: 0
+  useAutofilter: 1
   trialExecutionMode: 1
   server: {fileID: 1671901940}
   layoutManager: {fileID: 0}

@@ -30,7 +30,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
     #region EditorSet
     [SerializeField]
-    private bool leftHanded;
+    private bool leftHanded, useAutofilter;
 
     [SerializeField]
     private TrialExecutionMode trialExecutionMode;
@@ -102,7 +102,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
         VRMain.Instance.AddEventGenerator(this);
 
-        VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, ProvideToAutoFilter);
+        VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, OnSliderAnalogUpdate);
 
         VRMain.Instance.AddVRButtonCallbacks(_front_button_event_name, OnFrontButtonUp, OnFrontButtonDown);
         VRMain.Instance.AddVRButtonCallbacks(_back_button_event_name, OnBackButtonUp, OnBackButtonDown);
@@ -286,8 +286,18 @@ public class Main : MonoBehaviour, VREventGenerator
         }
     }
 
-    private void ProvideToAutoFilter(float value)
-        => autoFilter.Provide((uint)Mathf.RoundToInt(value));
+    private void OnSliderAnalogUpdate(float value)
+    {
+        var scrubbed = (uint)Mathf.RoundToInt(value);
+        if (useAutofilter)
+        {
+            autoFilter.Provide(scrubbed);
+        }
+        else
+        {
+            UpdateValue(scrubbed);
+        }
+    }
 
     private void UpdateValue(uint value)
     {
