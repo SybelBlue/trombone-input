@@ -1427,8 +1427,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1326522650}
-        m_MethodName: StartTrialScene
+      - m_Target: {fileID: 1326522646}
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2230,7 +2230,6 @@ GameObject:
   - component: {fileID: 1326522648}
   - component: {fileID: 1326522653}
   - component: {fileID: 1326522647}
-  - component: {fileID: 1326522650}
   - component: {fileID: 1326522651}
   - component: {fileID: 1326522652}
   - component: {fileID: 1326522654}
@@ -2307,18 +2306,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1326522650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1326522646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b06718a6f0c25429098e63eeea0d1c7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1326522651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2379,6 +2366,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 1eb8621f8d963ff4bbb33d281670b93d, type: 3}
   trialProgress: {fileID: 0}
   autoFilter: {fileID: 971101865}
+  strialsIsLoaded: 0
 --- !u!45 &1326522654
 Skybox:
   m_ObjectHideFlags: 0
@@ -3072,7 +3060,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1516907491
 MonoBehaviour:
   m_ObjectHideFlags: 0
