@@ -380,8 +380,8 @@ MonoBehaviour:
     type: 3}
   raycastKeyPrefab: {fileID: 236652873365184703, guid: 72134ec246700974a9e25ce2f000ad6f,
     type: 3}
-  minAngle: {x: 0, y: 60, z: -80}
-  maxAngle: {x: 80, y: -30, z: 80}
+  minAngle: {x: 0, y: 60, z: 135}
+  maxAngle: {x: 80, y: -30, z: -140}
 --- !u!114 &168735321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6151,8 +6151,8 @@ MonoBehaviour:
     type: 3}
   raycastKeyPrefab: {fileID: 236652873365184703, guid: 72134ec246700974a9e25ce2f000ad6f,
     type: 3}
-  minAngle: {x: 0, y: 60, z: -80}
-  maxAngle: {x: 60, y: -30, z: 80}
+  minAngle: {x: 0, y: 60, z: 45}
+  maxAngle: {x: 60, y: -30, z: 145}
 --- !u!222 &2096338479
 CanvasRenderer:
   m_ObjectHideFlags: 0
