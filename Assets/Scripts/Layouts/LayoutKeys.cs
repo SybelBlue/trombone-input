@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using System.Linq;
-using UnityEngine.Assertions;
+﻿using Controller.Key;
 using System;
 using System.Collections.Generic;
-using Controller.Key;
+using System.Linq;
+using UnityEngine;
 
 namespace CustomInput
 {
@@ -84,8 +83,8 @@ namespace CustomInput
 
             public override SimpleData ItemAt(int index)
             {
-                Assert.IsTrue(0 <= index && index < _size);
-                return this;
+                if (0 <= index && index < _size) return this;
+                throw new IndexOutOfRangeException();
             }
 
             public char CharWithAlternate(bool useAlternate)
