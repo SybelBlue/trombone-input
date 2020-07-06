@@ -26,7 +26,7 @@ namespace CustomInput
         public abstract class AbstractData
         {
             // the property holding name of the most concrete subclass that extends this
-            public abstract string typeName { get; }
+            public abstract Type typeName { get; }
 
             // the property holding size in sensor widths (must be positive)
             // size is defined by how many of the 64 output levels correspond to this key, when applicable,
@@ -50,7 +50,7 @@ namespace CustomInput
         // The Base class for LayoutKeys with only a single character (like a standard QWERTY keyboard key)
         public class SimpleData : AbstractData
         {
-            public override string typeName => "SimpleKey";
+            public override Type typeName => typeof(Simple);
 
             // the char this key represents
             public readonly char c;
@@ -95,7 +95,7 @@ namespace CustomInput
         // The Base class for all Key with binned labeling
         public class BinnedData : AbstractData
         {
-            public override string typeName => "BinnedKey";
+            public override Type typeName => typeof(Binned);
 
             public override string label => _data;
             public override int size => _size;
@@ -153,7 +153,7 @@ namespace CustomInput
         // The SimpleKey for Stylus canvases
         public class StylusData : SimpleData
         {
-            public override string typeName => "StylusKey";
+            public override Type typeName => typeof(Stylus);
 
             public StylusData(char data, int size, char? alt = null) : base(data, size, alt)
             { }
@@ -165,7 +165,7 @@ namespace CustomInput
         // The BinnedKey for Stylus canvases
         public class StylusBinnedData : BinnedData
         {
-            public override string typeName => "StylusBinnedKey";
+            public override Type typeName => typeof(StylusBinned);
 
             public StylusBinnedData(bool slant, params SimpleData[] subitems) : base(slant, subitems)
             { }
@@ -188,7 +188,7 @@ namespace CustomInput
 
         public class RaycastData : StylusData
         {
-            public override string typeName => "RaycastKey";
+            public override Type typeName => typeof(Raycast);
 
             public RaycastData(char data, int size, char? alt = null) : base(data, size, alt)
             { }

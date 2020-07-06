@@ -1,8 +1,7 @@
 {-# LANGUAGE LambdaCase #-}
 
-import Data.List (intercalate, elemIndex)
+import Data.List (intercalate)
 import Data.Char (toUpper)
-import Data.Maybe (fromJust)
 
 -- | text prompts in the main scene
 type Prompt = String
@@ -72,7 +71,7 @@ instance Writable TrialEntry where
     write (Perform c) = write c
     write (Comment c) = commentPrefixChar : c
 
-instance (Writable a) => Writable [a] where
+instance Writable a => Writable [a] where
     write = intercalate "\n" . map write
 
 perform :: (Prompt -> Challenge) -> Prompt -> TrialEntry
