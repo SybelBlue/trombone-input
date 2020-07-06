@@ -1011,7 +1011,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &373140229
 Light:
   m_ObjectHideFlags: 0
@@ -5797,6 +5797,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9e7e15bed46f249b6039a625a27bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _layout: 0
   dropdownController: {fileID: 970785290}
   linearABCDE: {fileID: 997093841}
   stylusBinnedABCDE: {fileID: 2096338478}
