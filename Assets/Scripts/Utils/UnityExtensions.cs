@@ -17,6 +17,7 @@ namespace Utils
 
             public static Vector3 WithZ(this Vector3 vec, float z)
                 => new Vector3(vec.x, vec.y, z);
+
             public static Vector3 WithY(this Vector3 vec, float y)
                 => new Vector3(vec.x, y, vec.z);
 
