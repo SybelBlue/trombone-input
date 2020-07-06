@@ -34,9 +34,10 @@ namespace Controller
 
         public Func<(Vector3 min, Vector3 max)?> angleProvider;
 
-        private (int? frame, RaycastHit? hit, IRaycastable obj) lastFound;
         private (bool front, bool back) highlighting;
         private (string path, float? last) saveData;
+        private (int? frame, RaycastHit? hit, IRaycastable obj) lastFound;
+
 
         #region Properties
         public bool useLaser
@@ -179,24 +180,10 @@ namespace Controller
                 return lastFound.obj;
             }
 
-            foreach (RaycastHit h in Physics.RaycastAll(transform.position, transform.forward, Mathf.Infinity))
-            {
-                IRaycastable r = h.transform.gameObject.GetComponent<IRaycastable>();
-                if (r)
-                {
-                    lastFound = (Time.frameCount, h, r);
-                    hit = h;
-                    return r;
-                }
-                else
-                {
-                    Debug.DrawLine(transform.position, h.point, Color.red, 0.2f);
-                }
-            }
+            var raycastable = IRaycastable.Raycast(orientation.origin, orientation.direction, out hit);
+            lastFound = (Time.frameCount, hit, raycastable);
 
-            lastFound = (Time.frameCount, null, null);
-            hit = null;
-            return null;
+            return raycastable;
         }
 
         public void FillIndicatorDisplayIfNull()
