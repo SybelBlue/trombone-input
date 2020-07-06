@@ -175,7 +175,7 @@ namespace Controller
                     return;
             }
 
-            throw new System.ArgumentException(currentChallengeType.ToString());
+            throw new ArgumentException(currentChallengeType.ToString());
         }
 
         private void UpdateDisplay()

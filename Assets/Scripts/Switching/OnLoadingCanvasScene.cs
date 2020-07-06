@@ -1,20 +1,18 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿//using UnityEngine.SceneManagement;
 
-namespace SceneSwitching
-{
-    public class OnLoadingCanvasScene : UnityEngine.MonoBehaviour
-    {
+//namespace SceneSwitching
+//{
+//    public class OnLoadingCanvasScene : UnityEngine.MonoBehaviour
+//    {
 
-        public void StartTrialScene()
-        {
-          UnityEngine.SceneManagement.SceneManager.LoadScene(Utils._STRIALS_name, LoadSceneMode.Additive);
-          // UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-        }
+//        public void StartTrialScene()
+//        {
+//          UnityEngine.SceneManagement.SceneManager.LoadScene(Utils._STRIALS_scene, LoadSceneMode.Additive);
+//          // UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+//        }
 
-    }
-}
+//    }
+//}
 // // Start is called before the first frame update
 // void Start()
 // {

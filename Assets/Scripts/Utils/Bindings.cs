@@ -1,7 +1,4 @@
-using System;
 using MinVR;
-using static UnityEngine.Input;
-using static UnityEngine.KeyCode;
 using VREventList = System.Collections.Generic.List<MinVR.VREvent>;
 
 namespace CustomInput
@@ -41,7 +38,11 @@ namespace CustomInput
     //      <DOM> Joystick Quadrant     =>      Fast Switch Layouts
     //      Return                      =>      Switch to/from Lobby
     //      7/8/9/0                     =>      Fast Switch Layouts
+    using System;
+    using static UnityEngine.Input;
+    using static UnityEngine.KeyCode;
     using static VREventFactory;
+    using static VREventFactory.Names;
     public static class Bindings
     {
         public static readonly uint _slider_max_value = 64;
@@ -121,12 +122,6 @@ namespace CustomInput
         public static bool backspaceDown
             => GetKeyDown(Backspace);
 
-        public static bool advanceToMain
-            => GetKeyDown(_scene_advance_key);
-
-        public static bool returnToLobby
-            => GetKeyDown(_scene_advance_key);
-
         public static int? emulatingLayoutSwitch
         {
             get
@@ -178,7 +173,7 @@ namespace CustomInput
             }
         }
 
-        public static void InitializeMinVRLayoutSwitching(VRDevice server)
+        public static void InitializeMinVRUnityKeyEvents(VRDevice server)
         {
             if (server == null)
             {
@@ -194,6 +189,8 @@ namespace CustomInput
             {
                 server.unityKeysToVREvents.Add(item);
             }
+
+            server.unityKeysToVREvents.Add(_scene_advance_key);
         }
 
         public static void AddMinVRLayoutSwitchingHandlers(Func<int, VRMain.OnVRButtonDownEventDelegate> LayoutHandlers)
@@ -204,6 +201,9 @@ namespace CustomInput
                 VRMain.Instance.AddOnVRButtonDownCallback(bindingName, LayoutHandlers(i));
             }
         }
+
+        public static void AddMinVRSceneAdvanceHandler(VRMain.OnVRButtonDownEventDelegate OnSceneAdvance) 
+            => VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(_scene_advance_key), OnSceneAdvance);
 
         public static string KeyCodeToMinVRButtonDownName(UnityEngine.KeyCode binding)
             => $"Kbd{binding}_Down";
@@ -216,22 +216,22 @@ namespace CustomInput
         {
             if (emulatingFrontDown || (endEmulatedSlide && layoutUsesSlider))
             {
-                eventList.Add(MakeButtonDownEvent(_front_button_event_name));
+                eventList.Add(MakeButtonDownEvent(_front_button));
             }
 
             if (emulatingFrontUp)
             {
-                eventList.Add(MakeButtonUpEvent(_front_button_event_name));
+                eventList.Add(MakeButtonUpEvent(_front_button));
             }
 
             if (emulatingBackDown)
             {
-                eventList.Add(MakeButtonDownEvent(_back_button_event_name));
+                eventList.Add(MakeButtonDownEvent(_back_button));
             }
 
             if (emulatingBackUp)
             {
-                eventList.Add(MakeButtonUpEvent(_back_button_event_name));
+                eventList.Add(MakeButtonUpEvent(_back_button));
             }
         }
 
@@ -269,20 +269,29 @@ namespace CustomInput
 
     public static class VREventFactory
     {
-        public const string _potentiometer_event_name = "BlueStylusAnalog";
-        public const string _front_button_event_name = "BlueStylusFrontBtn";
-        public const string _back_button_event_name = "BlueStylusBackBtn";
-        public const string _button_down_event_type = "ButtonDown";
-        public const string _button_up_event_type = "ButtonUp";
+        public static class Names
+        {
+            public const string _potentiometer = "BlueStylusAnalog";
+            public const string _front_button = "BlueStylusFrontBtn";
+            public const string _back_button = "BlueStylusBackBtn";
+            public const string _return = "Return";
+        }
+
+        public static class Types
+        {
+            public const string _button_down = "ButtonDown";
+            public const string _button_up = "ButtonUp";
+            public const string _analog_update = "AnalogUpdate";
+        }
 
         public static VREvent MakeButtonDownEvent(string name)
-            => MakeEvent(name, _button_down_event_type);
+            => MakeEvent(name, Types._button_down);
 
         public static VREvent MakeButtonUpEvent(string name)
-            => MakeEvent(name, _button_up_event_type);
+            => MakeEvent(name, Types._button_up);
 
         public static VREvent MakePotentiometerEvent(float analogValue)
-            => MakeEvent(_potentiometer_event_name, "AnalogUpdate", analogValue);
+            => MakeEvent(_potentiometer, Types._analog_update, analogValue);
 
         public static VREvent MakeEvent(string name, string type, float? analogValue = null)
         {

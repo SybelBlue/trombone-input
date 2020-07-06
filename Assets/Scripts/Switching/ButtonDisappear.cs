@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace SceneSwitching
 {
     public class ButtonDisappear : MonoBehaviour
     {
-        // public Button button;
         GameObject button;
         public Camera skybox;
         // GameObject skybox;
