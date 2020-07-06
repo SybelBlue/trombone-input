@@ -23,7 +23,6 @@ namespace CustomEvent
 
 namespace Controller
 {
-
 #pragma warning disable 649
     public class Proctor : TextOutputDisplay
     {
@@ -254,7 +253,7 @@ namespace Controller
                     text = final;
                     return;
             }
-            throw new System.ArgumentException(currentChallengeType.ToString());
+            throw new ArgumentException(currentChallengeType.ToString());
         }
 
         public void RandomizeLayouts()
