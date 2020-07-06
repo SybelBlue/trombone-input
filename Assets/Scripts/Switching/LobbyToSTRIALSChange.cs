@@ -17,9 +17,8 @@ namespace SceneSwitching
         {
             if (CustomInput.Bindings.advanceToMain)//TODO: EXPLORE THIS
             {
-                // SceneManager.LoadScene("_MAIN");
+                ButtonDisappear.ButtonClick();
                 UnityEngine.SceneManagement.SceneManager.LoadScene(Utils._STRIALS_name, LoadSceneMode.Additive);
-                // UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
 
 
             }
