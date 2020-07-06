@@ -1427,8 +1427,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1326522646}
-        m_MethodName: 
+      - m_Target: {fileID: 1326522653}
+        m_MethodName: OnSceneAdvanceButtonDown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
