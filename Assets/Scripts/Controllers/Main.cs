@@ -77,6 +77,8 @@ public class Main : MonoBehaviour, VREventGenerator
     private bool strialsIsLoaded;
     #endregion
 
+    public Button backToLobby;
+
     // The most up-to-date value reported by the InputFieldController
     private uint? lastReportedValue;
 
@@ -257,7 +259,7 @@ public class Main : MonoBehaviour, VREventGenerator
         if (strialsIsLoaded)
         {
             Scenes._STRIALS.UnloadAsync();
-            
+
         }
         else
         {
@@ -416,7 +418,9 @@ public class Main : MonoBehaviour, VREventGenerator
     {
         if (success)
         {
-          OnSceneAdvanceButtonDown();
+          OnSceneAdvance();
+          // backToLobby.gameObject.SetActive(true);
+
           //TODO:Make it so the jump button is triggered
             // OnSceneChange("_STRIALS");
             // RunNextTrial();
