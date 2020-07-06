@@ -322,13 +322,15 @@ namespace Controller
 
             try
             {
-                var tup = Testing.Utils.WriteTrialResults(builder.Finish(currentOutput), Application.isEditor);
+                (string directory, string name) = Testing.Utils.WriteTrialResults(builder.Finish(currentOutput), locally: Application.isEditor);
 
-                fileOutputIndicator.text += $"Trial {trialNumber} Completed!\nSaved in Directory: {tup.directory}\nIn File: {tup.name}\n";
+                fileOutputIndicator.text += $"Trial {trialNumber} Completed!\nSaved in Directory: {directory}\nIn File: {name}\n";
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
+
+                fileOutputIndicator.text += $"Trial {trialNumber} completed!\nSaving Failed with: {e.Message}";
             }
             finally
             {
