@@ -253,6 +253,7 @@ public class Main : MonoBehaviour, VREventGenerator
     #region Callbacks
     public void OnSceneAdvanceButtonDown()
     {
+        Debug.LogWarning("Scene Advanced!");
         if (strialsIsLoaded)
         {
             Scenes._STRIALS.UnloadAsync();
