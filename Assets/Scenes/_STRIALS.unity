@@ -1584,14 +1584,13 @@ GameObject:
   - component: {fileID: 532625920}
   - component: {fileID: 532625919}
   - component: {fileID: 532625923}
-  - component: {fileID: 532625922}
   m_Layer: 0
   m_Name: CircularRotation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &532625918
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1668,21 +1667,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stylusTransform: {fileID: 0}
---- !u!114 &532625922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 532625917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecc83dac7124b994499e09ace0632705, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  followParent: {fileID: 0}
-  followOffset: {x: 0, y: 0.25, z: 0.3}
-  followRotation: 0
 --- !u!114 &532625923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5777,6 +5761,7 @@ RectTransform:
   - {fileID: 997093840}
   - {fileID: 1047773956}
   - {fileID: 2053574479}
+  - {fileID: 2034183662}
   m_Father: {fileID: 1335849781}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5800,7 +5785,7 @@ MonoBehaviour:
   _layout: 0
   dropdownController: {fileID: 970785290}
   linearABCDE: {fileID: 997093841}
-  stylusBinnedABCDE: {fileID: 2096338478}
+  stylusBinnedABCDE: {fileID: 2034183664}
   twoRotationABCDE: {fileID: 168735320}
   raycastQWERTY: {fileID: 1047773957}
 --- !u!1001 &1984481119
@@ -6016,6 +6001,99 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2011074444}
   m_CullTransparentMesh: 0
+--- !u!1 &2034183661
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2034183662}
+  - component: {fileID: 2034183665}
+  - component: {fileID: 2034183664}
+  - component: {fileID: 2034183663}
+  m_Layer: 2
+  m_Name: StylusBinnedABCDE
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2034183662
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034183661}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_Children: []
+  m_Father: {fileID: 1903087915}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 200, y: 0}
+  m_SizeDelta: {x: 325, y: 250}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2034183663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034183661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07403113100000000050311310000000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  fDistance: 303
+  MinAngle: 303
+  MaxAngle: 165
+  StartAngle: 45
+  OnlyLayoutVisible: 0
+--- !u!114 &2034183664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034183661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 972559b5c3ba25e4f93724392d6cd11c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleKeyPrefab: {fileID: 3265795387704717104, guid: 3344e1193debe304a81509bb26bf33ca,
+    type: 3}
+  binnedKeyPrefab: {fileID: 8073901440390734995, guid: f0afbb1267364214ca460d9508b3e523,
+    type: 3}
+  stylusKeyPrefab: {fileID: 2312528965249368717, guid: 6e7a01433d87b5a488fadd46abeb1f44,
+    type: 3}
+  stylusBinnedPrefab: {fileID: 7355011700996924773, guid: 2b25e3e9417a75649b092c7658293832,
+    type: 3}
+  raycastKeyPrefab: {fileID: 236652873365184703, guid: 72134ec246700974a9e25ce2f000ad6f,
+    type: 3}
+  minAngle: {x: 0, y: 60, z: 45}
+  maxAngle: {x: 60, y: -30, z: 145}
+--- !u!222 &2034183665
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034183661}
+  m_CullTransparentMesh: 0
 --- !u!1 &2053574478
 GameObject:
   m_ObjectHideFlags: 0
@@ -6102,7 +6180,6 @@ GameObject:
   - component: {fileID: 2096338479}
   - component: {fileID: 2096338478}
   - component: {fileID: 2096338480}
-  - component: {fileID: 2096338481}
   m_Layer: 2
   m_Name: StylusBinnedABCDE
   m_TagString: Untagged
@@ -6184,19 +6261,6 @@ MonoBehaviour:
   MaxAngle: 165
   StartAngle: 45
   OnlyLayoutVisible: 0
---- !u!114 &2096338481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096338476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8f9ee75cfc9b438f9c13eb66e487f4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stylusTransform: {fileID: 0}
 --- !u!1001 &2112465617
 PrefabInstance:
   m_ObjectHideFlags: 0
