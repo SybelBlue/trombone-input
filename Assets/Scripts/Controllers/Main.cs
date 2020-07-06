@@ -8,6 +8,7 @@ using Controller;
 using CustomInput;
 using MinVR;
 using Utils.MinVRExtensions;
+using Utils.UnityExtensions;
 using Utils;
 using static CustomInput.VREventFactory.Names;
 using SceneSwitching;
@@ -71,12 +72,6 @@ public class Main : MonoBehaviour, VREventGenerator
 
     [SerializeField]
     private List<Testing.Trial> trials;
-
-    [SerializeField]
-    private STRIALSToLobbyChange strialsToLobby;
-
-    [SerializeField]
-    private LobbyToSTRIALSChange lobbyToStrials;
 
     [SerializeField]
     private bool strialsIsLoaded;
@@ -191,7 +186,6 @@ public class Main : MonoBehaviour, VREventGenerator
         LoadFieldIfNull(ref layoutManager, "LayoutManager");
         LoadFieldIfNull(ref trialProgress, "TrialProgress");
         LoadFieldIfNull(ref indicatorRect, "SliderIndicator");
-        LoadFieldIfNull(ref strialsToLobby, "StrialsUnloader");
 
         stylus.FillIndicatorDisplayIfNull();
 
@@ -258,29 +252,13 @@ public class Main : MonoBehaviour, VREventGenerator
     #region Callbacks
     public void OnSceneAdvanceButtonDown()
     {
-        Debug.Log("Scene Advanced!");
-
         if (strialsIsLoaded)
         {
-            if (strialsToLobby)
-            {
-                strialsToLobby.Transition();
-            }
-            else
-            {
-                Debug.LogError("Can not unload _STRIALS, strialsToLobby is null!");
-            }
+            Scenes._STRIALS.UnloadAsync();
         }
         else
         {
-            if (lobbyToStrials)
-            {
-                lobbyToStrials.Transition();
-            }
-            else
-            {
-                Debug.LogError("Can not load _STRIALS, lobbyToTrials is null!");
-            }
+            Scenes._STRIALS.LoadAdditive();
         }
 
         strialsIsLoaded = !strialsIsLoaded;
@@ -288,7 +266,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
     private void OnSceneChange(Scene scene, LoadSceneMode _)
     {
-        if (!scene.name.Equals(SceneSwitching.Utils._STRIALS_scene)) return;
+        if (!scene.name.Equals(Scenes._STRIALS)) return;
 
         LoadNullFields();
 

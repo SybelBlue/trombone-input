@@ -16,7 +16,6 @@ TagManager:
   - GroundFloorTag
   - ButtonBackgroundTag
   - ButtonBackGroundEnd
-  - StrialsUnloader
   layers:
   - Default
   - TransparentFX

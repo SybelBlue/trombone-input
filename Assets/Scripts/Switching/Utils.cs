@@ -5,9 +5,9 @@
         void Transition();
     }
 
-    public static class Utils
+    public static class Scenes
     {
-        public static readonly string _STRIALS_scene = "_STRIALS";
+        public static readonly string _STRIALS = "_STRIALS";
         public static readonly string _LOBBY_name = "_LOBBY";
     }
 }

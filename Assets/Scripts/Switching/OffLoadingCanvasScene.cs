@@ -4,7 +4,7 @@
     {
         public void EndTrialScene()
         {
-            UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(Utils._STRIALS_scene);
+            UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(Scenes._STRIALS);
         }
     }
 }
