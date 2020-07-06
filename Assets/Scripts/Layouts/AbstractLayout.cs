@@ -158,7 +158,7 @@ namespace CustomInput
 
             // Equivalent to
             // ```ChildAt(index)?.GetComponent<LayoutKey>()```
-            protected AbstractData LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<IKey>().layoutKey;
+            protected AbstractData LayoutKeyFor(InputData data) => ChildFor(data)?.GetComponent<IKey>()?.layoutKey;
 
             // Sets the item at index (or no item if null) to be highlighted and all others to be unhiglighted
             public abstract void SetHighlightedKey(InputData data);

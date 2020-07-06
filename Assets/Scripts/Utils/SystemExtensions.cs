@@ -83,7 +83,7 @@
             }
 
             public static string Backspace(this string s)
-                    => s.Substring(0, System.Math.Max(0, s.Length - 1));
+                => s.Substring(0, System.Math.Max(0, s.Length - 1));
         }
     }
 }
