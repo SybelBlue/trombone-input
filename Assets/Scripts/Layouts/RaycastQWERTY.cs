@@ -50,24 +50,9 @@ namespace CustomInput
             }
 
             public override GameObject ChildFor(InputData data)
-            {
-                // should be UI layer
-                (Vector3 origin, Vector3 direction) = data.orientation;
-
-                foreach (RaycastHit hit in Physics.RaycastAll(origin, direction, Mathf.Infinity))
-                {
-                    if (hit.transform.gameObject.GetComponent<Raycast>())
-                    {
-                        return hit.transform.gameObject;
-                    }
-                    else
-                    {
-                        Debug.DrawLine(data.orientation.origin, hit.point, Color.red, 0.2f);
-                    }
-                }
-
-                return null;
-            }
+                => data.stylusHit && data.stylusHit.GetComponent<Raycast>() ?
+                    data.stylusHit.gameObject :
+                    null;
 
             public override char? GetSelectedLetter(InputData data)
             {

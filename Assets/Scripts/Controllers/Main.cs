@@ -163,19 +163,6 @@ public class Main : MonoBehaviour, VREventGenerator
             layoutManager.DropdownValueSelected(Bindings.emulatingLayoutSwitch.Value);
         }
 
-        if (stylus && stylus.transform.hasChanged)
-        {
-            var raycastable = stylus.Raycast(out _);
-            if (raycastable)
-            {
-                raycastable.hasRaycastFocus = true;
-            }
-            else if (IRaycastable.last)
-            {
-                IRaycastable.last.hasRaycastFocus = false;
-            }
-        }
-
         if (layout && stylus)
         {
             stylus.angleProvider = layout.StylusRotationBounds;

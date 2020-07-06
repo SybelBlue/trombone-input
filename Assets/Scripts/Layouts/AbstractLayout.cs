@@ -1,6 +1,7 @@
 using Controller.Key;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 namespace CustomInput
 {
@@ -12,27 +13,26 @@ namespace CustomInput
 
         public readonly uint? rawValue;
 
-        public readonly (Vector3 origin, Vector3 direction) orientation;
+        public readonly IRaycastable stylusHit;
 
         public InputData(uint? rawValue, Controller.Stylus stylusModel) : this(
                 rawValue,
                 stylusModel.normalizedAngles,
-                stylusModel.normalizedSlider,
-                stylusModel.orientation
+                stylusModel.normalizedSlider
             )
         { }
 
         public InputData(
             uint? rawValue,
             Vector3 normalizedAngles,
-            float? normalizedSlider,
-            (Vector3 origin, Vector3 direction) orientation
+            float? normalizedSlider
             )
         {
             this.rawValue = rawValue;
             this.normalizedAngles = normalizedAngles;
             this.normalizedSlider = normalizedSlider;
-            this.orientation = orientation;
+            
+            stylusHit = IRaycastable.current;
         }
     }
 
@@ -50,7 +50,7 @@ namespace CustomInput
             private GameObject simpleKeyPrefab, binnedKeyPrefab, stylusKeyPrefab, stylusBinnedPrefab, raycastKeyPrefab;
 
             // All of the Key in this layout
-            protected AbstractData[] Key;
+            protected AbstractData[] keys;
 
             // True if this layout uses the slider on the stylus
             public abstract bool usesSlider { get; }
@@ -71,7 +71,7 @@ namespace CustomInput
             {
                 rectTransform = GetComponent<RectTransform>();
 
-                Key = FillKeys();
+                keys = FillKeys();
 
                 var objectDict = new Dictionary<LayoutObjectType, GameObject>
                 { { LayoutObjectType.BinnedKeyPrefab, binnedKeyPrefab }
@@ -81,10 +81,8 @@ namespace CustomInput
                 , { LayoutObjectType.RaycastKeyPrefab, raycastKeyPrefab }
                 };
 
-                for (int i = 0; i < Key.Length; i++)
+                foreach (var key in keys)
                 {
-                    var key = Key[i];
-
                     var newChild = key.Representation(transform, objectDict);
 
                     var controller = newChild.GetComponent<IKey>();
