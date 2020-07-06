@@ -45,6 +45,9 @@ public class Main : MonoBehaviour, VREventGenerator
     [SerializeField]
     private Stylus stylus;
 
+    [SerializeField]
+    private GameObject ground;
+
     // The transform of the indicator
     [SerializeField]
     private RectTransform indicatorRect;
@@ -88,6 +91,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
     private void Start()
     {
+        ground = GameObject.FindWithTag("GroundFloorTag");
         if (Instance)
         {
             Debug.LogWarning("A second Main script has been created while another exists! This instance will not be saved!");
@@ -126,6 +130,7 @@ public class Main : MonoBehaviour, VREventGenerator
         RunNextTrial();
 
         DontDestroyOnLoad(stylus.gameObject);
+        DontDestroyOnLoad(ground.gameObject);
 
         SceneManager.sceneLoaded += OnSceneChange;
     }
@@ -185,7 +190,7 @@ public class Main : MonoBehaviour, VREventGenerator
         LoadFieldIfNull(ref indicatorRect, "SliderIndicator");
 
         stylus.FillIndicatorDisplayIfNull();
-        
+
         if (Static.FillWithTaggedIfNull(ref outputDisplay, "OutputDisplay"))
         {
             outputDisplay.ResetText();
