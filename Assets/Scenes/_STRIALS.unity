@@ -1584,7 +1584,6 @@ GameObject:
   - component: {fileID: 532625920}
   - component: {fileID: 532625919}
   - component: {fileID: 532625923}
-  - component: {fileID: 532625922}
   m_Layer: 0
   m_Name: CircularRotation
   m_TagString: Untagged
@@ -1668,21 +1667,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stylusTransform: {fileID: 0}
---- !u!114 &532625922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 532625917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecc83dac7124b994499e09ace0632705, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  followParent: {fileID: 0}
-  followOffset: {x: 0, y: 0.25, z: 0.3}
-  followRotation: 0
 --- !u!114 &532625923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6102,7 +6086,6 @@ GameObject:
   - component: {fileID: 2096338479}
   - component: {fileID: 2096338478}
   - component: {fileID: 2096338480}
-  - component: {fileID: 2096338481}
   m_Layer: 2
   m_Name: StylusBinnedABCDE
   m_TagString: Untagged
@@ -6184,19 +6167,6 @@ MonoBehaviour:
   MaxAngle: 165
   StartAngle: 45
   OnlyLayoutVisible: 0
---- !u!114 &2096338481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096338476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8f9ee75cfc9b438f9c13eb66e487f4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stylusTransform: {fileID: 0}
 --- !u!1001 &2112465617
 PrefabInstance:
   m_ObjectHideFlags: 0
