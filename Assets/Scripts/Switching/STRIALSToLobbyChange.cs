@@ -5,8 +5,8 @@ namespace SceneSwitching
 {
     public class STRIALSToLobbyChange : MonoBehaviour
     {
-      GameObject buttontwo;
-      public Camera skybox;
+      // GameObject buttontwo;
+      // public Camera skybox;
         // Start is called before the first frame update
         void Start()
         {
@@ -18,7 +18,7 @@ namespace SceneSwitching
         {
             if (CustomInput.Bindings.returnToLobby)
             {
-              ButtonReRETURN();
+              // ButtonReRETURN();
                 UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(Utils._STRIALS_name);
                 // UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("Trials");
 
@@ -28,21 +28,21 @@ namespace SceneSwitching
         }
 
 
-        public void ButtonReRETURN()
-        {
-            var newColor = new Color(184, 158, 195, 0.0f);
-            buttontwo = GameObject.FindWithTag("StartButtonTag");
-            buttontwo.SetActive(true);
-
-            // skybox = GameObject.FindWithTag("MainCamera");
-            skybox = GetComponent<Camera>();
-            skybox = Camera.main;
-            skybox.clearFlags = CameraClearFlags.Skybox;
-            skybox.backgroundColor = newColor;
-
-            //TODO: Set skybox to EBFFFF
-            // skybox = GameObject.FindWithTag("MainCamera");
-            // skybox.SetBackgroundColor("EBFFFF");
-        }
+        // public void ButtonReRETURN()
+        // {
+        //     var newColor = new Color(184, 158, 195, 0.0f);
+        //     buttontwo = GameObject.FindWithTag("StartButtonTag");
+        //     buttontwo.SetActive(true);
+        //
+        //     // skybox = GameObject.FindWithTag("MainCamera");
+        //     skybox = GetComponent<Camera>();
+        //     skybox = Camera.main;
+        //     skybox.clearFlags = CameraClearFlags.Skybox;
+        //     skybox.backgroundColor = newColor;
+        //
+        //     //TODO: Set skybox to EBFFFF
+        //     // skybox = GameObject.FindWithTag("MainCamera");
+        //     // skybox.SetBackgroundColor("EBFFFF");
+        // }
     }
 }

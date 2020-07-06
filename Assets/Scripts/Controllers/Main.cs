@@ -48,6 +48,9 @@ public class Main : MonoBehaviour, VREventGenerator
     [SerializeField]
     private GameObject ground;
 
+    [SerializeField]
+    private GameObject buttonBackground;
+
     // The transform of the indicator
     [SerializeField]
     private RectTransform indicatorRect;
@@ -92,6 +95,7 @@ public class Main : MonoBehaviour, VREventGenerator
     private void Start()
     {
         ground = GameObject.FindWithTag("GroundFloorTag");
+        buttonBackground = GameObject.FindWithTag("ButtonBackgroundTag");
         if (Instance)
         {
             Debug.LogWarning("A second Main script has been created while another exists! This instance will not be saved!");
@@ -131,6 +135,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
         DontDestroyOnLoad(stylus.gameObject);
         DontDestroyOnLoad(ground.gameObject);
+        DontDestroyOnLoad(buttonBackground.gameObject);
 
         SceneManager.sceneLoaded += OnSceneChange;
     }

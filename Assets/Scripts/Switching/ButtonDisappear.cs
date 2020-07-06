@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SceneSwitching
 {
     public class ButtonDisappear : MonoBehaviour
     {
+        // public Button button;
         GameObject button;
         public Camera skybox;
         // GameObject skybox;
@@ -23,8 +25,16 @@ namespace SceneSwitching
         public void ButtonClick()
         {
             var newColor = new Color(235, 255, 255, 1.0f);
-            button = GameObject.FindWithTag("StartButtonTag");
+            // button = GetComponent<Button>();
+            // button = GameObject.FindWithTag("StartButtonTag").GetComponent<Button>();
+            // button = GameObject.FindWithTag("ButtonBackgroundTag").transform.GetChild(0).gameObject;
+            // button.enabled = false;
+            // button.GetComponent<Renderer>().enabled = false;
+            // MeshRenderer mr = button.GetComponent<MeshRenderer>();
+            // mr.enabled = false;
+            button = GameObject.FindWithTag("ButtonBackgroundTag");
             button.SetActive(false);
+            // buttonBack.enabled = false;
 
             // skybox = GameObject.FindWithTag("MainCamera");
             skybox = GetComponent<Camera>();

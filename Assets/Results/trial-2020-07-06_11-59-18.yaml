@@ -1,0 +1,83 @@
+meta:
+  timestamp: "7/6/2020 11:59:18 AM"
+  unixseconds: 1594054758
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    - data: 0
+  - command: set-layout
+    - data: 2
+  - challenge:
+      type: Blind
+      layout: TwoRotBinnedABCDE
+      prompt: "THE DOG TOOK A LEAP"
+      output: "THE DOG YTIO A LEAP"
+      accuracy: 0.7894737
+      time:
+        start: 1.339613
+        stop: 111.5335
+        duration: 110.1939
+      keypresses:
+        76.46523: ""
+        79.49069: "T"
+        81.8848: "H"
+        83.49896: "E"
+        85.5461: " "
+        87.52161: "D"
+        89.46366: "O"
+        90.31734: "G"
+        91.39848: " "
+        92.89302: "Y"
+        94.74306: "T"
+        97.3854: "I"
+        98.18124: "O"
+        99.84947: " "
+        102.5723: "A"
+        105.3018: " "
+        107.4773: "L"
+        108.8554: "E"
+        109.839: "A"
+        111.5335: "P"
+  - command: set-layout
+    - data: 3
+  - challenge:
+      type: Perfect
+      layout: RaycastQWERTY
+      prompt: "AND HIT THE GROUND SOFTLY"
+      output: "AND HIT THE GROUND SOFTLY"
+      accuracy: 1.16
+      time:
+        start: 111.5335
+        stop: 159.2863
+        duration: 47.75278
+      keypresses:
+        113.9476: "A"
+        115.09: "N"
+        116.3428: "D"
+        118.1162: " "
+        119.2035: "H"
+        120.3714: "I"
+        121.7761: "T"
+        123.959: " "
+        125.3186: "T"
+        126.031: "H"
+        127.1092: "E"
+        128.7897: " "
+        130.1752: "G"
+        131.0888: "F"
+        136.7231: "\b"
+        140.6254: "R"
+        142.3369: "O"
+        143.0056: "U"
+        144.7751: "N"
+        146.0012: "F"
+        148.8942: "\b"
+        151.3545: "D"
+        152.5575: " "
+        153.7164: "S"
+        155.2163: "O"
+        156.5217: "F"
+        157.4275: "T"
+        158.3888: "L"
+        159.2863: "Y"
