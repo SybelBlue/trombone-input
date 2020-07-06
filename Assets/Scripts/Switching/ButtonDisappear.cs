@@ -22,7 +22,7 @@ namespace SceneSwitching
 
         public void ButtonClick()
         {
-            var newColor = new Color(235, 255, 255, 1.0f);
+            var newColor = new Color(0.235f, 0.255f, 0.255f, 1.0f);
             // button = GetComponent<Button>();
             // button = GameObject.FindWithTag("StartButtonTag").GetComponent<Button>();
             // button = GameObject.FindWithTag("ButtonBackgroundTag").transform.GetChild(0).gameObject;
