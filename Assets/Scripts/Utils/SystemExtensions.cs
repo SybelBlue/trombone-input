@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace Utils
+﻿namespace Utils
 {
     namespace SystemExtensions
     {

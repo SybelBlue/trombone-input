@@ -9,7 +9,8 @@ using CustomInput;
 using MinVR;
 using Utils.MinVRExtensions;
 using Utils;
-using static CustomInput.VREventFactory;
+using static CustomInput.VREventFactory.Names;
+using SceneSwitching;
 #endregion
 
 namespace Utils
@@ -67,6 +68,15 @@ public class Main : MonoBehaviour, VREventGenerator
 
     [SerializeField]
     private List<Testing.Trial> trials;
+
+    [SerializeField]
+    private STRIALSToLobbyChange strialsToLobby;
+
+    [SerializeField]
+    private LobbyToSTRIALSChange lobbyToStrials;
+
+    [SerializeField]
+    private bool strialsIsLoaded;
     #endregion
 
     // The most up-to-date value reported by the InputFieldController
@@ -106,14 +116,15 @@ public class Main : MonoBehaviour, VREventGenerator
 
         VRMain.Instance.AddEventGenerator(this);
 
-        VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer_event_name, OnSliderAnalogUpdate);
+        VRMain.Instance.AddOnVRAnalogUpdateCallback(_potentiometer, OnSliderAnalogUpdate);
 
-        VRMain.Instance.AddVRButtonCallbacks(_front_button_event_name, OnFrontButtonUp, OnFrontButtonDown);
-        VRMain.Instance.AddVRButtonCallbacks(_back_button_event_name, OnBackButtonUp, OnBackButtonDown);
+        VRMain.Instance.AddVRButtonCallbacks(_front_button, OnFrontButtonUp, OnFrontButtonDown);
+        VRMain.Instance.AddVRButtonCallbacks(_back_button, OnBackButtonUp, OnBackButtonDown);
 
-        Bindings.InitializeMinVRLayoutSwitching(server);
+        Bindings.InitializeMinVRUnityKeyEvents(server);
 
         Bindings.AddMinVRLayoutSwitchingHandlers(i => delegate { layoutManager.DropdownValueSelected(i); });
+        Bindings.AddMinVRSceneAdvanceHandler(OnSceneAdvanceButtonDown);
 
         outputDisplay?.ResetText();
 
@@ -175,6 +186,7 @@ public class Main : MonoBehaviour, VREventGenerator
         LoadFieldIfNull(ref layoutManager, "LayoutManager");
         LoadFieldIfNull(ref trialProgress, "TrialProgress");
         LoadFieldIfNull(ref indicatorRect, "SliderIndicator");
+        LoadFieldIfNull(ref strialsToLobby, "StrialsUnloader");
 
         stylus.FillIndicatorDisplayIfNull();
 
@@ -199,13 +211,13 @@ public class Main : MonoBehaviour, VREventGenerator
         }
     }
 
-    private bool LoadFieldIfNull<T>(ref T obj, string name)
+    private bool LoadFieldIfNull<T>(ref T obj, string sceneTag)
         where T : Component
     {
-        bool result = Static.FillWithTaggedIfNull(ref obj, name);
+        bool result = Static.FillWithTaggedIfNull(ref obj, sceneTag);
         if (result)
         {
-            Debug.Log($"Found \"{name}\" in scene and loaded into Main.");
+            Debug.Log($"Found \"{sceneTag}\" in scene and loaded into Main.");
         }
         return result;
     }
@@ -239,9 +251,39 @@ public class Main : MonoBehaviour, VREventGenerator
     }
 
     #region Callbacks
+    public void OnSceneAdvanceButtonDown()
+    {
+        Debug.Log("Scene Advanced!");
+
+        if (strialsIsLoaded)
+        {
+            if (strialsToLobby)
+            {
+                strialsToLobby.Transition();
+            }
+            else
+            {
+                Debug.LogError("Can not unload _STRIALS, strialsToLobby is null!");
+            }
+        }
+        else
+        {
+            if (lobbyToStrials)
+            {
+                lobbyToStrials.Transition();
+            }
+            else
+            {
+                Debug.LogError("Can not load _STRIALS, lobbyToTrials is null!");
+            }
+        }
+
+        strialsIsLoaded = !strialsIsLoaded;
+    }
+
     private void OnSceneChange(Scene scene, LoadSceneMode _)
     {
-        if (!scene.name.Equals(SceneSwitching.Utils._STRIALS_name)) return;
+        if (!scene.name.Equals(SceneSwitching.Utils._STRIALS_scene)) return;
 
         LoadNullFields();
 

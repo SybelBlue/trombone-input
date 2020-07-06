@@ -45,7 +45,7 @@ namespace Utils
                         Vector3 pos = new Vector3((x * planeSize + startPos.x),
                                                     0,
                                                     (z * planeSize + startPos.z));
-                        GameObject t = (GameObject)Instantiate(plane, pos, Quaternion.identity);
+                        GameObject t = Instantiate(plane, pos, Quaternion.identity, transform);
 
                         string tilename = "Tile_" + ((int)(pos.x)).ToString() + "_" + ((int)(pos.z)).ToString();
 
@@ -80,7 +80,7 @@ namespace Utils
 
                             if (!tiles.ContainsKey(tilename))
                             {
-                                GameObject t = (GameObject)Instantiate(plane, pos, Quaternion.identity);
+                                GameObject t = Instantiate(plane, pos, Quaternion.identity, transform);
                                 t.name = tilename;
                                 Tile tile = new Tile(t, updateTime);
                                 tiles.Add(tilename, tile);

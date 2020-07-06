@@ -1,30 +1,31 @@
-﻿using System.Collections;
+﻿using Utils.UnityExtensions;
 using UnityEngine;
 
 namespace SceneSwitching
 {
-    public class STRIALSToLobbyChange : MonoBehaviour
+    public class STRIALSToLobbyChange : MonoBehaviour, ITransitionable
     {
-      GameObject buttontwo;
-      public Camera skybox;
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
+        GameObject buttontwo;
+        public Camera skybox;
 
         // Update is called once per frame
-        void Update()
+        //void Update()
+        //{
+        //    if (CustomInput.Bindings.returnToLobby)
+        //    {
+        //        TransitionAsync();
+        //        // UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("Trials");
+
+        //        // SceneManager.LoadScene("Lobby");
+        //    }
+
+        //}
+
+        // Called when Main requests a scene change
+        public void Transition()
         {
-            if (CustomInput.Bindings.returnToLobby)
-            {
-              ButtonReRETURN();
-                UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(Utils._STRIALS_name);
-                // UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("Trials");
-
-                // SceneManager.LoadScene("Lobby");
-            }
-
+            ButtonReRETURN();
+            Utils._STRIALS_scene.UnloadAsync();
         }
 
 

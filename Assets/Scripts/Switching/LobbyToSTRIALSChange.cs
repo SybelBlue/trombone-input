@@ -1,38 +1,38 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using Utils.UnityExtensions;
 // using is = ButtonDisappear;
 
 namespace SceneSwitching
 {
-    public class LobbyToSTRIALSChange : MonoBehaviour
+    public class LobbyToSTRIALSChange : MonoBehaviour, ITransitionable
     {
-      // public ButtonDisappear bd;
-      GameObject button;
-      public Camera skybox;
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
+        // public ButtonDisappear bd;
+        GameObject button;
+        public Camera skybox;
+        
         // Update is called once per frame
-        void Update()
+        //void Update()
+        //{
+        //    if (CustomInput.Bindings.advanceToMain)//TODO: EXPLORE THIS
+        //    {
+        //      ButtonRETURN();
+        //      // bd.ButtonClick();
+        //        // GetComponent<StartPracticeButton>().onClick.Invoke();
+        //        // sn = GetComponent<StartPracticeButton>().onClick.Invoke();
+        //        UnityEngine.SceneManagement.SceneManager.LoadScene(Utils._STRIALS_name, LoadSceneMode.Additive);
+
+
+        //    }
+
+        //    // SceneManager.LoadScene("_MAIN");
+
+        //}
+
+        // Called when Main requests a scene change
+        public void Transition()
         {
-            if (CustomInput.Bindings.advanceToMain)//TODO: EXPLORE THIS
-            {
-              ButtonRETURN();
-              // bd.ButtonClick();
-                // GetComponent<StartPracticeButton>().onClick.Invoke();
-                // sn = GetComponent<StartPracticeButton>().onClick.Invoke();
-                UnityEngine.SceneManagement.SceneManager.LoadScene(Utils._STRIALS_name, LoadSceneMode.Additive);
-
-
-            }
-
-            // SceneManager.LoadScene("_MAIN");
-
+            ButtonRETURN();
+            Utils._STRIALS_scene.LoadAdditive();
         }
 
         public void ButtonRETURN()
