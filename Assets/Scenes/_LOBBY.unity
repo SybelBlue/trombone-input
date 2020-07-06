@@ -3042,7 +3042,7 @@ GameObject:
   - component: {fileID: 1516907492}
   - component: {fileID: 1516907491}
   m_Layer: 0
-  m_Name: EndButtonBackground
+  m_Name: JumpToTrialBackground
   m_TagString: ButtonBackGroundEnd
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
