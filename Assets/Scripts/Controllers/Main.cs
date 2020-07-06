@@ -257,6 +257,7 @@ public class Main : MonoBehaviour, VREventGenerator
         if (strialsIsLoaded)
         {
             Scenes._STRIALS.UnloadAsync();
+            
         }
         else
         {
@@ -415,7 +416,14 @@ public class Main : MonoBehaviour, VREventGenerator
     {
         if (success)
         {
-            RunNextTrial();
+          OnSceneAdvanceButtonDown();
+          //TODO:Make it so the jump button is triggered
+            // OnSceneChange("_STRIALS");
+            // RunNextTrial();
+        }
+        else
+        {
+          RunNextTrial();
         }
     }
     #endregion

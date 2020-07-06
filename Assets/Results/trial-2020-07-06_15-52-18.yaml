@@ -1,0 +1,37 @@
+meta:
+  timestamp: "7/6/2020 3:52:18 PM"
+  unixseconds: 1594068738
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    - data: 1
+  - command: randomize-layouts
+  - challenge:
+      type: Practice
+      layout: LinearABCDE
+      prompt: "ABCDE"
+      output: ""
+      accuracy: 0
+      time:
+        start: 137.839
+        stop: 193.0512
+        duration: 55.21219
+      keypresses:
+  - challenge:
+      type: Blind
+      layout: LinearABCDE
+      prompt: "123456"
+      output: "123456"
+      accuracy: 1
+      time:
+        start: 193.0512
+        stop: 202.2171
+        duration: 9.165878
+      keypresses:
+        196.9287: "1"
+        197.9461: "2"
+        198.8888: "3"
+        199.756: "4"
+        201.1538: "5"
+        202.2171: "6"
