@@ -5785,7 +5785,7 @@ MonoBehaviour:
   _layout: 0
   dropdownController: {fileID: 970785290}
   linearABCDE: {fileID: 997093841}
-  stylusBinnedABCDE: {fileID: 2096338478}
+  stylusBinnedABCDE: {fileID: 2034183664}
   twoRotationABCDE: {fileID: 168735320}
   raycastQWERTY: {fileID: 1047773957}
 --- !u!1001 &1984481119
