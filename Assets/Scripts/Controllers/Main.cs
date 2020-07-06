@@ -123,7 +123,7 @@ public class Main : MonoBehaviour, VREventGenerator
         Bindings.InitializeMinVRUnityKeyEvents(server);
 
         Bindings.AddMinVRLayoutSwitchingHandlers(i => delegate { layoutManager.DropdownValueSelected(i); });
-        Bindings.AddMinVRSceneAdvanceHandler(OnSceneAdvanceButtonDown);
+        Bindings.AddMinVRSceneAdvanceHandler(OnSceneAdvance);
 
         outputDisplay?.ResetText();
 
@@ -251,7 +251,7 @@ public class Main : MonoBehaviour, VREventGenerator
     }
 
     #region Callbacks
-    public void OnSceneAdvanceButtonDown()
+    public void OnSceneAdvance()
     {
         Debug.LogWarning("Scene Advanced!");
         if (strialsIsLoaded)
