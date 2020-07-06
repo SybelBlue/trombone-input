@@ -26,7 +26,7 @@ namespace CustomInput
         public abstract class AbstractData
         {
             // the property holding name of the most concrete subclass that extends this
-            public abstract Type typeName { get; }
+            public abstract Type enclosingType { get; }
 
             // the property holding size in sensor widths (must be positive)
             // size is defined by how many of the 64 output levels correspond to this key, when applicable,
@@ -44,13 +44,13 @@ namespace CustomInput
             public abstract GameObject Representation(Transform parent, Dictionary<LayoutObjectType, GameObject> objectDict);
 
             public override string ToString()
-                => $"{typeName} [{label}]";
+                => $"{enclosingType} [{label}]";
         }
 
         // The Base class for LayoutKeys with only a single character (like a standard QWERTY keyboard key)
         public class SimpleData : AbstractData
         {
-            public override Type typeName => typeof(Simple);
+            public override Type enclosingType => typeof(Simple);
 
             // the char this key represents
             public readonly char c;
@@ -77,7 +77,7 @@ namespace CustomInput
             protected GameObject RepresentationUsing<T>(Transform parent, GameObject prefab)
                 where T : AbstractSimple
             {
-                var newItem = GameObject.Instantiate(prefab, parent);
+                var newItem = UnityEngine.Object.Instantiate(prefab, parent);
                 newItem.GetComponent<T>().symbol = c;
                 return newItem;
             }
@@ -95,7 +95,7 @@ namespace CustomInput
         // The Base class for all Key with binned labeling
         public class BinnedData : AbstractData
         {
-            public override Type typeName => typeof(Binned);
+            public override Type enclosingType => typeof(Binned);
 
             public override string label => _data;
             public override int size => _size;
@@ -153,7 +153,7 @@ namespace CustomInput
         // The SimpleKey for Stylus canvases
         public class StylusData : SimpleData
         {
-            public override Type typeName => typeof(Stylus);
+            public override Type enclosingType => typeof(Stylus);
 
             public StylusData(char data, int size, char? alt = null) : base(data, size, alt)
             { }
@@ -165,7 +165,7 @@ namespace CustomInput
         // The BinnedKey for Stylus canvases
         public class StylusBinnedData : BinnedData
         {
-            public override Type typeName => typeof(StylusBinned);
+            public override Type enclosingType => typeof(StylusBinned);
 
             public StylusBinnedData(bool slant, params SimpleData[] subitems) : base(slant, subitems)
             { }
@@ -188,7 +188,7 @@ namespace CustomInput
 
         public class RaycastData : StylusData
         {
-            public override Type typeName => typeof(Raycast);
+            public override Type enclosingType => typeof(Raycast);
 
             public RaycastData(char data, int size, char? alt = null) : base(data, size, alt)
             { }

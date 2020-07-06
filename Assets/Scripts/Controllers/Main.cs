@@ -266,14 +266,14 @@ public class Main : MonoBehaviour, VREventGenerator
             case Utils.SignalProcessing.EventType.NoTouches:
                 return;
             case Utils.SignalProcessing.EventType.FingerUp:
-                if (!layout.keyOnFingerUp)
-                {
-                    lastReportedValue = e.value;
-                }
-                else
+                if (layout.keyOnFingerUp)
                 {
                     // TODO: probably needs changing
                     TryFindKey(e.value);
+                }
+                else
+                {
+                    lastReportedValue = e.value;
                 }
                 Debug.LogWarning("Click!");
                 return;

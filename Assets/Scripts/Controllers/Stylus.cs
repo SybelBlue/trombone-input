@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Utils;
 using Utils.UnityExtensions;
+using Utils.SystemExtensions;
 using System;
 
 namespace Controller
@@ -138,7 +139,8 @@ namespace Controller
 
             normalizedAngles =
                 eulerAngles
-                .Map(x => useUnityEulerAngles ? Static.ModIntoRange(x, -180, 180) : x)
+                .Map(x => useUnityEulerAngles ? x.ModIntoRange(-180, 180) : x)
+
                 .Map((i, x) => Mathf.InverseLerp(LowerBound(i), UpperBound(i), x));
 
             if (!recordSliderData) return;
