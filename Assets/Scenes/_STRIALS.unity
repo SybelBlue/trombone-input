@@ -6179,8 +6179,8 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  fDistance: 85
-  MinAngle: 230
+  fDistance: 88
+  MinAngle: 303
   MaxAngle: 165
   StartAngle: 45
   OnlyLayoutVisible: 0
