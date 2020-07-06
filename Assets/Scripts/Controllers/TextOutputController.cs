@@ -100,6 +100,8 @@ namespace Controller
                 sugStrings.AddRange(Auto.Complete.Instance.Completions(lastWord));
             }
 
+            GetComponent<Image>().enabled = sugStrings.Count > 0;
+
             for (int i = 0; i < suggestions.Length; i++)
             {
                 suggestions[i].text = (i >= sugStrings.Count) ? "" : sugStrings[i];
