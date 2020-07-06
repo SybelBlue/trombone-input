@@ -183,11 +183,12 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void LoadNullFields()
     {
+        LoadFieldIfNull(ref stylus, "StylusTag");
         LoadFieldIfNull(ref layoutManager, "LayoutManager");
         LoadFieldIfNull(ref trialProgress, "TrialProgress");
         LoadFieldIfNull(ref indicatorRect, "SliderIndicator");
 
-        stylus.FillIndicatorDisplayIfNull();
+        stylus?.FillIndicatorDisplayIfNull();
 
         if (Static.FillWithTaggedIfNull(ref outputDisplay, "OutputDisplay"))
         {
