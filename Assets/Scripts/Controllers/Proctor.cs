@@ -70,9 +70,9 @@ namespace Controller
         private string currentLayoutName
             => layoutOrder == null ? "" : Enum.GetName(typeof(LayoutOption), currentLayout);
 
-        private int _trialIndex;
+        private int _challengeIndex;
         private TrialItem currentTrialItem
-            => currentTrial?.items[_trialIndex];
+            => currentTrial?.items[_challengeIndex];
         public int? trialNumber
             => currentTrial?.trialNumber;
 
@@ -181,7 +181,7 @@ namespace Controller
         {
             if (completedChallenge)
             {
-                AdvanceTrial();
+                AdvanceChallenge();
             }
 
             practiceEndButton.gameObject.SetActive(false);
@@ -271,9 +271,9 @@ namespace Controller
         public void RunTrial(Trial t)
         {
             currentTrial = t;
-            _trialIndex = -1;
+            _challengeIndex = -1;
             builder = new ResultBuilder();
-            AdvanceTrial();
+            AdvanceChallenge();
         }
 
         public void SetLayout(LayoutOption value)
@@ -288,18 +288,18 @@ namespace Controller
         private void AdvanceIndexCyclic()
             => _layoutIndex = (_layoutIndex + 1) % layoutOrder.Length;
 
-        private void AdvanceTrial()
+        private void AdvanceChallenge()
         {
             if (!currentTrial.HasValue) return;
 
-            if (_trialIndex > -1)
+            if (_challengeIndex > -1)
             {
                 OnChallengeEnd.Invoke();
             }
 
-            _trialIndex++;
+            _challengeIndex++;
 
-            if (_trialIndex >= currentTrial.Value.Length)
+            if (_challengeIndex >= currentTrial.Value.Length)
             {
                 FinishTrial();
                 return;
@@ -313,7 +313,7 @@ namespace Controller
                 return;
             }
 
-            AdvanceTrial();
+            AdvanceChallenge();
         }
 
         private void FinishTrial()
@@ -343,7 +343,7 @@ namespace Controller
         {
             if (currentChallengeType == Challenge.Type.Practice)
             {
-                AdvanceTrial();
+                AdvanceChallenge();
             }
             else
             {

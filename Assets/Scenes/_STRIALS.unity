@@ -984,40 +984,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 263827735}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: EndTrialScene
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
-      - m_Target: {fileID: 1452405834}
-        m_MethodName: ButtonReClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 1
+      m_Calls: []
 --- !u!114 &263827735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5628,7 +5595,7 @@ GameObject:
   - component: {fileID: 1708648835}
   - component: {fileID: 1708648837}
   m_Layer: 5
-  m_Name: TestingOutputManager
+  m_Name: Proctor
   m_TagString: OutputDisplay
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5670,7 +5637,7 @@ MonoBehaviour:
   dict243342: {fileID: 4900000, guid: 0097bfaadfd0ee8439cb206c6b430d48, type: 3}
   dictionarySize: 0
   verbosity: 2
-  practiceEndButton: {fileID: 0}
+  practiceEndButton: {fileID: 263827734}
   challengeTypeIndicator: {fileID: 873205909}
   fileOutputIndicator: {fileID: 491019871}
   OnLayoutChange:
