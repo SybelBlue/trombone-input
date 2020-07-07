@@ -122,6 +122,9 @@ namespace CustomInput
         public static bool backspaceDown
             => GetKeyDown(Backspace);
 
+        public static bool advanceSceneDown
+            => GetKeyDown(_scene_advance_key);
+
         public static int? emulatingLayoutSwitch
         {
             get
@@ -173,7 +176,7 @@ namespace CustomInput
             }
         }
 
-        public static void InitializeMinVRUnityKeyEvents(VRDevice server)
+        public static void InitializeMinVRLayoutSwitching(VRDevice server)
         {
             if (server == null)
             {
@@ -189,8 +192,6 @@ namespace CustomInput
             {
                 server.unityKeysToVREvents.Add(item);
             }
-
-            server.unityKeysToVREvents.Add(_scene_advance_key);
         }
 
         public static void AddMinVRLayoutSwitchingHandlers(Func<int, VRMain.OnVRButtonDownEventDelegate> LayoutHandlers)
@@ -201,9 +202,6 @@ namespace CustomInput
                 VRMain.Instance.AddOnVRButtonDownCallback(bindingName, LayoutHandlers(i));
             }
         }
-
-        public static void AddMinVRSceneAdvanceHandler(VRMain.OnVRButtonDownEventDelegate OnSceneAdvance) 
-            => VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(_scene_advance_key), OnSceneAdvance);
 
         public static string KeyCodeToMinVRButtonDownName(UnityEngine.KeyCode binding)
             => $"Kbd{binding}_Down";
@@ -233,7 +231,15 @@ namespace CustomInput
             {
                 eventList.Add(MakeButtonUpEvent(_back_button));
             }
+
+            if (advanceSceneDown)
+            {
+                eventList.Add(MakeButtonDownEvent(_scene_advance_key.ToString()));
+            }
         }
+
+        public static void AddSceneAdvanceCallback(VRMain.OnVRButtonDownEventDelegate OnSceneAdvance)
+            => VRMain.Instance.AddOnVRButtonDownCallback(_scene_advance_key.ToString(), OnSceneAdvance);
 
 
         // Starts, updates, and ends emulated slider input when appropriate

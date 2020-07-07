@@ -120,10 +120,11 @@ public class Main : MonoBehaviour, VREventGenerator
         VRMain.Instance.AddVRButtonCallbacks(_front_button, OnFrontButtonUp, OnFrontButtonDown);
         VRMain.Instance.AddVRButtonCallbacks(_back_button, OnBackButtonUp, OnBackButtonDown);
 
-        Bindings.InitializeMinVRUnityKeyEvents(server);
+        Bindings.AddSceneAdvanceCallback(OnSceneAdvance);
+
+        Bindings.InitializeMinVRLayoutSwitching(server);
 
         Bindings.AddMinVRLayoutSwitchingHandlers(i => delegate { layoutManager.DropdownValueSelected(i); });
-        Bindings.AddMinVRSceneAdvanceHandler(OnSceneAdvance);
 
         outputDisplay?.ResetText();
 
@@ -416,7 +417,7 @@ public class Main : MonoBehaviour, VREventGenerator
     {
         if (success)
         {
-          OnSceneAdvanceButtonDown();
+          OnSceneAdvance();
           //TODO:Make it so the jump button is triggered
             // OnSceneChange("_STRIALS");
             // RunNextTrial();
