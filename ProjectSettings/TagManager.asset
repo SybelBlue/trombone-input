@@ -16,6 +16,7 @@ TagManager:
   - GroundFloorTag
   - ButtonBackgroundTag
   - ButtonBackGroundEnd
+  - JumbBackToLobbyTag
   layers:
   - Default
   - TransparentFX

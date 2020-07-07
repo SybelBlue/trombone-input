@@ -77,6 +77,8 @@ public class Main : MonoBehaviour, VREventGenerator
     private bool strialsIsLoaded;
     #endregion
 
+    public Button backToLobby;
+
     // The most up-to-date value reported by the InputFieldController
     private uint? lastReportedValue;
 
@@ -101,6 +103,7 @@ public class Main : MonoBehaviour, VREventGenerator
     {
         ground = GameObject.FindWithTag("GroundFloorTag");
         buttonBackground = GameObject.FindWithTag("ButtonBackgroundTag");
+        backToLobby = GameObject.FindGameObjectWithTag("JumbBackToLobbyTag").GetComponent<Button>();
         if (Instance)
         {
             Debug.LogWarning("A second Main script has been created while another exists! This instance will not be saved!");
@@ -258,7 +261,7 @@ public class Main : MonoBehaviour, VREventGenerator
         if (strialsIsLoaded)
         {
             Scenes._STRIALS.UnloadAsync();
-            
+
         }
         else
         {
@@ -418,6 +421,9 @@ public class Main : MonoBehaviour, VREventGenerator
         if (success)
         {
           OnSceneAdvance();
+          backToLobby.onClick.Invoke();
+          // backToLobby.gameObject.SetActive(true);
+
           //TODO:Make it so the jump button is triggered
             // OnSceneChange("_STRIALS");
             // RunNextTrial();
