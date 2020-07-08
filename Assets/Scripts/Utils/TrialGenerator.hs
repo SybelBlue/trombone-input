@@ -83,7 +83,7 @@ labelTrial :: Trial -> Int -> Trial
 labelTrial trial n = Do (TrialNumber n) : trial
 
 writeTrial :: Int -> Trial -> Main
-writeTrial n trial = writeFile ("Assets/Trials/trial" ++ show n ++ ".txt") (write trial)
+writeTrial n trial = writeFile ("Assets/StreamingAssets/Trials/trial" ++ show n ++ ".txt") (write trial)
 
 writeTrials :: [Main] -> Main
 writeTrials [] = putStr "done."
