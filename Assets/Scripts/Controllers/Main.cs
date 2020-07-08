@@ -200,11 +200,11 @@ public class Main : MonoBehaviour, VREventGenerator
                 casted.OnLayoutChange.AddListener(OnTestingLayoutChange);
                 casted.OnChallengeEnd.AddListener(OnChallengeEnd);
 
-                Debug.Log("Found \"OutputDisplay\" in scene and loaded into main as Proctor.");
+                Debug.Log("Found \"OutputDisplay\" in scene and loaded into Main as Proctor.");
             }
             else
             {
-                Debug.Log("Found \"OutputDisplay\" in scene and loaded into main as TextOutputDisplay.");
+                Debug.Log("Found \"OutputDisplay\" in scene and loaded into Main as TextOutputDisplay.");
             }
         }
     }
@@ -274,6 +274,10 @@ public class Main : MonoBehaviour, VREventGenerator
         if (layout && trialProgress)
         {
             RunNextTrial();
+        }
+        else
+        {
+            Debug.LogWarning("Can not run trial after scene change!");
         }
     }
 

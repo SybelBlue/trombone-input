@@ -2355,7 +2355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHanded: 0
   useAutofilter: 1
-  trialExecutionMode: 1
+  trialExecutionMode: 0
   server: {fileID: 1671901940}
   layoutManager: {fileID: 0}
   stylus: {fileID: 971101864}

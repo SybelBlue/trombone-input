@@ -24,9 +24,9 @@ public class KeyPressTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      Scene scene = SceneManager.GetActiveScene();
+      //Scene scene = SceneManager.GetActiveScene();
       Scene sceeneTwo = SceneManager.GetSceneByName("_STRIALS");
-      Debug.Log($"Active Scene: \"{scene.name}\".");
+      //Debug.Log($"Active Scene: \"{scene.name}\".");
 
       if(Input.GetKeyDown(KeyCode.Return))
       {
