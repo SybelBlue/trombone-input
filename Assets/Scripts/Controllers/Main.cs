@@ -131,13 +131,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
         outputDisplay?.ResetText();
 
-        trials = new List<Testing.Trial>(trialAssets.Length);
-        foreach (TextAsset trial in trialAssets)
-        {
-            var items = Testing.Utils.ReadTrialItems(trial, false);
-            trials.Add(items);
-            Debug.Log($"Loaded {items.Length} trial items");
-        }
+        trials = Testing.Utils.ReadTrials(logComments: true);
 
         autoFilter.OnFilterOutput.AddListener(OnFilterEvent);
 
@@ -420,17 +414,17 @@ public class Main : MonoBehaviour, VREventGenerator
     {
         if (success)
         {
-          OnSceneAdvance();
-          backToLobby.onClick.Invoke();
-          // backToLobby.gameObject.SetActive(true);
+            OnSceneAdvance();
+            backToLobby.onClick.Invoke();
+            // backToLobby.gameObject.SetActive(true);
 
-          //TODO:Make it so the jump button is triggered
+            //TODO:Make it so the jump button is triggered
             // OnSceneChange("_STRIALS");
             // RunNextTrial();
         }
         else
         {
-          RunNextTrial();
+            RunNextTrial();
         }
     }
     #endregion
