@@ -17,6 +17,7 @@ TagManager:
   - ButtonBackgroundTag
   - ButtonBackGroundEnd
   - JumbBackToLobbyTag
+  - CircularStylus
   layers:
   - Default
   - TransparentFX

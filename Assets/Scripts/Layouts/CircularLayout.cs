@@ -68,13 +68,26 @@ public class CircularLayout : LayoutGroup {
 
 
 
-
         float fOffsetAngle = (MaxAngle - MinAngle) / (transform.childCount -1);
         // float fOffsetAngle = (MaxAngle - MinAngle) / ChildrenToFormat;
 
         float fAngle = StartAngle;
+
+
         for (int i = 0; i < transform.childCount; i++)
         {
+          // Debug.LogWarning(transform.position);
+          // Debug.LogWarning(i);
+          if (i==0)
+          {
+            Debug.LogWarning("Child is Stylus");
+            GameObject child = GameObject.FindGameObjectWithTag("CircularStylus");
+            // Vector3 vPos = new Vector3(0, 0, 0);
+            child.transform.position = transform.position;
+          }
+          else
+          {
+           //TODO: make so that it recgonzies when the child is the stylus and skips it
             RectTransform child = (RectTransform)transform.GetChild(i);
             if ((child != null) && (!OnlyLayoutVisible || child.gameObject.activeSelf))
             {
@@ -97,10 +110,9 @@ public class CircularLayout : LayoutGroup {
                 child.anchorMin = child.anchorMax = child.pivot = new Vector2(0.5f, 0.5f);
                 fAngle += fOffsetAngle;
             }
+          }
         }
 
     }
-}
-
-
+  }
 }

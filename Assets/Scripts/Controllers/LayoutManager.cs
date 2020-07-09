@@ -45,6 +45,8 @@ namespace CustomInput
 
         [SerializeField]
         private StylusBinnedABCDE stylusBinnedABCDE;
+        // private GameObject circleStylus = GameObject.FindGameObjectWithTag("CircularStylus");
+
 
         [SerializeField]
         private TwoRotationABCDE twoRotationABCDE;
