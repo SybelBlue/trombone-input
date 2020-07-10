@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/10/2020 5:52:17 PM"
+  unixseconds: 1594421537
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 4
+  - command: set-layout
+    data: 3
+  - challenge:
+      type: Practice
+      layout: RaycastQWERTY
+      prompt: "THE PROTESTERS BLOCKED ALL TRAFFIC"
+      output: ""
+      accuracy: 0
+      time:
+        start: 2.80064
+        stop: 3.630744
+        duration: 0.8301036
+      keypresses:

@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/10/2020 5:52:37 PM"
+  unixseconds: 1594421557
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 13
+  - command: set-layout
+    data: 1
+  - challenge:
+      type: Practice
+      layout: StylusBinnedABCDE
+      prompt: "THIS WATCH IS TOO EXPENSIVE"
+      output: ""
+      accuracy: 0
+      time:
+        start: 18.00189
+        stop: 22.58686
+        duration: 4.584974
+      keypresses:
