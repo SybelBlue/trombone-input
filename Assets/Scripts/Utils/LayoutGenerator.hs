@@ -75,9 +75,9 @@ commonLetter :: Char -> Bool
 commonLetter x = elem x "ERIOTAN"
 
 makeInitMethod :: Layout -> String
-makeInitMethod (stylusMode, Key) = "\t// Auto-generated \n\tprotected override LayoutKey[] FillKeys() {\n\t\t"
+makeInitMethod (stylusMode, keys) = "\t// Auto-generated \n\tprotected override LayoutKey[] FillKeys() {\n\t\t"
   ++ "return new LayoutKey[] {\n"
-  ++ (intercalate "\n" $ concat $ map (map deformat . makeConstructorLineFor stylusMode) Key)
+  ++ (intercalate "\n" $ concat $ map (map deformat . makeConstructorLineFor stylusMode) keys)
   ++ "\n\t};\n}"
 
 

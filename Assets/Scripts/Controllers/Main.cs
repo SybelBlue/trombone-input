@@ -220,9 +220,12 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
     {
-        //var gestureStartValue = lastReportedValue ?? Bindings._slider_max_value / 2;
-       // Bindings.CaptureEmulatedSliderInput(ref eventList, gestureStartValue, lastReportedValue);
-       // Bindings.CaptureEmulatedButtonInput(ref eventList, layout && layout.usesSlider);
+        if (Bindings.doEmulate)
+        {
+            var gestureStartValue = lastReportedValue ?? Bindings._slider_max_value / 2;
+            Bindings.CaptureEmulatedSliderInput(ref eventList, gestureStartValue, lastReportedValue);
+            Bindings.CaptureEmulatedButtonInput(ref eventList, layout && layout.usesSlider);
+        }
     }
 
     private void RunNextTrial()

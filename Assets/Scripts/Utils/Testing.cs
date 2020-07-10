@@ -280,7 +280,7 @@ namespace Testing
             writer.WriteLine($"  - command: {source.key}");
             if (source is CommandWithData)
             {
-                writer.WriteLine($"    - data: {(source as CommandWithData).data}");
+                writer.WriteLine($"    data: {(source as CommandWithData).data}");
             }
         }
     }

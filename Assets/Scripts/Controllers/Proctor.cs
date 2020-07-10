@@ -226,10 +226,10 @@ namespace Controller
                             lastCorrect = correct;
                         }
 
-                        // add the character to the string, if it's wrong and ' ', use _ or -
-                        if (!correct && c == ' ')
+                        // add the character to the string, if ' ', use -
+                        if (c == ' ')
                         {
-                            final += target != '_' ? "_" : "-";
+                            final += '-';
                         }
                         else
                         {
