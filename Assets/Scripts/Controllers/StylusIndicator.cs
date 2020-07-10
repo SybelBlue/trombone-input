@@ -32,7 +32,8 @@ namespace Controller
                         modelController.normalizedAngles[i]);
             }
 
-            display.text += string.Format("Slider Unfiltered: {0, 3:N3}", modelController.normalizedSlider);
+            display.text += string.Format("Slider Unfiltered: {0, 3:N3}  ", modelController.rawSlider);
+            display.text += string.Format("Slider Normalized: {0, 3:N3}", modelController.normalizedSlider);
         }
     }
 }
