@@ -191,6 +191,8 @@ public class Main : MonoBehaviour, VREventGenerator
             {
                 var casted = outputDisplay as Proctor;
 
+                casted.stylusProvider = () => stylus;
+
                 casted.OnTrialEnd.AddListener(OnTrialEnd);
                 casted.OnLayoutChange.AddListener(OnTestingLayoutChange);
                 casted.OnChallengeEnd.AddListener(OnChallengeEnd);

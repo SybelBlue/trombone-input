@@ -151,7 +151,7 @@ namespace Testing
         }
 
         public static string UniqueYamlName(string stub)
-            => $"{stub}-{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.yaml";
+          => $"{stub}-{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.yaml";
 
         public static void UsingStream(string path, Action<StreamReader> ReaderCallback)
         {
@@ -232,8 +232,8 @@ namespace Testing
             return count / Mathf.Max(prompt.Length, output.Length);
         }
 
-        public static float PerfectAccuracy(string prompt, List<(string key, float time)> keypresses)
-            => keypresses.Count / (float)prompt.Length;
+        public static float PerfectAccuracy(string prompt, List<Keypress> keypresses)
+          => keypresses.Count / (float)prompt.Length;
     }
 
     public class ResultBuilder
@@ -243,7 +243,7 @@ namespace Testing
         private ChallengeResult lastChallenge;
 
         public ResultBuilder()
-            => results = new List<ITrialResult>();
+          => results = new List<ITrialResult>();
 
         public void Push(TrialItem item, string currentOutput, string currentLayoutName)
         {
@@ -279,11 +279,8 @@ namespace Testing
             return results;
         }
 
-        public void AddKeypress(char c)
-            => lastChallenge.AddKeypress($"{c}");
-
-        public void AddKeypress(string c)
-            => lastChallenge.AddKeypress(c);
+        public void AddKeypress(Keypress kp)
+          => lastChallenge.AddKeypress(kp);
     }
 
     public interface ITrialResult
@@ -292,7 +289,7 @@ namespace Testing
     }
 
     public abstract class TrialItemResult<T> : ITrialResult
-        where T : TrialItem
+      where T : TrialItem
     {
         public readonly T source;
 
@@ -327,7 +324,7 @@ namespace Testing
 
         public string output;
 
-        public List<(string key, float time)> keypresses;
+        public List<Keypress> keypresses;
 
         public ChallengeResult(Challenge source, string layoutName, float? start = null) : base(source)
         {
@@ -335,7 +332,7 @@ namespace Testing
             this.start = start ?? Time.time;
 
             output = "";
-            keypresses = new List<(string key, float time)>(source.prompt.Length * 2);
+            keypresses = new List<Keypress>(source.prompt.Length * 2);
         }
 
         private int _indent = 0;
@@ -345,9 +342,9 @@ namespace Testing
         private const string bullet = "- ";
 
         private float accuracy =>
-            source.type == Challenge.Type.Perfect ?
-                Testing.Utils.PerfectAccuracy(source.prompt, keypresses) :
-                Testing.Utils.BlindAccuracy(source.prompt, output);
+          source.type == Challenge.Type.Perfect ?
+            Utils.PerfectAccuracy(source.prompt, keypresses) :
+            Utils.BlindAccuracy(source.prompt, output);
 
         public override void Write(StreamWriter writer)
         {
@@ -355,7 +352,7 @@ namespace Testing
             writer.WriteLine($"{indent}{bullet}challenge:");
             Indent();
             Indent();
-            writer.WriteLine($"{indent}type: {source.type.ToString()}");
+            writer.WriteLine($"{indent}type: {source.type}");
             writer.WriteLine($"{indent}layout: {layoutName}");
             writer.WriteLine($"{indent}prompt: \"{source.prompt}\"");
             writer.WriteLine($"{indent}output: \"{output}\"");
@@ -368,18 +365,50 @@ namespace Testing
             Unindent();
             writer.WriteLine($"{indent}keypresses:");
             Indent();
-            foreach ((string key, float time) in keypresses)
+            foreach (var press in keypresses)
             {
-                writer.WriteLine($"{indent}{time}: \"{(key == "\b" ? "\\b" : key)}\"");
+                writer.WriteLine($"{indent}{press.time}:");
+                Indent();
+                writer.WriteLine($"{indent}key: \"{(press.key == "\b" ? "\\b" : press.key)}\"");
+                if (press.travel != (Vector3.zero, Vector3.zero))
+                {
+                    writer.WriteLine($"{indent}travel:");
+                    Indent();
+                    writer.WriteLine($"{indent}pos: {press.travel.pos.AsYaml()}");
+                    writer.WriteLine($"{indent}rot: {press.travel.rot.AsYaml()}");
+                    Unindent();
+                    writer.WriteLine($"{indent}pressPos: {press.pressPosition.AsYaml()}");
+                }
+                Unindent();
             }
             _indent = 0;
         }
 
         public void SetEndNow()
-            => end = Time.time;
+          => end = Time.time;
 
-        public void AddKeypress(string c)
-            => keypresses.Add((c, Time.time));
+        public void AddKeypress(Keypress kp)
+          => keypresses.Add(kp);
+    }
+
+    public readonly struct Keypress
+    {
+        public readonly string key;
+        public readonly float time;
+        public readonly (Vector3 pos, Vector3 rot) travel;
+        public readonly Vector3 pressPosition;
+
+        public Keypress(string key, (Vector3 pos, Vector3 rot) travel, Vector3 pressPosition, float? time = null)
+        {
+            this.key = key;
+            this.time = time ?? Time.time;
+            this.travel = travel;
+            this.pressPosition = pressPosition;
+        }
+
+        public Keypress(char key, (Vector3 pos, Vector3 rot) travel, Vector3 pressPosition, float? time = null)
+          : this($"{key}", travel, pressPosition, time)
+        { }
     }
 
     public abstract class TrialItem

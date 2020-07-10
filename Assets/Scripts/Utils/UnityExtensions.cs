@@ -29,6 +29,9 @@ namespace Utils
             public static Vector3 Flatten(this Vector3 vec, int axis)
                 => vec.ProjectTo(~(1 << axis));
 
+            public static string AsYaml(this Vector3 vec)
+                => $"[{vec.x}, {vec.y}, {vec.z}]";
+
             #region Unused
             public static Vector3 ProjectTo(this Vector3 vec, bool x, bool y, bool z)
                 => vec.ProjectTo(((x ? 1 << 0 : 0)) | (y ? 1 << 1 : 0) | (z ? 1 << 2 : 0));

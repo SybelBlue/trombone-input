@@ -48,6 +48,8 @@ namespace Controller
 
         public Challenge.Type? currentChallengeType;
 
+        public Func<Stylus> stylusProvider = () => null;
+
         private LayoutOption[] layoutOrder 
             = new LayoutOption[] { 
                 LayoutOption.LinearABCDE, 
@@ -117,6 +119,12 @@ namespace Controller
                 throw new ArgumentException(currentChallengeType.ToString());
             }
         }
+
+        private (Vector3 pos, Vector3 rot) stylusTravel
+            => stylusProvider()?.travel ?? (Vector3.zero, Vector3.zero);
+
+        private Vector3 stylusPosition
+            => stylusProvider()?.transform.position ?? Vector3.zero;
         #endregion
 
         public override void Start()
@@ -127,9 +135,12 @@ namespace Controller
             UpdateDisplay();
         }
 
+        public void OnDestroy()
+            => FlushBuilder();
+
         protected override void OnSuggestionButtonClick(string suggestionText)
         {
-            builder?.AddKeypress(suggestionText);
+            builder?.AddKeypress(MakeKeypress(suggestionText));
             base.OnSuggestionButtonClick(suggestionText);
         }
 
@@ -148,13 +159,13 @@ namespace Controller
         {
             base.AppendLetter(c);
             currentOutput += c;
-            builder?.AddKeypress(c);
+            builder?.AddKeypress(MakeKeypress(c));
             UpdateDisplay();
         }
 
         public override void TypedBackspace()
         {
-            builder?.AddKeypress('\b');
+            builder?.AddKeypress(MakeKeypress('\b'));
             switch (currentChallengeType)
             {
                 case null:
@@ -175,6 +186,20 @@ namespace Controller
             }
 
             throw new ArgumentException(currentChallengeType.ToString());
+        }
+
+        private Keypress MakeKeypress(char c)
+            => MakeKeypress($"{c}");
+
+        private Keypress MakeKeypress(string s)
+        {
+            var kp = new Keypress(s, stylusTravel, stylusPosition);
+            var sty = stylusProvider();
+            if (sty != null)
+            {
+                sty.travel = (Vector3.zero, Vector3.zero);
+            }
+            return kp;
         }
 
         private void UpdateDisplay()
@@ -320,6 +345,14 @@ namespace Controller
         {
             Debug.LogWarning($"Completed Trial {trialNumber}");
 
+            FlushBuilder();
+
+            OnTrialEnd.Invoke(true);
+        }
+
+        public void FlushBuilder()
+        {
+            if (builder == null) return;
             try
             {
                 (string directory, string name) = Testing.Utils.WriteTrialResults(builder.Finish(currentOutput), locally: Application.isEditor);
@@ -337,8 +370,6 @@ namespace Controller
                 currentTrial = null;
                 builder = null;
             }
-
-            OnTrialEnd.Invoke(true);
         }
 
         private void OnPracticeButtonDown()
