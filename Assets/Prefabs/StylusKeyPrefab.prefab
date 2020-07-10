@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 2312528965249368714}
-  highlightColor: {r: 0, g: 0, b: 0, a: 0}
+  highlightColor: {r: 0.032796368, g: 0.6320754, b: 0.20938371, a: 0.4117647}
   background: {fileID: 2312528965249368715}
   _symbol: 0
   textMeshPro: {fileID: 2510543507103869357}
@@ -167,8 +167,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
