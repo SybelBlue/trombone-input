@@ -412,8 +412,8 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnTestingLayoutChange(LayoutOption layout)
         => layoutManager.layout = layout;
 
-    public void laserReapear()
-        => laserPointerObject.active = true;
+    // public void laserReapear()
+    //     => laserPointerObject.active = true;
 
     public void OnChallengeEnd()
         => trialProgress.trialProgress = (++completedChallenges) / (float)trials[currentTrial].Length;
@@ -426,6 +426,7 @@ public class Main : MonoBehaviour, VREventGenerator
         {
             OnSceneAdvance();
             backToLobby.onClick.Invoke();
+            // laserReapear();
             // laserPointerObject.GetComponent<Renderer>().enabled = enabled;
             // laserPointerObject.gameObject.SetActive(true);
             // laserPointerObject.SetActive(true);
