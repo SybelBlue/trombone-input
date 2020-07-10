@@ -90,7 +90,7 @@ namespace MinVR
             }
             analogData = (AnalogData)Marshal.PtrToStructure(analogDataPointer, typeof(AnalogData));
 
-            if (analogData.state != lastAnalogState)
+            if (!Mathf.Approximately((float)analogData.state, lastAnalogState))
             {
                 lastAnalogState = (float)analogData.state;
 

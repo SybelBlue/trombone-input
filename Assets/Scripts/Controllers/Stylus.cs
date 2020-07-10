@@ -60,6 +60,8 @@ namespace Controller
                 Static.SignedAngleFromAxis(transform.forward, new Vector3(0, 1, 0), 2)
                 );
 
+        public float rawSlider { get; set; }
+
         public float? normalizedSlider
         {
             get

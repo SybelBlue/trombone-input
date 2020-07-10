@@ -133,8 +133,6 @@ public class Main : MonoBehaviour, VREventGenerator
 
         trials = Testing.Utils.ReadTrials(logComments: true);
 
-        autoFilter.OnFilterOutput.AddListener(OnFilterEvent);
-
         RunNextTrial();
 
         DontDestroyOnLoad(stylus.gameObject);
@@ -222,9 +220,9 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void AddEventsSinceLastFrame(ref List<VREvent> eventList)
     {
-        var gestureStartValue = lastReportedValue ?? Bindings._slider_max_value / 2;
-        Bindings.CaptureEmulatedSliderInput(ref eventList, gestureStartValue, lastReportedValue);
-        Bindings.CaptureEmulatedButtonInput(ref eventList, layout && layout.usesSlider);
+        //var gestureStartValue = lastReportedValue ?? Bindings._slider_max_value / 2;
+       // Bindings.CaptureEmulatedSliderInput(ref eventList, gestureStartValue, lastReportedValue);
+       // Bindings.CaptureEmulatedButtonInput(ref eventList, layout && layout.usesSlider);
     }
 
     private void RunNextTrial()
@@ -283,37 +281,31 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void OnFilterEvent(Utils.SignalProcessing.FilterEventData e)
     {
-        switch (e.type)
+        if (e.type != Utils.SignalProcessing.EventType.FingerUp)
         {
-            case Utils.SignalProcessing.EventType.NoTouches:
-                return;
-            case Utils.SignalProcessing.EventType.FingerUp:
-                if (layout.keyOnFingerUp)
-                {
-                    // TODO: probably needs changing
-                    TryFindKey(e.value);
-                }
-                else
-                {
-                    lastReportedValue = e.value;
-                }
-                Debug.LogWarning("Click!");
-                return;
-            default:
-                if (e.value.HasValue)
-                {
-                    UpdateValue(e.value.Value);
-                }
-                return;
+            return;
+        }
+
+        if (layout.keyOnFingerUp)
+        {
+            UpdateValue((uint)e.value);
+            TryFindKey(e.value);
+        }
+        else
+        {
+            lastReportedValue = e.value;
         }
     }
 
     private void OnSliderAnalogUpdate(float value)
     {
+        stylus.rawSlider = value;
+       // Debug.Log("slider: " + Time.time +"   "+ value);
         var scrubbed = (uint)Mathf.RoundToInt(value);
         if (useAutofilter)
         {
             autoFilter.Provide(scrubbed);
+            UpdateValue(scrubbed);
         }
         else
         {
@@ -324,7 +316,7 @@ public class Main : MonoBehaviour, VREventGenerator
     private void UpdateValue(uint value)
     {
         lastReportedValue = value;
-        float normalized = value / (float)Bindings._slider_max_value;
+        float normalized = ((float)value - (float)Bindings._slider_min_value)/ ((float)Bindings._slider_max_value - (float)Bindings._slider_min_value);
         stylus.normalizedSlider = normalized;
 
         if (!layout || !indicatorRect) return;

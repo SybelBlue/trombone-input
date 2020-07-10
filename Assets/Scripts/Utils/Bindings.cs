@@ -1,5 +1,6 @@
 using MinVR;
 using VREventList = System.Collections.Generic.List<MinVR.VREvent>;
+using UnityEngine;
 
 namespace CustomInput
 {
@@ -45,7 +46,8 @@ namespace CustomInput
     using static VREventFactory.Names;
     public static class Bindings
     {
-        public static readonly uint _slider_max_value = 64;
+        public static readonly uint _slider_max_value = 45;//64;
+        public static readonly uint _slider_min_value = 15;
         public static readonly UnityEngine.KeyCode[] _layout_switch_bindings
             = new UnityEngine.KeyCode[] { Alpha7, Alpha8, Alpha9, Alpha0 };
 
