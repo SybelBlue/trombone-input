@@ -76,7 +76,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public Button backToLobby;
 //
-    public GameObject LaserObject;
+    public LaserPointer laserPointerObject;
 
     // The most up-to-date value reported by the InputFieldController
     private uint? lastReportedValue;
@@ -103,7 +103,7 @@ public class Main : MonoBehaviour, VREventGenerator
         ground = GameObject.FindWithTag("GroundFloorTag");
         buttonBackground = GameObject.FindWithTag("ButtonBackgroundTag");
         backToLobby = GameObject.FindWithTag("JumbBackToLobbyTag").GetComponent<Button>();
-        LaserObject = GameObject.FindWithTag("LaserPointerTag");
+        laserPointerObject = GameObject.FindWithTag("LaserPointerTag").GetComponent<LaserPointer>();
         if (Instance)
         {
             Debug.LogWarning("A second Main script has been created while another exists! This instance will not be saved!");
@@ -256,8 +256,8 @@ public class Main : MonoBehaviour, VREventGenerator
         if (strialsIsLoaded)
         {
             Scenes._STRIALS.UnloadAsync();
-            // Debug.LogWarning(LaserObject.activeSelf());
-            // Debug.LogWarning(LaserObject.activeInHierarchy());
+            // Debug.LogWarning(laserPointerObject.activeSelf());
+            // Debug.LogWarning(laserPointerObject.gameObject.activeInHierarchy());
 
 
 
@@ -412,8 +412,13 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnTestingLayoutChange(LayoutOption layout)
         => layoutManager.layout = layout;
 
+    public void laserReapear()
+        => laserPointerObject.active = true;
+
     public void OnChallengeEnd()
         => trialProgress.trialProgress = (++completedChallenges) / (float)trials[currentTrial].Length;
+
+
 
     public void OnTrialEnd(bool success)
     {
@@ -421,9 +426,9 @@ public class Main : MonoBehaviour, VREventGenerator
         {
             OnSceneAdvance();
             backToLobby.onClick.Invoke();
-            // LaserObject.GetComponent<Renderer>().enabled = enabled;
-            // LaserObject.gameObject.SetActive(true);
-            // LaserObject.SetActive(true);
+            // laserPointerObject.GetComponent<Renderer>().enabled = enabled;
+            // laserPointerObject.gameObject.SetActive(true);
+            // laserPointerObject.SetActive(true);
             // stylus.useLaser = layout.usesRaycasting;
 
             // backToLobby.gameObject.SetActive(true);
