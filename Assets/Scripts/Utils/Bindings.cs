@@ -70,6 +70,9 @@ namespace CustomInput
         public static string _joystick_horizontal
             => $"XRI_{_dominant_hand}_Secondary2DAxis_Horizontal";
 
+        public static bool doEmulate
+            => Application.isEditor;
+
         public static bool inputThisFrame
             => touchCount > 0
             || GetMouseButton(0)
@@ -94,7 +97,7 @@ namespace CustomInput
             => mouseScrollDelta.y * 2;
 
         public static int emulatedSlideValue
-            => UnityEngine.Mathf.FloorToInt((1 + GetAxis(_trackpad_vertical)) * _slider_max_value / 2);
+            => Mathf.FloorToInt((1 + GetAxis(_trackpad_vertical)) * _slider_max_value / 2);
 
         // either shift key held
         public static bool precisionMode
