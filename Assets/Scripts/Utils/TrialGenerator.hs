@@ -2,6 +2,7 @@
 
 import Data.List (intercalate)
 import Data.Char (toUpper)
+import Data.Tuple (fst)
 
 -- | text prompts in the main scene
 type Prompt = String
@@ -83,30 +84,44 @@ labelTrial :: Trial -> Int -> Trial
 labelTrial trial n = Do (TrialNumber n) : trial
 
 writeTrial :: Int -> Trial -> Main
-writeTrial n trial = writeFile ("Assets/StreamingAssets/Trials/trial" ++ show n ++ ".txt") (write trial)
+writeTrial n trial = writeFile ("Assets/StreamingAssets/Trials/Dummy" ++ show n ++ ".txt") (write trial)
 
-writeTrials :: [Main] -> Main
-writeTrials [] = putStr "done."
-writeTrials (first:rest) =
+doAll :: [Main] -> Main
+doAll [] = putStr "done."
+doAll (first:rest) =
     do
         first
-        writeTrials rest
+        doAll rest
+
+writeTemplateTrials :: Main
+writeTemplateTrials =
+    do
+        content <- readFile "Assets/Scripts/Utils/MacKenzie2.txt"
+        let strs = lines content 
+        let templates = templateTrials strs
+        doAll $ map writeTTrial $ zip [0..] $ templates 6
+    where
+        writeTTrial :: (Int, (Layout, Trial)) -> Main
+        writeTTrial (n, (l, t)) = writeFile ("Assets/StreamingAssets/Trials/" ++ show n ++ "-" ++ show l ++ ".txt") $ write $ (Do (SetLayout l)):t
+
+writeDummies :: Main
+writeDummies = doAll $ map writer $ zip dummies [0..]
+    where writer (t, n) = writeTrial n $ labelTrial t n
 
 main :: Main
-main = writeTrials $ map writer $ zip trials [0..]
-    where writer (t, n) = writeTrial n $ labelTrial t n
+main =  writeTemplateTrials
 
 
 -- TRIALS
 
-trials :: [Trial]
-trials = 
-    [ trialA
-    , trialB 
+dummies :: [Trial]
+dummies = 
+    [ dummyA
+    , dummyB 
     ] 
 
-trialA :: Trial
-trialA =
+dummyA :: Trial
+dummyA =
     [ Comment "arbitrarily made by logan"
     , Do (SetLayout TwoAxis)
     , perform Blind "the dog took a leap"
@@ -114,10 +129,23 @@ trialA =
     , perform Perfect "and hit the ground softly"
     ]
 
-trialB :: Trial
-trialB =
+dummyB :: Trial
+dummyB =
     [ Comment "arbitrarily made by logan"
     , Do RandomizeLayoutOrder
     , perform Practice "abcde"
     , perform Blind "123456"
     ]
+
+template :: [String] -> (Trial, [String])
+template strs = (challenges, remainder)
+    where 
+        n = 5
+        remainder = drop (length ops) strs
+        ops = map perform $ [Practice, Practice] ++ replicate n Blind ++ replicate n Perfect
+        challenges = map (\(a, b) -> a b) $ zip ops $ take (length ops) strs
+
+
+templateTrials :: [String] -> Int -> [(Layout, Trial)]
+templateTrials strs r = fst $ foldl folder ([], strs) $ foldl (++) [] $ map (replicate r) [Linear, StylusBinned, TwoAxis, Raycast]
+    where folder (trials, start) layout = let (t, end) = template start in ((layout, t):trials, end)
