@@ -18,6 +18,7 @@ TagManager:
   - ButtonBackGroundEnd
   - JumbBackToLobbyTag
   - CircularStylus
+  - LaserPointerTag
   layers:
   - Default
   - TransparentFX
