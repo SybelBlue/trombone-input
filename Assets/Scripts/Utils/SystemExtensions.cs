@@ -1,4 +1,6 @@
-﻿namespace Utils
+﻿using System.Linq;
+
+namespace Utils
 {
     namespace SystemExtensions
     {
@@ -29,6 +31,9 @@
                 // QED
                 return (value - min) % (max - min) + min;
             }
+
+            public static int ModIntoRange(this int value, int min, int max)
+                => (value - min) % (max - min) + min;
         }
 
         public static class CollectionExtensions
@@ -55,6 +60,12 @@
                     list.Add(value.Value);
                 }
             }
+
+            public static string AsArrayString<T>(this System.Collections.Generic.IEnumerable<T> values)
+                => $"[{string.Join(", ", values.ToArray())}]";
+
+            public static bool IsEmpty<T>(this System.Collections.Generic.List<T> list)
+                => list.Count == 0;
         }
 
         public static class StringExtensions

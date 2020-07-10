@@ -102,7 +102,7 @@ writeTemplateTrials =
         doAll $ map writeTTrial $ zip [0..] $ templates 6
     where
         writeTTrial :: (Int, (Layout, Trial)) -> Main
-        writeTTrial (n, (l, t)) = writeFile ("Assets/StreamingAssets/Trials/" ++ show n ++ "-" ++ show l ++ ".txt") $ write $ (Do (SetLayout l)):t
+        writeTTrial (n, (l, t)) = writeFile ("Assets/StreamingAssets/Trials/" ++ show n ++ "-" ++ show l ++ ".txt") $ write $ labelTrial ((Do (SetLayout l)):t) n
 
 writeDummies :: Main
 writeDummies = doAll $ map writer $ zip dummies [0..]

@@ -1,3 +1,4 @@
+!trial-number 12
 !set-layout 1
 practice:A FOX IS A VERY SMART ANIMAL
 practice:THE KIDS ARE VERY EXCITED

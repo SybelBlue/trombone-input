@@ -50,7 +50,41 @@ namespace Testing
                 UsingStream(file, reader => trials.Add(ReadTrialItems(reader, logComments)));
             }
             Debug.Log($"Loaded {trials.Count} trials ({trials.Select(t => t.Length).Sum()} TrialItems)");
-            return trials;
+            var arr = trials.ToArray();
+            Array.Sort(arr.Select(t => t.trialNumber).ToArray(), arr);
+            return arr.ToList();
+        }
+
+        public static List<Trial> ReadTrialsRandomly(bool logComments = true)
+        {
+            var trials = ReadTrials(logComments);
+            int denom = trials.Count / 4;
+            var selected = new List<Trial>();
+
+            for (int i = 0; i < 4; i++)
+            {
+                int n = UnityEngine.Random.Range(0, denom);
+                selected.Add(trials[n + i * denom]);
+            }
+
+            var shuffled = new List<Trial>();
+
+            while (!selected.IsEmpty())
+            {
+                int i = UnityEngine.Random.Range(0, selected.Count);
+                shuffled.Add(selected[i]);
+                selected.RemoveAt(i);
+            }
+
+            Debug.Log($"Selected {shuffled.Count} trials (#s {shuffled.Select(t => t.trialNumber).AsArrayString()}, {shuffled.Select(t => t.Length).Sum()} TrialItems)");
+
+            // Disgusting sanity check. Delete me. 
+            // (Checks if all layous are present in the random sample which was designed to have one of each.)
+            var lArray = shuffled.Select(t => (t.items[1] as CommandWithData).data).ToArray();
+            Array.Sort(lArray);
+            for (int i = 0; i < 4; i++) if (i != lArray[i]) Debug.LogError($"Not All Layouts Covered: {i}");
+
+            return shuffled;
         }
 
         public static Trial ReadTrialItems(TextAsset asset, bool logComments = true)

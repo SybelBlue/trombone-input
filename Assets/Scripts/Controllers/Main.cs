@@ -62,9 +62,6 @@ public class Main : MonoBehaviour, VREventGenerator
     private TextOutputDisplay outputDisplay;
 
     [SerializeField]
-    private TextAsset[] trialAssets;
-
-    [SerializeField]
     private TrialProgress trialProgress;
 
     [SerializeField]
@@ -131,7 +128,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
         outputDisplay?.ResetText();
 
-        trials = Testing.Utils.ReadTrials(logComments: true);
+        trials = Testing.Utils.ReadTrialsRandomly(logComments: true);
 
         RunNextTrial();
 
