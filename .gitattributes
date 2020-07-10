@@ -18,8 +18,14 @@
 *.png binary
 *.jpg binary
 ## Added by Logan to avoid Git changing Unity-Generated Files
-*.unity binary
-*.meta binary
-*.prefab binary
-*.asset binary
+#*.unity binary
+#*.meta binary
+#*.prefab binary
+#*.asset binary
+
+# Apply Unix-style LF line-endings on checkout of these files...
+*.meta             text eol=lf
+*.unity            text eol=lf
+*.asset            text eol=lf
+*.prefab           text eol=lf
 ##
