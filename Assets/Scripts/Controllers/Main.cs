@@ -75,6 +75,8 @@ public class Main : MonoBehaviour, VREventGenerator
     #endregion
 
     public Button backToLobby;
+//
+    public GameObject LaserObject;
 
     // The most up-to-date value reported by the InputFieldController
     private uint? lastReportedValue;
@@ -100,7 +102,8 @@ public class Main : MonoBehaviour, VREventGenerator
     {
         ground = GameObject.FindWithTag("GroundFloorTag");
         buttonBackground = GameObject.FindWithTag("ButtonBackgroundTag");
-        backToLobby = GameObject.FindGameObjectWithTag("JumbBackToLobbyTag").GetComponent<Button>();
+        backToLobby = GameObject.FindWithTag("JumbBackToLobbyTag").GetComponent<Button>();
+        LaserObject = GameObject.FindWithTag("LaserPointerTag");
         if (Instance)
         {
             Debug.LogWarning("A second Main script has been created while another exists! This instance will not be saved!");
@@ -253,6 +256,12 @@ public class Main : MonoBehaviour, VREventGenerator
         if (strialsIsLoaded)
         {
             Scenes._STRIALS.UnloadAsync();
+            // Debug.LogWarning(LaserObject.activeSelf());
+            // Debug.LogWarning(LaserObject.activeInHierarchy());
+
+
+
+            // stylus.gameObject.GetChild(3).SetActive(true);
 
         }
         else
@@ -412,6 +421,11 @@ public class Main : MonoBehaviour, VREventGenerator
         {
             OnSceneAdvance();
             backToLobby.onClick.Invoke();
+            // LaserObject.GetComponent<Renderer>().enabled = enabled;
+            // LaserObject.gameObject.SetActive(true);
+            // LaserObject.SetActive(true);
+            // stylus.useLaser = layout.usesRaycasting;
+
             // backToLobby.gameObject.SetActive(true);
 
             //TODO:Make it so the jump button is triggered

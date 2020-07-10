@@ -1136,6 +1136,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1534082763}
+        m_MethodName: 
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &497828030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2360,11 +2371,11 @@ MonoBehaviour:
   buttonBackground: {fileID: 0}
   indicatorRect: {fileID: 0}
   outputDisplay: {fileID: 0}
-  trialAssets: []
   trialProgress: {fileID: 0}
   autoFilter: {fileID: 971101865}
   strialsIsLoaded: 0
   backToLobby: {fileID: 0}
+  LaserPointerObject: {fileID: 0}
 --- !u!1 &1351352543
 GameObject:
   m_ObjectHideFlags: 0
@@ -3133,7 +3144,7 @@ GameObject:
   - component: {fileID: 1534082765}
   m_Layer: 2
   m_Name: Laser
-  m_TagString: Untagged
+  m_TagString: LaserPointerTag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
