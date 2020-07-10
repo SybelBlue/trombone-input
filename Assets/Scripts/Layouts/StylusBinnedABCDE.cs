@@ -111,7 +111,7 @@ namespace CustomInput
                         new StylusData('I', 4, '3'),
                         new StylusData('J', 4, '6'),
                         new StylusData('K', 4, '9'),
-                        new StylusData('L', 4, '.')
+                        new StylusData('L', 4, '0')
                 ),
                 new StylusBinnedData(true,
                         new StylusData('M', 4, '/'),

@@ -131,13 +131,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
         outputDisplay?.ResetText();
 
-        trials = new List<Testing.Trial>(trialAssets.Length);
-        foreach (TextAsset trial in trialAssets)
-        {
-            var items = Testing.Utils.ReadTrialItems(trial, false);
-            trials.Add(items);
-            Debug.Log($"Loaded {items.Length} trial items");
-        }
+        trials = Testing.Utils.ReadTrials(logComments: true);
 
         RunNextTrial();
 
@@ -204,11 +198,11 @@ public class Main : MonoBehaviour, VREventGenerator
                 casted.OnLayoutChange.AddListener(OnTestingLayoutChange);
                 casted.OnChallengeEnd.AddListener(OnChallengeEnd);
 
-                Debug.Log("Found \"OutputDisplay\" in scene and loaded into main as Proctor.");
+                Debug.Log("Found \"OutputDisplay\" in scene and loaded into Main as Proctor.");
             }
             else
             {
-                Debug.Log("Found \"OutputDisplay\" in scene and loaded into main as TextOutputDisplay.");
+                Debug.Log("Found \"OutputDisplay\" in scene and loaded into Main as TextOutputDisplay.");
             }
         }
     }
@@ -278,6 +272,10 @@ public class Main : MonoBehaviour, VREventGenerator
         if (layout && trialProgress)
         {
             RunNextTrial();
+        }
+        else
+        {
+            Debug.LogWarning("Can not run trial after scene change!");
         }
     }
 
@@ -412,17 +410,17 @@ public class Main : MonoBehaviour, VREventGenerator
     {
         if (success)
         {
-          OnSceneAdvance();
-          backToLobby.onClick.Invoke();
-          // backToLobby.gameObject.SetActive(true);
+            OnSceneAdvance();
+            backToLobby.onClick.Invoke();
+            // backToLobby.gameObject.SetActive(true);
 
-          //TODO:Make it so the jump button is triggered
+            //TODO:Make it so the jump button is triggered
             // OnSceneChange("_STRIALS");
             // RunNextTrial();
         }
         else
         {
-          RunNextTrial();
+            RunNextTrial();
         }
     }
     #endregion

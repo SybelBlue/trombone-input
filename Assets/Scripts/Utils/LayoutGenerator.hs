@@ -46,7 +46,7 @@ binnedAbcde = (Stylus, map Binned . splitEvery 4 . map makeItem $ zip base alt)
           [ [ '1', '2', '3', '/', '@',  '-', ';' ]
           , [ '4', '5', '6', '%', '\'', '&', ':' ]
           , [ '7', '8', '9', '#', '\"', '?', ',' ]
-          , [ '*', '+', '.', '(', ')', '!', '\b' ] 
+          , [ '*', '+', '0', '(', ')', '!', '\b' ] 
           ]
 
 raycastQwerty :: Layout

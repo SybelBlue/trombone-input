@@ -7,6 +7,7 @@ using Controller;
 using Utils.SystemExtensions;
 using Utils.UnityExtensions;
 using CustomInput;
+using System.Linq;
 
 namespace Testing
 {
@@ -38,43 +39,62 @@ namespace Testing
     {
         public const char COMMAND_PREFIX = '!', COMMENT_PREFIX = '#', CHALLENGE_SEPERATOR = ':';
 
-        public static Trial ReadTrialItems(TextAsset trialFile, bool logComments = true)
+        public static List<Trial> ReadTrials(bool logComments = true)
+        {
+            List<Trial> trials = new List<Trial>();
+
+            var dir = Path.Combine(Application.streamingAssetsPath, "Trials");
+            var pattern = "*.txt";
+            foreach (string file in Directory.EnumerateFiles(dir, pattern))
+            {
+                UsingStream(file, reader => trials.Add(ReadTrialItems(reader, logComments)));
+            }
+            Debug.Log($"Loaded {trials.Count} trials ({trials.Select(t => t.Length).Sum()} TrialItems)");
+            return trials;
+        }
+
+        public static Trial ReadTrialItems(TextAsset asset, bool logComments = true)
+        {
+            using (StreamReader reader = new StreamReader(asset.IntoMemoryStream()))
+            {
+                return ReadTrialItems(reader, logComments);
+            }
+        }
+
+        public static Trial ReadTrialItems(StreamReader sr, bool logComments = true)
         {
             List<TrialItem> items = new List<TrialItem>();
 
-            using (StreamReader sr = new StreamReader(trialFile.IntoMemoryStream()))
+            string line;
+            while ((line = sr.ReadLine()) != null)
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                if (line.StartsWith(COMMENT_PREFIX.ToString()))
                 {
-                    if (line.StartsWith(COMMENT_PREFIX.ToString()))
+                    if (logComments)
                     {
-                        if (logComments)
-                        {
-                            Debug.Log(line.Substring(1));
-                        }
-                        continue;
+                        Debug.Log(line.Substring(1));
                     }
-
-                    if (line.StartsWith(COMMAND_PREFIX.ToString()))
-                    {
-                        line = line.Substring(1);
-                        string[] parts = line.Split(new char[] { ' ' });
-
-                        items.Add(Command.fromString(parts[0], parts.Length > 1 ? parts[1] : null));
-                        continue;
-                    }
-
-                    int index = line.IndexOf(CHALLENGE_SEPERATOR);
-
-                    if (index < 0)
-                    {
-                        Debug.LogError($"unkown line: {line}");
-                        continue;
-                    }
-
-                    items.Add(new Challenge(line.Substring(0, index), line.Substring(index + 1)));
+                    continue;
                 }
+
+                if (line.StartsWith(COMMAND_PREFIX.ToString()))
+                {
+                    line = line.Substring(1);
+                    string[] parts = line.Split(new char[] { ' ' });
+
+                    items.Add(Command.fromString(parts[0], parts.Length > 1 ? parts[1] : null));
+                    continue;
+                }
+
+                int index = line.IndexOf(CHALLENGE_SEPERATOR);
+
+                if (index < 0 || line.Length <= index)
+                {
+                    Debug.LogError($"unkown line: {line}");
+                    continue;
+                }
+
+                items.Add(new Challenge(line.Substring(0, index), line.Substring(index + 1)));
             }
 
             return new Trial(items.ToArray());
@@ -82,7 +102,7 @@ namespace Testing
 
         public static (string directory, string name) WriteTrialResults(List<ITrialResult> t, bool locally = false)
         {
-            string directory = locally ? "Assets/Results" : Application.persistentDataPath;
+            string directory = locally ? "Assets/Results" : Path.Combine(Application.persistentDataPath, "TrialResults");
             string name = UniqueYamlName("trial");
             string path = $"{directory}/{name}";
 
@@ -99,16 +119,31 @@ namespace Testing
         public static string UniqueYamlName(string stub)
             => $"{stub}-{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.yaml";
 
+        public static void UsingStream(string path, Action<StreamReader> ReaderCallback)
+        {
+            Touch(path);
+
+            using (StreamReader reader = new StreamReader(path, true))
+            {
+                ReaderCallback(reader);
+            }
+        }
+
         public static void UsingStream(string path, Action<StreamWriter> WriterCallback, bool append = true)
         {
-            if (!File.Exists(path))
-            {
-                File.Create(path).Close();
-            }
+            Touch(path);
 
             using (StreamWriter writer = new StreamWriter(path, append))
             {
                 WriterCallback(writer);
+            }
+        }
+
+        private static void Touch(string path)
+        {
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
             }
         }
 
@@ -325,7 +360,7 @@ namespace Testing
     public abstract class Command : TrialItem
     {
         public const string RANDOMIZE_KEY = "randomize-layouts", ADVANCE_KEY = "next-layout", SET_TRIAL_KEY = "trial-number", SET_LAYOUT_KEY = "set-layout";
-        
+
         public abstract string key { get; }
 
         public Command() : base()

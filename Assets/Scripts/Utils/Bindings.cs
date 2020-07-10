@@ -29,7 +29,7 @@ namespace CustomInput
     //    From _MAIN.scene
     //      Head Delta                  =>      Main Camera Delta
     //      Hand Pos/Rot Delta          =>      Stylus Pos/Rot Delta
-    //    From Bindings.cs 
+    //    From Bindings.cs
     //     - <DOM> is dominant hand, set in Bindings.DOMINANT_HAND
     //     - Primary is Trackpad for HP WMR
     //     - Secondary is Joystick for HP WMR
@@ -241,7 +241,8 @@ namespace CustomInput
         }
 
         public static void AddSceneAdvanceCallback(VRMain.OnVRButtonDownEventDelegate OnSceneAdvance)
-            => VRMain.Instance.AddOnVRButtonDownCallback(_scene_advance_key.ToString(), OnSceneAdvance);
+        // => VRMain.Instance.AddOnVRButtonDownCallback(_scene_advance_key.ToString(), OnSceneAdvance);
+            => VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(_scene_advance_key), OnSceneAdvance);
 
 
         // Starts, updates, and ends emulated slider input when appropriate
