@@ -84,6 +84,9 @@ public class Main : MonoBehaviour, VREventGenerator
     private int currentTrial = -1;
     private int completedChallenges = -1;
 
+    // public override bool usesRaycasting => true;
+//
+
     // The manager's current layout, or null if no manager exists
     private CustomInput.Layout.AbstractLayout layout
         => layoutManager?.currentLayout;
@@ -260,6 +263,10 @@ public class Main : MonoBehaviour, VREventGenerator
             Debug.LogWarning("Scene Advanced!");
             // laserPointerObject.SetActive(true);
             Scenes._STRIALS.UnloadAsync();
+            if (layout && stylus && stylus.useLaser != layout.usesRaycasting)
+            {
+                stylus.useLaser = layout.usesRaycasting;
+            }
             // Debug.LogWarning(laserPointerObject.activeSelf());
             // Debug.LogWarning(laserPointerObject.gameObject.activeInHierarchy());
 

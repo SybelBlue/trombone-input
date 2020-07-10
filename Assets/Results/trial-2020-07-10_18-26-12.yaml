@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/10/2020 6:26:12 PM"
+  unixseconds: 1594423572
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 12
+  - command: set-layout
+    data: 1
+  - challenge:
+      type: Practice
+      layout: StylusBinnedABCDE
+      prompt: "A FOX IS A VERY SMART ANIMAL"
+      output: ""
+      accuracy: 0
+      time:
+        start: 5.642984
+        stop: 0
+        duration: -5.642984
+      keypresses:
