@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Utils.SystemExtensions;
+using UnityEngine;
+using System.Text;
 
 namespace Utils
 {
@@ -40,119 +42,128 @@ namespace Utils
         {
             private readonly uint epsilon, deadzone;
 
-            private (uint input, uint? output) pprev, prev;
-
-            private bool jumpedFromZero, midDrop;
+            private LinkedList<(uint, double)> history; // value and timestamp
+            private uint maxHistorySize;
 
             public Filter(uint epsilon, uint deadzone)
             {
-                pprev = (0, null);
-                prev = (0, null);
-
-                midDrop = false;
-                jumpedFromZero = false;
+                history = new LinkedList<(uint, double)>();
+                maxHistorySize = 15;
+                history.AddFirst((0, 0.0));
 
                 this.epsilon = epsilon;
                 this.deadzone = deadzone;
             }
 
-            // only null when not enough input has been provided to yield a filtered output
-            // use Clear() to force values to be outputed
-            public uint? Push(uint rawIn)
+            public FilterEventData PushHistory(uint rawIn, double time)
             {
-                bool inDeadzone = rawIn < deadzone;
-                bool jumpingFromZero = prev.output == 0 && deadzone + epsilon <= rawIn;
-                bool steepDrop = 2.5f * epsilon + rawIn <= prev.input;
-                bool steepJump = 1.5f * epsilon + prev.input <= rawIn;
-                bool inNeighborhood = isNeighbor(rawIn, prev.output) && isNeighbor(rawIn, pprev.output);
-                midDrop = midDrop && !inDeadzone && !inNeighborhood;
+                bool inDeadzone = rawIn <= deadzone;
+                bool fallingToZero = history.First.Value.Item1 > deadzone && deadzone >= rawIn;
+                bool jumpingFromZero = history.First.Value.Item1 <= deadzone && deadzone < rawIn;
 
-                uint? currentOutput;
-                // if in deadzone or mid-drop -> 0
-                // if just jumping from 0 -> 0
-                // if did jump from 0 -> can't jump again, rawIn
-                // if jumping quickly -> preempt rise, rawIn + 0.75 * last rise
-                // if dropping quickly -> prev = pprev, set mid-drop, 0
-                // if near prev and pprev inputs -> prev + pprev / 2
-                // else raw
-
-                if (inDeadzone || midDrop)
-                {
-                    currentOutput = 0;
-                }
-                else if (jumpingFromZero)
-                {
-                    currentOutput = jumpedFromZero ? rawIn : 0;
-                    jumpedFromZero = !jumpedFromZero;
-                }
-                else if (steepJump)
-                {
-                    currentOutput = rawIn + (3 * (rawIn - prev.input)) / 4;
-                }
-                else if (steepDrop)
-                {
-                    currentOutput = 0;
-                    prev.output = pprev.output;
-                    midDrop = true;
-                }
-                else if (inNeighborhood)
-                {
-                    currentOutput = (pprev.output + prev.output) / 2;
-                }
-                else
-                {
-                    currentOutput = rawIn;
+                history.AddFirst((rawIn, time));
+                if (history.Count > maxHistorySize) {
+                    history.RemoveLast();
                 }
 
-                uint? output = pprev.output;
+                /*
+                if (fallingToZero)
+                {
+                    StringBuilder sb = new StringBuilder("History: ");
+                    foreach ((uint, double) pair in history)
+                    {
+                        sb.Append("(");
+                        sb.Append(pair.Item2);
+                        sb.Append(", ");
+                        sb.Append(pair.Item1);
+                        sb.Append("), ");
+                    }
 
-                pprev = prev;
-                prev = (rawIn, currentOutput);
+                    sb.Append(" inDeadZone: ");
+                    sb.Append(inDeadzone);
+                    sb.Append(" falling: ");
+                    sb.Append(fallingToZero);
+                    sb.Append(" Jumping: ");
+                    sb.Append(jumpingFromZero);
+                    Debug.Log(sb.ToString());
 
-                return output;
+                }
+                */
+
+                if (inDeadzone) {
+                    if (fallingToZero) {
+                        uint? calculatedValue = CalculateLastValueBeforeRelease();
+                        history.Clear();
+                        history.AddFirst((0, time));
+                        return new FilterEventData(EventType.FingerUp, calculatedValue);
+                    }
+                    else {
+                        return new FilterEventData(EventType.NoTouches, rawIn);
+                    }
+                }
+                else {
+                    if (jumpingFromZero) {
+                        return new FilterEventData(EventType.FingerDown, rawIn);
+                    }
+                    else {
+                        return new FilterEventData(EventType.Touching, rawIn);
+                    }
+                }
             }
 
-
-            // get the partially fitlered values currently in storage
-            // warning: these values may change before they are returned by using Push
-            public void DumpPartials(ref List<uint> list)
+            public uint? CalculateLastValueBeforeRelease()
             {
-                list.OptionalAdd(pprev.output);
-                list.OptionalAdd(prev.output);
+                Spline2D spline = new Spline2D();
+                float curT = Time.time;
+                foreach((uint, double) pair in history)
+                {
+                    if (pair.Item1 > deadzone+epsilon)
+                    {
+                        spline.AddPoint(new Vector2(curT - (float)pair.Item2, (float)pair.Item1));
+                    }
+                }
+
+                /*
+                StringBuilder sb = new StringBuilder("Spline: ");
+                for (float t = 0.0f; t <= 1.0; t += 0.05f)
+                {
+                    sb.Append("(");
+                    Vector2 v = spline.Interpolate(t);
+                    sb.Append(v.x);
+                    sb.Append(", ");
+                    sb.Append(v.y);
+                    sb.Append("), ");
+                }
+                Debug.Log(sb.ToString());
+                */
+
+                float value = GradientAscent(spline);
+                return (uint?)value;
+            }
+
+            private float GradientAscent(Spline2D spline)
+            {
+                float gamma = 0.01f;
+                float precision = 0.018f;
+                float curAlpha = 0.0f;
+                float previousStepSize = 1.0f;
+                float prevAlpha = 0.0f;
+
+                while (previousStepSize > precision && curAlpha <= 1.0f)
+                {
+                    prevAlpha = curAlpha;
+                    float df = spline.Derivative(prevAlpha).magnitude;
+                    curAlpha += gamma * df;
+                    previousStepSize = Mathf.Abs(curAlpha - prevAlpha);
+                   // Debug.Log("df: " + df + " newAlpha: " + curAlpha + " prevStep: " + previousStepSize+" value: "+spline.Interpolate(prevAlpha).y);
+                }
+                return spline.Interpolate(prevAlpha).y;
             }
 
             // value is within radius epsilon of rawin
             private bool isNeighbor(uint rawin, uint? value)
                 => value.HasValue && rawin - epsilon <= value && value <= rawin + epsilon;
 
-            public void Clear()
-            {
-                Push(0);
-                Push(0);
-                Push(0);
-            }
-
-
-            // returns a filtered list of the provided data, constructing a new filter from the optional arguments
-            public static List<uint> BatchFilter(IEnumerable<uint> data, uint epsilon = 2, uint deadzone = 8)
-            {
-                var filter = new Filter(epsilon, deadzone);
-                return BatchFilter(ref filter, data);
-            }
-
-            // returns a filtered list of the data, modifying the provided filter in the process
-            public static List<uint> BatchFilter(ref Filter filter, IEnumerable<uint> data)
-            {
-                var list = new List<uint>();
-
-                foreach (var item in data)
-                {
-                    list.OptionalAdd(filter.Push(item));
-                }
-                filter.DumpPartials(ref list);
-
-                return list;
-            }
         }
     }
 }
