@@ -35,9 +35,13 @@ namespace Controller
 
         public Func<(Vector3 min, Vector3 max)?> angleProvider;
 
+        public (Vector3 pos, Vector3 rot) travel;
+
         private (bool front, bool back) highlighting;
         private (string path, float? last) saveData;
         private (int? frame, RaycastHit? hit, IRaycastable obj) lastFound;
+
+        private (Vector3 pos, Vector3 rot) lastTransform;
 
 
         #region Properties
@@ -163,6 +167,10 @@ namespace Controller
                     return Mathf.Clamp01((x - low) / (hi - low));
                     }
                     );
+
+            travel.pos += (lastTransform.pos - transform.position).Map(Mathf.Abs);
+            travel.rot += (lastTransform.rot - eulerAngles).Map(Mathf.Abs);
+            lastTransform = (transform.position, eulerAngles);
 
             if (!recordSliderData) return;
 

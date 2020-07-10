@@ -1,0 +1,565 @@
+meta:
+  timestamp: "7/10/2020 5:36:51 PM"
+  unixseconds: 1594420611
+  platform: WindowsEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 19
+  - command: set-layout
+    data: 0
+  - challenge:
+      type: Practice
+      layout: LinearABCDE
+      prompt: "YOU ARE A WONDERFUL EXAMPLE"
+      output: ""
+      accuracy: 0
+      time:
+        start: 3.530216
+        stop: 13.71644
+        duration: 10.18622
+      keypresses:
+  - challenge:
+      type: Practice
+      layout: LinearABCDE
+      prompt: "DO NOT SQUANDER YOUR TIME"
+      output: ""
+      accuracy: 0
+      time:
+        start: 13.71644
+        stop: 14.21396
+        duration: 0.4975233
+      keypresses:
+  - challenge:
+      type: Blind
+      layout: LinearABCDE
+      prompt: "DO NOT DRINK TOO MUCH"
+      output: "DO  O         OO     "
+      accuracy: 0.4285714
+      time:
+        start: 14.21396
+        stop: 33.56882
+        duration: 19.35486
+      keypresses:
+        24.85208:
+          key: "D"
+          travel:
+            pos: [17.11019, 18.71595, 0.6321585]
+            rot: [90, 0, 90]
+          pressPos: [-1.699321, 7.617279, -0.06425285]
+        26.85258:
+          key: "O"
+          travel:
+            pos: [4.789509, 2.791082, 0.1672831]
+            rot: [0, 0, 0]
+          pressPos: [2.613073, 8.168138, 0.08634663]
+        27.95204:
+          key: " "
+          travel:
+            pos: [0.03669882, 0.01836872, 0.001282692]
+            rot: [0, 0, 0]
+          pressPos: [2.649771, 8.149769, 0.0876255]
+        30.18625:
+          key: " "
+        30.36951:
+          key: "O"
+        30.5195:
+          key: " "
+        30.66924:
+          key: " "
+        30.81864:
+          key: " "
+        30.96996:
+          key: " "
+        31.13606:
+          key: " "
+        31.28598:
+          key: " "
+        31.437:
+          key: " "
+        31.5852:
+          key: " "
+        32.03493:
+          key: " "
+        32.1852:
+          key: "O"
+        32.3524:
+          key: "O"
+        32.58578:
+          key: " "
+        32.75442:
+          key: " "
+        33.01948:
+          key: " "
+        33.16852:
+          key: " "
+        33.56882:
+          key: " "
+  - challenge:
+      type: Blind
+      layout: LinearABCDE
+      prompt: "TAKE A COFFEE BREAK"
+      output: "E  E      EEE EEEEE"
+      accuracy: 0.368421
+      time:
+        start: 33.56882
+        stop: 45.51812
+        duration: 11.9493
+      keypresses:
+        40.11914:
+          key: "E"
+          travel:
+            pos: [4.220642, 1.652647, 0.1474171]
+            rot: [0, 0, 0]
+          pressPos: [-1.570868, 8.186501, -0.05974007]
+        40.45179:
+          key: " "
+        40.63694:
+          key: " "
+        40.80233:
+          key: "E"
+        41.25435:
+          key: " "
+        41.50349:
+          key: " "
+        41.68478:
+          key: " "
+        41.88535:
+          key: " "
+        42.06786:
+          key: " "
+        42.45205:
+          key: " "
+        42.70203:
+          key: "E"
+        43.36863:
+          key: "E"
+        43.56929:
+          key: "E"
+        44.15167:
+          key: " "
+        44.70173:
+          key: "E"
+        45.02024:
+          key: "E"
+        45.20164:
+          key: "E"
+        45.38461:
+          key: "E"
+        45.51812:
+          key: "E"
+  - challenge:
+      type: Blind
+      layout: LinearABCDE
+      prompt: "POPULARITY IS DESIRED BY ALL"
+      output: "E E E E E E E  EE  EE E E E "
+      accuracy: 0.1428571
+      time:
+        start: 45.51812
+        stop: 49.31743
+        duration: 3.799309
+      keypresses:
+        47.08675:
+          key: "E"
+        47.18689:
+          key: " "
+        47.28429:
+          key: "E"
+        47.35183:
+          key: " "
+        47.485:
+          key: "E"
+        47.51785:
+          key: " "
+        47.61786:
+          key: "E"
+        47.68442:
+          key: " "
+        47.78479:
+          key: "E"
+        47.81761:
+          key: " "
+        47.92037:
+          key: "E"
+        47.96918:
+          key: " "
+        48.11832:
+          key: "E"
+        48.15194:
+          key: " "
+        48.25262:
+          key: " "
+        48.28582:
+          key: "E"
+        48.40115:
+          key: "E"
+        48.43484:
+          key: " "
+        48.56879:
+          key: " "
+        48.60117:
+          key: "E"
+        48.71859:
+          key: "E"
+        48.86887:
+          key: " "
+        48.9375:
+          key: "E"
+        49.01773:
+          key: " "
+        49.11868:
+          key: "E"
+        49.18423:
+          key: " "
+        49.28476:
+          key: "E"
+        49.31743:
+          key: " "
+  - challenge:
+      type: Blind
+      layout: LinearABCDE
+      prompt: "THE MUSIC IS BETTER THAN IT SOUNDS"
+      output: "E E E E E E E E E E E  E E E EE E "
+      accuracy: 0.1764706
+      time:
+        start: 49.31743
+        stop: 53.223
+        duration: 3.905575
+      keypresses:
+        49.53495:
+          key: "E"
+        50.31861:
+          key: " "
+        50.38604:
+          key: "E"
+        50.46843:
+          key: " "
+        50.60171:
+          key: "E"
+        50.63458:
+          key: " "
+        50.76845:
+          key: "E"
+        50.80081:
+          key: " "
+        50.93479:
+          key: "E"
+        50.96881:
+          key: " "
+        51.10127:
+          key: "E"
+        51.13542:
+          key: " "
+        51.25227:
+          key: "E"
+        51.31801:
+          key: " "
+        51.43441:
+          key: "E"
+        51.47073:
+          key: " "
+        51.60682:
+          key: "E"
+        51.68583:
+          key: " "
+        51.78616:
+          key: "E"
+        51.78616:
+          key: " "
+        51.96905:
+          key: "E"
+        51.96905:
+          key: " "
+        52.13458:
+          key: " "
+        52.18535:
+          key: "E"
+        52.28579:
+          key: " "
+        52.31779:
+          key: "E"
+        52.45209:
+          key: " "
+        52.48504:
+          key: "E"
+        52.61862:
+          key: " "
+        52.68621:
+          key: "E"
+        52.9905:
+          key: "E"
+        53.04124:
+          key: " "
+        53.17751:
+          key: "E"
+        53.223:
+          key: " "
+  - challenge:
+      type: Blind
+      layout: LinearABCDE
+      prompt: "STARLIGHT AND DEWDROP"
+      output: "E E E E  E E E EE  E "
+      accuracy: 0.04761905
+      time:
+        start: 53.223
+        stop: 56.3228
+        duration: 3.099796
+      keypresses:
+        54.44278:
+          key: "E"
+        54.55644:
+          key: " "
+        54.62525:
+          key: "E"
+        54.68972:
+          key: " "
+        54.82267:
+          key: "E"
+        54.85577:
+          key: " "
+        54.97311:
+          key: "E"
+        55.006:
+          key: " "
+        55.1244:
+          key: " "
+        55.19159:
+          key: "E"
+        55.30672:
+          key: " "
+        55.35791:
+          key: "E"
+        55.47422:
+          key: " "
+        55.5247:
+          key: "E"
+        55.58912:
+          key: " "
+        55.73912:
+          key: "E"
+        55.95596:
+          key: "E"
+        56.00619:
+          key: " "
+        56.13867:
+          key: " "
+        56.20631:
+          key: "E"
+        56.3228:
+          key: " "
+  - challenge:
+      type: Perfect
+      layout: LinearABCDE
+      prompt: "THE LIVING IS EASY"
+      output: "THE LIVING IS EASY"
+      accuracy: 1.444444
+      time:
+        start: 56.3228
+        stop: 87.28778
+        duration: 30.96498
+      keypresses:
+        56.47235:
+          key: "E"
+        59.42122:
+          key: "\b"
+          travel:
+            pos: [0.3119605, 0.2203398, 0.01089478]
+            rot: [0, 0, 0]
+          pressPos: [-1.882828, 8.40684, -0.07063484]
+        61.8888:
+          key: "T"
+          travel:
+            pos: [1.761662, 2.185078, 0.0615263]
+            rot: [0, 0, 0]
+          pressPos: [-0.1578696, 8.388477, -0.0103941]
+        62.75603:
+          key: "H"
+          travel:
+            pos: [0.8441297, 0.9180918, 0.02949047]
+            rot: [0, 0, 0]
+          pressPos: [0.6495568, 7.470386, 0.01779175]
+        64.02267:
+          key: "E"
+          travel:
+            pos: [2.238776, 0.8630123, 0.07818413]
+            rot: [0, 0, 0]
+          pressPos: [-1.589219, 8.11305, -0.06037903]
+        64.87208:
+          key: " "
+          travel:
+            pos: [0.05505192, 0.1468954, 0.001922607]
+            rot: [0, 0, 0]
+          pressPos: [-1.534168, 8.002883, -0.05845642]
+        66.37225:
+          key: "L"
+          travel:
+            pos: [3.982091, 1.156859, 0.1390753]
+            rot: [0, 0, 0]
+          pressPos: [2.447921, 7.507119, 0.08060169]
+        66.95604:
+          key: "U"
+          travel:
+            pos: [1.064339, 0.5508504, 0.0371685]
+            rot: [0, 0, 0]
+          pressPos: [1.383582, 8.057969, 0.04343319]
+        68.33714:
+          key: "\b"
+        70.12189:
+          key: "I"
+          travel:
+            pos: [1.945171, 0.09184361, 0.06793308]
+            rot: [0, 0, 0]
+          pressPos: [1.860701, 8.149784, 0.06010628]
+        71.88914:
+          key: "V"
+          travel:
+            pos: [2.624143, 1.267024, 0.09165478]
+            rot: [0, 0, 0]
+          pressPos: [-0.7634412, 6.882813, -0.03154087]
+        73.38917:
+          key: "I"
+          travel:
+            pos: [2.881048, 1.909639, 0.1006088]
+            rot: [0, 0, 0]
+          pressPos: [1.713895, 8.131418, 0.05496693]
+        74.75446:
+          key: "N"
+          travel:
+            pos: [1.357947, 1.744381, 0.04744625]
+            rot: [0, 0, 0]
+          pressPos: [0.4293495, 6.974624, 0.01012993]
+        75.52209:
+          key: "G"
+          travel:
+            pos: [0.7890782, 0.6610327, 0.0275631]
+            rot: [0, 0, 0]
+          pressPos: [-0.359728, 7.635653, -0.01743126]
+        75.95467:
+          key: " "
+        76.98839:
+          key: "I"
+          travel:
+            pos: [2.605794, 0.7712088, 0.09100723]
+            rot: [0, 0, 0]
+          pressPos: [2.099257, 8.296675, 0.06842422]
+        78.5881:
+          key: "S"
+          travel:
+            pos: [4.385805, 2.185076, 0.1531582]
+            rot: [0, 0, 0]
+          pressPos: [-2.286547, 7.764185, -0.0847168]
+        79.83797:
+          key: "E"
+          travel:
+            pos: [1.596509, 0.6059504, 0.05575371]
+            rot: [0, 0, 0]
+          pressPos: [-1.424064, 8.370118, -0.05459785]
+        80.47207:
+          key: "A"
+          travel:
+            pos: [1.59651, 0.9180932, 0.05574989]
+            rot: [0, 0, 0]
+          pressPos: [-3.020573, 7.452031, -0.1103477]
+        81.98781:
+          key: "\b"
+        82.10371:
+          key: "\b"
+        82.22212:
+          key: " "
+        83.6548:
+          key: "E"
+          travel:
+            pos: [1.376298, 0.9731832, 0.04806232]
+            rot: [0, 0, 0]
+          pressPos: [-1.644275, 8.388489, -0.06228733]
+        84.67072:
+          key: "A"
+          travel:
+            pos: [2.055272, 1.487314, 0.07177067]
+            rot: [0, 0, 0]
+          pressPos: [-3.369233, 7.488754, -0.1225243]
+        85.63746:
+          key: "S"
+          travel:
+            pos: [0.9725842, 0.2203879, 0.0339632]
+            rot: [0, 0, 0]
+          pressPos: [-2.396649, 7.709093, -0.08856297]
+        87.28778:
+          key: "Y"
+          travel:
+            pos: [2.789297, 0.9181523, 0.09741783]
+            rot: [0, 0, 0]
+          pressPos: [0.3926485, 8.223225, 0.008835793]
+  - challenge:
+      type: Perfect
+      layout: LinearABCDE
+      prompt: "FISH ARE JUMPING"
+      output: "FISH ARE JU"
+      accuracy: 0.6875
+      time:
+        start: 87.28778
+        stop: 0
+        duration: -87.28778
+      keypresses:
+        88.97209:
+          key: "F"
+          travel:
+            pos: [1.780014, 1.193548, 0.06217575]
+            rot: [0, 0, 0]
+          pressPos: [-1.203858, 7.580562, -0.04689884]
+        89.8876:
+          key: "I"
+          travel:
+            pos: [2.80765, 0.5141425, 0.09805012]
+            rot: [0, 0, 0]
+          pressPos: [1.603792, 8.094696, 0.05114937]
+        91.25491:
+          key: "S"
+          travel:
+            pos: [4.018793, 1.487351, 0.1403399]
+            rot: [0, 0, 0]
+          pressPos: [-2.415002, 7.672379, -0.08919048]
+        92.88843:
+          key: "H"
+          travel:
+            pos: [2.587446, 0.1653299, 0.09038544]
+            rot: [0, 0, 0]
+          pressPos: [0.1357392, 7.507125, -8.869171E-05]
+        93.22176:
+          key: " "
+          travel:
+            pos: [2.235174E-07, 3.814697E-06, 1.716614E-05]
+            rot: [0, 0, 0]
+          pressPos: [0.135739, 7.507129, -7.152557E-05]
+        94.4715:
+          key: "A"
+          travel:
+            pos: [2.972821, 0.9548335, 0.1038313]
+            rot: [0, 0, 0]
+          pressPos: [-2.837081, 7.727478, -0.1038551]
+        98.52101:
+          key: "R"
+          travel:
+            pos: [3.229731, 1.964755, 0.1128035]
+            rot: [6.79969, 0.05934703, 90.52334]
+          pressPos: [-1.112114, 6.937918, -0.0436182]
+        99.55337:
+          key: "E"
+          travel:
+            pos: [0.4220663, 0.09183168, 0.01474571]
+            rot: [0, 0, 0]
+          pressPos: [-1.53418, 6.919552, -0.05836201]
+        99.9883:
+          key: " "
+        101.6034:
+          key: "J"
+          travel:
+            pos: [2.440651, 0.5325336, 0.08524132]
+            rot: [0, 0, 0]
+          pressPos: [0.8697677, 6.387059, 0.02557468]
+        102.2215:
+          key: "U"
+          travel:
+            pos: [0.07340306, 0.4590449, 0.002565384]
+            rot: [0, 0, 0]
+          pressPos: [0.796365, 6.846104, 0.02301502]
