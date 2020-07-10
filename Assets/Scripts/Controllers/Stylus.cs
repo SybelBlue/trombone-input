@@ -26,6 +26,7 @@ namespace Controller
         private Material highlightMaterial, defaultMaterial;
 
         [SerializeField]
+        [Tooltip("Must be in range [-180, 180]")]
         private Vector3 defaultMinAngle, defaultMaxAngle;
 
         [SerializeField]
@@ -144,7 +145,24 @@ namespace Controller
                 eulerAngles
                 .Map(x => useUnityEulerAngles ? x.ModIntoRange(-180, 180) : x)
 
-                .Map((i, x) => Mathf.InverseLerp(LowerBound(i), UpperBound(i), x));
+                .Map((i, x) => {
+                    float low = LowerBound(i);
+                    float hi = UpperBound(i);
+                   
+                    if (x < 0) {
+                        x = (180 + x) + 180;
+                    }
+                    if (low < 0)
+                    {
+                        low = (180 + low) + 180;
+                    }
+                    if (hi < 0)
+                    {
+                        hi = (180 + hi) + 180;
+                    }
+                    return Mathf.Clamp01((x - low) / (hi - low));
+                    }
+                    );
 
             if (!recordSliderData) return;
 
