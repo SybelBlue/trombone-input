@@ -348,6 +348,7 @@ namespace Testing
 
         public override void Write(StreamWriter writer)
         {
+            Dictionary<float, int> count = new Dictionary<float, int>();
             Indent();
             writer.WriteLine($"{indent}{bullet}challenge:");
             Indent();
@@ -367,7 +368,7 @@ namespace Testing
             Indent();
             foreach (var press in keypresses)
             {
-                writer.WriteLine($"{indent}{press.time}:");
+                writer.WriteLine($"{indent}{press.time + 0.000001 * count.ModifyWithDefault(press.time, -1, i => i + 1)}:");
                 Indent();
                 writer.WriteLine($"{indent}key: \"{(press.key == "\b" ? "\\b" : press.key)}\"");
                 if (press.travel != (Vector3.zero, Vector3.zero))

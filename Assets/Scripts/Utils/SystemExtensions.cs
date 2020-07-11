@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Utils
 {
@@ -52,7 +54,7 @@ namespace Utils
             public static void SetFromEnd<T>(this T[] array, int i, T value)
                 => array[array.LastIndex() - i] = value;
 
-            public static void OptionalAdd<T>(this System.Collections.Generic.List<T> list, T? value)
+            public static void OptionalAdd<T>(this List<T> list, T? value)
                 where T : struct
             {
                 if (value.HasValue)
@@ -61,11 +63,20 @@ namespace Utils
                 }
             }
 
-            public static string AsArrayString<T>(this System.Collections.Generic.IEnumerable<T> values)
+            public static string AsArrayString<T>(this IEnumerable<T> values)
                 => $"[{string.Join(", ", values.ToArray())}]";
 
-            public static bool IsEmpty<T>(this System.Collections.Generic.List<T> list)
+            public static bool IsEmpty<T>(this List<T> list)
                 => list.Count == 0;
+            
+            public static V GetOrDefault<K, V>(this Dictionary<K, V> dictionary, K key, V def)
+            {
+                dictionary.TryGetValue(key, out def);
+                return def;
+            }
+
+            public static V ModifyWithDefault<K, V>(this Dictionary<K, V> dictionary, K key, V def, Func<V, V> Mapper)
+                => dictionary[key] = Mapper(dictionary.GetOrDefault(key, def));
         }
 
         public static class StringExtensions
