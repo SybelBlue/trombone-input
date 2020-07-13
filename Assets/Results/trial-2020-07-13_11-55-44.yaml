@@ -1,0 +1,43 @@
+meta:
+  timestamp: "7/13/2020 11:55:44 AM"
+  unixseconds: 1594659344
+  platform: WindowsEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 21
+  - command: set-layout
+    data: 0
+  - challenge:
+      type: Practice
+      layout: LinearABCDE
+      prompt: "YOU MUST BE GETTING OLD"
+      output: ""
+      accuracy: 0
+      time:
+        start: 0.9097884
+        stop: 5.034121
+        duration: 4.124332
+      keypresses:
+  - challenge:
+      type: Practice
+      layout: LinearABCDE
+      prompt: "THE WORLD IS A STAGE"
+      output: ""
+      accuracy: 0
+      time:
+        start: 5.034121
+        stop: 6.451211
+        duration: 1.41709
+      keypresses:
+  - challenge:
+      type: Blind
+      layout: LinearABCDE
+      prompt: "CAN I SKATE WITH SISTER TODAY"
+      output: ""
+      accuracy: 0
+      time:
+        start: 6.451211
+        stop: 10.0497
+        duration: 3.598489
+      keypresses:

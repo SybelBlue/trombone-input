@@ -12,8 +12,12 @@ namespace CustomInput
     //      Backquote                   =>      Stylus Front Button
     //      Tab                         =>      Stylus Back Button
     //      7/8/9/0                     =>      Fast Switch Layouts
-    //      Shift                       =>      Hold for Precise Emulation
+    //      Shift + Stylus Emulation    =>      Hold for Precise Emulation
     //      Return                      =>      Switch to/from Lobby
+    //      S                           =>      Skip Challenge
+    //      R                           =>      Restart Challenge
+    //      Shift + S                   =>      Skip Trial
+    //      Shift + R                   =>      Restart Trial
     //    From MainController.cs
     //      Backspace                   =>      Force Backspace
     //      Space                       =>      Force Space
@@ -39,6 +43,10 @@ namespace CustomInput
     //      <DOM> Joystick Quadrant     =>      Fast Switch Layouts
     //      Return                      =>      Switch to/from Lobby
     //      7/8/9/0                     =>      Fast Switch Layouts
+    //      S                           =>      Skip Challenge
+    //      R                           =>      Restart Challenge
+    //      Shift + S                   =>      Skip Trial
+    //      Shift + R                   =>      Restart Trial
     using System;
     using static UnityEngine.Input;
     using static UnityEngine.KeyCode;
@@ -48,10 +56,10 @@ namespace CustomInput
     {
         public static readonly uint _slider_max_value = 45;//64;
         public static readonly uint _slider_min_value = 15;
-        public static readonly UnityEngine.KeyCode[] _layout_switch_bindings
-            = new UnityEngine.KeyCode[] { Alpha7, Alpha8, Alpha9, Alpha0 };
+        public static readonly KeyCode[] _layout_switch_bindings
+            = new KeyCode[] { Alpha7, Alpha8, Alpha9, Alpha0 };
 
-        public static readonly UnityEngine.KeyCode _scene_advance_key = Return;
+        public static readonly KeyCode _scene_advance_key = Return;
 
         public static bool _left_handed = false;
         public static string _dominant_hand
@@ -101,6 +109,9 @@ namespace CustomInput
 
         // either shift key held
         public static bool precisionMode
+            => shift;
+
+        public static bool shift
             => GetKey(LeftShift) || GetKey(RightShift);
 
         public static bool emulatingFrontDown
@@ -129,6 +140,18 @@ namespace CustomInput
 
         public static bool advanceSceneDown
             => GetKeyDown(_scene_advance_key);
+
+        public static bool skipChallenge
+            => GetKeyDown(S) && !skipTrial;
+
+        public static bool restartChallenge
+            => GetKeyDown(R) && !restartTrial;
+
+        public static bool skipTrial
+            => shift && GetKeyDown(S);
+
+        public static bool restartTrial
+            => shift && GetKeyDown(R);
 
         public static int? emulatingLayoutSwitch
         {
@@ -190,7 +213,7 @@ namespace CustomInput
 
             if (server.vrNodeType != VRDevice.VRNodeType.NetServer)
             {
-                UnityEngine.Debug.LogWarning("Provided VRDevice to initialize for MinVR Layout Switching does not have vrNodeType NetServer!");
+                Debug.LogWarning("Provided VRDevice to initialize for MinVR Layout Switching does not have vrNodeType NetServer!");
             }
 
             foreach (var item in _layout_switch_bindings)
@@ -208,7 +231,7 @@ namespace CustomInput
             }
         }
 
-        public static string KeyCodeToMinVRButtonDownName(UnityEngine.KeyCode binding)
+        public static string KeyCodeToMinVRButtonDownName(KeyCode binding)
             => $"Kbd{binding}_Down";
 
 
@@ -264,10 +287,10 @@ namespace CustomInput
                 delta *= 4;
             }
 
-            int rawNext = UnityEngine.Mathf.RoundToInt((currentValue ?? 0) + delta);
-            int next = (int)UnityEngine.Mathf.Clamp(rawNext, 0, _slider_max_value);
+            int rawNext = Mathf.RoundToInt((currentValue ?? 0) + delta);
+            int next = (int)Mathf.Clamp(rawNext, 0, _slider_max_value);
 
-            if (!UnityEngine.Application.isEditor && delta == 0)
+            if (!Application.isEditor && delta == 0)
             {
                 next = emulatedSlideValue;
             }

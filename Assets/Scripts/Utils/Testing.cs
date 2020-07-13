@@ -238,12 +238,10 @@ namespace Testing
 
     public class ResultBuilder
     {
-        private List<ITrialResult> results;
+        private List<ITrialResult> results = new List<ITrialResult>();
+        private List<Keypress> savedPresses = new List<Keypress>();
 
         private ChallengeResult lastChallenge;
-
-        public ResultBuilder()
-          => results = new List<ITrialResult>();
 
         public void Push(TrialItem item, string currentOutput, string currentLayoutName)
         {
@@ -265,10 +263,24 @@ namespace Testing
             throw new ArgumentException($"{item.GetType()} not recognized");
         }
 
+        public void RestartLastChallenge(float? start = null)
+        {
+            savedPresses.Clear();
+
+            if (lastChallenge == null) return;
+
+            lastChallenge.start = start ?? Time.time;
+        }
+
         public void EndLastChallenge(string output)
         {
             if (lastChallenge == null) return;
+            
             lastChallenge.SetEndNow();
+            
+            lastChallenge.keypresses = savedPresses;
+            savedPresses.Clear();
+
             lastChallenge.output = output;
             lastChallenge = null;
         }
@@ -280,7 +292,7 @@ namespace Testing
         }
 
         public void AddKeypress(Keypress kp)
-          => lastChallenge.AddKeypress(kp);
+          => savedPresses.Add(kp);
     }
 
     public interface ITrialResult

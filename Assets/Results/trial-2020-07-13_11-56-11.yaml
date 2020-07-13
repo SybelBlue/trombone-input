@@ -1,0 +1,43 @@
+meta:
+  timestamp: "7/13/2020 11:56:11 AM"
+  unixseconds: 1594659371
+  platform: WindowsEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 5
+  - command: set-layout
+    data: 3
+  - challenge:
+      type: Practice
+      layout: RaycastQWERTY
+      prompt: "GO OUT FOR SOME PIZZA AND BEER"
+      output: ""
+      accuracy: 0
+      time:
+        start: 14.07466
+        stop: 18.92129
+        duration: 4.84663
+      keypresses:
+  - challenge:
+      type: Practice
+      layout: RaycastQWERTY
+      prompt: "EFFORT IS WHAT IT WILL TAKE"
+      output: ""
+      accuracy: 0
+      time:
+        start: 18.92129
+        stop: 19.48055
+        duration: 0.5592556
+      keypresses:
+  - challenge:
+      type: Blind
+      layout: RaycastQWERTY
+      prompt: "WHERE CAN MY LITTLE DOG BE"
+      output: "WHEREW"
+      accuracy: 0.1923077
+      time:
+        start: 29.51865
+        stop: 0
+        duration: -29.51865
+      keypresses:

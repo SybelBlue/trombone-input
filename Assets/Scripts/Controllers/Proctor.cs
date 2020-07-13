@@ -135,6 +135,26 @@ namespace Controller
             UpdateDisplay();
         }
 
+        public void Update()
+        {
+            if (Bindings.skipChallenge)
+            {
+                AdvanceChallenge();
+            }
+            else if (Bindings.restartChallenge)
+            {
+                RestartChallenge();
+            }
+            else if (Bindings.skipTrial)
+            {
+                FinishTrial();
+            }
+            else if (Bindings.restartTrial)
+            {
+                RestartTrial();
+            }
+        }
+
         public void OnDestroy()
             => FlushBuilder();
 
@@ -313,6 +333,13 @@ namespace Controller
         private void AdvanceIndexCyclic()
             => _layoutIndex = (_layoutIndex + 1) % layoutOrder.Length;
 
+        private void RestartChallenge()
+        {
+            builder?.RestartLastChallenge();
+            currentOutput = "";
+            UpdateDisplay();
+        }
+
         private void AdvanceChallenge()
         {
             if (!currentTrial.HasValue) return;
@@ -348,6 +375,15 @@ namespace Controller
             FlushBuilder();
 
             OnTrialEnd.Invoke(true);
+        }
+
+        private void RestartTrial()
+        {
+            if (!currentTrial.HasValue) return;
+
+            Debug.LogWarning($"Restarted Trial {trialNumber}");
+
+            RunTrial(currentTrial.Value);
         }
 
         public void FlushBuilder()
