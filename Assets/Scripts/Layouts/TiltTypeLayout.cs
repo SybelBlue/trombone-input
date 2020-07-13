@@ -1,13 +1,10 @@
-namespace CustomInput
+namespace CustomInput.Layout
 {
-    namespace Layout
+    public class TiltTypeLayout : ArcTypeLayout
     {
-        public class TiltTypeLayout : ArcTypeLayout
-        {
-            public override bool usesSlider => false;
+        public override bool usesSlider => false;
 
-            protected override int? InnerIndex(InputData data, int parentSize)
-                => Utils.Static.NormalizedIntoIndex(1 - data.normalizedAngles.x, parentSize);
-        }
+        protected override int? InnerIndex(InputData data, int parentSize)
+            => Utils.Static.NormalizedIntoIndex(1 - data.normalizedAngles.x, parentSize);
     }
 }
