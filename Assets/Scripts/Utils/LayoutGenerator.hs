@@ -114,5 +114,5 @@ makeConstructorLineFor stylusMode (Binned items) = (2, "new " ++ name ++ "(true"
         Nothing ->
           []
   
-
+main :: IO ()
 main = putStr $ makeInitMethod raycastQwerty
