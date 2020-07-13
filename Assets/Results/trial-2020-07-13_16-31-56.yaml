@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 4:31:56 PM"
+  unixseconds: 1594675916
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 11
+  - command: set-layout
+    data: 2
+  - challenge:
+      type: Practice
+      layout: TiltType
+      prompt: "WANT TO JOIN US FOR LUNCH"
+      output: ""
+      accuracy: 0
+      time:
+        start: 4.633308
+        stop: 0
+        duration: -4.633308
+      keypresses:

@@ -76,7 +76,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public Button backToLobby;
 //
-    // public GameObject laserPointerObject;
+    public GameObject laserPointerObject;
 
     // The most up-to-date value reported by the InputFieldController
     private uint? lastReportedValue;
@@ -106,7 +106,7 @@ public class Main : MonoBehaviour, VREventGenerator
         ground = GameObject.FindWithTag("GroundFloorTag");
         buttonBackground = GameObject.FindWithTag("ButtonBackgroundTag");
         backToLobby = GameObject.FindWithTag("JumbBackToLobbyTag").GetComponent<Button>();
-        // laserPointerObject = GameObject.FindWithTag("LaserPointerTag");
+        laserPointerObject = GameObject.FindWithTag("LaserPointerTag");
         if (Instance)
         {
             Debug.LogWarning("A second Main script has been created while another exists! This instance will not be saved!");
@@ -178,6 +178,18 @@ public class Main : MonoBehaviour, VREventGenerator
             stylus.angleProvider = layout.StylusRotationBounds;
             layout.UpdateState(new InputData(lastReportedValue, stylus));
         }
+        if(!strialsIsLoaded)
+        {
+          laserPointerObject.SetActive(true);
+
+        }
+        // TODO: find a way to print out current scene.
+        Debug.LogWarning(strialsIsLoaded);
+
+        // laserPointerObject.SetActive(true);
+        // Debug.LogWarning(stylus.useLaser);
+
+        Debug.LogWarning(stylus.useLaser);
     }
 
     public void LoadNullFields()
@@ -263,10 +275,14 @@ public class Main : MonoBehaviour, VREventGenerator
             Debug.LogWarning("Scene Advanced!");
             // laserPointerObject.SetActive(true);
             Scenes._STRIALS.UnloadAsync();
-            if (layout && stylus && stylus.useLaser != layout.usesRaycasting)
-            {
-                stylus.useLaser = layout.usesRaycasting;
-            }
+            // laserPointerObject.SetActive(true);
+            // Debug.LogWarning(stylus.useLaser);
+
+            // if (layout && stylus && stylus.useLaser != layout.usesRaycasting)
+            // {
+              // stylus.useLaser = true;
+              // laserPointer.active = true;
+            // }
             // Debug.LogWarning(laserPointerObject.activeSelf());
             // Debug.LogWarning(laserPointerObject.gameObject.activeInHierarchy());
 
@@ -438,7 +454,8 @@ public class Main : MonoBehaviour, VREventGenerator
         {
             OnSceneAdvance();
             backToLobby.onClick.Invoke();
-            stylus.useLaser = true;
+            // stylus.useLaser = true;
+            laserPointerObject.SetActive(true);
             // laserReapear();
             // laserPointerObject.GetComponent<Renderer>().enabled = enabled;
             // laserPointerObject.gameObject.SetActive(true);
