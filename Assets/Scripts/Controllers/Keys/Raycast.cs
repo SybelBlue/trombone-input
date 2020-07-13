@@ -1,9 +1,5 @@
-
-namespace Controller
+namespace Controller.Key
 {
-    namespace Key
-    {
-        public class Raycast : Stylus
-        { }
-    }
+    public class Raycast : Stylus
+    { }
 }

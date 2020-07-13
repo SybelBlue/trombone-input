@@ -1,12 +1,8 @@
-
-namespace Controller
+namespace Controller.Key
 {
-    namespace Key
+    public class StylusBinned : AbstractBinned<CustomInput.KeyData.StylusBinnedData>
     {
-        public class StylusBinned : AbstractBinned<CustomInput.KeyData.StylusBinnedData>
-        {
-            public override void SetSlant(bool forward)
-            { }
-        }
+        public override void SetSlant(bool forward)
+        { }
     }
 }
