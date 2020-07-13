@@ -3,9 +3,9 @@
 import Text.Printf
 import Data.List
 
-type Layout = (LayoutMode, [LayoutKey])
+type Layout = (LayoutMode, [AbstractData])
 
-data LayoutKey = Simple Char Size | Binned [ LayoutKey ] | Alt Char Size (Maybe Char) deriving Show
+data AbstractData = Simple Char Size | Binned [ AbstractData ] | Alt Char Size (Maybe Char) deriving Show
 
 data Size = Small | Medium | Big deriving Show
 
@@ -21,14 +21,14 @@ sizeToBarWidth =
 qwerty :: Layout
 qwerty = (Basic, map tripletIntoBinned $ [ "QAZ", "WSX", "EDC", "RFV", "TGB"] ++ map reverse ["YHU", "IJN", "OKM", "PL." ])
 
-tripletIntoBinned :: String -> LayoutKey
+tripletIntoBinned :: String -> AbstractData
 tripletIntoBinned [ a, b, c ] = Binned [ Simple a Small, Simple b Medium, Simple c Small ]
 tripletIntoBinned _ = error "unexpected input"
 
-layoutSize :: [LayoutKey] -> Int
+layoutSize :: [AbstractData] -> Int
 layoutSize = sum . map itemSize
 
-itemSize :: LayoutKey -> Int
+itemSize :: AbstractData -> Int
 itemSize (Simple _ s) = sizeToBarWidth s
 itemSize (Binned xs) = layoutSize xs
 itemSize _ = sizeToBarWidth Small
@@ -75,8 +75,8 @@ commonLetter :: Char -> Bool
 commonLetter x = elem x "ERIOTAN"
 
 makeInitMethod :: Layout -> String
-makeInitMethod (stylusMode, keys) = "\t// Auto-generated \n\tprotected override LayoutKey[] FillKeys() {\n\t\t"
-  ++ "return new LayoutKey[] {\n"
+makeInitMethod (stylusMode, keys) = "\t// Auto-generated \n\tprotected override AbstractData[] FillKeys() {\n\t\t"
+  ++ "return new AbstractData[] {\n"
   ++ (intercalate "\n" $ concat $ map (map deformat . makeConstructorLineFor stylusMode) keys)
   ++ "\n\t};\n}"
 
@@ -86,15 +86,15 @@ type Formatted = (Int, String, Bool)
 deformat :: Formatted -> String
 deformat (n, s, b) = (take n $ cycle "\t") ++ s ++ if b then "," else ""
 
-constructorName :: LayoutMode -> LayoutKey -> String
+constructorName :: LayoutMode -> AbstractData -> String
 constructorName stylusMode (Binned _) = 
   case stylusMode of 
-    Basic -> "BinnedKey"
-    Stylus -> "StylusBinnedKey"
+    Basic -> "BinnedData"
+    Stylus -> "StylusBinnedData"
     Raycast -> error "no binned raycast constructor"
 constructorName stylusMode _ = show stylusMode ++ "Key"
 
-makeConstructorLineFor :: LayoutMode -> LayoutKey -> [Formatted]
+makeConstructorLineFor :: LayoutMode -> AbstractData -> [Formatted]
 makeConstructorLineFor stylusMode (Simple c s) = [(2, printf "new %s('%s', %d)" name (charString c) (sizeToBarWidth s), True)]
   where name = constructorName stylusMode $ Simple c s
 makeConstructorLineFor stylusMode (Alt c s x) = [(2, printf "new %s('%s', %d%s)" name (charString c) (sizeToBarWidth s) lastArg, True)]

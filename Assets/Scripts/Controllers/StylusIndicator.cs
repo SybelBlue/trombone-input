@@ -9,16 +9,16 @@ namespace Controller
 
         public Text display;
 
-        public Stylus modelController;
+        public Stylus stylus;
 
         void Update()
         {
-            if (modelController == null || xSlider == null || ySlider == null || zSlider == null || display == null) return;
-            if (!modelController.transform.hasChanged) return;
+            if (stylus == null || xSlider == null || ySlider == null || zSlider == null || display == null) return;
+            if (!stylus.transform.hasChanged) return;
 
-            xSlider.value = modelController.normalizedAngles.x;
-            ySlider.value = modelController.normalizedAngles.y;
-            zSlider.value = modelController.normalizedAngles.z;
+            xSlider.value = stylus.normalizedAngles.x;
+            ySlider.value = stylus.normalizedAngles.y;
+            zSlider.value = stylus.normalizedAngles.z;
 
             display.text = "";
             for (int i = 0; i < 3; i++)
@@ -26,14 +26,24 @@ namespace Controller
                 display.text +=
                     string.Format("{0}: [{1,3:N0},{2,3:N0}] {3,3:N0} => {4,5:N3}\n",
                         (char)('x' + i),
-                        modelController.LowerBound(i),
-                        modelController.UpperBound(i),
-                        modelController.eulerAngles[i],
-                        modelController.normalizedAngles[i]);
+                        stylus.LowerBound(i),
+                        stylus.UpperBound(i),
+                        stylus.eulerAngles[i],
+                        stylus.normalizedAngles[i]);
             }
 
-            display.text += string.Format("Slider Unfiltered: {0, 3:N3}  ", modelController.rawSlider);
-            display.text += string.Format("Slider Normalized: {0, 3:N3}", modelController.normalizedSlider);
+            display.text += string.Format("Slider Unfiltered: {0, 3:N3}  ", stylus.rawSlider);
+            display.text += string.Format("Slider Normalized: {0, 3:N3}\n", stylus.normalizedSlider);
+
+
+            display.text +=
+                string.Format("travel (pos: [{0,3:N3}, {1,3:N3}, {2,3:N3}], rot: [{0,3:N3}, {1,3:N3}, {2,3:N3}])\n",
+                    stylus.travel.pos[0],
+                    stylus.travel.pos[1],
+                    stylus.travel.pos[2],
+                    stylus.travel.rot[0],
+                    stylus.travel.rot[1],
+                    stylus.travel.rot[2]);
         }
     }
 }

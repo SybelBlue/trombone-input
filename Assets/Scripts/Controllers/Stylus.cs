@@ -43,7 +43,6 @@ namespace Controller
 
         private (Vector3 pos, Vector3 rot) lastTransform;
 
-
         #region Properties
         public bool useLaser
         {
@@ -220,6 +219,7 @@ namespace Controller
             if (indicator)
             {
                 Static.FillWithTaggedIfNull(ref indicator.display, "AngleAndSliderIndicator");
+                indicator.stylus = this;
             }
         }
 
