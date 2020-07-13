@@ -41,18 +41,18 @@ namespace CustomInput
             => dropdownController.dropdown;
 
         [SerializeField]
-        private LinearABCDE linearABCDE;
+        private SliderOnlyLayout linearABCDE;
 
         [SerializeField]
-        private StylusBinnedABCDE stylusBinnedABCDE;
+        private ArcTypeLayout stylusBinnedABCDE;
         // private GameObject circleStylus = GameObject.FindGameObjectWithTag("CircularStylus");
 
 
         [SerializeField]
-        private TwoRotationABCDE twoRotationABCDE;
+        private TiltTypeLayout twoRotationABCDE;
 
         [SerializeField]
-        private RaycastQWERTY raycastQWERTY;
+        private RaycastLayout raycastQWERTY;
         #endregion
 
         public AbstractLayout currentLayout => fromOption(layout);

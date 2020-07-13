@@ -5,7 +5,7 @@ namespace CustomInput
 {
     namespace Layout
     {
-        public class LinearABCDE : AbstractLayout
+        public class SliderOnlyLayout : AbstractLayout
         {
             public override bool usesSlider => true;
             public override bool keyOnFingerUp => true;

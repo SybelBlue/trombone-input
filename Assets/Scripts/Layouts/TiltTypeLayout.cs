@@ -1,10 +1,8 @@
-using UnityEngine;
-
 namespace CustomInput
 {
     namespace Layout
     {
-        public class TwoRotationABCDE : StylusBinnedABCDE
+        public class TiltTypeLayout : ArcTypeLayout
         {
             public override bool usesSlider => false;
 

@@ -10,7 +10,7 @@ namespace CustomInput
     namespace Layout
     {
 #pragma warning disable 649
-        public sealed class RaycastQWERTY : AbstractLayout
+        public sealed class RaycastLayout : AbstractLayout
         {
             public override bool usesSlider => false;
             public override bool keyOnFingerUp => false;

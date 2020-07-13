@@ -6,7 +6,7 @@ namespace CustomInput
 {
     namespace Layout
     {
-        public class StylusBinnedABCDE : AbstractLayout
+        public class ArcTypeLayout : AbstractLayout
         {
             public override bool usesSlider => true;
             public override bool keyOnFingerUp => true;
