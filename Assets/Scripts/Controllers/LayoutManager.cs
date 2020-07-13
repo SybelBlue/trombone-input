@@ -10,10 +10,10 @@ namespace CustomInput
     [Serializable]
     public enum LayoutOption : int
     {
-        LinearABCDE = 0,
-        StylusBinnedABCDE = 1,
-        TwoRotBinnedABCDE = 2,
-        RaycastQWERTY = 3,
+        SliderOnly = 0,
+        ArcType = 1,
+        TiltType = 2,
+        Raycast = 3,
     }
 
 #pragma warning disable 649
@@ -61,16 +61,16 @@ namespace CustomInput
         {
             switch (option)
             {
-                case LayoutOption.LinearABCDE:
+                case LayoutOption.SliderOnly:
                     return linearABCDE;
 
-                case LayoutOption.StylusBinnedABCDE:
+                case LayoutOption.ArcType:
                     return stylusBinnedABCDE;
 
-                case LayoutOption.TwoRotBinnedABCDE:
+                case LayoutOption.TiltType:
                     return twoRotationABCDE;
 
-                case LayoutOption.RaycastQWERTY:
+                case LayoutOption.Raycast:
                     return raycastQWERTY;
             }
 

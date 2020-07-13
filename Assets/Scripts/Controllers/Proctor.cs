@@ -52,10 +52,10 @@ namespace Controller
 
         private LayoutOption[] layoutOrder 
             = new LayoutOption[] { 
-                LayoutOption.LinearABCDE, 
-                LayoutOption.StylusBinnedABCDE, 
-                LayoutOption.TwoRotBinnedABCDE, 
-                LayoutOption.RaycastQWERTY 
+                LayoutOption.SliderOnly, 
+                LayoutOption.ArcType, 
+                LayoutOption.TiltType, 
+                LayoutOption.Raycast 
             };
 
         private Trial? currentTrial = null;

@@ -8,7 +8,7 @@ import Data.Tuple (fst)
 type Prompt = String
 
 -- all of the trombone-input layouts
-data Layout = Linear | StylusBinned | TwoAxis | Raycast deriving (Eq, Show)
+data Layout = SliderOnly | ArcType | TiltType | Raycast deriving (Eq, Show)
 
 -- | commands that are entered into the file for Unity to perform
 data Command = RandomizeLayoutOrder | NextLayout | TrialNumber Int | SetLayout Layout deriving Show
@@ -44,9 +44,9 @@ scrubPrompt p = map mapper p
 
 layoutNumber :: Layout -> Int
 layoutNumber = \case
-    Linear -> 0
-    StylusBinned -> 1
-    TwoAxis -> 2
+    SliderOnly -> 0
+    ArcType -> 1
+    TiltType -> 2
     Raycast -> 3
 
 -- a class for writing to files
@@ -123,7 +123,7 @@ dummies =
 dummyA :: Trial
 dummyA =
     [ Comment "arbitrarily made by logan"
-    , Do (SetLayout TwoAxis)
+    , Do (SetLayout TiltType)
     , perform Blind "the dog took a leap"
     , Do (SetLayout Raycast)
     , perform Perfect "and hit the ground softly"
@@ -147,5 +147,5 @@ template strs = (challenges, remainder)
 
 
 templateTrials :: [String] -> Int -> [(Layout, Trial)]
-templateTrials strs r = fst $ foldl folder ([], strs) $ foldl (++) [] $ map (replicate r) [Linear, StylusBinned, TwoAxis, Raycast]
+templateTrials strs r = fst $ foldl folder ([], strs) $ foldl (++) [] $ map (replicate r) [SliderOnly, ArcType, TiltType, Raycast]
     where folder (trials, start) layout = let (t, end) = template start in ((layout, t):trials, end)
