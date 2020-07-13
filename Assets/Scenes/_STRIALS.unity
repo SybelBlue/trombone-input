@@ -4951,10 +4951,7 @@ GameObject:
   - component: {fileID: 1375821959}
   - component: {fileID: 1375821958}
   - component: {fileID: 1375821956}
-  - component: {fileID: 1375821955}
-  - component: {fileID: 1375821953}
   - component: {fileID: 1375821952}
-  - component: {fileID: 1375821961}
   - component: {fileID: 1375821963}
   m_Layer: 2
   m_Name: CircleStylus
@@ -4978,41 +4975,6 @@ MonoBehaviour:
   notes: StylusIndicator now functions with all fields set to None. It will NOT automatically
     detect when the objects are created. The Stylus is fully encapsulated.
   issues: []
---- !u!114 &1375821953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1375821951}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Device: 1
-  m_PoseSource: 5
-  m_PoseProviderComponent: {fileID: 0}
-  m_TrackingType: 0
-  m_UpdateType: 0
-  m_UseRelativeTransform: 0
---- !u!114 &1375821955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1375821951}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9041d69b17b2666428b349419389c065, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xSlider: {fileID: 0}
-  ySlider: {fileID: 0}
-  zSlider: {fileID: 0}
-  display: {fileID: 0}
-  stylus: {fileID: 0}
 --- !u!114 &1375821956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5101,21 +5063,6 @@ Transform:
   m_Father: {fileID: 2034183662}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &1375821961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1375821951}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e0afd42dae9f4586810e9ef9166fc27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xSlider: {fileID: 0}
-  display: {fileID: 0}
-  modelController: {fileID: 1375821956}
 --- !u!114 &1375821963
 MonoBehaviour:
   m_ObjectHideFlags: 0
