@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 3:07:55 PM"
+  unixseconds: 1594670875
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 5
+  - command: set-layout
+    data: 3
+  - challenge:
+      type: Practice
+      layout: Raycast
+      prompt: "GO OUT FOR SOME PIZZA AND BEER"
+      output: ""
+      accuracy: 0
+      time:
+        start: 0.6141995
+        stop: 0
+        duration: -0.6141995
+      keypresses:

@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 2:39:31 PM"
+  unixseconds: 1594669171
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 13
+  - command: set-layout
+    data: 1
+  - challenge:
+      type: Practice
+      layout: ArcType
+      prompt: "THIS WATCH IS TOO EXPENSIVE"
+      output: ""
+      accuracy: 0
+      time:
+        start: 8.411995
+        stop: 0
+        duration: -8.411995
+      keypresses:

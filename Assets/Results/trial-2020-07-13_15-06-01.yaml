@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 3:06:01 PM"
+  unixseconds: 1594670761
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 8
+  - command: set-layout
+    data: 2
+  - challenge:
+      type: Practice
+      layout: TiltType
+      prompt: "HE COOLED OFF AFTER SHE LEFT"
+      output: ""
+      accuracy: 0
+      time:
+        start: 2.393669
+        stop: 0
+        duration: -2.393669
+      keypresses:

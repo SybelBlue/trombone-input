@@ -35,8 +35,6 @@ public class CircularLayout : LayoutGroup {
     [Range(0f,360f)]
     public float MinAngle, MaxAngle, StartAngle;
     public bool OnlyLayoutVisible = false;
-    GameObject practiceEndButton;
-    GameObject liveDropDownMenu;
 
    protected override void OnEnable()
    {

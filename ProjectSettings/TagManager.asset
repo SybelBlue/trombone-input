@@ -21,6 +21,7 @@ TagManager:
   - LaserPointerTag
   - LiveDropDownTag
   - PracticeEndButtonTag
+  - ChallengeTypeIndicatorTag
   layers:
   - Default
   - TransparentFX
