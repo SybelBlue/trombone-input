@@ -19,6 +19,8 @@ TagManager:
   - JumbBackToLobbyTag
   - CircularStylus
   - LaserPointerTag
+  - LiveDropDownTag
+  - PracticeEndButtonTag
   layers:
   - Default
   - TransparentFX
