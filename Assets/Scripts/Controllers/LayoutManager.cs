@@ -103,7 +103,7 @@ namespace CustomInput
 
         private void ActivateLayout()
         {
-            foreach (var layoutOption in System.Enum.GetValues(typeof(LayoutOption)))
+            foreach (var layoutOption in Enum.GetValues(typeof(LayoutOption)))
             {
                 var layout = fromOption((LayoutOption)layoutOption);
                 if (layout.gameObject.activeInHierarchy)

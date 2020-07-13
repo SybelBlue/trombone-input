@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 1:23:54 PM"
+  unixseconds: 1594664634
+  platform: WindowsEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 19
+  - command: set-layout
+    data: 0
+  - challenge:
+      type: Practice
+      layout: SliderOnly
+      prompt: "YOU ARE A WONDERFUL EXAMPLE"
+      output: "J"
+      accuracy: 0
+      time:
+        start: 0.2969861
+        stop: 0
+        duration: -0.2969861
+      keypresses:

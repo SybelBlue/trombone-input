@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 168735321}
   - component: {fileID: 168735320}
   m_Layer: 2
-  m_Name: TwoRotationABCDE
+  m_Name: TiltType
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -619,7 +619,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 168735318}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a664841b86a1ec84aa1b81c3d0257d36, type: 3}
+  m_Script: {fileID: 11500000, guid: 3519ff6c49eec3246929e9fdc08e8b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   simpleKeyPrefab: {fileID: 3265795387704717104, guid: 3344e1193debe304a81509bb26bf33ca,
@@ -3597,7 +3597,7 @@ GameObject:
   - component: {fileID: 997093842}
   - component: {fileID: 997093841}
   m_Layer: 5
-  m_Name: LinearABCDE
+  m_Name: SliderOnly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3631,7 +3631,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 997093839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5e2b13a543217545ae9a0b9af6da1a5, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d539fc8b1efd11419fe59cc6987506e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   simpleKeyPrefab: {fileID: 3265795387704717104, guid: 3344e1193debe304a81509bb26bf33ca,
@@ -3844,7 +3844,7 @@ GameObject:
   - component: {fileID: 1047773957}
   - component: {fileID: 1047773958}
   m_Layer: 5
-  m_Name: RaycastQWERTY
+  m_Name: Raycast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3878,7 +3878,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1047773955}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 990f427cad99b3c47b6e69fa320dfaeb, type: 3}
+  m_Script: {fileID: 11500000, guid: f95d283eea580504b8b72c8be38d3f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   simpleKeyPrefab: {fileID: 3265795387704717104, guid: 3344e1193debe304a81509bb26bf33ca,
@@ -6850,7 +6850,7 @@ GameObject:
   - component: {fileID: 2034183664}
   - component: {fileID: 2034183663}
   m_Layer: 2
-  m_Name: StylusBinnedABCDE
+  m_Name: ArcType
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
