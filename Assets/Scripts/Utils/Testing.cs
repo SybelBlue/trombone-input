@@ -39,19 +39,32 @@ namespace Testing
     {
         public const char COMMAND_PREFIX = '!', COMMENT_PREFIX = '#', CHALLENGE_SEPERATOR = ':';
 
+        // Returns all trials in the streaming assets path under the Trials directory, sorted by trialNumber
         public static List<Trial> ReadTrials(bool logComments = true)
         {
             List<Trial> trials = new List<Trial>();
 
+            // !! Reads in an inconsistent and non-ordered fashion
             var dir = Path.Combine(Application.streamingAssetsPath, "Trials");
-            var pattern = "*.txt";
+            var pattern = "*.txt"; // exclude .meta files
             foreach (string file in Directory.EnumerateFiles(dir, pattern))
             {
-                UsingStream(file, reader => trials.Add(ReadTrialItems(reader, logComments)));
+                try
+                {
+                    UsingStream(file, reader => trials.Add(ReadTrialItems(reader, logComments)));
+                }
+                catch (ArgumentException e)
+                {
+                    Debug.LogError($"Encountered ArgumentException while reading {file}:\n{e.Message}\n{e.StackTrace}");
+                }
             }
+
             Debug.Log($"Loaded {trials.Count} trials ({trials.Select(t => t.Length).Sum()} TrialItems)");
+
+            // sort away inconsistent ordering
             var arr = trials.ToArray();
             Array.Sort(arr.Select(t => t.trialNumber).ToArray(), arr);
+            
             return arr.ToList();
         }
 
