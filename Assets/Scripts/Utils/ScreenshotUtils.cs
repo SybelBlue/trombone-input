@@ -2,6 +2,7 @@
 
 namespace Utils
 {
+#pragma warning disable 649
     public class ScreenshotUtils : MonoBehaviour
     {
         [SerializeField]
