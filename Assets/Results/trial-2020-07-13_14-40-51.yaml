@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 2:40:51 PM"
+  unixseconds: 1594669251
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 2
+  - command: set-layout
+    data: 3
+  - challenge:
+      type: Practice
+      layout: Raycast
+      prompt: "MACHINERY IS TOO COMPLICATED"
+      output: ""
+      accuracy: 0
+      time:
+        start: 2.015108
+        stop: 0
+        duration: -2.015108
+      keypresses:

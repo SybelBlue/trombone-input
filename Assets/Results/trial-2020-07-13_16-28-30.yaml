@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 4:28:30 PM"
+  unixseconds: 1594675710
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 0
+  - command: set-layout
+    data: 3
+  - challenge:
+      type: Practice
+      layout: Raycast
+      prompt: "WELL CONNECTED WITH PEOPLE"
+      output: ""
+      accuracy: 0
+      time:
+        start: 2.067407
+        stop: 4.766961
+        duration: 2.699553
+      keypresses:

@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 2:07:28 PM"
+  unixseconds: 1594667248
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 7
+  - command: set-layout
+    data: 2
+  - challenge:
+      type: Practice
+      layout: TiltType
+      prompt: "SHALL WE PLAY A ROUND OF CARDS"
+      output: ""
+      accuracy: 0
+      time:
+        start: 1.297819
+        stop: 0
+        duration: -1.297819
+      keypresses:

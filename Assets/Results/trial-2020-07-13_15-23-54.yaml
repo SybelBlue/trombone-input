@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 3:23:54 PM"
+  unixseconds: 1594671834
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 22
+  - command: set-layout
+    data: 0
+  - challenge:
+      type: Practice
+      layout: SliderOnly
+      prompt: "MY FAVORITE PLACE TO VISIT"
+      output: ""
+      accuracy: 0
+      time:
+        start: 1.588942
+        stop: 0
+        duration: -1.588942
+      keypresses:

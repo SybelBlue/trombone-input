@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 3:25:26 PM"
+  unixseconds: 1594671926
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 6
+  - command: set-layout
+    data: 2
+  - challenge:
+      type: Practice
+      layout: TiltType
+      prompt: "SANTA CLAUS GOT STUCK"
+      output: ""
+      accuracy: 0
+      time:
+        start: 1.95324
+        stop: 0
+        duration: -1.95324
+      keypresses:

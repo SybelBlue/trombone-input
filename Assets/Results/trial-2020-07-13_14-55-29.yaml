@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 2:55:29 PM"
+  unixseconds: 1594670129
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 17
+  - command: set-layout
+    data: 1
+  - challenge:
+      type: Practice
+      layout: ArcType
+      prompt: "I AM ALLERGIC TO BEES AND PEANUTS"
+      output: ""
+      accuracy: 0
+      time:
+        start: 2.341012
+        stop: 0
+        duration: -2.341012
+      keypresses:

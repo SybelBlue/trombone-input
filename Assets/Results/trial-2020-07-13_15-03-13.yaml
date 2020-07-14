@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 3:03:13 PM"
+  unixseconds: 1594670593
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 1
+  - command: set-layout
+    data: 3
+  - challenge:
+      type: Practice
+      layout: Raycast
+      prompt: "TICKETS ARE VERY EXPENSIVE"
+      output: ""
+      accuracy: 0
+      time:
+        start: 3.272252
+        stop: 0
+        duration: -3.272252
+      keypresses:

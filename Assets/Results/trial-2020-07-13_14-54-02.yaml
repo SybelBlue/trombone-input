@@ -1,0 +1,21 @@
+meta:
+  timestamp: "7/13/2020 2:54:02 PM"
+  unixseconds: 1594670042
+  platform: OSXEditor
+  xrdevices: []
+trial:
+  - command: trial-number
+    data: 23
+  - command: set-layout
+    data: 0
+  - challenge:
+      type: Practice
+      layout: SliderOnly
+      prompt: "MY WATCH FELL IN THE WATER"
+      output: ""
+      accuracy: 0
+      time:
+        start: 3.7791
+        stop: 0
+        duration: -3.7791
+      keypresses:
