@@ -1802,7 +1802,7 @@ MonoBehaviour:
   ySlider: {fileID: 1232045329}
   zSlider: {fileID: 1821045582}
   display: {fileID: 0}
-  modelController: {fileID: 971101864}
+  stylus: {fileID: 0}
 --- !u!114 &971101867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2229,6 +2229,7 @@ GameObject:
   - component: {fileID: 1326522651}
   - component: {fileID: 1326522652}
   - component: {fileID: 1326522650}
+  - component: {fileID: 1326522654}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2375,7 +2376,21 @@ MonoBehaviour:
   autoFilter: {fileID: 971101865}
   strialsIsLoaded: 0
   backToLobby: {fileID: 0}
-  LaserPointerObject: {fileID: 0}
+--- !u!114 &1326522654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326522646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b59a404e4dc57f41abd321170484e40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderingCamera: {fileID: 1326522648}
+  resWidth: 3840
+  resHeight: 2160
 --- !u!1 &1351352543
 GameObject:
   m_ObjectHideFlags: 0
@@ -3142,7 +3157,7 @@ GameObject:
   - component: {fileID: 1534082767}
   - component: {fileID: 1534082766}
   - component: {fileID: 1534082765}
-  m_Layer: 2
+  m_Layer: 9
   m_Name: Laser
   m_TagString: LaserPointerTag
   m_Icon: {fileID: 0}

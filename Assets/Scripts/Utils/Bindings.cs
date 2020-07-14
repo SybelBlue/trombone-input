@@ -18,6 +18,7 @@ namespace CustomInput
     //      R                           =>      Restart Challenge
     //      Shift + S                   =>      Skip Trial
     //      Shift + R                   =>      Restart Trial
+    //      K                           =>      Capture Screenshot
     //    From MainController.cs
     //      Backspace                   =>      Force Backspace
     //      Space                       =>      Force Space
@@ -47,6 +48,7 @@ namespace CustomInput
     //      R                           =>      Restart Challenge
     //      Shift + S                   =>      Skip Trial
     //      Shift + R                   =>      Restart Trial
+    //      K                           =>      Capture Screenshot
     using System;
     using static UnityEngine.Input;
     using static UnityEngine.KeyCode;
@@ -62,6 +64,7 @@ namespace CustomInput
         public static readonly KeyCode _scene_advance_key = Return;
 
         public static bool _left_handed = false;
+
         public static string _dominant_hand
             => _left_handed ? "Left" : "Right"; // or "Left"
         public static string _trigger
@@ -152,6 +155,9 @@ namespace CustomInput
 
         public static bool restartTrial
             => shift && GetKeyDown(R);
+
+        public static bool takeScreenshot
+            => GetKeyDown(K);
 
         public static int? emulatingLayoutSwitch
         {
