@@ -131,7 +131,7 @@ namespace CustomInput
             {
                 var width = rectTransform.rect.width;
                 var height = rectTransform.rect.height;
-                var unitWidth = width / (float)Bindings._slider_max_value;
+                var unitWidth = width / 59;//(float)Bindings._slider_max_value;
                 var unitHeight = height / 22.0f;
 
                 foreach (var child in gameObject.GetComponentsInChildren<IKey>())

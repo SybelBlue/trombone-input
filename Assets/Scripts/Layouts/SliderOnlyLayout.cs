@@ -41,7 +41,9 @@ namespace CustomInput.Layout
         }
 
         protected override int ChildIndexFor(InputData data)
-            => (int?)data.rawValue ?? -1;
+            => data.normalizedSlider.HasValue ?
+                Utils.Static.NormalizedIntoIndex(data.normalizedSlider.Value, 64) :
+                -1;//(int?)data.rawValue ?? -1;
 
         public override char? GetSelectedLetter(InputData data)
         {
