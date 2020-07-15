@@ -98,9 +98,9 @@ namespace CustomInput
             dropdown.value = (int)layout;
             _memoizedLayout = _layout;
             ActivateLayout();
-            practiceTransForm = new Vector3(practiceEndButton.transform.position.x, 6.5498f, practiceEndButton.transform.position.z);
-            liveDropTransForm = new Vector3(liveDropDownMenu.transform.position.x, 6.5498f, liveDropDownMenu.transform.position.z);
-            challengeTypeIndicatorTransForm = new Vector3(challengeTypeIndicatorText.transform.position.x, 6.5498f, challengeTypeIndicatorText.transform.position.z);
+            //practiceTransForm = new Vector3(practiceEndButton.transform.position.x, 6.5498f, practiceEndButton.transform.position.z);
+            //liveDropTransForm = new Vector3(liveDropDownMenu.transform.position.x, 6.5498f, liveDropDownMenu.transform.position.z);
+           // challengeTypeIndicatorTransForm = new Vector3(challengeTypeIndicatorText.transform.position.x, 6.5498f, challengeTypeIndicatorText.transform.position.z);
         }
 
         public void Update()
@@ -140,22 +140,28 @@ namespace CustomInput
           if (currentLayout == stylusBinnedABCDE)
           {
             // Vector3 vPos = new Vector3(-30, -30, 0);
-            Vector3 practiceTransFormNew = new Vector3(currentLayout.transform.position.x-5f, 6.5498f, currentLayout.transform.position.z);
-            Vector3 liveDropTransFormNew = new Vector3(currentLayout.transform.position.x-2.5f, 6.5498f, currentLayout.transform.position.z);
-            Vector3 challengeTypeIndicatorTransFormNew = new Vector3(currentLayout.transform.position.x+3.5f, 6.5498f, currentLayout.transform.position.z);
+            //Vector3 practiceTransFormNew = new Vector3(currentLayout.transform.position.x-5f, 6.5498f, currentLayout.transform.position.z);
+            //Vector3 liveDropTransFormNew = new Vector3(currentLayout.transform.position.x-2.5f, 6.5498f, currentLayout.transform.position.z);
+            //Vector3 challengeTypeIndicatorTransFormNew = new Vector3(currentLayout.transform.position.x+3.5f, 6.5498f, currentLayout.transform.position.z);
 
 
-            liveDropDownMenu.transform.position = liveDropTransFormNew;
-            practiceEndButton.transform.position = practiceTransFormNew;
-            challengeTypeIndicatorText.transform.position = challengeTypeIndicatorTransFormNew;
+                //liveDropDownMenu.transform.position = liveDropTransFormNew;
+                //practiceEndButton.transform.position = practiceTransFormNew;
+                //challengeTypeIndicatorText.transform.position = challengeTypeIndicatorTransFormNew;
 
+                RectTransform rt = GetComponent<RectTransform>();
+                rt.sizeDelta = new Vector2(rt.sizeDelta.x, 300);
 
-          }else
-          {
-            liveDropDownMenu.transform.position = liveDropTransForm;
-            practiceEndButton.transform.position = practiceTransForm;
-            challengeTypeIndicatorText.transform.position = challengeTypeIndicatorTransForm;
           }
+            else
+          {
+                //liveDropDownMenu.transform.position = liveDropTransForm;
+                //practiceEndButton.transform.position = practiceTransForm;
+                //challengeTypeIndicatorText.transform.position = challengeTypeIndicatorTransForm;
+
+                RectTransform rt = GetComponent<RectTransform>();
+                rt.sizeDelta = new Vector2(rt.sizeDelta.x, 100);
+            }
         }
     }
 }

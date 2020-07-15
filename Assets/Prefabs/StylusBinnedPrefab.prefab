@@ -114,5 +114,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 5743589248142595269}
-  highlightColor: {r: 0, g: 0, b: 0, a: 0}
+  highlightColor: {r: 0.6226415, g: 0.6226415, b: 0.50809896, a: 1}
   background: {fileID: 7061026003237257659}
