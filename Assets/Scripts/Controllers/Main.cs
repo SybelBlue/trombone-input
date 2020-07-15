@@ -184,12 +184,12 @@ public class Main : MonoBehaviour, VREventGenerator
 
         }
         // TODO: find a way to print out current scene.
-        Debug.LogWarning(strialsIsLoaded);
+        //Debug.LogWarning(strialsIsLoaded);
 
         // laserPointerObject.SetActive(true);
         // Debug.LogWarning(stylus.useLaser);
 
-        Debug.LogWarning(stylus.useLaser);
+        //Debug.LogWarning(stylus.useLaser);
     }
 
     public void LoadNullFields()
