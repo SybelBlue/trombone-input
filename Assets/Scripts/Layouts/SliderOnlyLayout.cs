@@ -81,7 +81,9 @@ namespace CustomInput.Layout
                 new SimpleData('W', 2),
                 new SimpleData('X', 2),
                 new SimpleData('Y', 2),
-                new SimpleData('Z', 2)
+                new SimpleData('Z', 2),
+                new SimpleData(' ', 3),
+                new SimpleData('\b', 3)
             };
         }
     }
