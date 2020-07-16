@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.KeyCode;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -129,6 +130,15 @@ public class Main : MonoBehaviour, VREventGenerator
         VRMain.Instance.AddVRButtonCallbacks(_back_button, OnBackButtonUp, OnBackButtonDown);
 
         Bindings.AddSceneAdvanceCallback(OnSceneAdvance);
+
+        //TODO: hacking this in here since we have the server object to also initialize the other button events
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(Return);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(S);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(R);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(D);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(T);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(LeftShift);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(RightShift);
 
         Bindings.InitializeMinVRLayoutSwitching(server);
 
