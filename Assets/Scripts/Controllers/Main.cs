@@ -134,7 +134,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
         outputDisplay?.ResetText();
 
-        trials = Testing.Utils.ReadTrialsRandomly(logComments: true);
+        trials = Testing.Utils.ReadTrials(logComments: true);//Testing.Utils.ReadTrialsRandomly(logComments: true);
 
         RunNextTrial();
 
