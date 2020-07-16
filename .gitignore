@@ -13,6 +13,9 @@
 .vs/
 .vscode/
 
+# pycharm cache directory
+.idea/
+
 # Gradle cache directory
 .gradle/
 
