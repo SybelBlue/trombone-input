@@ -137,6 +137,8 @@ namespace Controller
 
         public void Update()
         {
+            // Handled with the minvr events
+            /*
             if (Bindings.skipChallenge)
             {
                 AdvanceChallenge();
@@ -153,6 +155,7 @@ namespace Controller
             {
                 RestartTrial();
             }
+            */
         }
 
         public void OnDestroy()
@@ -333,14 +336,14 @@ namespace Controller
         private void AdvanceIndexCyclic()
             => _layoutIndex = (_layoutIndex + 1) % layoutOrder.Length;
 
-        private void RestartChallenge()
+        public void RestartChallenge()
         {
             builder?.RestartLastChallenge();
             currentOutput = "";
             UpdateDisplay();
         }
 
-        private void AdvanceChallenge()
+        public void AdvanceChallenge()
         {
             if (!currentTrial.HasValue) return;
 
@@ -368,7 +371,7 @@ namespace Controller
             AdvanceChallenge();
         }
 
-        private void FinishTrial()
+        public void FinishTrial()
         {
             Debug.LogWarning($"Completed Trial {trialNumber}");
 
@@ -377,7 +380,7 @@ namespace Controller
             OnTrialEnd.Invoke(true);
         }
 
-        private void RestartTrial()
+        public void RestartTrial()
         {
             if (!currentTrial.HasValue) return;
 

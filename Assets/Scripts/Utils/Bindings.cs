@@ -226,6 +226,15 @@ namespace CustomInput
             {
                 server.unityKeysToVREvents.Add(item);
             }
+
+            //TODO: hacking this in here since we have the server object to also initialize the other button events
+            server.unityKeysToVREvents.Add(Return);
+            server.unityKeysToVREvents.Add(S);
+            server.unityKeysToVREvents.Add(R);
+            server.unityKeysToVREvents.Add(D);
+            server.unityKeysToVREvents.Add(T);
+            server.unityKeysToVREvents.Add(LeftShift);
+            server.unityKeysToVREvents.Add(RightShift);
         }
 
         public static void AddMinVRLayoutSwitchingHandlers(Func<int, VRMain.OnVRButtonDownEventDelegate> LayoutHandlers)
@@ -237,8 +246,24 @@ namespace CustomInput
             }
         }
 
+        public static void AddMinVRSandRKeyHandlers(VRMain.OnVRButtonDownEventDelegate onSDown, VRMain.OnVRButtonDownEventDelegate onRDown, VRMain.OnVRButtonDownEventDelegate onDDown, VRMain.OnVRButtonDownEventDelegate onTDown, VRMain.OnVRButtonDownEventDelegate onShiftDown, VRMain.OnVRButtonUpEventDelegate onShiftUp)
+        {
+            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(LeftShift), onShiftDown);
+            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(RightShift), onShiftDown);
+            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(S), onSDown);
+            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(R), onRDown);
+            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(D), onDDown);
+            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(T), onTDown);
+
+            VRMain.Instance.AddOnVRButtonUpCallback(KeyCodeToMinVRButtonUpName(LeftShift), onShiftUp);
+            VRMain.Instance.AddOnVRButtonUpCallback(KeyCodeToMinVRButtonUpName(RightShift), onShiftUp);
+        }
+
         public static string KeyCodeToMinVRButtonDownName(KeyCode binding)
             => $"Kbd{binding}_Down";
+
+        public static string KeyCodeToMinVRButtonUpName(KeyCode binding)
+            => $"Kbd{binding}_Up";
 
 
         // If emulatingFront or endEmulatedSlide when the layout accepts potentiometer input,

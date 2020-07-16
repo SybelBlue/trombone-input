@@ -84,6 +84,8 @@ public class Main : MonoBehaviour, VREventGenerator
     private int currentTrial = -1;
     private int completedChallenges = -1;
 
+    private bool isShiftDown = false;
+
     // public override bool usesRaycasting => true;
 //
 
@@ -132,9 +134,11 @@ public class Main : MonoBehaviour, VREventGenerator
 
         Bindings.AddMinVRLayoutSwitchingHandlers(i => delegate { layoutManager.DropdownValueSelected(i); });
 
+        Bindings.AddMinVRSandRKeyHandlers(OnSDown, OnRDown, OnDDown, OnTDown, OnShiftDown, OnShiftUp);
+
         outputDisplay?.ResetText();
 
-        trials = Testing.Utils.ReadTrials(logComments: true);//Testing.Utils.ReadTrialsRandomly(logComments: true);
+        trials = Testing.Utils.ReadTrialsStaggered(logComments: true);
 
         RunNextTrial();
 
@@ -267,6 +271,36 @@ public class Main : MonoBehaviour, VREventGenerator
     }
 
     #region Callbacks
+    public void OnSDown()
+    {
+        (outputDisplay as Proctor).AdvanceChallenge();
+    }
+
+    public void OnRDown()
+    {
+        (outputDisplay as Proctor).RestartChallenge();
+    }
+
+    public void OnDDown()
+    {
+        (outputDisplay as Proctor).FinishTrial();
+    }
+
+    public void OnTDown()
+    {
+       (outputDisplay as Proctor).RestartTrial();
+    }
+
+    public void OnShiftDown()
+    {
+        isShiftDown = true;
+    }
+
+    public void OnShiftUp()
+    {
+        isShiftDown = false;
+    }
+
     public void OnSceneAdvance()
     {
         Debug.LogWarning("Scene Advanced!");
