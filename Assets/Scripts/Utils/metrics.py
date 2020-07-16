@@ -388,7 +388,9 @@ def get_data(skip_practice=True):
     layout_posses = {e.value: extract_layout_positions(merged, e.value) for e in Layouts}
 
     header = ["Layout", "Avg X", "Std Dev X", "Avg Y", "Std Dev Y", "Avg Z", "Std Dev Z", "Avg WPM", "Std Dev WPM",
-              "Avg aWPM", "Std Dev aWPM", "Avg t", "Std Dev t", "Avg Travel", "Std Dev Travel", "Avg PIT", "Std Dev PIT"]
+              "Avg aWPM", "Std Dev aWPM",
+              # "Avg t", "Std Dev t",
+              "Avg Travel", "Std Dev Travel", "Avg PIT", "Std Dev PIT"]
     rows = [header]
     for layout in (e.value for e in Layouts):
         row = [layout]
@@ -418,8 +420,8 @@ def get_data(skip_practice=True):
 
         dur_data = reject_outliers(np.array(layout_durations[layout]))
         layout_durations[layout] = dur_data
-        row.append(np.mean(dur_data))
-        row.append(np.std(dur_data))
+        # row.append(np.mean(dur_data))
+        # row.append(np.std(dur_data))
 
         if layout in layout_pit:
             actual_data = reject_outliers(np.array([t[0] for t in layout_pit[layout]]))
