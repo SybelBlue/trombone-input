@@ -40,7 +40,7 @@ namespace Testing
         public const char COMMAND_PREFIX = '!', COMMENT_PREFIX = '#', CHALLENGE_SEPERATOR = ':';
 
         // Returns all trials in the streaming assets path under the Trials directory, sorted by trialNumber
-        public static List<Trial> ReadTrials(bool logComments = true)
+        public static Trial[] ReadTrials(bool logComments = true)
         {
             List<Trial> trials = new List<Trial>();
 
@@ -65,13 +65,38 @@ namespace Testing
             var arr = trials.ToArray();
             Array.Sort(arr.Select(t => t.trialNumber).ToArray(), arr);
             
-            return arr.ToList();
+            return arr;
+        }
+
+        public static List<Trial> ReadTrialsStaggered(bool logComments = true)
+        {
+            var trials = ReadTrials(logComments);
+            var staggered = new List<Trial>();
+
+            for (
+                int _i = 0, value = 0, prevStart = 0, incr = trials.Length / 4; 
+                _i < trials.Length; 
+                _i++
+                )
+            {
+                staggered.Add(trials[value]);
+                value += incr;
+                if (value >= trials.Length)
+                {
+                    prevStart++;
+                    value = prevStart;
+                }
+            }
+
+            Debug.Log($"Staggered Trial Order: #s {string.Join(", ", staggered.Select(t => t.trialNumber).ToArray())}");
+
+            return staggered;
         }
 
         public static List<Trial> ReadTrialsRandomly(bool logComments = true)
         {
             var trials = ReadTrials(logComments);
-            int denom = trials.Count / 4;
+            int denom = trials.Length / 4;
             var selected = new List<Trial>();
 
             for (int i = 0; i < 4; i++)
