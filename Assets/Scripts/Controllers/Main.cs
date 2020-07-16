@@ -313,10 +313,9 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void OnSceneAdvance()
     {
-        Debug.LogWarning("Scene Advanced!");
         if (strialsIsLoaded)
         {
-            Debug.LogWarning("Scene Advanced!");
+            Debug.LogWarning("Scene Advancing to lobby");
             // laserPointerObject.SetActive(true);
             Scenes._STRIALS.UnloadAsync();
             // laserPointerObject.SetActive(true);
@@ -337,7 +336,8 @@ public class Main : MonoBehaviour, VREventGenerator
         }
         else
         {
-          // laserPointerObject.SetActive(false);
+            Debug.LogWarning("Scene Advancing to trial");
+            // laserPointerObject.SetActive(false);
             Scenes._STRIALS.LoadAdditive();
         }
 
@@ -452,7 +452,6 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnFrontButtonDown()
     {
         stylus.frontButtonDown = true;
-        if (TryFindKey(lastReportedValue)) return;
 
         var raycastable = stylus.Raycast(out _);
         if (raycastable)
@@ -464,6 +463,10 @@ public class Main : MonoBehaviour, VREventGenerator
                 dropdown.value = (dropdown.value + 1) % dropdown.options.Count;
             }
         }
+
+        if (TryFindKey(lastReportedValue)) return;
+
+       
     }
 
     public void OnFrontButtonUp()
