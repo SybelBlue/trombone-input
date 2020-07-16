@@ -632,8 +632,8 @@ MonoBehaviour:
     type: 3}
   raycastKeyPrefab: {fileID: 236652873365184703, guid: 72134ec246700974a9e25ce2f000ad6f,
     type: 3}
-  minAngle: {x: -175, y: 60, z: 168}
-  maxAngle: {x: 160, y: -30, z: -175}
+  minAngle: {x: -175, y: 60, z: 150}
+  maxAngle: {x: 150, y: -30, z: -170}
 --- !u!114 &168735321
 MonoBehaviour:
   m_ObjectHideFlags: 0
