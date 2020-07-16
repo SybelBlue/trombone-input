@@ -1,3 +1,5 @@
+import time
+from collections import defaultdict
 from enum import Enum
 from math import ceil, sqrt
 
@@ -13,15 +15,15 @@ class Layouts(Enum):
     Raycast = "Raycast"
 
 
-items = {0: "trial-2020-07-16_02-36-27.yaml", 1: "trial-2020-07-16_02-46-22.yaml", 2: "trial-2020-07-16_03-13-40.yaml", 3: "trial-2020-07-16_03-36-35.yaml"}
+trial_files = {0: "trial-2020-07-16_02-36-27.yaml", 1: "trial-2020-07-16_02-46-22.yaml", 2: "trial-2020-07-16_03-13-40.yaml", 3: "trial-2020-07-16_03-36-35.yaml"}
 
 
 def get_all_trials():
-    return {v: get_trial(k) for k, v in items.items()}
+    return {v: get_trial(k) for k, v in trial_files.items()}
 
 
 def get_trial(n=0):
-    with open("../../Results/" + items[n]) as yams:
+    with open("../../Results/" + trial_files[n]) as yams:
         return yaml.load(yams, Loader=yaml.UnsafeLoader)
 
 
@@ -147,15 +149,13 @@ def accurate_words_per_minutes(challenge):
     return a * words_per_minute(challenge)
 
 
-# arctype, arc x: 60 / 7 per bin
-# raycast, key width 0.701 height 0.461
-# twoaxis, x: (180 + 175) / 4 per letter vert, z: (168 + 175) / 10 per letter horiz
-if __name__ == '__main__':
-    trials = [get_trial(0), get_trial(1)]
-    # merged = merge_trials(*trials)
-    merged = get_trial(0)
-    # print_yaml_recur(merged)
+# https://stackoverflow.com/questions/11686720/is-there-a-numpy-builtin-to-reject-outliers-from-a-list
+def reject_outliers(data, m=2):
+    return data[abs(data - np.mean(data)) < m * np.std(data)]
 
+
+def make_point_cloud():
+    merged = merge_trials(*get_all_trials().values())
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
@@ -175,14 +175,52 @@ if __name__ == '__main__':
         # ax.set_autoscalez_on(False)
         # ax.set_zlim([-1.5, 1])
 
-        ax.set_xlabel('X Label')
-        ax.set_ylabel('Y Label')
-        ax.set_zlabel('Z Label')
+        ax.set_xlabel('X (feet)')
+        ax.set_ylabel('Y (feet)')
+        ax.set_zlabel('Z (feet)')
 
-    # plt.show()
+    plt.legend([e.value for e in Layouts])
+    t_str = str(time.time())
+    plt.savefig("../../Results/Figures/trnsprnt-pos-cloud.png", transparent=True)
+    plt.savefig("../../Results/Figures/pos-cloud.png")
+    plt.show()
 
-    challenge = merged["trial"][9]["challenge"]
-    print_yaml_recur(challenge)
-    print(words_per_minute(challenge))
-    print(arctype_ideal(challenge["prompt"]))
-    print(challenge_rot_travel(challenge))
+def make_wpm_bars():
+    layout_wpm, layout_awpm = defaultdict(list), defaultdict(list)
+    for trial in get_all_trials().values():
+        for challenge in trial["trial"]:
+            if "command" in challenge:
+                continue
+            challenge = challenge["challenge"]
+            layout_wpm[challenge["layout"]].append(words_per_minute(challenge))
+            layout_awpm[challenge["layout"]].append(accurate_words_per_minutes(challenge))
+
+    for title, data in [("WPM", layout_wpm), ("aWPM", layout_awpm)]:
+        data = {k: reject_outliers(np.array(v)) for k, v in data.items()}
+        layouts = data.keys()
+        means = list(map(np.mean, data.values()))
+        stds = list(map(np.std, data.values()))
+        x_pos = np.arange(len(layouts))
+
+        # https://pythonforundergradengineers.com/python-matplotlib-error-bars.html
+        fig, ax = plt.subplots()
+        ax.bar(x_pos, means, yerr=stds, align='center', alpha=0.5, ecolor='black', capsize=10)
+        ax.set_ylabel(title)
+        ax.set_xticks(x_pos)
+        ax.set_xticklabels(layouts)
+        ax.set_title(title + ' by Layout')
+        ax.yaxis.grid(True)
+
+        plt.tight_layout()
+        plt.savefig('../../Results/Figures/' + title.lower() + '-error-bars.png')
+        plt.show()
+
+
+# arctype, arc x: 60 / 7 per bin
+# raycast, key width 0.701 height 0.461
+# twoaxis, x: (180 + 175) / 4 per letter vert, z: (168 + 175) / 10 per letter horiz
+if __name__ == '__main__':
+    # make_point_cloud()
+    # make_wpm_bars()
+
+    pass
