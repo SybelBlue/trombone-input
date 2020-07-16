@@ -483,13 +483,3 @@ if __name__ == '__main__':
     make_error_pies(data)
     write_csv(truncate=5)
     # make_duration_lines(data)  # broken
-
-# write captions
-
-# slack back!
-
-# - paper
-# update table
-# conclusion
-# proofreading
-# remove slider-only
