@@ -77,7 +77,7 @@ tilttype_z_range_size = 168 + 175
 
 def get_tilttype_pos(c: str):
     if c == ' ':
-        return 7
+        return 6, 3
     if not c.isalpha():
         raise ValueError()
     delta = (ord(c.lower()) - ord('a'))
@@ -108,7 +108,7 @@ def arctype_ideal(prompt: str):
     return ideal
 
 
-def tilttype_ideal(prompt: str):
+def tilttype_ideal_tuple(prompt: str):
     def get_ideal_travel(p, c):
         x, z = (abs(a - b) for a, b in zip(get_tilttype_pos(p), get_tilttype_pos(c)))
         return x * tilttype_x_range_size / ceil(26 / 4), z * tilttype_z_range_size / 4
@@ -120,7 +120,12 @@ def tilttype_ideal(prompt: str):
             ideal = (a + b for a, b in zip(ideal, get_ideal_travel(last, c)))
         last = c
 
-    return ideal
+    return tuple(ideal)
+
+
+def tilttype_ideal(prompt: str):
+    a, b = tilttype_ideal_tuple(prompt)
+    return sqrt(a * a + b * b)
 
 
 def challenge_rot_travel(challenge):
@@ -185,13 +190,15 @@ def make_point_cloud():
     plt.savefig("../../Results/Figures/pos-cloud.png")
     plt.show()
 
+
 def make_wpm_bars():
     layout_wpm, layout_awpm = defaultdict(list), defaultdict(list)
     for trial in get_all_trials().values():
         for challenge in trial["trial"]:
             if "command" in challenge:
                 continue
-            challenge = challenge["challenge"]
+            else:
+                challenge = challenge["challenge"]
             layout_wpm[challenge["layout"]].append(words_per_minute(challenge))
             layout_awpm[challenge["layout"]].append(accurate_words_per_minutes(challenge))
 
@@ -216,6 +223,60 @@ def make_wpm_bars():
         plt.show()
 
 
+def make_pit_bars():
+
+
+    layout_pit = defaultdict(list)
+    for trial in get_all_trials().values():
+        for challenge in trial["trial"]:
+            if "command" in challenge:
+                continue
+            else:
+                challenge = challenge["challenge"]
+
+            layout = challenge['layout']
+            if layout == Layouts.ArcType.value:
+                layout_pit[layout].append((challenge_rot_travel(challenge), arctype_ideal(challenge['prompt'])))
+            elif layout == Layouts.TiltType.value:
+                layout_pit[layout].append((challenge_rot_travel(challenge), tilttype_ideal(challenge['prompt']), tilttype_ideal_tuple(challenge['prompt'])))
+
+    # https://matplotlib.org/3.1.1/gallery/lines_bars_and_markers/bar_stacked.html
+    idealMeans = [np.mean(reject_outliers(np.array([t[1] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
+    actualMeans = [np.mean(reject_outliers(np.array([t[0] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
+    idealStd = [np.std(reject_outliers(np.array([t[1] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
+    actualStd = [np.std(reject_outliers(np.array([t[0] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
+    ind = np.arange(2)  # the x locations for the groups
+    width = 0.85  # the width of the bars: can also be len(x) sequence
+
+    p1 = plt.bar(ind, idealMeans, width, yerr=idealStd, align='center')
+    p2 = plt.bar(ind, actualMeans, width, align='center',
+                 bottom=idealMeans, yerr=actualStd)
+
+    plt.ylabel('Travel')
+    plt.title('Travel by Interface')
+    plt.xticks(ind, (Layouts.ArcType.value, Layouts.TiltType.value))
+    plt.legend((p1[0], p2[0]), ('Ideal', 'Actual'))
+
+    plt.savefig('../../Results/Figures/travel-by-interface-error-bars.png')
+    plt.show()
+
+    pitMeans = [np.mean(reject_outliers(np.array([100 * t[0] / t[1] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
+    pitStd = [np.std(reject_outliers(np.array([100 * t[0] / t[1] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
+    # ind = np.arange(2)  # the x locations for the groups
+    # width = 0.85  # the width of the bars: can also be len(x) sequence
+
+    fig, ax = plt.subplots()
+    ax.bar(ind, pitMeans, yerr=pitStd, align='center', alpha=0.5, ecolor='black', capsize=10)
+    ax.set_ylabel('PIT')
+    ax.set_xticks(ind)
+    ax.set_xticklabels((Layouts.ArcType.value, Layouts.TiltType.value))
+    ax.set_title('PIT by Interface')
+    ax.yaxis.grid(True)
+
+    plt.savefig('../../Results/Figures/pit-by-interface-error-bars.png')
+    plt.show()
+
+
 # arctype, arc x: 60 / 7 per bin
 # raycast, key width 0.701 height 0.461
 # twoaxis, x: (180 + 175) / 4 per letter vert, z: (168 + 175) / 10 per letter horiz
@@ -223,4 +284,4 @@ if __name__ == '__main__':
     # make_point_cloud()
     # make_wpm_bars()
 
-    pass
+    make_pit_bars()
