@@ -1,3 +1,4 @@
+import csv
 import time
 from collections import defaultdict
 from enum import Enum
@@ -15,7 +16,8 @@ class Layouts(Enum):
     Raycast = "Raycast"
 
 
-trial_files = {0: "trial-2020-07-16_02-36-27.yaml", 1: "trial-2020-07-16_02-46-22.yaml", 2: "trial-2020-07-16_03-13-40.yaml", 3: "trial-2020-07-16_03-36-35.yaml"}
+trial_files = {0: "trial-2020-07-16_02-36-27.yaml", 1: "trial-2020-07-16_02-46-22.yaml",
+               2: "trial-2020-07-16_03-13-40.yaml", 3: "trial-2020-07-16_03-36-35.yaml"}
 
 
 def get_all_trials():
@@ -70,9 +72,9 @@ def merge_trials(*datas):
     return {"meta": "lost in merge", "trial": out}
 
 
-arctype_x_range_size = 60
-tilttype_x_range_size = 175 + 160
-tilttype_z_range_size = 168 + 175
+arctype_x_range_size = 145 - 45
+tilttype_x_range_size = 12 - 5
+tilttype_z_range_size = 120 - 30
 
 
 def get_tilttype_pos(c: str):
@@ -176,18 +178,44 @@ def make_point_cloud():
 
         ax.set_autoscalex_on(False)
         ax.set_xlim([-4, 4])
-        # ax.set_autoscaley_on(False)
-        # ax.set_autoscalez_on(False)
-        # ax.set_zlim([-1.5, 1])
 
         ax.set_xlabel('X (feet)')
         ax.set_ylabel('Y (feet)')
         ax.set_zlabel('Z (feet)')
 
-    plt.legend([e.value for e in Layouts])
-    t_str = str(time.time())
+    plt.legend([e.value for e in Layouts], loc='center left')
+    plt.title('Stylus Positions in Cave on Keypress by Interface')
     plt.savefig("../../Results/Figures/trnsprnt-pos-cloud.png", transparent=True)
     plt.savefig("../../Results/Figures/pos-cloud.png")
+    plt.show()
+
+
+def make_2d_point_cloud():
+    merged = merge_trials(*get_all_trials().values())
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+    for layout, marker in zip((e.value for e in Layouts), ['o', '^', '.', 's']):
+        posses = extract_layout_positions(merged, layout)
+        if not posses:
+            continue
+
+        xs = [v[0] for v in posses]
+        ys = [v[2] for v in posses]
+
+        ax.scatter(xs, ys, marker=marker)
+        ax.plot([np.mean(xs)], [np.mean(ys)], marker='x')
+
+        ax.set_autoscalex_on(False)
+        ax.set_xlim([-1, 1])
+
+        ax.set_xlabel('X (feet)')
+        ax.set_ylabel('Z (feet)')
+
+    plt.legend([e.value for e in Layouts], loc='center left')
+    plt.title('Stylus Positions in Cave on Keypress by Interface')
+    plt.savefig("../../Results/Figures/trnsprnt-pos-2d-cloud.png", transparent=True)
+    plt.savefig("../../Results/Figures/pos-2d-cloud.png")
     plt.show()
 
 
@@ -202,30 +230,33 @@ def make_wpm_bars():
             layout_wpm[challenge["layout"]].append(words_per_minute(challenge))
             layout_awpm[challenge["layout"]].append(accurate_words_per_minutes(challenge))
 
-    for title, data in [("WPM", layout_wpm), ("aWPM", layout_awpm)]:
-        data = {k: reject_outliers(np.array(v)) for k, v in data.items()}
-        layouts = data.keys()
-        means = list(map(np.mean, data.values()))
-        stds = list(map(np.std, data.values()))
-        x_pos = np.arange(len(layouts))
+    awpm_data = [reject_outliers(np.array(v)) for v in layout_awpm.values()]
+    awpm_means = [np.mean(v) for v in awpm_data]
+    wpm_data = [reject_outliers(np.array(v)) for v in layout_wpm.values()]
+    wpm_means = [np.mean(v) for v in wpm_data]
+    awpm_std = [np.std(v) for v in awpm_data]
+    print('awpm std', awpm_std[-1])
+    awpm_std[-1] = 0  # overlaps with other error bar
+    wpm_std = [np.std(v) for v in wpm_data]
+    ind = np.arange(4)  # the x locations for the groups
+    width = 0.35  # the width of the bars: can also be len(x) sequence
 
-        # https://pythonforundergradengineers.com/python-matplotlib-error-bars.html
-        fig, ax = plt.subplots()
-        ax.bar(x_pos, means, yerr=stds, align='center', alpha=0.5, ecolor='black', capsize=10)
-        ax.set_ylabel(title)
-        ax.set_xticks(x_pos)
-        ax.set_xticklabels(layouts)
-        ax.set_title(title + ' by Layout')
-        ax.yaxis.grid(True)
+    p1 = plt.bar(ind, awpm_means, width, yerr=awpm_std, align='center')
+    p2 = plt.bar(ind, wpm_means, width, align='center',
+                 bottom=awpm_means, yerr=wpm_std)
 
-        plt.tight_layout()
-        plt.savefig('../../Results/Figures/' + title.lower() + '-error-bars.png')
-        plt.show()
+    plt.axes().yaxis.grid(True)  # raises an exception?
+
+    plt.ylabel('(Accurate) Words per Minute')
+    plt.title('Efficiency')
+    plt.xticks(ind, layout_awpm.keys())
+    plt.legend((p1[0], p2[0]), ('aWPM', 'WPM'))
+
+    plt.savefig('../../Results/Figures/stacked-wpm-awpm.png')
+    plt.show()
 
 
 def make_pit_bars():
-
-
     layout_pit = defaultdict(list)
     for trial in get_all_trials().values():
         for challenge in trial["trial"]:
@@ -238,13 +269,18 @@ def make_pit_bars():
             if layout == Layouts.ArcType.value:
                 layout_pit[layout].append((challenge_rot_travel(challenge), arctype_ideal(challenge['prompt'])))
             elif layout == Layouts.TiltType.value:
-                layout_pit[layout].append((challenge_rot_travel(challenge), tilttype_ideal(challenge['prompt']), tilttype_ideal_tuple(challenge['prompt'])))
+                layout_pit[layout].append((challenge_rot_travel(challenge), tilttype_ideal(challenge['prompt']),
+                                           tilttype_ideal_tuple(challenge['prompt'])))
 
     # https://matplotlib.org/3.1.1/gallery/lines_bars_and_markers/bar_stacked.html
-    idealMeans = [np.mean(reject_outliers(np.array([t[1] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
-    actualMeans = [np.mean(reject_outliers(np.array([t[0] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
-    idealStd = [np.std(reject_outliers(np.array([t[1] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
-    actualStd = [np.std(reject_outliers(np.array([t[0] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
+    idealMeans = [np.mean(reject_outliers(np.array([t[1] for t in layout_pit[v]]))) for v in
+                  [Layouts.ArcType.value, Layouts.TiltType.value]]
+    actualMeans = [np.mean(reject_outliers(np.array([t[0] for t in layout_pit[v]]))) for v in
+                   [Layouts.ArcType.value, Layouts.TiltType.value]]
+    idealStd = [np.std(reject_outliers(np.array([t[1] for t in layout_pit[v]]))) for v in
+                [Layouts.ArcType.value, Layouts.TiltType.value]]
+    actualStd = [np.std(reject_outliers(np.array([t[0] for t in layout_pit[v]]))) for v in
+                 [Layouts.ArcType.value, Layouts.TiltType.value]]
     ind = np.arange(2)  # the x locations for the groups
     width = 0.85  # the width of the bars: can also be len(x) sequence
 
@@ -260,21 +296,87 @@ def make_pit_bars():
     plt.savefig('../../Results/Figures/travel-by-interface-error-bars.png')
     plt.show()
 
-    pitMeans = [np.mean(reject_outliers(np.array([100 * t[0] / t[1] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
-    pitStd = [np.std(reject_outliers(np.array([100 * t[0] / t[1] for t in layout_pit[v]]))) for v in [Layouts.ArcType.value, Layouts.TiltType.value]]
+    pitMeans = [np.mean(reject_outliers(np.array([100 * t[0] / t[1] for t in layout_pit[v]]))) for v in
+                [Layouts.ArcType.value, Layouts.TiltType.value]]
+    pitStd = [np.std(reject_outliers(np.array([100 * t[0] / t[1] for t in layout_pit[v]]))) for v in
+              [Layouts.ArcType.value, Layouts.TiltType.value]]
     # ind = np.arange(2)  # the x locations for the groups
     # width = 0.85  # the width of the bars: can also be len(x) sequence
 
     fig, ax = plt.subplots()
     ax.bar(ind, pitMeans, yerr=pitStd, align='center', alpha=0.5, ecolor='black', capsize=10)
     ax.set_ylabel('PIT')
-    ax.set_xticks(ind)
-    ax.set_xticklabels((Layouts.ArcType.value, Layouts.TiltType.value))
+    plt.xticks(ind, (Layouts.ArcType.value, Layouts.TiltType.value))
     ax.set_title('PIT by Interface')
     ax.yaxis.grid(True)
 
     plt.savefig('../../Results/Figures/pit-by-interface-error-bars.png')
     plt.show()
+
+
+def write_csv():
+    layout_pit, layout_wpm, layout_awpm = defaultdict(list), defaultdict(list), defaultdict(list)
+    for trial in get_all_trials().values():
+        for challenge in trial["trial"]:
+            if "command" in challenge:
+                continue
+            else:
+                challenge = challenge["challenge"]
+
+            layout_wpm[challenge["layout"]].append(words_per_minute(challenge))
+            layout_awpm[challenge["layout"]].append(accurate_words_per_minutes(challenge))
+
+            layout = challenge['layout']
+            if layout == Layouts.ArcType.value:
+                layout_pit[layout].append((challenge_rot_travel(challenge), arctype_ideal(challenge['prompt'])))
+            elif layout == Layouts.TiltType.value:
+                layout_pit[layout].append((challenge_rot_travel(challenge), tilttype_ideal(challenge['prompt']),
+                                           tilttype_ideal_tuple(challenge['prompt'])))
+
+    header = ["Layout", "Avg X", "Std Dev X", "Avg Y", "Std Dev Y", "Avg Z", "Std Dev Z", "Avg WPM", "Std Dev WPM", "Avg aWPM", "Std Dev aWPM", "Avg Travel",
+            "Std Dev Travel", "Avg PIT", "Std Dev PIT"]
+    rows = [header]
+    merged = merge_trials(*get_all_trials().values())
+    for layout in (e.value for e in Layouts):
+        posses = extract_layout_positions(merged, layout)
+        row = [layout]
+        if posses:
+            xs = [v[0] for v in posses]
+            ys = [v[1] for v in posses]
+            zs = [v[2] for v in posses]
+            row.append(np.mean(xs))
+            row.append(np.std(xs))
+            row.append(np.mean(ys))
+            row.append(np.std(ys))
+            row.append(np.mean(zs))
+            row.append(np.std(zs))
+        else:
+            row.extend(('', '', '', '', '', ''))
+
+        wpm_data = reject_outliers(np.array(layout_wpm[layout]))
+        row.append(np.mean(wpm_data))
+        row.append(np.std(wpm_data))
+
+        awpm_data = reject_outliers(np.array(layout_awpm[layout]))
+        row.append(np.mean(awpm_data))
+        row.append(np.std(awpm_data))
+
+        if layout in layout_pit:
+            actual_data = reject_outliers(np.array([t[0] for t in layout_pit[layout]]))
+            row.append(np.mean(actual_data))
+            row.append(np.std(actual_data))
+
+            pit_data = reject_outliers(np.array([100 * t[0] / t[1] for t in layout_pit[layout]]))
+
+            row.append(np.mean(pit_data))
+            row.append(np.std(pit_data))
+        else:
+            row.extend(('', '', '', ''))
+
+        rows.append(row)
+
+    with open('../../Results/extracted_data.csv', 'w', newline='') as csvfile:
+        csv.writer(csvfile).writerows(rows)
 
 
 # arctype, arc x: 60 / 7 per bin
@@ -283,5 +385,6 @@ def make_pit_bars():
 if __name__ == '__main__':
     # make_point_cloud()
     # make_wpm_bars()
-
+    # make_2d_point_cloud()
     make_pit_bars()
+    write_csv()
