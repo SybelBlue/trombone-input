@@ -253,7 +253,7 @@ def make_point_cloud(data):
 
     plt.legend([e.value for e in Layouts if e != Layouts.SliderOnly], loc='center left')
     # plt.title('Stylus Positions in Cave on Keypress by Interface')
-    plt.savefig("../../Results/Figures/trnsprnt-pos-cloud.png", transparent=True)
+    plt.savefig("../../Results/Figures/pos-cloud.png", transparent=True)
     plt.show()
 
 
@@ -281,8 +281,8 @@ def make_2d_point_cloud(data, axes):
 
     plt.legend([e.value for e in Layouts if e != Layouts.SliderOnly], loc='center left')
     # plt.title('Stylus Positions in Cave on Keypress by Interface')
-    plt.savefig("../../Results/Figures/trnsprnt-pos-2d-cloud-" + '-'.join(map(str, axes)) + ".png", transparent=True)
-    plt.savefig("../../Results/Figures/pos-2d-cloud-" + '-'.join(map(str, axes)) + ".png")
+    plt.savefig("../../Results/Figures/pos-2d-cloud-" + '-'.join(map(str, axes)) + ".png", transparent=True)
+    # plt.savefig("../../Results/Figures/pos-2d-cloud-" + '-'.join(map(str, axes)) + ".png")
     plt.show()
 
 
@@ -308,7 +308,7 @@ def make_wpm_bars(data):
     plt.xticks(ind + width/2, list(map(layout_name, blind_wpm.keys())))
     plt.legend((p1[0], p2[0]), ('Perfect', 'Blind'))
 
-    plt.savefig('../../Results/Figures/stacked-wpm-awpm.png')
+    plt.savefig('../../Results/Figures/stacked-wpm-awpm.png', transparent=True)
     plt.show()
 
 
@@ -331,7 +331,7 @@ def make_pit_bars(data):
     plt.xticks(ind, (Layouts.ArcType.value, Layouts.TiltType.value))
     plt.legend((p1[0], p2[0]), ('Ideal', 'Actual'))
 
-    plt.savefig('../../Results/Figures/travel-by-interface-error-bars.png')
+    plt.savefig('../../Results/Figures/travel-by-interface-error-bars.png', transparent=True)
     plt.show()
 
     pit_means = [np.mean(data.layout_pit[v]) for v in layouts]
@@ -346,7 +346,7 @@ def make_pit_bars(data):
     # ax.set_title('PIT by Interface')
     ax.yaxis.grid(True)
 
-    plt.savefig('../../Results/Figures/pit-by-interface-error-bars.png')
+    plt.savefig('../../Results/Figures/pit-by-interface-error-bars.png', transparent=True)
     plt.show()
 
 
@@ -394,11 +394,11 @@ def make_error_bars(data):
 
     plt.ylabel('Percent of Errors')
     # plt.title('Travel by Interface')
-    plt.xticks(ind, (e for e in data.layout_blind_io.keys() if e != Layouts.SliderOnly.value))
+    plt.xticks(ind, (layout_name(e) for e in data.layout_blind_io.keys() if e != Layouts.SliderOnly.value))
     plt.xlabel("Layouts")
     plt.legend((p1, p2), ('Dipped (y + 1)', 'Off-by-One'))
 
-    plt.savefig('../../Results/Figures/error-chart.png')
+    plt.savefig('../../Results/Figures/error-chart.png', transparent=True)
     plt.show()
 
 
