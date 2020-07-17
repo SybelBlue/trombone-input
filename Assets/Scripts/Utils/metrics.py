@@ -9,11 +9,62 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+def use(fn, *args, **kwargs):
+    def access(obj):
+        return getattr(obj, fn)(*args, **kwargs)
+
+    return access
+
+
+def truncate(f, digits=5):
+    return trunc(f * 10 ** digits) / 10 ** digits
+
+
+# https://stackabuse.com/levenshtein-distance-and-text-similarity-in-python/
+def levenshtein(seq1, seq2):
+    size_x = len(seq1) + 1
+    size_y = len(seq2) + 1
+    matrix = np.zeros((size_x, size_y))
+    for x in range(size_x):
+        matrix[x, 0] = x
+    for y in range(size_y):
+        matrix[0, y] = y
+
+    for x in range(1, size_x):
+        for y in range(1, size_y):
+            if seq1[x - 1] == seq2[y - 1]:
+                matrix[x, y] = min(
+                    matrix[x - 1, y] + 1,
+                    matrix[x - 1, y - 1],
+                    matrix[x, y - 1] + 1
+                )
+            else:
+                matrix[x, y] = min(
+                    matrix[x - 1, y] + 1,
+                    matrix[x - 1, y - 1] + 1,
+                    matrix[x, y - 1] + 1
+                )
+
+    return matrix[size_x - 1, size_y - 1]
+
+
+def error_rate(P, T):
+    return 100 * levenshtein(P, T) / max(len(P), len(T))
+
+
 class Layouts(Enum):
     SliderOnly = "SliderOnly"
     ArcType = "ArcType"
     TiltType = "TiltType"
     Raycast = "Raycast"
+
+
+def layout_name(l):
+    if isinstance(l, str):
+        return {Layouts.SliderOnly.value: 'DO NOT USE', Layouts.ArcType.value: Layouts.ArcType.value,
+                Layouts.TiltType.value: Layouts.TiltType.value, Layouts.Raycast.value: 'Controller Pointing'}[l]
+    return {Layouts.SliderOnly: 'DO NOT USE', Layouts.ArcType: Layouts.ArcType.value,
+                Layouts.TiltType: Layouts.TiltType.value, Layouts.Raycast: 'Controller Pointing'}[l]
 
 
 trial_files = {0: "trial-2020-07-16_02-36-27.yaml", 1: "trial-2020-07-16_02-46-22.yaml",
@@ -74,8 +125,8 @@ def merge_trials(*datas):
 
 
 arctype_x_range_size = 145 - 45
-tilttype_x_range_size = 12 - 5
-tilttype_z_range_size = 120 - 30
+tilttype_x_range_size = 30 - 5
+tilttype_z_range_size = 30 - -10
 
 
 def tilttype_pos(c: str):
@@ -94,7 +145,7 @@ def raycast_pos(c: str):
 
 
 def raycast_displacement(p, c, signed=False):
-    return ((a - b if signed else abs(a - b))for a, b in zip(raycast_pos(p), raycast_pos(c)))
+    return ((a - b if signed else abs(a - b)) for a, b in zip(raycast_pos(p), raycast_pos(c)))
 
 
 def arctype_bin(c: str):
@@ -236,27 +287,26 @@ def make_2d_point_cloud(data, axes):
 
 
 def make_wpm_bars(data):
-    layout_awpm = {k: v for k, v in data.layout_awpm.items() if k != Layouts.SliderOnly.value}
-    layout_wpm = {k: v for k, v in data.layout_wpm.items() if k != Layouts.SliderOnly.value}
-    awpm_data = layout_awpm.values()
-    awpm_means = [np.mean(v) for v in awpm_data]
-    wpm_data = layout_wpm.values()
-    wpm_means = [np.mean(v) for v in wpm_data]
-    awpm_std = [np.std(v) for v in awpm_data]
-    wpm_std = [np.std(v) for v in wpm_data]
-    ind = np.arange(len(awpm_data))  # the x locations for the groups
+    perfect_wpm = {k: v for k, v in data.layout_perfect_wpm.items() if k != Layouts.SliderOnly.value}
+    blind_wpm = {k: v for k, v in data.layout_blind_wpm.items() if k != Layouts.SliderOnly.value}
+    perfect_data = perfect_wpm.values()
+    perfect_means = [np.mean(v) for v in perfect_data]
+    blind_data = blind_wpm.values()
+    blind_means = [np.mean(v) for v in blind_data]
+    perfect_std = [np.std(v) for v in perfect_data]
+    blind_std = [np.std(v) for v in blind_data]
+    ind = np.arange(len(blind_data))  # the x locations for the groups
     width = 0.35  # the width of the bars: can also be len(x) sequence
 
-    p1 = plt.bar(ind, awpm_means, width, align='center')
-    p2 = plt.bar(ind, [a - b for a, b in zip(wpm_means, awpm_means)], width, align='center',
-                 bottom=awpm_means, yerr=wpm_std)
+    p1 = plt.bar(ind + width, perfect_means, width, align='center', yerr=perfect_std)
+    p2 = plt.bar(ind, blind_means, width, align='center', yerr=blind_std)
 
     plt.axes().yaxis.grid(True)  # raises an error?
 
-    plt.ylabel('(Accurate) Words per Minute')
+    plt.ylabel('WPM')
     # plt.title('Efficiency')
-    plt.xticks(ind, layout_awpm.keys())
-    plt.legend((p1[0], p2[0]), ('aWPM', 'WPM'))
+    plt.xticks(ind + width/2, list(map(layout_name, blind_wpm.keys())))
+    plt.legend((p1[0], p2[0]), ('Perfect', 'Blind'))
 
     plt.savefig('../../Results/Figures/stacked-wpm-awpm.png')
     plt.show()
@@ -284,17 +334,15 @@ def make_pit_bars(data):
     plt.savefig('../../Results/Figures/travel-by-interface-error-bars.png')
     plt.show()
 
-    pitMeans = [np.mean(data.layout_pit[v]) for v in
-                [Layouts.ArcType.value, Layouts.TiltType.value]]
-    pitStd = [np.std(data.layout_pit[v]) for v in
-              [Layouts.ArcType.value, Layouts.TiltType.value]]
+    pit_means = [np.mean(data.layout_pit[v]) for v in layouts]
+    pit_std = [np.std(data.layout_pit[v]) for v in layouts]
     # ind = np.arange(2)  # the x locations for the groups
     # width = 0.85  # the width of the bars: can also be len(x) sequence
 
     fig, ax = plt.subplots()
-    ax.bar(ind, pitMeans, yerr=pitStd, align='center', alpha=0.5, ecolor='black', capsize=10)
+    ax.bar(ind, pit_means, yerr=pit_std, align='center', alpha=0.5, ecolor='black', capsize=10)
     ax.set_ylabel('PIT (%)')
-    plt.xticks(ind, (Layouts.ArcType.value, Layouts.TiltType.value))
+    plt.xticks(ind, layouts)
     # ax.set_title('PIT by Interface')
     ax.yaxis.grid(True)
 
@@ -313,7 +361,7 @@ def make_duration_lines(data):
     fig.show()
 
 
-def make_error_pies(data):
+def make_error_bars(data):
     items = list()
     for layout, pairs in data.layout_blind_io.items():
         if layout == Layouts.SliderOnly.value:
@@ -334,14 +382,15 @@ def make_error_pies(data):
                 if p != o:
                     errors += 1
         items.append((layout, 100 * dipped / errors, 100 * off_by_one / errors))
-
+        # print((layout, dipped, off_by_one, errors))
     off_by_one_pcts = [obo for _, _, obo in items]
     dipped_pcts = [dip for _, dip, _ in items]
     ind = np.arange(3)  # the x locations for the groups
     width = 0.5  # the width of the bars: can also be len(x) sequence
 
     p1 = plt.bar(ind, dipped_pcts, width, align='center')[0]
-    p2 = plt.bar(ind, [a - b for a, b in zip(off_by_one_pcts, dipped_pcts)], width, align='center', bottom=dipped_pcts)[0]
+    p2 = plt.bar(ind, [a - b for a, b in zip(off_by_one_pcts, dipped_pcts)], width, align='center', bottom=dipped_pcts)[
+        0]
 
     plt.ylabel('Percent of Errors')
     # plt.title('Travel by Interface')
@@ -354,9 +403,9 @@ def make_error_pies(data):
 
 
 def get_data(skip_practice=True):
-    layout_pit, layout_wpm, layout_awpm = defaultdict(list), defaultdict(list), defaultdict(list)
-    layout_actual_travel, layout_ideal_travel, layout_durations = dict(), dict(), defaultdict(list)
-    layout_blind_io = defaultdict(list)
+    layout_pit, layout_blind_wpm, layout_blind_awpm, layout_perfect_wpm, layout_blind_io, layout_durations = \
+        (defaultdict(list) for _ in range(6))
+    layout_actual_travel, layout_ideal_travel, layout_error_rates = (dict() for _ in range(3))
     trials = get_all_trials()
     for trial in trials.values():
         for challenge in trial["trial"]:
@@ -368,8 +417,12 @@ def get_data(skip_practice=True):
             if challenge['type'] == 'Practice' and skip_practice:
                 continue
 
-            layout_wpm[challenge["layout"]].append(words_per_minute(challenge))
-            layout_awpm[challenge["layout"]].append(accurate_words_per_minutes(challenge))
+            if challenge['type'] == 'Blind':
+                layout_blind_wpm[challenge["layout"]].append(words_per_minute(challenge))
+                layout_blind_awpm[challenge["layout"]].append(accurate_words_per_minutes(challenge))
+
+            if challenge['type'] == 'Perfect':
+                layout_perfect_wpm[challenge["layout"]].append(words_per_minute(challenge))
 
             layout = challenge['layout']
             if layout == Layouts.ArcType.value:
@@ -385,12 +438,10 @@ def get_data(skip_practice=True):
 
     merged = merge_trials(*trials.values())
     layout_posses = {e.value: extract_layout_positions(merged, e.value) for e in Layouts}
-
-    header = ["Layout", "Avg X", "Std Dev X", "Avg Y", "Std Dev Y", "Avg Z", "Std Dev Z", "Avg WPM", "Std Dev WPM",
-              "Avg aWPM", "Std Dev aWPM",
-              # "Avg t", "Std Dev t",
-              "Avg Travel", "Std Dev Travel", "Avg PIT", "Std Dev PIT"]
-    rows = [header]
+    error_csv = [["Layout", "Avg Error", "Std Dev Error"]]
+    travel_csv = [["Layout", "Avg Travel", "Std Dev Travel", "Avg PIT", "Std Dev PIT"]]
+    main_csv = [["Layout", "Avg X", "Std Dev X", "Avg Y", "Std Dev Y", "Avg Z", "Std Dev Z", "Avg WPM", "Std Dev WPM",
+                 "Avg aWPM", "Std Dev aWPM"]]
     for layout in (e.value for e in Layouts):
         row = [layout]
         if layout in layout_posses:
@@ -407,26 +458,26 @@ def get_data(skip_practice=True):
         else:
             row.extend(('', '', '', '', '', ''))
 
-        wpm_data = reject_outliers(np.array(layout_wpm[layout]))
-        layout_wpm[layout] = wpm_data
+        wpm_data = reject_outliers(np.array(layout_blind_wpm[layout]))
+        layout_blind_wpm[layout] = wpm_data
         row.append(np.mean(wpm_data))
         row.append(np.std(wpm_data))
 
-        awpm_data = reject_outliers(np.array(layout_awpm[layout]))
-        layout_awpm[layout] = awpm_data
+        awpm_data = reject_outliers(np.array(layout_blind_awpm[layout]))
+        layout_blind_awpm[layout] = awpm_data
         row.append(np.mean(awpm_data))
         row.append(np.std(awpm_data))
 
         dur_data = reject_outliers(np.array(layout_durations[layout]))
         layout_durations[layout] = dur_data
-        # row.append(np.mean(dur_data))
-        # row.append(np.std(dur_data))
+
+        error_data = [error_rate(*p) for p in layout_blind_io[layout]]
+        layout_error_rates[layout] = error_data
+        error_csv.append([layout, np.mean(error_data), np.std(error_data)])
 
         if layout in layout_pit:
             actual_data = reject_outliers(np.array([t[0] for t in layout_pit[layout]]))
             layout_actual_travel[layout] = actual_data
-            row.append(np.mean(actual_data))
-            row.append(np.std(actual_data))
 
             ideal_data = reject_outliers(np.array([t[1] for t in layout_pit[layout]]))
             layout_ideal_travel[layout] = ideal_data
@@ -434,51 +485,79 @@ def get_data(skip_practice=True):
             pit_data = reject_outliers(np.array([100 * t[0] / t[1] for t in layout_pit[layout]]))
             layout_pit[layout] = pit_data
 
-            row.append(np.mean(pit_data))
-            row.append(np.std(pit_data))
-        else:
-            row.extend(('', '', '', ''))
+            travel_csv.append([layout, np.mean(actual_data), np.std(actual_data), np.mean(pit_data), np.std(pit_data)])
 
-        rows.append(row)
+        main_csv.append(row)
 
-    return Data(rows=rows, layout_pit=layout_pit, layout_wpm=layout_wpm, layout_awpm=layout_awpm,
-                layout_posses=layout_posses, layout_ideal_travel=layout_ideal_travel,
-                layout_actual_travel=layout_actual_travel, layout_durations=layout_durations,
-                layout_blind_io=layout_blind_io)
+    return Data(main_csv=main_csv, layout_pit=layout_pit, layout_blind_wpm=layout_blind_wpm,
+                layout_blind_awpm=layout_blind_awpm, layout_posses=layout_posses,
+                layout_ideal_travel=layout_ideal_travel, layout_actual_travel=layout_actual_travel,
+                layout_durations=layout_durations, layout_blind_io=layout_blind_io,
+                layout_error_rates=layout_error_rates, error_csv=error_csv, travel_csv=travel_csv,
+                layout_perfect_wpm=layout_perfect_wpm)
 
 
 class Data:
     def __init__(self, **kwargs):
-        self.rows = kwargs['rows']
+        self.main_csv = kwargs['main_csv']
+        self.travel_csv = kwargs['travel_csv']
+        self.error_csv = kwargs['error_csv']
         self.layout_pit = kwargs['layout_pit']
-        self.layout_wpm = kwargs['layout_wpm']
-        self.layout_awpm = kwargs['layout_awpm']
+        self.layout_blind_wpm = kwargs['layout_blind_wpm']
+        self.layout_perfect_wpm = kwargs['layout_perfect_wpm']
+        self.layout_blind_awpm = kwargs['layout_blind_awpm']
         self.layout_posses = kwargs['layout_posses']
         self.layout_actual_travel = kwargs['layout_actual_travel']
         self.layout_ideal_travel = kwargs['layout_ideal_travel']
         self.layout_durations = kwargs['layout_durations']
         self.layout_blind_io = kwargs['layout_blind_io']
-        for k, v in kwargs.items():
-            self.__dict__[k] = v
+        self.layout_error_rates = kwargs['layout_error_rates']
 
 
-def csv_rows():
-    return get_data().rows
-
-
-def write_csv(truncate=8):
-    with open('../../Results/extracted_data.csv', 'w', newline='') as csvfile:
-        rows = [[(trunc((10**truncate) * x) / (10**truncate) if isinstance(x, float) else x) for x in row] for row in csv_rows()]
+def write_csv(name, rows, digits=2):
+    with open('../../Results/' + name + '.csv', 'w', newline='') as csvfile:
+        rows = [[(truncate(x, digits=digits) if isinstance(x, float) else x) for x in row] for row in rows]
         csv.writer(csvfile).writerows(rows)
 
 
 if __name__ == '__main__':
     data = get_data()
     make_point_cloud(data)
-    # make_wpm_bars(data)
-    # make_2d_point_cloud(data, [0, 2])
-    # make_2d_point_cloud(data, [1, 2])
+    make_2d_point_cloud(data, [0, 2])
+    make_2d_point_cloud(data, [1, 2])
+
+    make_wpm_bars(data)
     make_pit_bars(data)
-    make_error_pies(data)
-    write_csv(truncate=5)
     # make_duration_lines(data)  # broken
+
+    make_error_bars(data)
+
+    write_csv('main', data.main_csv, digits=2)
+    write_csv('travels', data.travel_csv, digits=2)
+    write_csv('errors', data.error_csv, digits=2)
+
+    merged = merge_trials(*[get_trial(n) for n in range(3)])['trial']
+    prompts = list()
+    for challenge in merged:
+        if 'command' in challenge:
+            continue
+        prompts.append(challenge['challenge']['prompt'])
+
+    chars_per_prompt = list(map(len, prompts))
+
+    print('chars per prompt', np.mean(chars_per_prompt), np.std(chars_per_prompt))
+
+    words_per_prompt = list(map(len, map(use('split'), prompts)))
+
+    print('words per prompt', np.mean(words_per_prompt), np.std(words_per_prompt))
+
+    chars = [defaultdict(int) for _ in range(6)]
+    for prompt in prompts:
+        for word in prompt.split():
+            for i in range(min(len(word), len(chars))):
+                chars[i][word[i]] += 1
+
+
+# split wpm for blind and perfect, no awpm
+# update ranges, regenerate all
+# rename raycast
