@@ -200,7 +200,7 @@ def make_point_cloud(data):
         ax.set_ylabel('Z (feet)')
         ax.set_zlabel('Y (feet)')
 
-    plt.legend([e.value for e in Layouts], loc='center left')
+    plt.legend([e.value for e in Layouts if e != Layouts.SliderOnly], loc='center left')
     # plt.title('Stylus Positions in Cave on Keypress by Interface')
     plt.savefig("../../Results/Figures/trnsprnt-pos-cloud.png", transparent=True)
     plt.savefig("../../Results/Figures/pos-cloud.png")
@@ -475,8 +475,8 @@ def write_csv(truncate=8):
 
 if __name__ == '__main__':
     data = get_data()
-    # make_point_cloud(data)
-    make_wpm_bars(data)
+    make_point_cloud(data)
+    # make_wpm_bars(data)
     # make_2d_point_cloud(data, [0, 2])
     # make_2d_point_cloud(data, [1, 2])
     make_pit_bars(data)
