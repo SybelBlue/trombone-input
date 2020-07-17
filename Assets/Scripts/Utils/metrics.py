@@ -308,7 +308,7 @@ def make_wpm_bars(data):
     plt.xticks(ind + width/2, list(map(layout_name, blind_wpm.keys())))
     plt.legend((p1[0], p2[0]), ('Perfect', 'Blind'))
 
-    plt.savefig('../../Results/Figures/stacked-wpm-awpm.png', transparent=True)
+    plt.savefig('../../Results/Figures/perfect-blind-wpm.png', transparent=True)
     plt.show()
 
 
