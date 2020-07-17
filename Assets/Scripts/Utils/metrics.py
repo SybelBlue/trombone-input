@@ -196,14 +196,13 @@ def make_point_cloud(data):
         ax.set_ylim([0, 5.5])
         ax.set_zlim([-1, 4.5])
 
-        ax.set_xlabel('X (feet)')
-        ax.set_ylabel('Z (feet)')
-        ax.set_zlabel('Y (feet)')
+        ax.set_xlabel('X (ft)')
+        ax.set_ylabel('Z (ft)')
+        ax.set_zlabel('Y (ft)')
 
     plt.legend([e.value for e in Layouts if e != Layouts.SliderOnly], loc='center left')
     # plt.title('Stylus Positions in Cave on Keypress by Interface')
     plt.savefig("../../Results/Figures/trnsprnt-pos-cloud.png", transparent=True)
-    plt.savefig("../../Results/Figures/pos-cloud.png")
     plt.show()
 
 
