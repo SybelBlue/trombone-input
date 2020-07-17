@@ -438,42 +438,30 @@ def get_data(skip_practice=True):
 
     merged = merge_trials(*trials.values())
     layout_posses = {e.value: extract_layout_positions(merged, e.value) for e in Layouts}
-    error_csv = [["Layout", "Avg Error", "Std Dev Error"]]
     travel_csv = [["Layout", "Avg Travel", "Std Dev Travel", "Avg PIT", "Std Dev PIT"]]
-    main_csv = [["Layout", "Avg X", "Std Dev X", "Avg Y", "Std Dev Y", "Avg Z", "Std Dev Z", "Avg WPM", "Std Dev WPM",
-                 "Avg aWPM", "Std Dev aWPM"]]
+    main_csv = [["Layout", "Avg BlindWPM", "Std Dev BlindWPM", "Avg PerfectWPM", "Std Dev PerfectWPM",
+                 "Avg Error", "Std Dev Error"]]
     for layout in (e.value for e in Layouts):
         row = [layout]
-        if layout in layout_posses:
-            posses = layout_posses[layout]
-            xs = [v[0] for v in posses]
-            ys = [v[1] for v in posses]  # swap y and z?
-            zs = [v[2] for v in posses]
-            row.append(np.mean(xs))
-            row.append(np.std(xs))
-            row.append(np.mean(ys))
-            row.append(np.std(ys))
-            row.append(np.mean(zs))
-            row.append(np.std(zs))
-        else:
-            row.extend(('', '', '', '', '', ''))
 
-        wpm_data = reject_outliers(np.array(layout_blind_wpm[layout]))
-        layout_blind_wpm[layout] = wpm_data
-        row.append(np.mean(wpm_data))
-        row.append(np.std(wpm_data))
+        for l_dict in [layout_blind_wpm, layout_perfect_wpm]:
+            wpm_data = reject_outliers(np.array(l_dict[layout]))
+            l_dict[layout] = wpm_data
+            row.append(np.mean(wpm_data))
+            row.append(np.std(wpm_data))
 
         awpm_data = reject_outliers(np.array(layout_blind_awpm[layout]))
         layout_blind_awpm[layout] = awpm_data
-        row.append(np.mean(awpm_data))
-        row.append(np.std(awpm_data))
+        # row.append(np.mean(awpm_data))
+        # row.append(np.std(awpm_data))
 
         dur_data = reject_outliers(np.array(layout_durations[layout]))
         layout_durations[layout] = dur_data
 
         error_data = [error_rate(*p) for p in layout_blind_io[layout]]
         layout_error_rates[layout] = error_data
-        error_csv.append([layout, np.mean(error_data), np.std(error_data)])
+        row.append(np.mean(error_data))
+        row.append(np.std(error_data))
 
         if layout in layout_pit:
             actual_data = reject_outliers(np.array([t[0] for t in layout_pit[layout]]))
@@ -493,7 +481,7 @@ def get_data(skip_practice=True):
                 layout_blind_awpm=layout_blind_awpm, layout_posses=layout_posses,
                 layout_ideal_travel=layout_ideal_travel, layout_actual_travel=layout_actual_travel,
                 layout_durations=layout_durations, layout_blind_io=layout_blind_io,
-                layout_error_rates=layout_error_rates, error_csv=error_csv, travel_csv=travel_csv,
+                layout_error_rates=layout_error_rates, travel_csv=travel_csv,
                 layout_perfect_wpm=layout_perfect_wpm)
 
 
@@ -501,7 +489,6 @@ class Data:
     def __init__(self, **kwargs):
         self.main_csv = kwargs['main_csv']
         self.travel_csv = kwargs['travel_csv']
-        self.error_csv = kwargs['error_csv']
         self.layout_pit = kwargs['layout_pit']
         self.layout_blind_wpm = kwargs['layout_blind_wpm']
         self.layout_perfect_wpm = kwargs['layout_perfect_wpm']
@@ -534,7 +521,6 @@ if __name__ == '__main__':
 
     write_csv('main', data.main_csv, digits=2)
     write_csv('travels', data.travel_csv, digits=2)
-    write_csv('errors', data.error_csv, digits=2)
 
     merged = merge_trials(*[get_trial(n) for n in range(3)])['trial']
     prompts = list()
