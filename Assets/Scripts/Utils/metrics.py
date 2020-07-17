@@ -251,7 +251,7 @@ def make_point_cloud(data):
         ax.set_ylabel('Z (ft)')
         ax.set_zlabel('Y (ft)')
 
-    plt.legend([e.value for e in Layouts if e != Layouts.SliderOnly], loc='center left')
+    plt.legend([layout_name(e) for e in Layouts if e != Layouts.SliderOnly], loc='center left')
     # plt.title('Stylus Positions in Cave on Keypress by Interface')
     plt.savefig("../../Results/Figures/pos-cloud.png", transparent=True)
     plt.show()
@@ -279,7 +279,7 @@ def make_2d_point_cloud(data, axes):
         ax.set_xlabel(axes_labels[axes[0]] + ' (feet)')
         ax.set_ylabel(axes_labels[axes[1]] + ' (feet)')
 
-    plt.legend([e.value for e in Layouts if e != Layouts.SliderOnly], loc='center left')
+    plt.legend([layout_name(e) for e in Layouts if e != Layouts.SliderOnly], loc='center left')
     # plt.title('Stylus Positions in Cave on Keypress by Interface')
     plt.savefig("../../Results/Figures/pos-2d-cloud-" + '-'.join(map(str, axes)) + ".png", transparent=True)
     # plt.savefig("../../Results/Figures/pos-2d-cloud-" + '-'.join(map(str, axes)) + ".png")
