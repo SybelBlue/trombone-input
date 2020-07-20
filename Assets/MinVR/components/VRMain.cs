@@ -253,7 +253,8 @@ namespace MinVR {
 
         /** Implementation Details Below this Point **/
 
-        private VRDevice vrDevice;
+        // private VRDevice vrDevice;
+        public VRDevice vrDevice;
 
 		// Storage for event callbacks
 		private List<OnVREventDelegate> genericCallbacksUnfiltered = new List<OnVREventDelegate>();

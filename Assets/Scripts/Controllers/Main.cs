@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.KeyCode;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -126,6 +127,15 @@ public class Main : MonoBehaviour, VREventGenerator
         VRMain.Instance.AddVRButtonCallbacks(_back_button, OnBackButtonUp, OnBackButtonDown);
 
         Bindings.AddSceneAdvanceCallback(OnSceneAdvance);
+
+        //TODO: hacking this in here since we have the server object to also initialize the other button events
+        server.unityKeysToVREvents.Add(Return);
+        server.unityKeysToVREvents.Add(S);
+        server.unityKeysToVREvents.Add(R);
+        server.unityKeysToVREvents.Add(D);
+        server.unityKeysToVREvents.Add(T);
+        server.unityKeysToVREvents.Add(LeftShift);
+        server.unityKeysToVREvents.Add(RightShift);
 
         Bindings.InitializeMinVRLayoutSwitching(server);
 
@@ -300,10 +310,11 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void OnSceneAdvance()
     {
-        Debug.LogWarning("Scene Advanced!");
+        // Debug.LogWarning("Scene Advanced!");
         if (strialsIsLoaded)
         {
-            Debug.LogWarning("Scene Advanced!");
+            // Debug.LogWarning("Scene Advanced!");
+            Debug.LogWarning("Scene Advancing to lobby");
             // laserPointerObject.SetActive(true);
             Scenes._STRIALS.UnloadAsync();
             // laserPointerObject.SetActive(true);
@@ -324,6 +335,7 @@ public class Main : MonoBehaviour, VREventGenerator
         }
         else
         {
+          Debug.LogWarning("Scene Advancing to trial");
           // laserPointerObject.SetActive(false);
             Scenes._STRIALS.LoadAdditive();
         }
@@ -439,7 +451,7 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnFrontButtonDown()
     {
         stylus.frontButtonDown = true;
-        if (TryFindKey(lastReportedValue)) return;
+        // if (TryFindKey(lastReportedValue)) return;
 
         var raycastable = stylus.Raycast(out _);
         if (raycastable)
@@ -451,6 +463,10 @@ public class Main : MonoBehaviour, VREventGenerator
                 dropdown.value = (dropdown.value + 1) % dropdown.options.Count;
             }
         }
+
+        if (TryFindKey(lastReportedValue)) return;
+        
+
     }
 
     public void OnFrontButtonUp()
