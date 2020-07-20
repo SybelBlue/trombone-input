@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils.SystemExtensions;
 
+using MinVR;
+
 namespace CustomEvent
 {
     [Serializable]
@@ -50,12 +52,12 @@ namespace Controller
 
         public Func<Stylus> stylusProvider = () => null;
 
-        private LayoutOption[] layoutOrder 
-            = new LayoutOption[] { 
-                LayoutOption.SliderOnly, 
-                LayoutOption.ArcType, 
-                LayoutOption.TiltType, 
-                LayoutOption.Raycast 
+        private LayoutOption[] layoutOrder
+            = new LayoutOption[] {
+                LayoutOption.SliderOnly,
+                LayoutOption.ArcType,
+                LayoutOption.TiltType,
+                LayoutOption.Raycast
             };
 
         private Trial? currentTrial = null;
@@ -371,9 +373,17 @@ namespace Controller
             if (builder == null) return;
             try
             {
-                (string directory, string name) = Testing.Utils.WriteTrialResults(builder.Finish(currentOutput), locally: Application.isEditor);
+                // (string directory, string name) = Testing.Utils.WriteTrialResults(builder.Finish(currentOutput), locally: Application.isEditor);
+                //
+                // fileOutputIndicator.text += $"Trial {trialNumber} Completed!\nSaved in Directory: {directory}\nIn File: {name}\n";
 
-                fileOutputIndicator.text += $"Trial {trialNumber} Completed!\nSaved in Directory: {directory}\nIn File: {name}\n";
+                if (VRMain.Instance.vrDevice.name == "Desktop" || VRMain.Instance.vrDevice.name == "CaveFrontWall_Top")
+                {
+                  (string directory, string name) = Testing.Utils.WriteTrialResults(builder.Finish(currentOutput), locally: Application.isEditor);
+
+                  fileOutputIndicator.text += $"Trial {trialNumber} Completed!\nSaved in Directory: {directory}\nIn File: {name}\n";
+
+                }
             }
             catch (Exception e)
             {

@@ -65,7 +65,7 @@ namespace Testing
             // sort away inconsistent ordering
             var arr = trials.ToArray();
             Array.Sort(arr.Select(t => t.trialNumber).ToArray(), arr);
-            
+
             return arr;
         }
 
@@ -75,8 +75,8 @@ namespace Testing
             var staggered = new List<Trial>();
 
             for (
-                int _i = 0, value = 0, prevStart = 0, incr = trials.Length / 4; 
-                _i < trials.Length; 
+                int _i = 0, value = 0, prevStart = 0, incr = trials.Length / 4;
+                _i < trials.Length;
                 _i++
                 )
             {
@@ -117,7 +117,7 @@ namespace Testing
 
             Debug.Log($"Selected {shuffled.Count} trials (#s {shuffled.Select(t => t.trialNumber).AsArrayString()}, {shuffled.Select(t => t.Length).Sum()} TrialItems)");
 
-            // Disgusting sanity check. Delete me. 
+            // Disgusting sanity check. Delete me.
             // (Checks if all layous are present in the random sample which was designed to have one of each.)
             var lArray = shuffled.Select(t => (t.items[1] as CommandWithData).data).ToArray();
             Array.Sort(lArray);
@@ -318,10 +318,11 @@ namespace Testing
         public void EndLastChallenge(string output)
         {
             if (lastChallenge == null) return;
-            
+
             lastChallenge.SetEndNow();
-            
-            lastChallenge.keypresses = savedPresses;
+
+            // lastChallenge.keypresses = savedPresses;
+            lastChallenge.keypresses = new List<Keypress>(savedPresses);
             savedPresses.Clear();
 
             lastChallenge.output = output;
