@@ -395,7 +395,7 @@ namespace Extracted
 
         public static Vector3 NormalizeAngles(this Vector3 stylusForward, Vector3 minAngle, Vector3 maxAngle, bool rightHanded = false)
             => VectorFrom(axis => {
-                // if measuring angle from y (axis == 1), measure from forward (0, 1, 0), else meausre from up (0, 0, 1)
+                // if measuring angle for y (axis == 1), measure around forward (0, 0, 1), else measure around up (0, 1, 0)
                 Vector3 measureOrigin = axis == 1 ? Vector3.forward : Vector3.up;
                 float angle = stylusForward.SignedAngleFromAxis(measureOrigin, axis);
 
