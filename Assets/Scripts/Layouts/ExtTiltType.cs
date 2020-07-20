@@ -9,6 +9,8 @@ namespace Extracted
 #pragma warning disable 0649
     public class ExtTiltType : MonoBehaviour
     {
+        [SerializeField, Tooltip("When true, automatically instantiates keys on Start().")]
+        private bool loadOnStart;
 
         [SerializeField, Tooltip("Unbroken strings of letters form bins. Use whitespace to separate. Use backslash for control chars or to insert space literal.")]
         private string layout;
@@ -38,11 +40,19 @@ namespace Extracted
             }
         }
 
-        public void Start()
+        private void Start()
+        {
+            if (loadOnStart)
+            {
+                Load();
+            }
+        }
+
+        public void Load()
         {
             keys = new List<BinnedKey>();
-            List<List<char>> bins = layout.DecodeAsLayout();
-            char[] altChars = altLayout.DecodeAsLayout().SelectMany(x => x).ToArray();
+            List<List<char>> bins = layout.DecodeIntoBinned();
+            char[] altChars = altLayout.DecodeIntoBinned().SelectMany(x => x).ToArray();
             int n = 0;
             foreach (var bin in bins)
             {
@@ -85,16 +95,42 @@ namespace Extracted
             }
         }
 
-        public char? GetSelectedLetter(Vector3 data)
+        /// <summary>
+        /// Accepts the vector along the direction stylus.transform.forward and attempts to convert this orientation into a character
+        /// </summary>
+        /// <param name="stylusForward">the vector pointing down the tip of the stylus model</param>
+        /// <param name="rightHandedMode">if true, mirrors the bounds in the x-axis when calculating angles</param>
+        /// <returns>char for the rotation defined by stylusForward</returns>
+        public char? GetSelectedLetter(Vector3 stylusForward, bool rightHandedMode = false)
+            => GetSelectedLetterUnfiltered(stylusForward.NormalizeAngles(minAngle, maxAngle, rightHandedMode));
+
+        /// <summary>
+        /// Returns the character corresponding to the angles provided
+        /// </summary>
+        /// <param name="normalizedAngles">the normalized angles of the stylus</param>
+        /// <returns></returns>
+        public char? GetSelectedLetterUnfiltered(Vector3 normalizedAngles)
         {
-            var inner = FetchInnerKey(data);
+            var inner = FetchInnerKey(normalizedAngles);
             if (inner == null) return null;
             return inner.GetChar();
         }
 
-        public void UpdateHighlight(Vector3 data)
+        /// <summary>
+        /// Highlights the key corresponding to the orientation of the stylus where stylusForward is stylus.transform.forward
+        /// </summary>
+        /// <param name="stylusForward">the vector pointing down the tip of the stylus model</param>
+        /// <param name="rightHandedMode">if true, mirrors the bounds in the x-axis when calculating angles</param>
+        public void UpdateHighlight(Vector3 stylusForward, bool rightHandedMode = false)
+            => UpdateHighlightUnfiltered(stylusForward.NormalizeAngles(minAngle, maxAngle, rightHandedMode));
+
+        /// <summary>
+        /// Highlights the key corresponding to the angles provided
+        /// </summary>
+        /// <param name="normalizedAngles">the normalized angles of the stylus</param>
+        public void UpdateHighlightUnfiltered(Vector3 normalizedAngles)
         {
-            var outer = ChildIndexFor(data);
+            var outer = ChildIndexFor(normalizedAngles);
             var binnedKey = keys[outer];
 
             for (int i = 0; i < keys.Count; i++)
@@ -106,7 +142,7 @@ namespace Extracted
             if (binnedKey != null)
             {
                 binnedKey.SetHighlight(true);
-                inner = InnerIndex(data, binnedKey.size);
+                inner = InnerIndex(normalizedAngles, binnedKey.size);
             }
 
             for (int i = 0; i < binnedKey.size; i++)
@@ -276,7 +312,7 @@ namespace Extracted
 
     internal static class Extensions
     { 
-        public static List<List<char>> DecodeAsLayout(this string s)
+        public static List<List<char>> DecodeIntoBinned(this string s)
         {
             var ret = new List<List<char>>();
 
@@ -329,5 +365,56 @@ namespace Extracted
 
         public static int NormalizedIntoIndex(this float normalized, int length)
             => Mathf.FloorToInt(Mathf.LerpUnclamped(0, Mathf.Max(0, length - 1), normalized));
+
+        public static float SignedAngle(this Vector3 forward, Vector3 target, Vector3 axis)
+        {
+            float dot = Vector3.Dot(forward.normalized, target.normalized);
+            float degrees = Mathf.Rad2Deg * Mathf.Acos(dot);
+
+            Vector3 derivedAxis = Vector3.Cross(forward, target);
+            float sign = Mathf.Sign(Vector3.Dot(axis, derivedAxis));
+
+            return sign * degrees;
+        }
+
+        public static Vector3 VectorFrom(System.Func<int, float> f)
+            => new Vector3(f(0), f(1), f(2));
+
+        public static Vector3 ProjectTo(this Vector3 vec, int axisMask)
+            // if axis mask has a 1 in the ith place, keep ith value, else 0
+            => vec.Map((i, v) => ((axisMask >> i) & 0x1) * v);
+
+        public static Vector3 Flatten(this Vector3 vec, int axis)
+            => vec.ProjectTo(~(1 << axis));
+
+        public static Vector3 Map(this Vector3 vec, System.Func<int, float, float> f)
+            => new Vector3(f(0, vec[0]), f(1, vec[1]), f(2, vec[2]));
+
+        public static float SignedAngleFromAxis(this Vector3 forward, Vector3 target, int axis)
+            => forward.Flatten(axis).SignedAngle(target, VectorFrom(i => i == axis ? 1 : 0));
+
+        public static Vector3 NormalizeAngles(this Vector3 stylusForward, Vector3 minAngle, Vector3 maxAngle, bool rightHanded = false)
+            => VectorFrom(axis => {
+                // if measuring angle from y (axis == 1), measure from forward (0, 1, 0), else meausre from up (0, 0, 1)
+                Vector3 measureOrigin = axis == 1 ? Vector3.forward : Vector3.up;
+                float angle = stylusForward.SignedAngleFromAxis(measureOrigin, axis);
+
+                float low = axis == 0 && rightHanded ? maxAngle[axis] : minAngle[axis];
+                float hi = axis == 0 && rightHanded ? minAngle[axis] : maxAngle[axis];
+
+                if (angle < 0)
+                {
+                    angle = (180 + angle) + 180;
+                }
+                if (low < 0)
+                {
+                    low = (180 + low) + 180;
+                }
+                if (hi < 0)
+                {
+                    hi = (180 + hi) + 180;
+                }
+                return Mathf.Clamp01((angle - low) / (hi - low));
+               });
     }
 }
