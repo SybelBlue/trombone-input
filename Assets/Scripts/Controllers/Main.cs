@@ -75,7 +75,7 @@ public class Main : MonoBehaviour, VREventGenerator
     #endregion
 
     public Button backToLobby;
-//
+
     public GameObject laserPointerObject;
 
     // The most up-to-date value reported by the InputFieldController
@@ -85,9 +85,6 @@ public class Main : MonoBehaviour, VREventGenerator
     private int completedChallenges = -1;
 
     private bool isShiftDown = false;
-
-    // public override bool usesRaycasting => true;
-//
 
     // The manager's current layout, or null if no manager exists
     private CustomInput.Layout.AbstractLayout layout

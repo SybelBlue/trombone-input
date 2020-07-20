@@ -47,11 +47,12 @@ namespace Samples
             set { m_RuntimeToggle = value; }
         }
 
+#if !UNITY_EDITOR
         void Awake()
         {
-            #if !UNITY_EDITOR
             s_RuntimeInstance = this;
-            #endif
         }
+#endif
+
     }
 }

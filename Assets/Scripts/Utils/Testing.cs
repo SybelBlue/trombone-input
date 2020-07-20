@@ -279,8 +279,8 @@ namespace Testing
 
     public class ResultBuilder
     {
-        private List<ITrialResult> results = new List<ITrialResult>();
-        private List<Keypress> savedPresses = new List<Keypress>();
+        private readonly List<ITrialResult> results = new List<ITrialResult>();
+        private readonly List<Keypress> savedPresses = new List<Keypress>();
 
         private ChallengeResult lastChallenge;
 
