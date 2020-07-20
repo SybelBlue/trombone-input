@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Extracted
 {
@@ -9,11 +10,11 @@ namespace Extracted
     public class ExtTiltType : MonoBehaviour
     {
 
-        [SerializeField, Tooltip("Unbroken strings of letters form bins. Use spaces to separate. Use backslash for control chars or to insert space literal.")]
+        [SerializeField, Tooltip("Unbroken strings of letters form bins. Use whitespace to separate. Use backslash for control chars or to insert space literal.")]
         private string layout;
 
-        //[SerializeField, Tooltip("Unbroken strings of letters form bins. Use spaces to separate. Use backslash for control chars or to insert space literal. Must match layout.")]
-        //private string altLayout;
+        [SerializeField, Tooltip("Pairs each char with equally-indexed char of layout, ignoring basic whitespace. Use control chars for special chars as with layout. All missing alt chars default to null.")]
+        private string altLayout;
 
         [SerializeField]
         private GameObject binnedPrefab, keyPrefab;
@@ -23,12 +24,26 @@ namespace Extracted
 
         private List<BinnedKey> keys;
 
-        private bool inGame = false;
+        private bool _useAlternate;
+        public bool useAlternate
+        {
+            get => _useAlternate;
+            set
+            {
+                _useAlternate = value;
+                foreach (var key in keys)
+                {
+                    key.useAlternate = value;
+                }
+            }
+        }
 
         public void Start()
         {
             keys = new List<BinnedKey>();
             List<List<char>> bins = layout.DecodeAsLayout();
+            char[] altChars = altLayout.DecodeAsLayout().SelectMany(x => x).ToArray();
+            int n = 0;
             foreach (var bin in bins)
             {
                 BinnedKey binned = Instantiate(binnedPrefab, transform).AddComponent<BinnedKey>();
@@ -38,8 +53,13 @@ namespace Extracted
                 {
                     binned.innerKeys[i] = Instantiate(keyPrefab, binned.gameObject.transform).AddComponent<SimpleKey>();
                     binned.innerKeys[i].sym = bin[i];
+                    
+                    if (n < altLayout.Length)
+                    {
+                        binned.innerKeys[i].alt = altChars[n];
+                        n++;
+                    }
                 }
-
                 keys.Add(binned);
             }
         }
@@ -62,20 +82,6 @@ namespace Extracted
             else if (!keyPrefab.GetComponentInChildren<TMP_Text>())
             {
                 Debug.LogError("keyPrefab has no child with TextMeshPro Text component!");
-            }
-        }
-
-        private bool _useAlternate;
-        public bool useAlternate
-        {
-            get => _useAlternate;
-            set
-            {
-                _useAlternate = value;
-                foreach (var key in keys)
-                {
-                    key.useAlternate = value;
-                }
             }
         }
 
@@ -191,8 +197,9 @@ namespace Extracted
     public class SimpleKey : Highlighted
     {
         private TMP_Text text;
-        
-        private char _sym, _alt;
+
+        private char _sym;
+        private char? _alt;
         private bool _useAlt;
 
         public bool useAlt
@@ -200,7 +207,7 @@ namespace Extracted
             get => _useAlt;
             set
             {
-                label = GetLabel((_useAlt = value) ? alt : sym);
+                label = GetLabel((_useAlt = value) && alt.HasValue? alt.Value : sym);
             }
         }
 
@@ -217,7 +224,7 @@ namespace Extracted
             }
         }
 
-        public char alt
+        public char? alt
         {
             get => _alt;
             set
@@ -264,7 +271,7 @@ namespace Extracted
         }
 
         public char GetChar()
-            => useAlt ? alt : sym;
+            => useAlt && alt.HasValue ? alt.Value : sym;
     }
 
     internal static class Extensions
