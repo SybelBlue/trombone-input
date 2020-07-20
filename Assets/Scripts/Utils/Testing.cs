@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.XR;
 using System;
 using Controller;
+using System.Linq;
+
+using CustomInput;
 using Utils.SystemExtensions;
 using Utils.UnityExtensions;
-using CustomInput;
-using System.Linq;
 
 namespace Testing
 {
@@ -142,10 +143,12 @@ namespace Testing
             {
                 if (line.StartsWith(COMMENT_PREFIX.ToString()))
                 {
+                    var comment = line.Substring(1);
                     if (logComments)
                     {
-                        Debug.Log(line.Substring(1));
+                        Debug.Log(comment);
                     }
+                    items.Add(new Comment(comment));
                     continue;
                 }
 
@@ -295,6 +298,8 @@ namespace Testing
                     return;
                 case Command command:
                     results.Add(new CommandResult(command));
+                    return;
+                case Comment _:
                     return;
             }
 
@@ -469,6 +474,19 @@ namespace Testing
 
         // returns wether or not this sets TrialController in a blocking state
         public abstract bool Apply(Proctor proctor);
+    }
+
+    public class Comment : TrialItem
+    {
+        public readonly string comment;
+        public Comment(string comment) : base()
+            => this.comment = comment;
+
+        public override bool Apply(Proctor _)
+        {
+            Debug.Log("# " + comment);
+            return false;
+        }
     }
 
     public abstract class Command : TrialItem

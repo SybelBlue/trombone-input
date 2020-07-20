@@ -135,29 +135,6 @@ namespace Controller
             UpdateDisplay();
         }
 
-        public void Update()
-        {
-            // Handled with the minvr events
-            /*
-            if (Bindings.skipChallenge)
-            {
-                AdvanceChallenge();
-            }
-            else if (Bindings.restartChallenge)
-            {
-                RestartChallenge();
-            }
-            else if (Bindings.skipTrial)
-            {
-                FinishTrial();
-            }
-            else if (Bindings.restartTrial)
-            {
-                RestartTrial();
-            }
-            */
-        }
-
         public void OnDestroy()
             => FlushBuilder();
 

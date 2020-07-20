@@ -138,7 +138,7 @@ public class Main : MonoBehaviour, VREventGenerator
 
         outputDisplay?.ResetText();
 
-        trials = Testing.Utils.ReadTrialsStaggered(logComments: true);
+        trials = Testing.Utils.ReadTrialsStaggered(logComments: false);
 
         RunNextTrial();
 
