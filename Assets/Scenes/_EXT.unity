@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 457398750}
   - component: {fileID: 457398749}
   - component: {fileID: 457398748}
+  - component: {fileID: 457398751}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -204,6 +205,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &457398751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457398747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3898311b8c567ed4ea87970229f02628, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pos: {x: 0, y: 0}
+  tiltType: {fileID: 1152603377}
 --- !u!1 &1152603375
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,11 +268,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b78d6d8c87a2c84bb68361be3f336ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _layout: 'ABCD EFGH IJKL MNOP QRST UVWX YZ.\ '
+  layout: 'ABCD EFGH IJKL MNOP QRST UVWX YZ.\ '
   binnedPrefab: {fileID: 5620759387140033191, guid: 85010f9743ff33e4195440009e8a0ecf,
     type: 3}
   keyPrefab: {fileID: 8081325905761730126, guid: b1f061291f8c5144f889ca081b4ef4a9,
     type: 3}
+  minAngle: {x: 0, y: 0, z: 0}
+  maxAngle: {x: 0, y: 0, z: 0}
 --- !u!114 &1152603378
 MonoBehaviour:
   m_ObjectHideFlags: 0

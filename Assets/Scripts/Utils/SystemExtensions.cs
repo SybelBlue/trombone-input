@@ -43,7 +43,7 @@ namespace Utils.SystemExtensions
             => array.FromEnd(0);
 
         public static int LastIndex<T>(this T[] array)
-            => System.Math.Max(0, array.Length - 1);
+            => Math.Max(0, array.Length - 1);
 
         public static T FromEnd<T>(this T[] array, int i)
             => array[array.LastIndex() - i];
@@ -103,6 +103,6 @@ namespace Utils.SystemExtensions
         }
 
         public static string Backspace(this string s)
-            => s.Substring(0, System.Math.Max(0, s.Length - 1));
+            => s.Substring(0, Math.Max(0, s.Length - 1));
     }
 }

@@ -2,30 +2,24 @@
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Extracted
 {
 #pragma warning disable 0649
     public class ExtTiltType : MonoBehaviour
     {
-        public string layout 
-        {
-            get => _layout;
-            set
-            {
-                if (inGame) throw new System.InvalidOperationException("Cannot change layout while running");
-                _layout = value;
-            }
-        }
 
         [SerializeField, Tooltip("Unbroken strings of letters form bins. Use spaces to separate. Use backslash for control chars or to insert space literal.")]
-        private string _layout;
+        private string layout;
 
-        private string lastLayout = null;
+        //[SerializeField, Tooltip("Unbroken strings of letters form bins. Use spaces to separate. Use backslash for control chars or to insert space literal. Must match layout.")]
+        //private string altLayout;
 
         [SerializeField]
         private GameObject binnedPrefab, keyPrefab;
+
+        [SerializeField]
+        protected Vector3 minAngle, maxAngle;
 
         private List<BinnedKey> keys;
 
@@ -33,14 +27,13 @@ namespace Extracted
 
         public void Start()
         {
-            inGame = true;
             keys = new List<BinnedKey>();
             List<List<char>> bins = layout.DecodeAsLayout();
             foreach (var bin in bins)
             {
                 BinnedKey binned = Instantiate(binnedPrefab, transform).AddComponent<BinnedKey>();
                 binned.innerKeys = new SimpleKey[bin.Count];
-                
+
                 for (int i = 0; i < bin.Count; i++)
                 {
                     binned.innerKeys[i] = Instantiate(keyPrefab, binned.gameObject.transform).AddComponent<SimpleKey>();
@@ -66,40 +59,150 @@ namespace Extracted
             {
                 Debug.LogError("keyPrefab is null!");
             }
-            else
+            else if (!keyPrefab.GetComponentInChildren<TMP_Text>())
             {
-                if (!keyPrefab.GetComponent<TMP_Text>())
+                Debug.LogError("keyPrefab has no child with TextMeshPro Text component!");
+            }
+        }
+
+        private bool _useAlternate;
+        public bool useAlternate
+        {
+            get => _useAlternate;
+            set
+            {
+                _useAlternate = value;
+                foreach (var key in keys)
                 {
-                    Debug.LogError("keyPrefab has no TextMeshPro Text component!");
+                    key.useAlternate = value;
                 }
             }
+        }
 
-            if (lastLayout != layout)
+        public char? GetSelectedLetter(Vector3 data)
+        {
+            var inner = FetchInnerKey(data);
+            if (inner == null) return null;
+            return inner.GetChar();
+        }
+
+        public void UpdateHighlight(Vector3 data)
+        {
+            var outer = ChildIndexFor(data);
+            var binnedKey = keys[outer];
+
+            for (int i = 0; i < keys.Count; i++)
             {
-                if (layout != null)
-                {
-                    Debug.Log($"layout: {layout.DecodeAsLayout().PrettyPrint()}");
-                }
-                else
-                {
-                    Debug.LogError("layout is null!");
-                }
-                lastLayout = layout;
+                keys[i].SetHighlight(i == outer);
+            }
+
+            int? inner = null;
+            if (binnedKey != null)
+            {
+                binnedKey.SetHighlight(true);
+                inner = InnerIndex(data, binnedKey.size);
+            }
+
+            for (int i = 0; i < binnedKey.size; i++)
+            {
+                binnedKey.innerKeys[i].SetHighlight(i == inner);
+            }
+        }
+
+        private int ChildIndexFor(Vector3 normalizedAngles)
+            => normalizedAngles.z.NormalizedIntoIndex(keys.Count);
+
+        private int InnerIndex(Vector3 normalizedAngles, int parentSize)
+            => (1 - normalizedAngles.x).NormalizedIntoIndex(parentSize);
+
+        private SimpleKey FetchInnerKey(Vector3 data)
+        {
+            BinnedKey parent = keys[ChildIndexFor(data)];
+
+            var inner = InnerIndex(data, parent.size);
+
+            return parent.size > 0 ? parent.innerKeys[inner] : null;
+        }
+    }
+
+    public class Highlighted : MonoBehaviour
+    {
+        protected Color highlightColor;
+
+        protected Image image;
+        protected bool isHighlighted = false;
+
+        private Color lastColor;
+
+        public virtual void SetHighlight(bool v)
+        {
+            if (isHighlighted == v) return;
+
+            if (image == null)
+            {
+                image = GetComponent<Image>();
+            }
+            
+            isHighlighted = v;
+
+            if (v)
+            {
+                lastColor = image.color;
+                image.color = highlightColor;
+            }
+            else
+            {
+                image.color = lastColor;
             }
         }
     }
 
-    public class BinnedKey : MonoBehaviour
+    public class BinnedKey : Highlighted
     {
         public SimpleKey[] innerKeys;
+        internal int size => innerKeys?.Length ?? 0;
+        public bool useAlternate 
+        {  
+            set
+            {
+                foreach (var key in innerKeys)
+                {
+                    key.useAlt = value;
+                }
+            }
+        }
+
+        public void Start()
+            => highlightColor = new Color(159, 159, 130);
+
+        public override void SetHighlight(bool v)
+        {
+            base.SetHighlight(v);
+
+            if (v) return;
+
+            foreach (var key in innerKeys)
+            {
+                key.SetHighlight(false);
+            }
+        }
     }
 
-    public class SimpleKey : MonoBehaviour
+    public class SimpleKey : Highlighted
     {
         private TMP_Text text;
         
-        [SerializeField]
-        private char _sym;
+        private char _sym, _alt;
+        private bool _useAlt;
+
+        public bool useAlt
+        {
+            get => _useAlt;
+            set
+            {
+                label = GetLabel((_useAlt = value) ? alt : sym);
+            }
+        }
 
         public char sym
         {
@@ -109,7 +212,20 @@ namespace Extracted
                 if (_sym != value)
                 {
                     _sym = value;
-                    label = GetLabel(value);
+                    useAlt = useAlt;
+                }
+            }
+        }
+
+        public char alt
+        {
+            get => _alt;
+            set
+            {
+                if (_alt != value)
+                {
+                    _alt = value;
+                    useAlt = useAlt;
                 }
             }
         }
@@ -118,15 +234,18 @@ namespace Extracted
         {
             get
             {
-                text = text ? text : GetComponent<TMP_Text>();
+                text = text ? text : GetComponentInChildren<TMP_Text>();
                 return text.text;
             }
             set
             {
-                text = text ? text : GetComponent<TMP_Text>();
+                text = text ? text : GetComponentInChildren<TMP_Text>();
                 text.text = value;
             }
         }
+
+        public void Start()
+            => highlightColor = new Color(8, 161, 53, 105);
 
         private static string GetLabel(char c)
         {
@@ -143,6 +262,9 @@ namespace Extracted
             }
             return $"{c}";
         }
+
+        public char GetChar()
+            => useAlt ? alt : sym;
     }
 
     internal static class Extensions
@@ -198,10 +320,7 @@ namespace Extracted
             return ret;
         }
 
-        public static string PrettyPrint<T>(this List<T> items)
-            => $"[{string.Join(", ", items)}]";
-
-        public static string PrettyPrint<T>(this List<List<T>> items)
-            => $"[{string.Join(", ", items.Select(i => i.PrettyPrint()).ToArray())}]";
+        public static int NormalizedIntoIndex(this float normalized, int length)
+            => Mathf.FloorToInt(Mathf.LerpUnclamped(0, Mathf.Max(0, length - 1), normalized));
     }
 }

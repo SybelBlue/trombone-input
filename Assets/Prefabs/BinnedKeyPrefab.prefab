@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2968197465382743393}
   - component: {fileID: 8637429803362563309}
   m_Layer: 2
-  m_Name: AmbiguousKeyPrefab
+  m_Name: BinnedKeyPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 0
+  m_Spacing: 2
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
