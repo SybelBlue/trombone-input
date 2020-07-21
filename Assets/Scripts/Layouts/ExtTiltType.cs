@@ -51,7 +51,7 @@ namespace Extracted
         /// </summary>
         public bool useAlternate
         {
-            get => _useAlternate;
+            get { return _useAlternate; }
             set
             {
                 _useAlternate = value;
@@ -224,7 +224,7 @@ namespace Extracted
         /// </summary>
         public virtual bool highlighted
         {
-            get => _highlighted;
+            get { return _highlighted; }
             set 
             {
                 // if already in state, do nothing
@@ -268,7 +268,7 @@ namespace Extracted
         /// </summary>
         public override bool highlighted 
         { 
-            get => base.highlighted;
+            get { return base.highlighted; }
             set
             {
                 base.highlighted = value;
@@ -324,7 +324,7 @@ namespace Extracted
         /// </summary>
         public bool useAlternate
         {
-            get => _useAlternate;
+            get { return _useAlternate; }
             set
             {
                 _useAlternate = value;
@@ -338,7 +338,7 @@ namespace Extracted
         /// </summary>
         public char sym
         {
-            get => _sym;
+            get {return  _sym; }
             set
             {
                 if (_sym != value)
@@ -355,7 +355,7 @@ namespace Extracted
         /// </summary>
         public char? alt
         {
-            get => _alt;
+            get { return _alt; }
             set
             {
                 if (_alt != value)
