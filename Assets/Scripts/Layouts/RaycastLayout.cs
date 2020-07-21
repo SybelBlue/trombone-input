@@ -61,11 +61,11 @@ namespace CustomInput.Layout
         private SimpleData RaycastKeyDataFor(InputData data)
             => ChildFor(data)?.GetComponent<Raycast>().data;
 
-        public override (AbstractData parent, SimpleData simple)? KeysFor(InputData data)
+        public override Utils.Tuples.NestedData? KeysFor(InputData data)
         {
             var raycastKey = RaycastKeyDataFor(data);
             if (raycastKey == null) return null;
-            return (raycastKey, raycastKey);
+            return new Utils.Tuples.NestedData(raycastKey, raycastKey);
         }
 
         public override void SetHighlightedKey(InputData data)

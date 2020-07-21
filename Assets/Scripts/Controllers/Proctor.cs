@@ -122,8 +122,8 @@ namespace Controller
             }
         }
 
-        private (Vector3 pos, Vector3 rot) stylusTravel
-            => stylusProvider()?.travel ?? (Vector3.zero, Vector3.zero);
+        private Utils.Tuples.Orientation stylusTravel
+            => stylusProvider()?.travel ?? Utils.Tuples.Orientation.Origin();
 
         private Vector3 stylusPosition
             => stylusProvider()?.transform.position ?? Vector3.zero;
@@ -199,7 +199,7 @@ namespace Controller
             var sty = stylusProvider();
             if (sty != null)
             {
-                sty.travel = (Vector3.zero, Vector3.zero);
+                sty.travel = Utils.Tuples.Orientation.Origin();
             }
             return kp;
         }
@@ -375,7 +375,7 @@ namespace Controller
             {
                 if (VRMain.Instance.vrDevice.name == "Desktop" || VRMain.Instance.vrDevice.name == "CaveFrontWall_Top")
                 {
-                    (string directory, string name) = Testing.Utils.WriteTrialResults(builder.Finish(currentOutput), locally: Application.isEditor);
+                  var path = Testing.Utils.WriteTrialResults(builder.Finish(currentOutput), locally: Application.isEditor);
 
                     fileOutputIndicator.text += $"Trial {trialNumber} Completed!\nSaved in Directory: {directory}\nIn File: {name}\n";
                 }

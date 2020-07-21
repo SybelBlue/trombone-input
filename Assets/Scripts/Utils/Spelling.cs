@@ -89,15 +89,15 @@ namespace Auto
             throw new ArgumentException("Unknown size");
         }
 
-        private static (int, int) DictionaryTermAndCountIndices(DictionarySize size)
+        private static Vector2Int DictionaryTermAndCountIndices(DictionarySize size)
         {
             switch (size)
             {
                 case DictionarySize.Dict82765:
-                    return (0, 1);
+                    return new Vector2Int(0, 1);
 
                 case DictionarySize.Dict243342:
-                    return (0, 2);
+                    return new Vector2Int(0, 2);
             }
 
             throw new ArgumentException("Unknown size");
@@ -133,7 +133,9 @@ namespace Auto
 
             Loader loader = DictionaryLoader(size);
 
-            var (termIndex, countIndex) = DictionaryTermAndCountIndices(size);
+            var pair = DictionaryTermAndCountIndices(size);
+            var termIndex = pair[0];
+            var countIndex = pair[1];
 
             using (Stream corpusStream = DictionaryTextAsset(size, dicts).IntoMemoryStream())
             {

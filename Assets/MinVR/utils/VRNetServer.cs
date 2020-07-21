@@ -79,7 +79,7 @@ namespace MinVR {
             // 2. SEND THE COMBINED INPUT EVENTS LIST OUT TO ALL CLIENTS
             for (int i = 0; i < clients.Count; i++) {
                 TcpClient c = clients[i];
-                VRNet.SendEventData(ref c, in inputEvents);
+                VRNet.SendEventData(ref c, /*in*/ inputEvents);
             }
             
         }

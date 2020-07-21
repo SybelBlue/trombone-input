@@ -16,7 +16,7 @@ namespace Auto
         //Trie node class
         public class Node
         {
-            public List<(string key, Node node)> Children;
+            public List<NamedNode> Children;
 
             //Does this node represent the last character in a word? 
             //0: no word; >0: is word (termFrequencyCount)
@@ -26,6 +26,30 @@ namespace Auto
             public Node(long termfrequencyCount)
             {
                 termFrequencyCount = termfrequencyCount;
+            }
+        }
+
+        public struct NamedNode
+        {
+            public string key;
+            public Node node;
+
+            public NamedNode(string key, Node node)
+            {
+                this.key = key;
+                this.node = node;
+            }
+        }
+
+        public struct TermFreq
+        {
+            public string term;
+            public long termFrequencyCount;
+
+            public TermFreq(string term, long termFrequencyCount)
+            {
+                this.term = term;
+                this.termFrequencyCount = termFrequencyCount;
             }
         }
 
@@ -61,7 +85,9 @@ namespace Auto
                 {
                     for (int j = 0; j < curr.Children.Count; j++)
                     {
-                        (string key, Node node) = curr.Children[j];
+                        NamedNode nnode = curr.Children[j];
+                        var key = nnode.key;
+                        var node = nnode.node;
 
                         for (int i = 0; i < Math.Min(term.Length, key.Length); i++) if (term[i] == key[i]) common = i + 1; else break;
 
@@ -84,17 +110,17 @@ namespace Auto
                             {
                                 //insert second part of oldKey as child 
                                 Node child = new Node(termFrequencyCount);
-                                child.Children = new List<(string, Node)>
+                                child.Children = new List<NamedNode>
                                 {
-                                   (key.Substring(common), node)
+                                   new NamedNode(key.Substring(common), node)
                                 };
                                 child.termFrequencyCountChildMax = Math.Max(node.termFrequencyCountChildMax, node.termFrequencyCount);
                                 UpdateMaxCounts(nodeList, termFrequencyCount);
 
                                 //insert first part as key, overwrite old node
-                                curr.Children[j] = (term.Substring(0, common), child);
+                                curr.Children[j] = new NamedNode(term.Substring(0, common), child);
                                 //sort children descending by termFrequencyCountChildMax to start lookup with most promising branch
-                                curr.Children.Sort((x, y) => y.Item2.termFrequencyCountChildMax.CompareTo(x.Item2.termFrequencyCountChildMax));
+                                curr.Children.Sort((x, y) => y.node.termFrequencyCountChildMax.CompareTo(x.node.termFrequencyCountChildMax));
                                 //increment termcount by 1
                                 termCount++;
                             }
@@ -112,18 +138,18 @@ namespace Auto
                             {
                                 //insert second part of oldKey and of s as child 
                                 Node child = new Node(0);//count       
-                                child.Children = new List<(string, Node)>
+                                child.Children = new List<NamedNode>
                                 {
-                                     (key.Substring(common), node) ,
-                                     (term.Substring(common), new Node(termFrequencyCount))
+                                     new NamedNode(key.Substring(common), node) ,
+                                     new NamedNode(term.Substring(common), new Node(termFrequencyCount))
                                 };
                                 child.termFrequencyCountChildMax = Math.Max(node.termFrequencyCountChildMax, Math.Max(termFrequencyCount, node.termFrequencyCount));
                                 UpdateMaxCounts(nodeList, termFrequencyCount);
 
                                 //insert first part as key. overwrite old node
-                                curr.Children[j] = (term.Substring(0, common), child);
+                                curr.Children[j] = new NamedNode(term.Substring(0, common), child);
                                 //sort children descending by termFrequencyCountChildMax to start lookup with most promising branch
-                                curr.Children.Sort((x, y) => y.Item2.termFrequencyCountChildMax.CompareTo(x.Item2.termFrequencyCountChildMax));
+                                curr.Children.Sort((x, y) => y.node.termFrequencyCountChildMax.CompareTo(x.node.termFrequencyCountChildMax));
                                 //increment termcount by 1 
                                 termCount++;
                             }
@@ -135,16 +161,16 @@ namespace Auto
                 // initialize dictionary if first key is inserted 
                 if (curr.Children == null)
                 {
-                    curr.Children = new List<(string, Node)>
+                    curr.Children = new List<NamedNode>
                         {
-                            ( term, new Node(termFrequencyCount) )
+                            new NamedNode( term, new Node(termFrequencyCount) )
                         };
                 }
                 else
                 {
-                    curr.Children.Add((term, new Node(termFrequencyCount)));
+                    curr.Children.Add(new NamedNode(term, new Node(termFrequencyCount)));
                     //sort children descending by termFrequencyCountChildMax to start lookup with most promising branch
-                    curr.Children.Sort((x, y) => y.Item2.termFrequencyCountChildMax.CompareTo(x.Item2.termFrequencyCountChildMax));
+                    curr.Children.Sort((x, y) => y.node.termFrequencyCountChildMax.CompareTo(x.node.termFrequencyCountChildMax));
                 }
                 termCount++;
                 UpdateMaxCounts(nodeList, termFrequencyCount);
@@ -152,12 +178,12 @@ namespace Auto
             catch (Exception e) { Console.WriteLine("exception: " + term + " " + e.Message); }
         }
 
-        public void FindAllChildTerms(String prefix, int topK, ref long termFrequencyCountPrefix, string prefixString, List<(string term, long termFrequencyCount)> results, bool pruning)
+        public void FindAllChildTerms(String prefix, int topK, ref long termFrequencyCountPrefix, string prefixString, List<TermFreq> results, bool pruning)
         {
             FindAllChildTerms(prefix, trie, topK, ref termFrequencyCountPrefix, prefixString, results, null, pruning);
         }
 
-        public void FindAllChildTerms(String prefix, Node curr, int topK, ref long termfrequencyCountPrefix, string prefixString, List<(string term, long termFrequencyCount)> results, System.IO.StreamWriter file, bool pruning)
+        public void FindAllChildTerms(String prefix, Node curr, int topK, ref long termfrequencyCountPrefix, string prefixString, List<TermFreq> results, System.IO.StreamWriter file, bool pruning)
         {
             try
             {
@@ -169,8 +195,10 @@ namespace Auto
 
                 if (curr.Children != null)
                 {
-                    foreach ((string key, Node node) in curr.Children)
+                    foreach (NamedNode nnode in curr.Children)
                     {
+                        var key = nnode.key;
+                        var node = nnode.node;
                         //pruning/early termination in radix trie lookup
                         if (pruning && (topK > 0) && (results.Count == topK) && (node.termFrequencyCount <= results[topK - 1].termFrequencyCount) && (node.termFrequencyCountChildMax <= results[topK - 1].termFrequencyCount))
                         {
@@ -186,7 +214,7 @@ namespace Auto
                                 //candidate                              
                                 if (file != null) file.WriteLine(prefixString + key + "\t" + node.termFrequencyCount.ToString());
                                 else
-                                if (topK > 0) AddTopKSuggestion(prefixString + key, node.termFrequencyCount, topK, ref results); else results.Add((prefixString + key, node.termFrequencyCount));
+                                if (topK > 0) AddTopKSuggestion(prefixString + key, node.termFrequencyCount, topK, ref results); else results.Add(new TermFreq(prefixString + key, node.termFrequencyCount));
                             }
 
                             if ((node.Children != null) && (node.Children.Count > 0)) FindAllChildTerms("", node, topK, ref termfrequencyCountPrefix, prefixString + key, results, file, pruning);
@@ -204,9 +232,9 @@ namespace Auto
             catch (Exception e) { Console.WriteLine("exception: " + prefix + " " + e.Message); }
         }
 
-        public List<(string term, long termFrequencyCount)> GetTopkTermsForPrefix(String prefix, int topK, out long termFrequencyCountPrefix, bool pruning = true)
+        public List<TermFreq> GetTopkTermsForPrefix(String prefix, int topK, out long termFrequencyCountPrefix, bool pruning = true)
         {
-            List<(string term, long termFrequencyCount)> results = new List<(string term, long termFrequencyCount)>();
+            List<TermFreq> results = new List<TermFreq>();
 
             //termFrequency of prefix, if it exists in the dictionary (even if not returned in the topK results due to low termFrequency)
             termFrequencyCountPrefix = 0;
@@ -290,23 +318,23 @@ namespace Auto
             Console.WriteLine($"{termCount.ToString("N0")} terms loaded in {sw1.ElapsedMilliseconds.ToString("N0")} ms");
         }
 
-        public class BinarySearchComparer : IComparer<(string term, long termFrequencyCount)>
+        public class BinarySearchComparer : IComparer<TermFreq>
         {
-            public int Compare((string term, long termFrequencyCount) f1, (string term, long termFrequencyCount) f2)
+            public int Compare(TermFreq f1, TermFreq f2)
             {
                 return Comparer<long>.Default.Compare(f2.termFrequencyCount, f1.termFrequencyCount);//descending
             }
         }
 
-        public void AddTopKSuggestion(string term, long termFrequencyCount, int topK, ref List<(string term, long termFrequencyCount)> results)
+        public void AddTopKSuggestion(string term, long termFrequencyCount, int topK, ref List<TermFreq> results)
         {
             //at the end/highest index is the lowest value
             // >  : old take precedence for equal rank   
             // >= : new take precedence for equal rank 
             if ((results.Count < topK) || (termFrequencyCount >= results[topK - 1].termFrequencyCount))
             {
-                int index = results.BinarySearch((term, termFrequencyCount), new BinarySearchComparer());
-                if (index < 0) results.Insert(~index, (term, termFrequencyCount)); else results.Insert(index, (term, termFrequencyCount));
+                int index = results.BinarySearch(new TermFreq(term, termFrequencyCount), new BinarySearchComparer());
+                if (index < 0) results.Insert(~index, new TermFreq(term, termFrequencyCount)); else results.Insert(index, new TermFreq(term, termFrequencyCount));
 
                 if (results.Count > topK) results.RemoveAt(topK);
             }

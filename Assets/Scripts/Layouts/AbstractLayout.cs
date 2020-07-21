@@ -149,7 +149,7 @@ namespace CustomInput
             }
 
             // Boundaries for valid stylus angles
-            public virtual (Vector3 minima, Vector3 maxima)? StylusRotationBounds()
+            public virtual Utils.Tuples.VBounds? StylusRotationBounds()
                   => null;
 
             protected abstract int ChildIndexFor(InputData data);
@@ -163,7 +163,7 @@ namespace CustomInput
 
             // Gets the largest key and smallest key that are situated at index, or null if the index is out of bounds
             // (if this is not a binned key, then the tuple items should be equal)
-            public abstract (AbstractData parent, SimpleData simple)? KeysFor(InputData data);
+            public abstract Utils.Tuples.NestedData? KeysFor(InputData data);
 
             // Gets the letter for the keypress at index, given the context, and a boolean representing
             // certainty, or null if the index is out of bounds.

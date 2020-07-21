@@ -9,6 +9,8 @@ using System.Linq;
 using CustomInput;
 using Utils.SystemExtensions;
 using Utils.UnityExtensions;
+using Orientation = Utils.Tuples.Orientation;
+using TPath = Utils.Tuples.Path;
 
 namespace Testing
 {
@@ -174,7 +176,7 @@ namespace Testing
             return new Trial(items.ToArray());
         }
 
-        public static (string directory, string name) WriteTrialResults(List<ITrialResult> t, bool locally = false)
+        public static TPath WriteTrialResults(List<ITrialResult> t, bool locally = false)
         {
             string directory = locally ? "Assets/Results" : Path.Combine(Application.persistentDataPath, "TrialResults");
             string name = UniqueYamlName("trial");
@@ -187,7 +189,7 @@ namespace Testing
                 Debug.Log(directory);
             }
 
-            return (directory, name);
+            return new TPath(directory, name);
         }
 
         public static string UniqueYamlName(string stub)
@@ -428,7 +430,7 @@ namespace Testing
                 writer.WriteLine($"{indent}{press.time + 0.000001 * count.ModifyWithDefault(press.time, -1, i => i + 1)}:");
                 Indent();
                 writer.WriteLine($"{indent}key: \"{(press.key == "\b" ? "\\b" : press.key)}\"");
-                if (press.travel != (Vector3.zero, Vector3.zero))
+                if (!press.travel.IsOrigin())
                 {
                     writer.WriteLine($"{indent}travel:");
                     Indent();
@@ -453,10 +455,10 @@ namespace Testing
     {
         public readonly string key;
         public readonly float time;
-        public readonly (Vector3 pos, Vector3 rot) travel;
+        public readonly Orientation travel;
         public readonly Vector3 pressPosition;
 
-        public Keypress(string key, (Vector3 pos, Vector3 rot) travel, Vector3 pressPosition, float? time = null)
+        public Keypress(string key, Orientation travel, Vector3 pressPosition, float? time = null)
         {
             this.key = key;
             this.time = time ?? Time.time;
@@ -464,7 +466,7 @@ namespace Testing
             this.pressPosition = pressPosition;
         }
 
-        public Keypress(char key, (Vector3 pos, Vector3 rot) travel, Vector3 pressPosition, float? time = null)
+        public Keypress(char key, Orientation travel, Vector3 pressPosition, float? time = null)
           : this($"{key}", travel, pressPosition, time)
         { }
     }

@@ -2,6 +2,8 @@ using Controller.Key;
 using CustomInput.KeyData;
 using UnityEngine;
 
+using NestedData = Utils.Tuples.NestedData;
+
 namespace CustomInput.Layout
 {
     public class ArcTypeLayout : AbstractLayout
@@ -28,8 +30,8 @@ namespace CustomInput.Layout
             }
         }
 
-        public override (Vector3 minima, Vector3 maxima)? StylusRotationBounds()
-            => (minAngle, maxAngle);
+        public override Utils.Tuples.VBounds? StylusRotationBounds()
+            => new Utils.Tuples.VBounds(minAngle, maxAngle);
 
         protected virtual int? InnerIndex(InputData data, int parentSize)
             => data.normalizedSlider.HasValue ?
@@ -39,30 +41,30 @@ namespace CustomInput.Layout
         protected override int ChildIndexFor(InputData data)
             => Utils.Static.NormalizedIntoIndex(data.normalizedAngles.z, childMap.Count);
 
-        private (AbstractData, SimpleData) FetchInnerKey(InputData data)
+        private NestedData FetchInnerKey(InputData data)
         {
             StylusBinnedData parent = (StylusBinnedData)LayoutKeyFor(data);
 
             var inner = InnerIndex(data, parent.size);
 
-            if (!inner.HasValue || parent.size == 0) return (parent, null);
+            if (!inner.HasValue || parent.size == 0) return new NestedData(parent, null);
 
-            return (parent, parent.ItemAt(inner.Value));
+            return new NestedData(parent, parent.ItemAt(inner.Value));
         }
 
-        public override (AbstractData, SimpleData)? KeysFor(InputData data)
+        public override NestedData? KeysFor(InputData data)
         {
-            var (parent, inner) = FetchInnerKey(data);
-            if (inner != null)
+            var nested = FetchInnerKey(data);
+            if (nested.simple != null)
             {
-                return (parent, inner);
+                return nested;
             }
             return null;
         }
 
         public override char? GetSelectedLetter(InputData data)
         {
-            var (_, inner) = FetchInnerKey(data);
+            var inner = FetchInnerKey(data).simple;
             if (inner == null) return null;
             return inner.CharWithAlternate(useAlternate);
         }
