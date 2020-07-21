@@ -86,7 +86,7 @@ namespace MinVR {
 
         // PART 2:  LARGER MESSAGES FOR SYNCING INPUT EVENTS
 
-        public static void SendEventData(ref TcpClient client, in List<VREvent> inputEvents) {
+        public static void SendEventData(ref TcpClient client, /*in*/ List<VREvent> inputEvents) {
             // Debug.Log("SendInputEvents");
 
             // 1. send 1-byte message header

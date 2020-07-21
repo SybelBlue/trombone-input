@@ -53,7 +53,7 @@ namespace MinVR {
 
         public void SynchronizeInputEventsAcrossAllNodes(ref List<VREvent> inputEvents) {
             // 1. send inputEvents to server
-            VRNet.SendEventData(ref client, in inputEvents);
+            VRNet.SendEventData(ref client, /*in*/ inputEvents);
 
             // 2. receive and parse serverInputEvents
             List<VREvent> serverInputEvents = new List<VREvent>();
