@@ -33,15 +33,15 @@ namespace Controller
         private Vector2 sliderBounds;
         #endregion
 
-        public Func<(Vector3 min, Vector3 max)?> angleProvider;
+        public Func<Utils.Tuples.VBounds?> angleProvider;
 
-        public (Vector3 pos, Vector3 rot) travel;
+        public Utils.Tuples.Orientation travel;
 
-        private (bool front, bool back) highlighting;
-        private (string path, float? last) saveData;
-        private (int? frame, RaycastHit? hit, IRaycastable obj) lastFound;
+        private Highlighting highlighting;
+        private SaveData saveData;
+        private Found lastFound;
 
-        private (Vector3 pos, Vector3 rot) lastTransform;
+        private Utils.Tuples.Orientation lastTransform;
 
         #region Properties
         public bool useLaser
@@ -50,8 +50,8 @@ namespace Controller
             set { laserPointer.active = value; }
         }
 
-        public (Vector3 origin, Vector3 direction) orientation
-            => (transform.position, transform.forward);
+        public Utils.Tuples.Orientation orientation
+            => new Utils.Tuples.Orientation(transform.position, transform.forward);
 
         public Vector3 normalizedAngles { get; private set; }
 
@@ -135,9 +135,11 @@ namespace Controller
 
         private void Start()
         {
+            highlighting = new Highlighting { front = false, back = false };
+
             if (!recordSliderData) return;
 
-            saveData = ($"{Application.persistentDataPath}/{Testing.Utils.UniqueYamlName("stylus-output")}", null);
+            saveData = new SaveData($"{Application.persistentDataPath}/{Testing.Utils.UniqueYamlName("stylus-output")}", null);
         }
 
         private void Update()
@@ -169,7 +171,7 @@ namespace Controller
 
             travel.pos += (lastTransform.pos - transform.position).Map(Mathf.Abs);
             travel.rot += (lastTransform.rot - eulerAngles).Map(Mathf.Abs);
-            lastTransform = (transform.position, eulerAngles);
+            lastTransform = new Utils.Tuples.Orientation(transform.position, eulerAngles);
 
             if (!recordSliderData) return;
 
@@ -207,8 +209,8 @@ namespace Controller
                 return lastFound.obj;
             }
 
-            var raycastable = IRaycastable.Raycast(orientation.origin, orientation.direction, out hit);
-            lastFound = (Time.frameCount, hit, raycastable);
+            var raycastable = IRaycastable.Raycast(orientation.pos, orientation.rot, out hit);
+            lastFound = new Found(Time.frameCount, hit, raycastable);
 
             return raycastable;
         }
@@ -225,5 +227,38 @@ namespace Controller
 
         private void WriteSliderData(System.IO.StreamWriter writer)
             => writer.WriteLine($"{Time.time}: {normalizedSlider}");
+
+
+        
+        
+        // private (int? frame, RaycastHit? hit, IRaycastable obj) lastFound;
+        private struct Highlighting
+        { public bool front, back; }
+
+        private struct SaveData
+        { 
+            public string path;
+            public float? last;
+
+            public SaveData(string path, float? last)
+            {
+                this.path = path;
+                this.last = last;
+            }
+        }
+
+        private struct Found 
+        {
+            public int? frame;
+            public RaycastHit? hit;
+            public IRaycastable obj;
+
+            public Found(int? frame, RaycastHit? hit, IRaycastable obj)
+            {
+                this.frame = frame;
+                this.hit = hit;
+                this.obj = obj;
+            }
+        }
     }
 }

@@ -24,10 +24,10 @@ namespace CustomInput.Layout
             }
         }
 
-        public override (AbstractData, SimpleData)? KeysFor(InputData data)
+        public override Utils.Tuples.NestedData? KeysFor(InputData data)
         {
             var lKey = LayoutKeyFor(data);
-            return (lKey, (SimpleData)lKey);
+            return new Utils.Tuples.NestedData(lKey, (SimpleData)lKey);
         }
 
         public override void SetHighlightedKey(InputData data)

@@ -11,7 +11,7 @@ namespace Controller
         [SerializeField]
         private UnityEngine.UI.Slider progressSlider;
 
-        public (int num, int denom) trialCount
+        public Utils.Tuples.Rational trialCount
         {
             set { counter.text = $"Trial {value.num}/{value.denom}"; }
         }

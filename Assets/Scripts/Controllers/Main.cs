@@ -267,7 +267,7 @@ public class Main : MonoBehaviour, VREventGenerator
         completedChallenges = -1;
         if (currentTrial < trials.Count && outputDisplay is Proctor && runTrial)
         {
-            trialProgress.trialCount = (currentTrial, trials.Count);
+            trialProgress.trialCount = new Utils.Tuples.Rational(currentTrial, trials.Count);
             OnChallengeEnd();
             (outputDisplay as Proctor).RunTrial(trials[currentTrial]);
         }
