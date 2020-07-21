@@ -299,7 +299,7 @@ namespace Extracted
             => useAlt && alt.HasValue ? alt.Value : sym;
     }
 
-    internal static class Extensions
+    internal static class PrimitiveExtensions
     { 
         public static List<List<char>> DecodeIntoBinned(this string s)
         {
@@ -357,7 +357,10 @@ namespace Extracted
 
         public static int NormalizedIntoIndex(this float normalized, int length)
             => Mathf.FloorToInt(Mathf.LerpUnclamped(0, Mathf.Max(0, length - 1), normalized));
+    }
 
+    public static class VectorExtensions
+    {
         public static float SignedAngle(this Vector3 forward, Vector3 target, Vector3 axis)
         {
             float dot = Vector3.Dot(forward.normalized, target.normalized);
@@ -407,6 +410,6 @@ namespace Extracted
                     hi = (180 + hi) + 180;
                 }
                 return Mathf.Clamp01((angle - low) / (hi - low));
-               });
+            });
     }
 }
