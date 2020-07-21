@@ -94,6 +94,8 @@ namespace MinVR
                 headTrackerRot *= Quaternion.AngleAxis(1.0f, new Vector3(0f, 1f, 0f));
             }
 
+            headTrackerRot.Normalize();
+
             Matrix4x4 m3 = Matrix4x4.TRS(headTrackerPos, headTrackerRot, Vector3.one);
             float[] d3 = VRConvert.ToFloatArray(m3);
             VREvent e = new VREvent(fakeHeadTrackerEvent);
