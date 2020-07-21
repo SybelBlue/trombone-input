@@ -46,8 +46,8 @@ namespace Controller
         #region Properties
         public bool useLaser
         {
-            get => laserPointer.active;
-            set => laserPointer.active = value;
+            get { return laserPointer.active; }
+            set { laserPointer.active = value; }
         }
 
         public (Vector3 origin, Vector3 direction) orientation
@@ -98,7 +98,7 @@ namespace Controller
 
         public bool frontButtonDown
         {
-            get => highlighting.front;
+            get { return highlighting.front; }
             set
             {
                 highlighting.front = value;
@@ -111,7 +111,7 @@ namespace Controller
 
         public bool backButtonDown
         {
-            get => highlighting.back;
+            get { return highlighting.back; }
             set
             {
                 highlighting.back = value;

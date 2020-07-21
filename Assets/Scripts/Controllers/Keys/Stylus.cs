@@ -8,8 +8,8 @@
 
         public override string text
         {
-            get => textMeshPro.text;
-            set => textMeshPro.text = value;
+            get { return textMeshPro.text; }
+            set { textMeshPro.text = value; }
         }
     }
 }

@@ -240,7 +240,8 @@ namespace SymSpell
                 foreach (string delete in edits)
                 {
                     int deleteHash = GetStringHash(delete);
-                    if (deletes.TryGetValue(deleteHash, out string[] suggestions))
+                    string[] suggestions;
+                    if (deletes.TryGetValue(deleteHash, out suggestions))
                     {
                         var newSuggestions = new string[suggestions.Length + 1];
                         Array.Copy(suggestions, newSuggestions, suggestions.Length);
@@ -298,8 +299,8 @@ namespace SymSpell
                     {
                         //if default (whitespace) is defined as separator take 2 term parts, otherwise take only one
                         string key = (separatorChars == defaultSeparatorChars) ? lineParts[termIndex] + " " + lineParts[termIndex + 1] : lineParts[termIndex];
-                        //Int64 count;
-                        if (Int64.TryParse(lineParts[countIndex], out Int64 count))
+                        Int64 count;
+                        if (Int64.TryParse(lineParts[countIndex], out count))
                         {
                             //nur solche combis zulassen, die ich beide auch als einzelworte habe
                             //Console.WriteLine(key+" : "+ count.ToString());
@@ -350,8 +351,8 @@ namespace SymSpell
                     if (lineParts.Length >= 2)
                     {
                         string key = lineParts[termIndex];
-                        //Int64 count;
-                        if (Int64.TryParse(lineParts[countIndex], out Int64 count))
+                        Int64 count;
+                        if (Int64.TryParse(lineParts[countIndex], out count))
                         {
                             CreateDictionaryEntry(key, count, staging);
                         }
@@ -516,7 +517,8 @@ namespace SymSpell
                 }
 
                 //read candidate entry from dictionary
-                if (deletes.TryGetValue(GetStringHash(candidate), out string[] dictSuggestions))
+                string[] dictSuggestions;
+                if (deletes.TryGetValue(GetStringHash(candidate), out dictSuggestions))
                 {
                     //iterate through suggestions (to other correct dictionary items) of delete item and add them to suggestion list
                     for (int i = 0; i < dictSuggestions.Length; i++)
@@ -671,7 +673,8 @@ namespace SymSpell
             }
             internal void Add(int deleteHash, string suggestion)
             {
-                if (!Deletes.TryGetValue(deleteHash, out Entry entry)) entry = new Entry { count = 0, first = -1 };
+                Entry entry;
+                if (!Deletes.TryGetValue(deleteHash, out entry)) entry = new Entry { count = 0, first = -1 };
                 int next = entry.first;
                 entry.count++;
                 entry.first = Nodes.Count;
@@ -683,7 +686,8 @@ namespace SymSpell
                 foreach (var keyPair in Deletes)
                 {
                     int i;
-                    if (permanentDeletes.TryGetValue(keyPair.Key, out string[] suggestions))
+                    string[] suggestions;
+                    if (permanentDeletes.TryGetValue(keyPair.Key, out suggestions))
                     {
                         i = suggestions.Length;
                         var newSuggestions = new string[suggestions.Length + keyPair.Value.count];
@@ -947,7 +951,8 @@ namespace SymSpell
 
                                     suggestionSplit.distance = distance2;
                                     //if bigram exists in bigram dictionary
-                                    if (bigrams.TryGetValue(suggestionSplit.term, out long bigramCount))
+                                    long bigramCount;
+                                    if (bigrams.TryGetValue(suggestionSplit.term, out bigramCount))
                                     {
                                         suggestionSplit.count = bigramCount;
 

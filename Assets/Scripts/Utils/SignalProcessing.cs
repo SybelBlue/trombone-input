@@ -20,7 +20,7 @@ namespace Utils.SignalProcessing
         NoTouches,
     }
 
-    public readonly struct FilterEventData
+    public struct FilterEventData
     {
         public readonly EventType type;
         public readonly uint? value;

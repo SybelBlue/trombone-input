@@ -10,14 +10,14 @@ namespace Controller.Key
 
         public TextAnchor alignment
         {
-            get => childText.alignment;
-            set => childText.alignment = value;
+            get { return childText.alignment; }
+            set { childText.alignment = value; }
         }
 
         public override string text
         {
-            get => childText.text;
-            set => childText.text = value;
+            get { return childText.text; }
+            set { childText.text = value; }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace CustomInput.Layout
 
         public override bool useAlternate
         {
-            get => _useAlternate;
+            get { return _useAlternate; }
             set
             {
                 _useAlternate = value;

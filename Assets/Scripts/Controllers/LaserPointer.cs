@@ -14,8 +14,8 @@ namespace Controller
 
         public bool active
         {
-            get => gameObject.activeInHierarchy;
-            set => gameObject.SetActive(value);
+            get { return gameObject.activeInHierarchy; }
+            set { gameObject.SetActive(value); }
         }
 
         void Update()

@@ -16,8 +16,8 @@ namespace Controller
 
         public string text
         {
-            get => tmpText.text;
-            set => tmpText.text = value;
+            get { return tmpText.text; }
+            set { tmpText.text = value; }
         }
 
         protected override void OnRaycastFocusChange(bool value)

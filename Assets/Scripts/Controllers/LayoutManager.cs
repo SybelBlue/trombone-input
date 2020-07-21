@@ -24,7 +24,7 @@ namespace CustomInput
         private LayoutOption _memoizedLayout;
         public LayoutOption layout
         {
-            get => _layout;
+            get { return _layout; }
             set
             {
                 _layout = value;

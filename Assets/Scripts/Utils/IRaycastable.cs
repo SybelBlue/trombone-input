@@ -13,7 +13,7 @@ namespace Utils
 
         public bool hasRaycastFocus
         {
-            get => _inFocus;
+            get { return _inFocus; }
             private set
             {
                 if (_inFocus != value)

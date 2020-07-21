@@ -16,7 +16,9 @@ namespace Auto
         private static Complete _instance;
 
         private Complete()
-            => _instance = this;
+        {
+            _instance = this;
+        }
 
         public static Complete Instance
             => _instance == null ? new Complete() : _instance;
@@ -36,7 +38,15 @@ namespace Auto
         }
 
         public List<string> Completions(string prefix)
-            => trie?.GetTopkTermsForPrefix(prefix.ToLower(), _completion_count, out long termFreqCountPrefix).Select(t => t.term).ToList();
+        {
+            long _termFreqCount;
+            return 
+                trie?
+                    .GetTopkTermsForPrefix(prefix.ToLower(), _completion_count, out _termFreqCount)
+                    .Select(t => t.term)
+                    .ToList()
+                ?? new List<string>();
+        }
 
     }
 
@@ -53,7 +63,9 @@ namespace Auto
         private static Correct _instance;
 
         private Correct()
-            => _instance = this;
+        {
+            _instance = this;
+        }
 
         public static Correct Instance
             => _instance == null ? new Correct() : _instance;

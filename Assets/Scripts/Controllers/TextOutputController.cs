@@ -30,7 +30,7 @@ namespace Controller
 
         protected string text
         {
-            get => rawOutput.text;
+            get { return rawOutput.text; }
             set
             {
                 rawOutput.text = value;
@@ -42,8 +42,8 @@ namespace Controller
 
         public virtual string suggestionSource
         {
-            get => text;
-            protected set => text = value;
+            get { return text; }
+            protected set { text = value; }
         }
 
         public virtual void Start()

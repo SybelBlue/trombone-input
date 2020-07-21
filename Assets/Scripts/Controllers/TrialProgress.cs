@@ -13,12 +13,12 @@ namespace Controller
 
         public (int num, int denom) trialCount
         {
-            set => counter.text = $"Trial {value.num}/{value.denom}";
+            set { counter.text = $"Trial {value.num}/{value.denom}"; }
         }
 
         public float trialProgress
         {
-            get => progressSlider.value;
+            get { return progressSlider.value; }
             set
             {
                 progressSlider.value = value;

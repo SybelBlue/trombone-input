@@ -5,7 +5,7 @@ using Utils;
 
 namespace CustomInput
 {
-    public readonly struct InputData
+    public struct InputData
     {
         public readonly Vector3 normalizedAngles;
 

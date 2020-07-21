@@ -276,7 +276,8 @@ namespace Auto
                     string[] lineParts = line.Split(separator);
                     if (lineParts.Length == 2)
                     {
-                        if (Int64.TryParse(lineParts[1], out Int64 count))
+                        Int64 count;
+                        if (Int64.TryParse(lineParts[1], out count))
                         {
                             this.AddTerm(lineParts[0], count);
                         }

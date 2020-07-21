@@ -93,8 +93,8 @@ public class Main : MonoBehaviour, VREventGenerator
 
     private bool usingIndicator
     {
-        get => indicatorRect && indicatorRect.gameObject.activeInHierarchy;
-        set => indicatorRect.gameObject.SetActive(value);
+        get { return indicatorRect && indicatorRect.gameObject.activeInHierarchy; }
+        set { indicatorRect.gameObject.SetActive(value); }
     }
 
     private bool runTrial
@@ -453,7 +453,8 @@ public class Main : MonoBehaviour, VREventGenerator
         stylus.frontButtonDown = true;
         // if (TryFindKey(lastReportedValue)) return;
 
-        var raycastable = stylus.Raycast(out _);
+        RaycastHit? _hit;
+        var raycastable = stylus.Raycast(out _hit);
         if (raycastable)
         {
             raycastable.GetComponent<Button>()?.onClick.Invoke();

@@ -83,7 +83,7 @@ namespace Controller
         private string _prompt;
         public string currentPrompt
         {
-            get => _prompt;
+            get { return _prompt; }
             set
             {
                 _prompt = value;
@@ -93,7 +93,7 @@ namespace Controller
 
         public override string suggestionSource
         {
-            get => currentOutput;
+            get { return currentOutput; }
             protected set
             {
                 currentOutput = value;

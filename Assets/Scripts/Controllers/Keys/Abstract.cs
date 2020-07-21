@@ -41,8 +41,8 @@ namespace Controller.Key
 
         public override AbstractData layoutKey
         {
-            get => data;
-            set => data = (T)value;
+            get { return data; }
+            set { data = (T)value; }
         }
 
         // the internal data this.gameObject is meant to represent
@@ -81,7 +81,7 @@ namespace Controller.Key
 
         public char symbol
         {
-            get => _symbol;
+            get { return _symbol; }
             set
             {
                 _symbol = value;
@@ -122,7 +122,7 @@ namespace Controller.Key
 
         public bool useAlternate
         {
-            set => symbol = data.CharWithAlternate(value);
+            set { symbol = data.CharWithAlternate(value); }
         }
     }
 }

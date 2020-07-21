@@ -12,7 +12,7 @@ using Utils.UnityExtensions;
 
 namespace Testing
 {
-    public readonly struct Trial
+    public struct Trial
     {
         public readonly TrialItem[] items;
         public readonly int trialNumber;
@@ -25,11 +25,10 @@ namespace Testing
 
             foreach (var item in items)
             {
-                switch (item)
+                if (item is SetTrialCommand)
                 {
-                    case SetTrialCommand c:
-                        trialNumber = c.data;
-                        return;
+                    trialNumber = (item as SetTrialCommand).data;
+                    return;
                 }
             }
             throw new ArgumentException("TrialItems do not contain an Identifying TrialNumber");
@@ -291,19 +290,22 @@ namespace Testing
                 EndLastChallenge(currentOutput);
             }
 
-            switch (item)
+            if (item is Challenge)
             {
-                case Challenge challenge:
-                    results.Add(lastChallenge = new ChallengeResult(challenge, currentLayoutName));
-                    return;
-                case Command command:
-                    results.Add(new CommandResult(command));
-                    return;
-                case Comment _:
-                    return;
+                results.Add(lastChallenge = new ChallengeResult(item as Challenge, currentLayoutName));
             }
-
-            throw new ArgumentException($"{item.GetType()} not recognized");
+            else if (item is Command)
+            {
+                results.Add(new CommandResult(item as Command));
+            } 
+            if (item is Comment)
+            {
+                // comment is logged earlier or later, but nothing happens here.
+            }
+            else 
+            {
+                throw new ArgumentException($"{item.GetType()} not recognized");
+            }
         }
 
         public void RestartLastChallenge(float? start = null)
@@ -448,7 +450,7 @@ namespace Testing
           => keypresses.Add(kp);
     }
 
-    public readonly struct Keypress
+    public struct Keypress
     {
         public readonly string key;
         public readonly float time;
@@ -481,7 +483,9 @@ namespace Testing
     {
         public readonly string comment;
         public Comment(string comment) : base()
-            => this.comment = comment;
+        {
+            this.comment = comment;
+        }
 
         public override bool Apply(Proctor _)
         {
@@ -555,7 +559,8 @@ namespace Testing
 
         public static int fromString(string s)
         {
-            if (!int.TryParse(s, out int o))
+            int o;
+            if (!int.TryParse(s, out o))
             {
                 throw new ArgumentException("invalid int literal");
             }
