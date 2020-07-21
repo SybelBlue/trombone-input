@@ -69,8 +69,7 @@ namespace MinVR {
     public class VRMain : MonoBehaviour {
 
         // Use this to access to the singleton instance of VRMain that persists across scene loads/unloads
-        public static VRMain Instance { get { return instance; } }
-        private static VRMain instance;
+        public static VRMain Instance { get; private set; }
 
         [Tooltip("To specify a default device to use if no command line '-vrdevice DeviceName' option is specified " +
             "you can either drag a default device here or add a VRDevice component directly to VRMain.  Note that " +
@@ -705,10 +704,10 @@ namespace MinVR {
 
         void Awake() {
             DontDestroyOnLoad(this.gameObject);
-            if (instance == null) {
-                instance = this;
+            if (Instance == null) {
+                Instance = this;
             }
-            else if (instance != this) {
+            else if (Instance != this) {
               // instance = this;
                 DestroyImmediate(this.gameObject);
             }
