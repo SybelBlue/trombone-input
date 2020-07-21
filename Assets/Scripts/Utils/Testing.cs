@@ -323,7 +323,6 @@ namespace Testing
 
             lastChallenge.SetEndNow();
 
-            // lastChallenge.keypresses = savedPresses;
             lastChallenge.keypresses = new List<Keypress>(savedPresses);
             savedPresses.Clear();
 

@@ -129,13 +129,13 @@ public class Main : MonoBehaviour, VREventGenerator
         Bindings.AddSceneAdvanceCallback(OnSceneAdvance);
 
         //TODO: hacking this in here since we have the server object to also initialize the other button events
-        server.unityKeysToVREvents.Add(Return);
-        server.unityKeysToVREvents.Add(S);
-        server.unityKeysToVREvents.Add(R);
-        server.unityKeysToVREvents.Add(D);
-        server.unityKeysToVREvents.Add(T);
-        server.unityKeysToVREvents.Add(LeftShift);
-        server.unityKeysToVREvents.Add(RightShift);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(Return);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(S);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(R);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(D);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(T);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(LeftShift);
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(RightShift);
 
         Bindings.InitializeMinVRLayoutSwitching(server);
 
@@ -310,10 +310,8 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void OnSceneAdvance()
     {
-        // Debug.LogWarning("Scene Advanced!");
         if (strialsIsLoaded)
         {
-            // Debug.LogWarning("Scene Advanced!");
             Debug.LogWarning("Scene Advancing to lobby");
             // laserPointerObject.SetActive(true);
             Scenes._STRIALS.UnloadAsync();
@@ -335,8 +333,8 @@ public class Main : MonoBehaviour, VREventGenerator
         }
         else
         {
-          Debug.LogWarning("Scene Advancing to trial");
-          // laserPointerObject.SetActive(false);
+            Debug.LogWarning("Scene Advancing to trial");
+            // laserPointerObject.SetActive(false);
             Scenes._STRIALS.LoadAdditive();
         }
 
@@ -451,7 +449,6 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnFrontButtonDown()
     {
         stylus.frontButtonDown = true;
-        // if (TryFindKey(lastReportedValue)) return;
 
         RaycastHit? _hit;
         var raycastable = stylus.Raycast(out _hit);
@@ -466,8 +463,6 @@ public class Main : MonoBehaviour, VREventGenerator
         }
 
         if (TryFindKey(lastReportedValue)) return;
-        
-
     }
 
     public void OnFrontButtonUp()

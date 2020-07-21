@@ -226,15 +226,6 @@ namespace CustomInput
             {
                 server.unityKeysToVREvents.Add(item);
             }
-
-            // //TODO: hacking this in here since we have the server object to also initialize the other button events
-            // server.unityKeysToVREvents.Add(Return);
-            // server.unityKeysToVREvents.Add(S);
-            // server.unityKeysToVREvents.Add(R);
-            // server.unityKeysToVREvents.Add(D);
-            // server.unityKeysToVREvents.Add(T);
-            // server.unityKeysToVREvents.Add(LeftShift);
-            // server.unityKeysToVREvents.Add(RightShift);
         }
 
         public static void AddMinVRLayoutSwitchingHandlers(Func<int, VRMain.OnVRButtonDownEventDelegate> LayoutHandlers)
