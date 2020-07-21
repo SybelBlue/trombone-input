@@ -38,14 +38,14 @@ namespace Utils.SignalProcessing
     {
         private readonly uint epsilon, deadzone;
 
-        private LinkedList<(uint, double)> history; // value and timestamp
+        private LinkedList<HistoricValue> history; // value and timestamp
         private uint maxHistorySize;
 
         public Filter(uint epsilon, uint deadzone)
         {
-            history = new LinkedList<(uint, double)>();
+            history = new LinkedList<HistoricValue>();
             maxHistorySize = 15;
-            history.AddFirst((0, 0.0));
+            history.AddFirst(new HistoricValue(0, 0.0));
 
             this.epsilon = epsilon;
             this.deadzone = deadzone;
@@ -54,10 +54,10 @@ namespace Utils.SignalProcessing
         public FilterEventData PushHistory(uint rawIn, double time)
         {
             bool inDeadzone = rawIn <= deadzone;
-            bool fallingToZero = history.First.Value.Item1 > deadzone && deadzone >= rawIn;
-            bool jumpingFromZero = history.First.Value.Item1 <= deadzone && deadzone < rawIn;
+            bool fallingToZero = history.First.Value.value > deadzone && deadzone >= rawIn;
+            bool jumpingFromZero = history.First.Value.value <= deadzone && deadzone < rawIn;
 
-            history.AddFirst((rawIn, time));
+            history.AddFirst(new HistoricValue(rawIn, time));
             if (history.Count > maxHistorySize) {
                 history.RemoveLast();
             }
@@ -71,7 +71,7 @@ namespace Utils.SignalProcessing
                     sb.Append("(");
                     sb.Append(pair.Item2);
                     sb.Append(", ");
-                    sb.Append(pair.Item1);
+                    sb.Append(pair.value);
                     sb.Append("), ");
                 }
 
@@ -90,7 +90,7 @@ namespace Utils.SignalProcessing
                 if (fallingToZero) {
                     uint? calculatedValue = CalculateLastValueBeforeRelease();
                     history.Clear();
-                    history.AddFirst((0, time));
+                    history.AddFirst(new HistoricValue(0, time));
                     return new FilterEventData(EventType.FingerUp, calculatedValue);
                 }
                 else {
@@ -111,11 +111,11 @@ namespace Utils.SignalProcessing
         {
             Spline2D spline = new Spline2D();
             float curT = Time.time;
-            foreach((uint, double) pair in history)
+            foreach(HistoricValue pair in history)
             {
-                if (pair.Item1 > deadzone+epsilon)
+                if (pair.value > deadzone+epsilon)
                 {
-                    spline.AddPoint(new Vector2(curT - (float)pair.Item2, (float)pair.Item1));
+                    spline.AddPoint(new Vector2(curT - (float)pair.time, (float)pair.value));
                 }
             }
 
@@ -159,5 +159,17 @@ namespace Utils.SignalProcessing
         // value is within radius epsilon of rawin
         private bool isNeighbor(uint rawin, uint? value)
             => value.HasValue && rawin - epsilon <= value && value <= rawin + epsilon;
+
+        private struct HistoricValue
+        {
+            public uint value;
+            public double time;
+
+            public HistoricValue(uint value, double time)
+            {
+                this.value = value;
+                this.time = time;
+            }
+        }
     }
 }
