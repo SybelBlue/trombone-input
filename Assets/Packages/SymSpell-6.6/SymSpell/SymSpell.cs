@@ -1056,7 +1056,7 @@ namespace SymSpell
         /// the word segmented and spelling corrected string, 
         /// the Edit distance sum between input string and corrected string, 
         /// the Sum of word occurence probabilities in log scale (a measure of how common and probable the corrected segmentation is).</returns> 
-        public (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum) WordSegmentation(string input)
+        public Segmentation WordSegmentation(string input)
         {
             return WordSegmentation(input, this.MaxDictionaryEditDistance, this.maxDictionaryWordLength);
         }
@@ -1069,7 +1069,7 @@ namespace SymSpell
         /// the word segmented and spelling corrected string, 
         /// the Edit distance sum between input string and corrected string, 
         /// the Sum of word occurence probabilities in log scale (a measure of how common and probable the corrected segmentation is).</returns> 
-        public (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum) WordSegmentation(string input, int maxEditDistance)
+        public Segmentation WordSegmentation(string input, int maxEditDistance)
         {
             return WordSegmentation(input, maxEditDistance, this.maxDictionaryWordLength);
         }
@@ -1083,10 +1083,10 @@ namespace SymSpell
         /// the word segmented and spelling corrected string, 
         /// the Edit distance sum between input string and corrected string, 
         /// the Sum of word occurence probabilities in log scale (a measure of how common and probable the corrected segmentation is).</returns> 
-        public (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum) WordSegmentation(string input, int maxEditDistance, int maxSegmentationWordLength)
+        public Segmentation WordSegmentation(string input, int maxEditDistance, int maxSegmentationWordLength)
         {
             int arraySize = Math.Min(maxSegmentationWordLength, input.Length);
-            (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)[] compositions = new (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)[arraySize];
+            Segmentation[] compositions = new Segmentation[arraySize];
             int circularIndex = -1;
 
             //outer loop (column): all possible part start positions
@@ -1149,7 +1149,7 @@ namespace SymSpell
                     //set values in first loop
                     if (j == 0)
                     {
-                        compositions[destinationIndex] = (part, topResult, topEd, topProbabilityLog);
+                        compositions[destinationIndex] = new Segmentation(part, topResult, topEd, topProbabilityLog);
                     }
                     else if ((i == maxSegmentationWordLength)
                         //replace values if better probabilityLogSum, if same edit distance OR one space difference 
@@ -1157,7 +1157,7 @@ namespace SymSpell
                         //replace values if smaller edit distance     
                         || (compositions[circularIndex].distanceSum + separatorLength + topEd < compositions[destinationIndex].distanceSum))
                     {
-                        compositions[destinationIndex] = (
+                        compositions[destinationIndex] = new Segmentation(
                             compositions[circularIndex].segmentedString + " " + part,
                             compositions[circularIndex].correctedString + " " + topResult,
                             compositions[circularIndex].distanceSum + separatorLength + topEd,
@@ -1168,7 +1168,22 @@ namespace SymSpell
             }
             return compositions[circularIndex];
         }
+    }
 
+    // (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)
+    public struct Segmentation
+    {
+        public string segmentedString;
+        public string correctedString;
+        public int distanceSum;
+        public decimal probabilityLogSum;
 
+        public Segmentation(string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)
+        {
+            this.segmentedString = segmentedString;
+            this.correctedString = correctedString;
+            this.distanceSum = distanceSum;
+            this.probabilityLogSum = probabilityLogSum;
+        }
     }
 }
