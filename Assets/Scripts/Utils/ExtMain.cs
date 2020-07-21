@@ -7,20 +7,24 @@ namespace Extracted
     {
         public Stylus stylus;
         public ExtTiltType tiltType;
-        // Update is called once per frame
-        void Update()
-        { 
-            tiltType.UpdateHighlight(stylus.transform.forward);
 
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                tiltType.useAlternate = !tiltType.useAlternate;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                Debug.Log($"Keypress {tiltType.GetSelectedLetter(stylus.transform.forward)}");
-            }
+        private void Start()
+        {
+            // Capture MinVR events, requires VRMain to be attached and Awake in scene.
+            MinVR.VRMain.Instance.AddOnVRButtonDownCallback("BlueStylusFrontBtn", OnFrontButtonDown);
+            MinVR.VRMain.Instance.AddOnVRButtonDownCallback("BlueStylusBackBtn", OnBackButtonDown);
         }
+
+        // Update key highlighting on the layout
+        private void Update()
+            => tiltType.UpdateHighlight(stylus.transform.forward);
+
+        // Print the keypress
+        public void OnFrontButtonDown()
+            => Debug.Log($"Keypress {tiltType.GetSelectedLetter(stylus.transform.forward)}");
+        
+        // toggle alternate
+        public void OnBackButtonDown()
+            => tiltType.useAlternate = !tiltType.useAlternate;
     }
 }
