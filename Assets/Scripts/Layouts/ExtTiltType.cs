@@ -110,11 +110,7 @@ namespace Extracted
         /// <param name="normalizedAngles">the normalized angles of the stylus</param>
         /// <returns></returns>
         public char? GetSelectedLetterUnfiltered(Vector3 normalizedAngles)
-        {
-            var inner = FetchInnerKey(normalizedAngles);
-            if (inner == null) return null;
-            return inner.GetChar();
-        }
+            => FetchInnerKey(normalizedAngles)?.GetChar();
 
         /// <summary>
         /// Highlights the key corresponding to the orientation of the stylus where stylusForward is stylus.transform.forward
@@ -130,7 +126,7 @@ namespace Extracted
         /// <param name="normalizedAngles">the normalized angles of the stylus</param>
         public void UpdateHighlightUnfiltered(Vector3 normalizedAngles)
         {
-            var outer = ChildIndexFor(normalizedAngles);
+            var outer = BinnedIndex(normalizedAngles);
             var binnedKey = keys[outer];
 
             for (int i = 0; i < keys.Count; i++)
@@ -142,7 +138,7 @@ namespace Extracted
             if (binnedKey != null)
             {
                 binnedKey.SetHighlight(true);
-                inner = InnerIndex(normalizedAngles, binnedKey.size);
+                inner = InnerIndex(normalizedAngles);
             }
 
             for (int i = 0; i < binnedKey.size; i++)
@@ -151,20 +147,14 @@ namespace Extracted
             }
         }
 
-        private int ChildIndexFor(Vector3 normalizedAngles)
+        private int BinnedIndex(Vector3 normalizedAngles)
             => normalizedAngles.z.NormalizedIntoIndex(keys.Count);
 
-        private int InnerIndex(Vector3 normalizedAngles, int parentSize)
-            => (1 - normalizedAngles.x).NormalizedIntoIndex(parentSize);
+        private int InnerIndex(Vector3 normalizedAngles)
+            => (1 - normalizedAngles.x).NormalizedIntoIndex(keys[BinnedIndex(normalizedAngles)].size);
 
-        private SimpleKey FetchInnerKey(Vector3 data)
-        {
-            BinnedKey parent = keys[ChildIndexFor(data)];
-
-            var inner = InnerIndex(data, parent.size);
-
-            return parent.size > 0 ? parent.innerKeys[inner] : null;
-        }
+        private SimpleKey FetchInnerKey(Vector3 normalizedAngles)
+            => keys[BinnedIndex(normalizedAngles)].innerKeys[InnerIndex(normalizedAngles)];
     }
 
     public class Highlighted : MonoBehaviour
@@ -395,7 +385,7 @@ namespace Extracted
 
         public static Vector3 NormalizeAngles(this Vector3 stylusForward, Vector3 minAngle, Vector3 maxAngle, bool rightHanded = false)
             => VectorFrom(axis => {
-                // if measuring angle for y (axis == 1), measure around forward (0, 0, 1), else measure around up (0, 1, 0)
+                // if measuring angle for y (axis == 1), measure rotation around forward (0, 0, 1), else measure rotation around up (0, 1, 0)
                 Vector3 measureOrigin = axis == 1 ? Vector3.forward : Vector3.up;
                 float angle = stylusForward.SignedAngleFromAxis(measureOrigin, axis);
 
