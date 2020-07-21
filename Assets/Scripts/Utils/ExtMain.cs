@@ -1,4 +1,4 @@
-﻿using Controller;
+﻿using Controller;  // for Stylus
 using UnityEngine;
 
 namespace Extracted
@@ -17,7 +17,11 @@ namespace Extracted
 
         // Update key highlighting on the layout
         private void Update()
-            => tiltType.UpdateHighlight(stylus.transform.forward);
+        {
+            tiltType.UpdateHighlight(stylus.transform.forward);
+
+            CaptureEmulatedEvents();
+        }
 
         // Print the keypress
         public void OnFrontButtonDown()
@@ -26,5 +30,12 @@ namespace Extracted
         // toggle alternate
         public void OnBackButtonDown()
             => tiltType.useAlternate = !tiltType.useAlternate;
+
+        // not necessary for use of keyboard
+        private void CaptureEmulatedEvents()
+        {
+            if (Input.GetKeyDown(KeyCode.Return)) OnFrontButtonDown();
+            if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) OnBackButtonDown();
+        }
     }
 }

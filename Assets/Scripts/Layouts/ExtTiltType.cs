@@ -1,14 +1,15 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Utils.SystemExtensions;
+
+using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.UI;
+
+using TMPro;
 
 namespace Extracted
 {
     using Extensions;
-    using UnityEngine.Assertions;
     /// <summary>
     /// The TiltType layout, compressed into a single class.
     /// 
@@ -465,7 +466,7 @@ namespace Extracted
 
                     if (c == ' ')
                     {
-                        if (!curr.IsEmpty())
+                        if (curr.Count > 0)
                         {
                             ret.Add(curr);
                             curr = null;
