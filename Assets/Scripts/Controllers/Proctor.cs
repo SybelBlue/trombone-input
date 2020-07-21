@@ -375,9 +375,9 @@ namespace Controller
             {
                 if (VRMain.Instance.vrDevice.name == "Desktop" || VRMain.Instance.vrDevice.name == "CaveFrontWall_Top")
                 {
-                  var path = Testing.Utils.WriteTrialResults(builder.Finish(currentOutput), locally: Application.isEditor);
+                    var path = Testing.Utils.WriteTrialResults(builder.Finish(currentOutput), locally: Application.isEditor);
 
-                    fileOutputIndicator.text += $"Trial {trialNumber} Completed!\nSaved in Directory: {directory}\nIn File: {name}\n";
+                    fileOutputIndicator.text += $"Trial {trialNumber} Completed!\nSaved in Directory: {path.directory}\nIn File: {path.name}\n";
                 }
             }
             catch (Exception e)
