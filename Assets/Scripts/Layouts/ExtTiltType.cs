@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
+using Utils.SystemExtensions;
 
 namespace Extracted
 {
@@ -42,10 +43,7 @@ namespace Extracted
 
         private void Start()
         {
-            if (loadOnStart)
-            {
-                Load();
-            }
+            if (loadOnStart) Load();
         }
 
         public void Load()
@@ -108,9 +106,9 @@ namespace Extracted
         /// Returns the character corresponding to the angles provided
         /// </summary>
         /// <param name="normalizedAngles">the normalized angles of the stylus</param>
-        /// <returns></returns>
+        /// <returns>char corresponding to normalizedAngles</returns>
         public char? GetSelectedLetterUnfiltered(Vector3 normalizedAngles)
-            => FetchInnerKey(normalizedAngles)?.GetChar();
+            => keys == null ? null : FetchInnerKey(normalizedAngles)?.GetChar();
 
         /// <summary>
         /// Highlights the key corresponding to the orientation of the stylus where stylusForward is stylus.transform.forward
@@ -126,6 +124,7 @@ namespace Extracted
         /// <param name="normalizedAngles">the normalized angles of the stylus</param>
         public void UpdateHighlightUnfiltered(Vector3 normalizedAngles)
         {
+            if (keys == null) return;
             var outer = BinnedIndex(normalizedAngles);
             var binnedKey = keys[outer];
 
@@ -340,8 +339,11 @@ namespace Extracted
 
                 if (c == ' ')
                 {
-                    ret.Add(curr);
-                    curr = null;
+                    if (!curr.IsEmpty())
+                    {
+                        ret.Add(curr);
+                        curr = null;
+                    }
                     continue;
                 }
 
