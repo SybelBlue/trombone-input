@@ -16,28 +16,28 @@ namespace CustomInput
     //      Return                      =>      Switch to/from Lobby
     //      S                           =>      Skip Challenge
     //      R                           =>      Restart Challenge
-    //      Shift + S                   =>      Skip Trial
-    //      Shift + R                   =>      Restart Trial
+    //      D                           =>      Skip Trial
+    //      T                           =>      Restart Trial
     //      K                           =>      Capture Screenshot
-    //    From MainController.cs
+    //    From Main.cs
     //      Backspace                   =>      Force Backspace
     //      Space                       =>      Force Space
     //    From FakeTrackingInput.cs
     //      Mouse Delta                 =>      Stylus XY Position Delta
     //      Left Control + Mouse Delta  =>      Stylus XZ Rotation Delta
     //      X/Y/Z + Mouse Delta         =>      Stylus Strictly X/Y/Z Rotation Delta
-    //      Up/Down/Left/Right          =>      Main Camera Delta
+    //      Left/Right                  =>      Main Camera Delta
     //
     // In XR Build:
-    //    From StylusModelController.Raycast
+    //    From Stylus.Raycast
     //      Right Trigger to select recommendations, dropdown via raycast from stylus tip
     //    From _MAIN.scene
     //      Head Delta                  =>      Main Camera Delta
     //      Hand Pos/Rot Delta          =>      Stylus Pos/Rot Delta
     //    From Bindings.cs
     //     - <DOM> is dominant hand, set in Bindings.DOMINANT_HAND
-    //     - Primary is Trackpad for HP WMR
-    //     - Secondary is Joystick for HP WMR
+    //     - Primary is Trackpad for HP WMR (Depreciated on master)
+    //     - Secondary is Joystick for HP WMR (Depreciated on master)
     //      <DOM> Primary Y Position    =>      Stylus Slider
     //      <DOM> Secondary Button      =>      Stylus Front Button
     //      <DOM> Grip Button           =>      Stylus Back Button
@@ -46,8 +46,8 @@ namespace CustomInput
     //      7/8/9/0                     =>      Fast Switch Layouts
     //      S                           =>      Skip Challenge
     //      R                           =>      Restart Challenge
-    //      Shift + S                   =>      Skip Trial
-    //      Shift + R                   =>      Restart Trial
+    //      D                           =>      Skip Trial
+    //      T                           =>      Restart Trial
     //      K                           =>      Capture Screenshot
     using System;
     using static UnityEngine.Input;
@@ -143,18 +143,6 @@ namespace CustomInput
 
         public static bool advanceSceneDown
             => GetKeyDown(_scene_advance_key);
-
-        public static bool skipChallenge
-            => GetKeyDown(S) && !skipTrial;
-
-        public static bool restartChallenge
-            => GetKeyDown(R) && !restartTrial;
-
-        public static bool skipTrial
-            => shift && GetKeyDown(S);
-
-        public static bool restartTrial
-            => shift && GetKeyDown(R);
 
         public static bool takeScreenshot
             => GetKeyDown(K);

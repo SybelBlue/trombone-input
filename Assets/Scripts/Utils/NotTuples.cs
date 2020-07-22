@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// These are definitely not C# 7.2+ tuples in a C# 6.0-compatible format.
 namespace Utils.Tuples
 {
     public struct Orientation
