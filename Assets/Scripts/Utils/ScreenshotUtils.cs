@@ -5,8 +5,7 @@ namespace Utils
 #pragma warning disable 649
     public class ScreenshotUtils : MonoBehaviour
     {
-        [SerializeField]
-        private Camera renderingCamera;
+        public Camera renderingCamera;
 
         public int resWidth = 3840;
         public int resHeight = 2160;

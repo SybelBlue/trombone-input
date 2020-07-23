@@ -18,17 +18,20 @@ namespace MinVR {
 
 
         // Start is called before the first frame update
-        void Start() {
-            VRMain.Instance.AddOnVREventCallback(OnVREvent);
-        }
-
-        // Update is called once per frame
-        void Update() {
-
+        void Start()
+        {
+            if (!cursorPrefab)
+            {
+                Debug.LogError("DebugDrawAllTrackers cannot render without a cursor prefab.");
+                Destroy(this);
+            }
+            else
+            {
+                VRMain.Instance.AddOnVREventCallback(OnVREvent);
+            }
         }
 
         void OnVREvent(VREvent e) {
-
             // only respond to tracker move events
             if ((e.ContainsStringField("EventType")) &&
                 (e.GetStringData("EventType") == "TrackerMove"))

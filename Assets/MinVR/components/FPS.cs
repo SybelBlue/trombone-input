@@ -16,10 +16,25 @@ namespace MinVR
 
         void Start()
         {
-            GameObject newObj = Instantiate(labelPrefab);
-            label = newObj.GetComponent<TextMesh>();
-            newObj.transform.position = labelPosition;
-            label.color = textColor;
+            if (labelPrefab)
+            {
+                label = Instantiate(labelPrefab).GetComponent<TextMesh>();
+            }
+            else
+            {
+                label = gameObject.GetComponentInChildren<TextMesh>();
+            }
+
+            if (label)
+            {
+                label.gameObject.transform.position = labelPosition;
+                label.color = textColor;
+            }
+            else
+            {
+                Debug.LogError("FPS script requires a prefab or a child with a TextMesh component to render to.");
+                Destroy(this);
+            }
         }
 
         void Update()
