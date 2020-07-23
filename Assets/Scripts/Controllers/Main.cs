@@ -52,7 +52,7 @@ public class Main : MonoBehaviour, VREventGenerator
     private GameObject ground;
 
     [SerializeField]
-    private GameObject buttonBackground;
+    public GameObject buttonBackground;
 
     // The transform of the indicator
     [SerializeField]
@@ -76,6 +76,7 @@ public class Main : MonoBehaviour, VREventGenerator
     #endregion
 
     public Button backToLobby;
+    private GameObject buttonBackgroundEnd;
 
     public GameObject laserPointerObject;
 
@@ -107,6 +108,7 @@ public class Main : MonoBehaviour, VREventGenerator
         buttonBackground = GameObject.FindWithTag("ButtonBackgroundTag");
         backToLobby = GameObject.FindWithTag("JumbBackToLobbyTag").GetComponent<Button>();
         laserPointerObject = GameObject.FindWithTag("LaserPointerTag");
+        // buttonBackgroundEnd = GameObject.FindWithTag("ButtonBackGroundEnd");
         if (Instance)
         {
             Debug.LogWarning("A second Main script has been created while another exists! This instance will not be saved!");
@@ -152,6 +154,7 @@ public class Main : MonoBehaviour, VREventGenerator
         DontDestroyOnLoad(stylus.gameObject);
         DontDestroyOnLoad(ground.gameObject);
         DontDestroyOnLoad(buttonBackground.gameObject);
+        // DontDestroyOnLoad(buttonBackgroundEnd.gameObject);
 
         SceneManager.sceneLoaded += OnSceneChange;
     }
@@ -192,6 +195,7 @@ public class Main : MonoBehaviour, VREventGenerator
         if(!strialsIsLoaded)
         {
           laserPointerObject.SetActive(true);
+          buttonBackground.SetActive(true);
 
         }
         // TODO: find a way to print out current scene.
@@ -313,29 +317,15 @@ public class Main : MonoBehaviour, VREventGenerator
         if (strialsIsLoaded)
         {
             Debug.LogWarning("Scene Advancing to lobby");
-            // laserPointerObject.SetActive(true);
-            Scenes._STRIALS.UnloadAsync();
-            // laserPointerObject.SetActive(true);
-            // Debug.LogWarning(stylus.useLaser);
-
-            // if (layout && stylus && stylus.useLaser != layout.usesRaycasting)
-            // {
-              // stylus.useLaser = true;
-              // laserPointer.active = true;
-            // }
-            // Debug.LogWarning(laserPointerObject.activeSelf());
-            // Debug.LogWarning(laserPointerObject.gameObject.activeInHierarchy());
-
-
-
-            // stylus.gameObject.GetChild(3).SetActive(true);
+            // Scenes._STRIALS.UnloadAsync();
+            SceneManager.UnloadSceneAsync("_STRIALS");
 
         }
         else
         {
             Debug.LogWarning("Scene Advancing to trial");
-            // laserPointerObject.SetActive(false);
-            Scenes._STRIALS.LoadAdditive();
+            // Scenes._STRIALS.LoadAdditive();
+            SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
         }
 
         strialsIsLoaded = !strialsIsLoaded;
@@ -497,19 +487,8 @@ public class Main : MonoBehaviour, VREventGenerator
         {
             OnSceneAdvance();
             backToLobby.onClick.Invoke();
-            // stylus.useLaser = true;
             laserPointerObject.SetActive(true);
-            // laserReapear();
-            // laserPointerObject.GetComponent<Renderer>().enabled = enabled;
-            // laserPointerObject.gameObject.SetActive(true);
-            // laserPointerObject.SetActive(true);
-            // stylus.useLaser = layout.usesRaycasting;
 
-            // backToLobby.gameObject.SetActive(true);
-
-            //TODO:Make it so the jump button is triggered
-            // OnSceneChange("_STRIALS");
-            // RunNextTrial();
         }
         else
         {

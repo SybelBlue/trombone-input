@@ -36,13 +36,14 @@ namespace SceneSwitching
                     other.OnSceneAdvance();
                     Debug.LogWarning("OnSceneAdvance WORKED");
                     backToLobby.onClick.Invoke();
+
                     Debug.LogWarning("backtolobby");
 
 
                 }
                 else
                 {
-                    // Main.OnSceneAdvance();
+                    // other.OnSceneAdvance();
                     toTrials.onClick.Invoke();
                     Debug.LogWarning("toTrials WORKED");
 
