@@ -19,14 +19,18 @@ namespace Editor
         private static GameObject GetGameObject(string name, string tag = null)
         {
             var go = tag == null ? GameObject.Find(name) : GameObject.FindGameObjectWithTag(tag);
-            
-            // find does not work on inactive objects, so check there
+
+            //find does not work on inactive objects, so check there
             if (go == null)
             {
-                go = 
-                    GetAllDisabledSceneObjects()
-                    .Select(t => t.gameObject)
-                    .First(disabled => disabled.name == name || disabled.tag == tag);
+                try
+                {
+                    go =
+                        GetAllDisabledSceneObjects()
+                        .Select(t => t.gameObject)
+                        .First(disabled => disabled.name == name || disabled.tag == tag);
+                }
+                catch (System.InvalidOperationException) { } // no inactive objects in scene
             }
 
             // if still null make a new one, if tag not null, set new gameobject tag
@@ -63,7 +67,7 @@ namespace Editor
                 .Where(x => x != null)
                 .Select(x => x.gameObject)
                 .Where(x => x != null && !x.activeInHierarchy)
-                .Cast<UnityEngine.Object>().ToArray();
+                .Cast<Object>().ToArray();
 
             var selectedTransforms = Selection.GetTransforms(SelectionMode.Editable | SelectionMode.ExcludePrefab);
             Selection.objects = previousSelection;
