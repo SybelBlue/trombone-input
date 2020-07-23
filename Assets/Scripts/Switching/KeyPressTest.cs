@@ -9,7 +9,6 @@ namespace SceneSwitching
         public Button backToLobby;
         public Button toTrials;
         public Main other;
-        // var return : Keyeve
 
         // Start is called before the first frame update
         void Start()
@@ -24,13 +23,11 @@ namespace SceneSwitching
         // Update is called once per frame
         void Update()
         {
-            //Scene scene = SceneManager.GetActiveScene();
             Scene sceeneTwo = SceneManager.GetSceneByName("_STRIALS");
             //Debug.Log($"Active Scene: \"{scene.name}\".");
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                // if(scene.name.Equals("_STRIALS").isLoaded())
                 if (sceeneTwo.isLoaded)
                 {
                     other.OnSceneAdvance();
@@ -50,8 +47,6 @@ namespace SceneSwitching
 
                 }
             }
-            // scene = SceneManager.GetActiveScene();
-            // Debug.Log($"Active Scene: \"{scene.name}\".");
 
         }
     }

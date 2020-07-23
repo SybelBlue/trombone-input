@@ -36,7 +36,7 @@ namespace UnityEngine.UI
         public float fDistance;
         [Range(0f, 360f)]
         public float MinAngle, MaxAngle, StartAngle;
-        public bool OnlyLayoutVisible = false;       
+        public bool OnlyLayoutVisible = false;
 
         protected override void OnEnable()
         {
@@ -45,23 +45,16 @@ namespace UnityEngine.UI
         }
         public override void SetLayoutHorizontal()
         {
-            // SetChildrenAlongAxis(0);
         }
         public override void SetLayoutVertical()
         {
-            // SetChildrenAlongAxis(0);
         }
         public override void CalculateLayoutInputHorizontal()
         {
-            // CalculateCircular();
-            // base.CalculateLayoutInputHorizontal();
-            // CalcAlongAxis(0);
             CalculateCircular();
         }
         public override void CalculateLayoutInputVertical()
         {
-            // CalculateCircular();
-            // CalcAlongAxis(0);
             CalculateCircular();
 
         }
@@ -93,29 +86,21 @@ namespace UnityEngine.UI
                 ChildrenToFormat = transform.childCount;
             }
 
-
-
-
             float fOffsetAngle = (MaxAngle - MinAngle) / (transform.childCount - 1);
-            // float fOffsetAngle = (MaxAngle - MinAngle) / ChildrenToFormat;
 
             float fAngle = StartAngle;
 
 
             for (int i = 0; i < transform.childCount; i++)
             {
-                // Debug.LogWarning(transform.position);
-                // Debug.LogWarning(i);
                 if (i == 0)
                 {
                     Debug.LogWarning("Child is Stylus");
                     GameObject child = GameObject.FindGameObjectWithTag("CircularStylus");
-                    // Vector3 vPos = new Vector3(0, 0, 0);
                     child.transform.position = transform.position;
                 }
                 else
                 {
-                    //TODO: make so that it recgonzies when the child is the stylus and skips it
                     RectTransform child = (RectTransform)transform.GetChild(i);
                     if ((child != null) && (!OnlyLayoutVisible || child.gameObject.activeSelf))
                     {
@@ -127,12 +112,7 @@ namespace UnityEngine.UI
                         Vector3 vPos = new Vector3(Mathf.Cos(fAngle * Mathf.Deg2Rad), Mathf.Sin(fAngle * Mathf.Deg2Rad), 0);
                         child.localPosition = vPos * fDistance;
                         Quaternion vRot = Quaternion.Euler(0, 0, fAngle - 90);
-                        // Vector3 vRot = new Vector3(0f,0f,fAngle);
                         child.localRotation = vRot;
-                        // Vector3 vScal = new Vector3(0.99f, 1.0f, 0);
-                        // child.localScale = vScal;
-
-
 
                         //Force objects to be center aligned, this can be changed however I'd suggest you keep all of the objects with the same anchor points.
                         child.anchorMin = child.anchorMax = child.pivot = new Vector2(0.5f, 0.5f);

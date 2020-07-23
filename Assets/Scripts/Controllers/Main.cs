@@ -76,7 +76,6 @@ public class Main : MonoBehaviour, VREventGenerator
     #endregion
 
     public Button backToLobby;
-    private GameObject buttonBackgroundEnd;
 
     public GameObject laserPointerObject;
 
@@ -108,7 +107,6 @@ public class Main : MonoBehaviour, VREventGenerator
         buttonBackground = GameObject.FindWithTag("ButtonBackgroundTag");
         backToLobby = GameObject.FindWithTag("JumbBackToLobbyTag").GetComponent<Button>();
         laserPointerObject = GameObject.FindWithTag("LaserPointerTag");
-        // buttonBackgroundEnd = GameObject.FindWithTag("ButtonBackGroundEnd");
         if (Instance)
         {
             Debug.LogWarning("A second Main script has been created while another exists! This instance will not be saved!");
@@ -154,7 +152,6 @@ public class Main : MonoBehaviour, VREventGenerator
         DontDestroyOnLoad(stylus.gameObject);
         DontDestroyOnLoad(ground.gameObject);
         DontDestroyOnLoad(buttonBackground.gameObject);
-        // DontDestroyOnLoad(buttonBackgroundEnd.gameObject);
 
         SceneManager.sceneLoaded += OnSceneChange;
     }
@@ -198,13 +195,7 @@ public class Main : MonoBehaviour, VREventGenerator
           buttonBackground.SetActive(true);
 
         }
-        // TODO: find a way to print out current scene.
-        //Debug.LogWarning(strialsIsLoaded);
 
-        // laserPointerObject.SetActive(true);
-        // Debug.LogWarning(stylus.useLaser);
-
-        //Debug.LogWarning(stylus.useLaser);
     }
 
     public void LoadNullFields()
@@ -317,14 +308,12 @@ public class Main : MonoBehaviour, VREventGenerator
         if (strialsIsLoaded)
         {
             Debug.LogWarning("Scene Advancing to lobby");
-            // Scenes._STRIALS.UnloadAsync();
             SceneManager.UnloadSceneAsync("_STRIALS");
 
         }
         else
         {
             Debug.LogWarning("Scene Advancing to trial");
-            // Scenes._STRIALS.LoadAdditive();
             SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
         }
 
@@ -472,9 +461,6 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void OnTestingLayoutChange(LayoutOption layout)
         => layoutManager.layout = layout;
-
-    // public void laserReapear()
-    //     => laserPointerObject.active = true;
 
     public void OnChallengeEnd()
         => trialProgress.trialProgress = (++completedChallenges) / (float)trials[currentTrial].Length;
