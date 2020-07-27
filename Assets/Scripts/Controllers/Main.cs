@@ -9,7 +9,6 @@ using Controller;
 using CustomInput;
 using MinVR;
 using Utils.MinVRExtensions;
-using Utils.UnityExtensions;
 using Utils;
 using static CustomInput.VREventFactory.Names;
 using SceneSwitching;
@@ -127,7 +126,8 @@ public class Main : MonoBehaviour, VREventGenerator
         VRMain.Instance.AddVRButtonCallbacks(_back_button, OnBackButtonUp, OnBackButtonDown);
 
         Bindings.AddSceneAdvanceCallback(OnSceneAdvance);
-
+        
+        // ISSUE#49 //
         //TODO: hacking this in here since we have the server object to also initialize the other button events
         VRMain.Instance.vrDevice.unityKeysToVREvents.Add(Return);
         VRMain.Instance.vrDevice.unityKeysToVREvents.Add(S);

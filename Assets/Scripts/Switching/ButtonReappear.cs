@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SceneSwitching
 {
@@ -9,10 +8,16 @@ namespace SceneSwitching
 
         public void ButtonReClick()
         {
-          buttonBack = GameObject.FindWithTag("ButtonBackgroundTag");
-          buttonBack.SetActive(true);
-
+            if (!buttonBack)
+            {
+                // can be an expensive call (LC)
+                buttonBack = GameObject.FindWithTag("ButtonBackgroundTag");
+            }
+            // ... that can fail to find anything
+            if (buttonBack && buttonBack.activeInHierarchy)
+            {
+                buttonBack.SetActive(true);
+            }
         }
-
     }
 }
