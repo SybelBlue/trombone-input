@@ -18,10 +18,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-TODO: How to properly cite in code that we used code found on the web as our
-      starting point for this layout
       actual website the code is found is http://www.justapixel.co.uk/2015/09/14/radial-layouts-nice-and-simple-in-unity3ds-ui-system/
       GitHub Repo: https://gist.github.com/DGoodayle/aa62a344aa83e5342175
+
+
+      Goodayle, D [Just a Pixel] (2015) Radial Layout Group [Source code]. http://www.justapixel.co.uk
 */
 
 namespace UnityEngine.UI
