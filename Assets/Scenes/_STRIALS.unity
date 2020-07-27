@@ -4746,7 +4746,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashColor: {r: 0.6698113, g: 0.25992048, b: 0.23064256, a: 1}
-  flashDuration: 45
+  flashDuration: 25
   panel: {fileID: 1249760114}
 --- !u!1 &1274682215
 GameObject:

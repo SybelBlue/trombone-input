@@ -300,7 +300,7 @@ namespace Testing
             {
                 results.Add(new CommandResult(item as Command));
             } 
-            if (item is Comment)
+            else if (item is Comment)
             {
                 // comment is logged earlier or later, but nothing happens here.
             }
