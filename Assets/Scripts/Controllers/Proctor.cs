@@ -30,6 +30,9 @@ namespace Controller
     {
         #region EditorSet
         [SerializeField]
+        private Utils.Flasher backspaceDown;
+
+        [SerializeField]
         private Button practiceEndButton;
 
         [SerializeField]
@@ -178,8 +181,7 @@ namespace Controller
                     UpdateDisplay();
                     return;
                 case Challenge.Type.Blind:
-                    // ISSUE#50 //
-                    // TODO: play noise? shake UI? vibrate controller?
+                    backspaceDown?.Flash();
                     Debug.LogWarning("Disregarding Backspace during Blind Challenge!");
                     return;
                 case Challenge.Type.Perfect:
