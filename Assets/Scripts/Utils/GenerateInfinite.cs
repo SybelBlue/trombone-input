@@ -110,7 +110,6 @@ namespace Utils.Floor
 
                 startPos = player.transform.position;
             }
-
         }
     }
 }

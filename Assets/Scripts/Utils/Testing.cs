@@ -109,7 +109,7 @@ namespace Testing
 
             var shuffled = new List<Trial>();
 
-            while (!selected.IsEmpty())
+            while (selected.Count > 0)
             {
                 int i = UnityEngine.Random.Range(0, selected.Count);
                 shuffled.Add(selected[i]);
@@ -300,7 +300,7 @@ namespace Testing
             {
                 results.Add(new CommandResult(item as Command));
             } 
-            if (item is Comment)
+            else if (item is Comment)
             {
                 // comment is logged earlier or later, but nothing happens here.
             }
