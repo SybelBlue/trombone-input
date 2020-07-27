@@ -31,9 +31,6 @@ namespace Utils.SystemExtensions
             // QED
             return (value - min) % (max - min) + min;
         }
-
-        public static int ModIntoRange(this int value, int min, int max)
-            => (value - min) % (max - min) + min;
     }
 
     public static class CollectionExtensions
@@ -52,20 +49,10 @@ namespace Utils.SystemExtensions
         public static void SetFromEnd<T>(this T[] array, int i, T value)
             => array[array.LastIndex() - i] = value;
 
-        public static void OptionalAdd<T>(this List<T> list, T? value)
-            where T : struct
-        {
-            if (value.HasValue)
-            {
-                list.Add(value.Value);
-            }
-        }
-
+        // creates a string to represent the enumerable set of values
         public static string AsArrayString<T>(this IEnumerable<T> values)
             => $"[{string.Join(", ", values.ToArray())}]";
 
-        public static bool IsEmpty<T>(this List<T> list)
-            => list.Count == 0;
             
         public static V GetOrDefault<K, V>(this Dictionary<K, V> dictionary, K key, V def)
         {
@@ -74,7 +61,9 @@ namespace Utils.SystemExtensions
         }
 
         public static V ModifyWithDefault<K, V>(this Dictionary<K, V> dictionary, K key, V def, Func<V, V> Mapper)
-            => dictionary[key] = Mapper(dictionary.GetOrDefault(key, def));
+        {
+            dictionary[key] = Mapper(dictionary.GetOrDefault(key, def));
+        }
     }
 
     public static class StringExtensions
