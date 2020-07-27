@@ -61,9 +61,7 @@ namespace Utils.SystemExtensions
         }
 
         public static V ModifyWithDefault<K, V>(this Dictionary<K, V> dictionary, K key, V def, Func<V, V> Mapper)
-        {
-            dictionary[key] = Mapper(dictionary.GetOrDefault(key, def));
-        }
+            => dictionary[key] = Mapper(dictionary.GetOrDefault(key, def));
     }
 
     public static class StringExtensions
