@@ -178,6 +178,7 @@ namespace Controller
                     UpdateDisplay();
                     return;
                 case Challenge.Type.Blind:
+                    // ISSUE#50 //
                     // TODO: play noise? shake UI? vibrate controller?
                     Debug.LogWarning("Disregarding Backspace during Blind Challenge!");
                     return;

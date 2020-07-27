@@ -33,21 +33,6 @@ namespace SceneSwitching
             skybox = Camera.main;
             skybox.clearFlags = CameraClearFlags.Skybox;
             skybox.backgroundColor = newColor;
-
-            //TODO: Set skybox to EBFFFF
-            // skybox = GameObject.FindWithTag("MainCamera");
-            // skybox.SetBackgroundColor("EBFFFF");
         }
-        // // Start is called before the first frame update
-        // void Start()
-        // {
-        //
-        // }
-        //
-        // // Update is called once per frame
-        // void Update()
-        // {
-        //
-        // }
     }
 }
