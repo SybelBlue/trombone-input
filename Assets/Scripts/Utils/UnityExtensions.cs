@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Utils.UnityExtensions
 {
@@ -40,14 +39,5 @@ namespace Utils.UnityExtensions
     {
         public static System.IO.MemoryStream IntoMemoryStream(this TextAsset asset)
             => new System.IO.MemoryStream(asset.bytes);
-    }
-
-    public static class SceneLoadingExtensions
-    {
-        public static AsyncOperation UnloadAsync(this string name)
-            => SceneManager.UnloadSceneAsync(name);
-
-        public static void LoadAdditive(this string name)
-            => SceneManager.LoadScene(name, LoadSceneMode.Additive);
     }
 }
