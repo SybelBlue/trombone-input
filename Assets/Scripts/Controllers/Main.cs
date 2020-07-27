@@ -9,7 +9,6 @@ using Controller;
 using CustomInput;
 using MinVR;
 using Utils.MinVRExtensions;
-using Utils.UnityExtensions;
 using Utils;
 using static CustomInput.VREventFactory.Names;
 using SceneSwitching;
