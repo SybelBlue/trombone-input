@@ -32,8 +32,7 @@ namespace Utils
             => GameObject.FindGameObjectWithTag(name)?.GetComponent<T>();
 
         // returns true if the obj reference has been changed
-        public static bool FillWithTaggedIfNull<T>(ref T obj, string name) 
-            where T : Component
+        public static bool FillWithTaggedIfNull<T>(ref T obj, string name) where T : Component
             => obj ? false : (obj = FindTaggedComponent<T>(name));
     }
 }

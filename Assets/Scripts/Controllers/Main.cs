@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.KeyCode;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using static UnityEngine.KeyCode;
 
 #region ProjectNamespaces
 using Controller;
 using CustomInput;
 using MinVR;
-using Utils.MinVRExtensions;
 using Utils;
-using static CustomInput.VREventFactory.Names;
+using Utils.MinVRExtensions;
 using SceneSwitching;
+using static CustomInput.VREventFactory.Names;
 #endregion
 
 namespace Utils
@@ -40,8 +40,7 @@ public class Main : MonoBehaviour, VREventGenerator
     [SerializeField, Tooltip("Is CaveFronWall_Top in MinVR example, _LOBBY, required to run")]
     private VRDevice server;
 
-    [SerializeField]
-    // The LayoutManager that is in charge of loading the layout
+    [SerializeField, Tooltip("The object that loads the current layout")]
     private LayoutManager layoutManager;
 
     [SerializeField]
@@ -57,8 +56,7 @@ public class Main : MonoBehaviour, VREventGenerator
     [SerializeField]
     private RectTransform indicatorRect;
 
-    // The place where typed letters go
-    [SerializeField]
+    [SerializeField, Tooltip("The controller that manages the output of letters (usually a Proctor Component)")]
     private TextOutputDisplay outputDisplay;
 
     [SerializeField]
@@ -84,7 +82,8 @@ public class Main : MonoBehaviour, VREventGenerator
     private int currentTrial = -1;
     private int completedChallenges = -1;
 
-    private bool isShiftDown = false;
+    // Unused at 7/28/20. Uncomment bodies of OnShiftDown, OnShiftUp
+    //private bool isShiftDown = false;
 
     // The manager's current layout, or null if no manager exists
     private CustomInput.Layout.AbstractLayout layout
@@ -100,6 +99,7 @@ public class Main : MonoBehaviour, VREventGenerator
         => trialExecutionMode == TrialExecutionMode.Always
         || (trialExecutionMode == TrialExecutionMode.OnlyInEditor && Application.isEditor);
 
+    #region UnityMessages
     private void Start()
     {
         ground = GameObject.FindWithTag("GroundFloorTag");
@@ -189,14 +189,14 @@ public class Main : MonoBehaviour, VREventGenerator
             stylus.angleProvider = layout.StylusRotationBounds;
             layout.UpdateState(new InputData(lastReportedValue, stylus));
         }
+
         if(!strialsIsLoaded)
         {
           laserPointerObject.SetActive(true);
           // buttonBackground.SetActive(true);
-
         }
-
     }
+    #endregion
 
     public void LoadNullFields()
     {
@@ -230,8 +230,7 @@ public class Main : MonoBehaviour, VREventGenerator
         }
     }
 
-    private bool LoadFieldIfNull<T>(ref T obj, string sceneTag)
-        where T : Component
+    private bool LoadFieldIfNull<T>(ref T obj, string sceneTag) where T : Component
     {
         bool result = Static.FillWithTaggedIfNull(ref obj, sceneTag);
         if (result)
@@ -274,34 +273,22 @@ public class Main : MonoBehaviour, VREventGenerator
 
     #region Callbacks
     public void OnSDown()
-    {
-        (outputDisplay as Proctor).AdvanceChallenge();
-    }
+        => (outputDisplay as Proctor).AdvanceChallenge();
 
     public void OnRDown()
-    {
-        (outputDisplay as Proctor).RestartChallenge();
-    }
+        => (outputDisplay as Proctor).RestartChallenge();
 
     public void OnDDown()
-    {
-        (outputDisplay as Proctor).FinishTrial();
-    }
+        => (outputDisplay as Proctor).FinishTrial();
 
     public void OnTDown()
-    {
-       (outputDisplay as Proctor).RestartTrial();
-    }
+        => (outputDisplay as Proctor).RestartTrial();
 
     public void OnShiftDown()
-    {
-        isShiftDown = true;
-    }
+    { /*isShiftDown = true;*/ }
 
     public void OnShiftUp()
-    {
-        isShiftDown = false;
-    }
+    { /*isShiftDown = false;*/ }
 
     public void OnSceneAdvance()
     {
@@ -357,7 +344,7 @@ public class Main : MonoBehaviour, VREventGenerator
     private void OnSliderAnalogUpdate(float value)
     {
         stylus.rawSlider = value;
-       // Debug.Log("slider: " + Time.time +"   "+ value);
+        // Debug.Log("slider: " + Time.time +"   "+ value);
         var scrubbed = (uint)Mathf.RoundToInt(value);
         if (useAutofilter)
         {
@@ -464,8 +451,6 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public void OnChallengeEnd()
         => trialProgress.trialProgress = (++completedChallenges) / (float)trials[currentTrial].Length;
-
-
 
     public void OnTrialEnd(bool success)
     {
