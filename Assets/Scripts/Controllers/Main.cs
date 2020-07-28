@@ -73,8 +73,12 @@ public class Main : MonoBehaviour, VREventGenerator
     #endregion
 
     public Button backToLobby;
+    public Button toTrials;
 
     public GameObject laserPointerObject;
+
+
+
 
     // The most up-to-date value reported by the InputFieldController
     private uint? lastReportedValue;
@@ -105,6 +109,7 @@ public class Main : MonoBehaviour, VREventGenerator
         ground = GameObject.FindWithTag("GroundFloorTag");
         buttonBackground = GameObject.FindWithTag("ButtonBackgroundTag");
         backToLobby = GameObject.FindWithTag("JumbBackToLobbyTag").GetComponent<Button>();
+        toTrials = GameObject.FindGameObjectWithTag("StartButtonTag").GetComponent<Button>();
         laserPointerObject = GameObject.FindWithTag("LaserPointerTag");
         if (Instance)
         {
@@ -152,6 +157,7 @@ public class Main : MonoBehaviour, VREventGenerator
         DontDestroyOnLoad(stylus.gameObject);
         DontDestroyOnLoad(ground.gameObject);
         DontDestroyOnLoad(buttonBackground.gameObject);
+        DontDestroyOnLoad(toTrials.gameObject);
 
         SceneManager.sceneLoaded += OnSceneChange;
     }
@@ -295,13 +301,18 @@ public class Main : MonoBehaviour, VREventGenerator
         if (strialsIsLoaded)
         {
             Debug.LogWarning("Scene Advancing to lobby");
+            backToLobby.onClick.Invoke();
             SceneManager.UnloadSceneAsync("_STRIALS");
+
+
 
         }
         else
         {
             Debug.LogWarning("Scene Advancing to trial");
+            toTrials.onClick.Invoke();
             SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
+
         }
 
         strialsIsLoaded = !strialsIsLoaded;

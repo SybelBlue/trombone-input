@@ -1145,17 +1145,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1326522653}
-        m_MethodName: OnSceneAdvance
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!114 &497828030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1445,17 +1434,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
-      - m_Target: {fileID: 1326522653}
-        m_MethodName: OnSceneAdvance
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &753604663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2347,6 +2325,7 @@ MonoBehaviour:
   autoFilter: {fileID: 971101865}
   strialsIsLoaded: 0
   backToLobby: {fileID: 0}
+  toTrials: {fileID: 0}
   laserPointerObject: {fileID: 0}
 --- !u!114 &1326522654
 MonoBehaviour:
