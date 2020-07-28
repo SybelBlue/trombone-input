@@ -362,6 +362,30 @@ def make_duration_lines(data):
 
 
 def make_error_bars(data):
+    means = list()
+    stds = list()
+    for layout, vals in data.layout_error_rates.items():
+        if layout == Layouts.SliderOnly.value:
+            continue
+        means.append(np.mean(vals))
+        stds.append(np.std(vals))
+
+    ind = np.arange(3)  # the x locations for the groups
+    width = 0.5  # the width of the bars: can also be len(x) sequence
+
+    fig, ax = plt.subplots()
+    ax.bar(ind, means, yerr=stds, align='center', alpha=0.5, ecolor='black', capsize=10)
+
+
+    plt.ylabel('Error Rates (%)')
+    plt.xticks(ind, (layout_name(e) for e in data.layout_blind_io.keys() if e != Layouts.SliderOnly.value))
+    plt.xlabel("Layouts")
+
+    plt.savefig('../../Results/Figures/error-chart.png', transparent=True)
+    plt.show()
+
+
+def make_relative_error_bars(data):
     items = list()
     for layout, pairs in data.layout_blind_io.items():
         if layout == Layouts.SliderOnly.value:
@@ -398,7 +422,7 @@ def make_error_bars(data):
     plt.xlabel("Layouts")
     plt.legend((p1, p2), ('Dipped (y + 1)', 'Off-by-One'))
 
-    plt.savefig('../../Results/Figures/error-chart.png', transparent=True)
+    plt.savefig('../../Results/Figures/error-type-chart.png', transparent=True)
     plt.show()
 
 
@@ -509,15 +533,16 @@ def write_csv(name, rows, digits=2):
 
 if __name__ == '__main__':
     data = get_data()
-    make_point_cloud(data)
-    make_2d_point_cloud(data, [0, 2])
-    make_2d_point_cloud(data, [1, 2])
+    # make_point_cloud(data)
+    # make_2d_point_cloud(data, [0, 2])
+    # make_2d_point_cloud(data, [1, 2])
 
-    make_wpm_bars(data)
-    make_pit_bars(data)
+    # make_wpm_bars(data)
+    # make_pit_bars(data)
     # make_duration_lines(data)  # broken
 
     make_error_bars(data)
+    make_relative_error_bars(data)
 
     write_csv('main', data.main_csv, digits=2)
     write_csv('travels', data.travel_csv, digits=2)
@@ -543,7 +568,5 @@ if __name__ == '__main__':
             for i in range(min(len(word), len(chars))):
                 chars[i][word[i]] += 1
 
-
-# split wpm for blind and perfect, no awpm
-# update ranges, regenerate all
-# rename raycast
+    for k, vs in data.layout_error_rates.items():
+        print(k, np.mean(vs))
