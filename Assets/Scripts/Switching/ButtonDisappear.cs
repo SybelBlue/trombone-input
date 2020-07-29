@@ -18,7 +18,6 @@ namespace SceneSwitching
             if (button && button.activeInHierarchy)
             {
                 button.SetActive(false);
-                Debug.LogWarning("Gall worked");
             }
         }
     }
