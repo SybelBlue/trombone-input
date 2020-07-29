@@ -8,6 +8,7 @@ namespace SceneSwitching
 
         public void ButtonClick()
         {
+          // public GameObject button;
             if (!button)
             {
                 // this can be an expensive call (LC)
@@ -17,6 +18,7 @@ namespace SceneSwitching
             if (button && button.activeInHierarchy)
             {
                 button.SetActive(false);
+                Debug.LogWarning("Gall worked");
             }
         }
     }

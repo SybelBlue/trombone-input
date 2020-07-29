@@ -648,7 +648,7 @@ namespace MinVR {
 				for (int cb = 0; cb < buttonDownCallbacks[e.Name].Count; cb++)
 				{
           //TODO: FIX RHIS becuase this causes a the onScene advace to be called twice when using the return key
-					// buttonDownCallbacks[e.Name][cb].Invoke();
+					buttonDownCallbacks[e.Name][cb].Invoke();
 				}
 			}
 

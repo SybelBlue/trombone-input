@@ -76,6 +76,10 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public GameObject laserPointerObject;
 
+
+
+
+
     // The most up-to-date value reported by the InputFieldController
     private uint? lastReportedValue;
 
@@ -193,7 +197,7 @@ public class Main : MonoBehaviour, VREventGenerator
         if(!strialsIsLoaded)
         {
           laserPointerObject.SetActive(true);
-          // buttonBackground.SetActive(true);
+          buttonBackground.SetActive(true);
         }
     }
     #endregion
@@ -295,13 +299,15 @@ public class Main : MonoBehaviour, VREventGenerator
         if (strialsIsLoaded)
         {
             Debug.LogWarning("Scene Advancing to lobby");
+            backToLobby.onClick.Invoke();
             SceneManager.UnloadSceneAsync("_STRIALS");
-
         }
         else
         {
             Debug.LogWarning("Scene Advancing to trial");
             SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
+            buttonBackground.SetActive(false);
+
         }
 
         strialsIsLoaded = !strialsIsLoaded;
