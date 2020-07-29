@@ -310,13 +310,14 @@ public class Main : MonoBehaviour, VREventGenerator
             Debug.LogWarning("Scene Advancing to Lobby");
             backToLobby.onClick.Invoke();
             SceneManager.UnloadSceneAsync("_STRIALS");
+
         }
         else
         {
             Debug.LogWarning("Scene Advancing to Trial");
             SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
             buttonBackground.SetActive(false);
-
+            
         }
 
         strialsIsLoaded = !strialsIsLoaded;
