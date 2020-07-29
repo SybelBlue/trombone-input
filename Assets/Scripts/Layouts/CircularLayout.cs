@@ -26,7 +26,7 @@ THE SOFTWARE.
 */
 
 // For our Arc-type, we used Danny Goodayle's radial layout group, with the
-// necessary changes made to accomodate to our design needs.
+// necessary changes made to accommodate to our design needs.
 // Created by: Danny Goodayle
 // Modified by: Zahara M. Spilka
 // Date Created: 2015
@@ -40,15 +40,16 @@ namespace UnityEngine.UI
 
     public class CircularLayout : LayoutGroup
     {
-      // Sets up user/procter display aspects of the layout.
-      // Fdistance is the distance between bins
-      // The user/procter can set the layout's minimum angle, maximum angle, and
+      // This section sets up user/proctor display aspects of the layout.
+      // fDistance is the distance between bins
+      // The user/proctor can set the layout's minimum angle, maximum angle, and
       // starting angle as any value between 0 and 360.
-      // The user/procter can also set the layout to be the only viable one,
+      // The user/proctor can also set the layout to be the only viable one,
       // however this feature is obsolete due to the nature of our interface's
-      // design. I left it in the file, in the event that this not oboslete when
-       // it comes to the CalculateCircular function assginging the letter bin's
-       // positions around the circlular layout.
+      // design. I left it in the file, in the event that this not obsolete when
+       // it comes to the CalculateCircular function assigning the letter bin's
+       // positions around the circular layout.
+
 
         public float fDistance;
         [Range(0f, 360f)]
@@ -89,18 +90,19 @@ namespace UnityEngine.UI
 // When this function is called it checks if the layout has any children, then
 // assigns the amount of children to the int variable, ChildrenToFormat.
 // Next, the function sets the offset angles value so that the children, when
-// assginend psotions are evenly spaced out in the layout.
+// assigned positions are evenly spaced out in the layout.
 // Then, the function sets the value of the current angle to the start angle;
-// the fucntion does this so that when it begins assinging the bins' positions,
+// the function does this so that when it begins assigning the bins' positions,
 // the first bin is placed at the start of the layout. For instance, if the
 // start angle was 90 degrees, the first child of the layout is placed at the 90
 // degree angle.
 // Next the function looks for the virtual stylus and assigns its position.
 // Lastly, the function runs through the key-bins and assigns them positions
-// along the layout in realation to the order they assigned. For example, the
-// ABCD bin is assgined the first position, then the EFGH is assigned the next
+// along the layout in relation to the order they assigned. For example, the
+// ABCD bin is assigned the first position, then the EFGH is assigned the next
 // position, and so on and so forth until all the layouts children are placed
 // in/along the Arc layout.
+
         void CalculateCircular()
         {
             m_Tracker.Clear();
@@ -130,8 +132,9 @@ namespace UnityEngine.UI
             {
               // Because the first child of the layout is a virtual stylus, the
               // function finds and assigns the game object to this child. Then,
-              // the funciton sets the child's postion to be the center of the
+              // the function sets the child's position to be the center of the
               // circular layout.
+
                 if (i == 0)
                 {
                     // Debug.LogWarning("Child is Stylus");
@@ -145,12 +148,12 @@ namespace UnityEngine.UI
                     if ((child != null) && (child.gameObject.activeSelf))
                     {
                         //Adding the elements to the tracker stops the user from
-                        // modifiying their positions via the editor.
+                        // modifying their positions via the editor.
 
 
                         // This also sets the bins up so that they are at an
                         // angle around the layout. For example, the middle bin
-                        // is turned 90 degress so that it appears horizontal
+                        // is turned 90 degrees so that it appears horizontal
                         // rather than vertical.
 
                         m_Tracker.Add(this, child,

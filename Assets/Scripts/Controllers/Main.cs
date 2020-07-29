@@ -44,13 +44,13 @@ public class Main : MonoBehaviour, VREventGenerator
     private LayoutManager layoutManager;
 
     [SerializeField]
-    private Stylus stylus;   // instanciats the Stylus gameObject (ZMS)
+    private Stylus stylus;   // instantiates the Stylus gameObject (ZMS)
 
     [SerializeField]
-    private GameObject ground;   // instanciats the ground game object (ZMS)
+    private GameObject ground;   // instantiates the ground game object (ZMS)
 
     [SerializeField]
-    public GameObject buttonBackground; //instanciates the start button game object(ZMS)
+    public GameObject buttonBackground; //instantiates the start button game object(ZMS)
 
     // The transform of the indicator
     [SerializeField]
@@ -72,9 +72,9 @@ public class Main : MonoBehaviour, VREventGenerator
     private bool strialsIsLoaded;
     #endregion
 
-    public Button backToLobby; //instanciates the back to lobby button (ZMS)
+    public Button backToLobby; //instantiates the back to lobby button (ZMS)
 
-    public GameObject laserPointerObject; //instanciates the raycast line game object (ZMS)
+    public GameObject laserPointerObject; //instantiates the raycast line game object (ZMS)
 
 
 
@@ -104,7 +104,7 @@ public class Main : MonoBehaviour, VREventGenerator
     #region UnityMessages
     private void Start()
     {
-      // This assigns the gameObject istances to their respected gameObjects. (ZMS)
+      // This assigns the gameObject instances to their respected gameObjects. (ZMS)
         ground = GameObject.FindWithTag("GroundFloorTag");
         buttonBackground = GameObject.FindWithTag("ButtonBackgroundTag");
         backToLobby = GameObject.FindWithTag("JumbBackToLobbyTag").GetComponent<Button>();
@@ -154,7 +154,7 @@ public class Main : MonoBehaviour, VREventGenerator
         RunNextTrial();
 
 // This ensures that the gameObjects stylus, ground, and buttonBackground will
-// not be destoryed when switching between scenes. (ZMS)
+// not be destroyed when switching between scenes. (ZMS)
         DontDestroyOnLoad(stylus.gameObject);
         DontDestroyOnLoad(ground.gameObject);
         DontDestroyOnLoad(buttonBackground.gameObject);
@@ -299,16 +299,17 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnShiftUp()
     { /*isShiftDown = false;*/ }
 
-// When OnSceneAdvance is called, the fucntion checks to see if a trial scene,
-// _STRIALS, is active. When the _STRIALS is not loaded, the fucntion annouces
-// to the user that they are progressing to the trial scene, then loads the
-// scene additively. Then it deactivates the start button, hidding it from the
+// When OnSceneAdvance is called, the function checks to see if a trial scene,
+// _STRIALS, is active. When the _STRIALS is not loaded, the function announces
+// to the user/proctor that they are progressing to the trial scene, then loads the
+// scene additively. Then it deactivates the start button, hiding it from the
 // users view.
 // If the _STRIALS scene is loaded when OnSceneAdvance is called, the function
-// annouces that the user is advacnign to the Lobby, where they started. Next,
+// announces that the user/proctor is advancing to the Lobby, where they started. Next,
 // the function invokes the onClick functions of the backToLobby button. Lastly,
-// the fucntion off-loads the trial scene.
+// the function off-loads the trial scene.
 // -ZMS
+
     public void OnSceneAdvance()
     {
         if (strialsIsLoaded)
