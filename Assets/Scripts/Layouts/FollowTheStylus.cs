@@ -13,7 +13,7 @@ namespace Utils
 #pragma warning disable 649
     public class FollowTheStylus : MonoBehaviour
     {
-      // instantiates the transform of the physical stylus.
+      // Instantiates the transform of the physical stylus.
         [SerializeField]
         private Transform stylusTransform; //(LC)
 

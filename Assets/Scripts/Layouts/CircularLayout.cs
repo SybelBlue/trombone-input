@@ -24,9 +24,9 @@ THE SOFTWARE.
 
       Goodayle, D [Just a Pixel] (2015) Radial Layout Group [Source code]. http://www.justapixel.co.uk
 */
-
 // For our Arc-type, we used Danny Goodayle's radial layout group, with the
 // necessary changes made to accommodate to our design needs.
+
 // Created by: Danny Goodayle
 // Modified by: Zahara M. Spilka
 // Date Created: 2015
@@ -34,7 +34,7 @@ THE SOFTWARE.
 
 namespace UnityEngine.UI
 {
-  //This adds the layout to the layout Group
+  //This adds the layout to the layout group.
     [AddComponentMenu("Layout/Circular Layout Group", 155)]
 
 

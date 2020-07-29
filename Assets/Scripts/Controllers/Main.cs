@@ -44,13 +44,13 @@ public class Main : MonoBehaviour, VREventGenerator
     private LayoutManager layoutManager;
 
     [SerializeField]
-    private Stylus stylus;   // instantiates the Stylus gameObject (ZMS)
+    private Stylus stylus;   // Instantiates the Stylus gameObject (ZMS)
 
     [SerializeField]
-    private GameObject ground;   // instantiates the ground game object (ZMS)
+    private GameObject ground;   // Instantiates the ground game object (ZMS)
 
     [SerializeField]
-    public GameObject buttonBackground; //instantiates the start button game object(ZMS)
+    public GameObject buttonBackground; // Instantiates the start button game object(ZMS)
 
     // The transform of the indicator
     [SerializeField]
@@ -72,9 +72,9 @@ public class Main : MonoBehaviour, VREventGenerator
     private bool strialsIsLoaded;
     #endregion
 
-    public Button backToLobby; //instantiates the back to lobby button (ZMS)
+    public Button backToLobby; // Instantiates the back to lobby button (ZMS)
 
-    public GameObject laserPointerObject; //instantiates the raycast line game object (ZMS)
+    public GameObject laserPointerObject; // Instantiates the raycast line game object (ZMS)
 
 
 
