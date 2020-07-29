@@ -76,10 +76,6 @@ public class Main : MonoBehaviour, VREventGenerator
 
     public GameObject laserPointerObject;
 
-
-
-
-
     // The most up-to-date value reported by the InputFieldController
     private uint? lastReportedValue;
 
