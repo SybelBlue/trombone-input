@@ -134,7 +134,7 @@ namespace UnityEngine.UI
               // circular layout.
                 if (i == 0)
                 {
-                    Debug.LogWarning("Child is Stylus");
+                    // Debug.LogWarning("Child is Stylus");
                     GameObject child = GameObject.FindGameObjectWithTag("CircularStylus");
                     child.transform.position = transform.position;
                 }

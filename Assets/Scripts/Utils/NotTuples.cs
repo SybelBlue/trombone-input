@@ -1,8 +1,10 @@
 using UnityEngine;
+using System;
 
 // These are definitely not C# 7.2+ tuples in a C# 6.0-compatible format.
 namespace Utils.Tuples
 {
+    [Serializable]
     public struct Orientation
     {
         public Vector3 pos, rot;
@@ -20,6 +22,7 @@ namespace Utils.Tuples
             => new Orientation(Vector3.zero, Vector3.zero);
     }
 
+    [Serializable]
     public struct Path
     {
         public string directory, name;
@@ -31,6 +34,7 @@ namespace Utils.Tuples
         }
     }
 
+    [Serializable]
     public struct Rational
     {
         public int num, denom;
@@ -42,6 +46,7 @@ namespace Utils.Tuples
         }
     }
 
+    [Serializable]
     public struct VBounds
     {
         
