@@ -44,13 +44,13 @@ public class Main : MonoBehaviour, VREventGenerator
     private LayoutManager layoutManager;
 
     [SerializeField]
-    private Stylus stylus;
+    private Stylus stylus;   // instanciats the Stylus gameObject (ZMS)
 
     [SerializeField]
-    private GameObject ground;
+    private GameObject ground;   // instanciats the ground game object (ZMS)
 
     [SerializeField]
-    public GameObject buttonBackground;
+    public GameObject buttonBackground; //instanciates the start button game object(ZMS)
 
     // The transform of the indicator
     [SerializeField]
@@ -72,11 +72,9 @@ public class Main : MonoBehaviour, VREventGenerator
     private bool strialsIsLoaded;
     #endregion
 
-    public Button backToLobby;
+    public Button backToLobby; //instanciates the back to lobby button (ZMS)
 
-    public GameObject laserPointerObject;
-
-
+    public GameObject laserPointerObject; //instanciates the raycast line game object (ZMS)
 
 
 
@@ -106,10 +104,12 @@ public class Main : MonoBehaviour, VREventGenerator
     #region UnityMessages
     private void Start()
     {
+      // This assigns the gameObject istances to their respected gameObjects. (ZMS)
         ground = GameObject.FindWithTag("GroundFloorTag");
         buttonBackground = GameObject.FindWithTag("ButtonBackgroundTag");
         backToLobby = GameObject.FindWithTag("JumbBackToLobbyTag").GetComponent<Button>();
         laserPointerObject = GameObject.FindWithTag("LaserPointerTag");
+
         if (Instance)
         {
             Debug.LogWarning("A second Main script has been created while another exists! This instance will not be saved!");
@@ -153,9 +153,12 @@ public class Main : MonoBehaviour, VREventGenerator
 
         RunNextTrial();
 
+// This ensures that the gameObjects stylus, ground, and buttonBackground will
+// not be destoryed when switching between scenes. (ZMS)
         DontDestroyOnLoad(stylus.gameObject);
         DontDestroyOnLoad(ground.gameObject);
         DontDestroyOnLoad(buttonBackground.gameObject);
+        DontDestroyOnLoad(backToLobby.gameObject);
 
         SceneManager.sceneLoaded += OnSceneChange;
     }
@@ -193,7 +196,9 @@ public class Main : MonoBehaviour, VREventGenerator
             stylus.angleProvider = layout.StylusRotationBounds;
             layout.UpdateState(new InputData(lastReportedValue, stylus));
         }
-
+        // Each time the update function is ran, this section checks to see
+        // whether or not the _STRIALS scene is loaded. When the scene is not
+        // loaded, the start button and the ray cast line are activated. (ZMS)
         if(!strialsIsLoaded)
         {
           laserPointerObject.SetActive(true);
@@ -303,6 +308,7 @@ public class Main : MonoBehaviour, VREventGenerator
 // annouces that the user is advacnign to the Lobby, where they started. Next,
 // the function invokes the onClick functions of the backToLobby button. Lastly,
 // the fucntion off-loads the trial scene.
+// -ZMS
     public void OnSceneAdvance()
     {
         if (strialsIsLoaded)
@@ -317,7 +323,7 @@ public class Main : MonoBehaviour, VREventGenerator
             Debug.LogWarning("Scene Advancing to Trial");
             SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
             buttonBackground.SetActive(false);
-            
+
         }
 
         strialsIsLoaded = !strialsIsLoaded;
