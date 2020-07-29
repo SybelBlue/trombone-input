@@ -290,20 +290,30 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnShiftUp()
     { /*isShiftDown = false;*/ }
 
+// When OnSceneAdvance is called, the fucntion checks to see if a trial scene,
+// _STRIALS, is active. When the _STRIALS is not loaded, the fucntion annouces
+// to the user that they are progressing to the trial scene, then loads the
+// scene additively. Then it deactivates the start button, hidding it from the
+// users view.
+// If the _STRIALS scene is loaded when OnSceneAdvance is called, the function
+// annouces that the user is advacnign to the Lobby, where they started. Next,
+// the function invokes the onClick functions of the backToLobby button. Lastly,
+// the fucntion off-loads the trial scene.
     public void OnSceneAdvance()
     {
         if (strialsIsLoaded)
         {
-            Debug.LogWarning("Scene Advancing to lobby");
+            Debug.LogWarning("Scene Advancing to Lobby");
             backToLobby.onClick.Invoke();
             SceneManager.UnloadSceneAsync("_STRIALS");
+
         }
         else
         {
-            Debug.LogWarning("Scene Advancing to trial");
+            Debug.LogWarning("Scene Advancing to Trial");
             SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
             buttonBackground.SetActive(false);
-
+            
         }
 
         strialsIsLoaded = !strialsIsLoaded;
