@@ -24,20 +24,40 @@ THE SOFTWARE.
 
       Goodayle, D [Just a Pixel] (2015) Radial Layout Group [Source code]. http://www.justapixel.co.uk
 */
+// For our Arc-type, we used Danny Goodayle's radial layout group, with the
+// necessary changes made to accommodate to our design needs.
+
+// Created by: Danny Goodayle
+// Modified by: Zahara M. Spilka
+// Date Created: 2015
+// Date Modified Updated: 07/29/2020
 
 namespace UnityEngine.UI
 {
+  //This adds the layout to the layout group.
     [AddComponentMenu("Layout/Circular Layout Group", 155)]
 
 
     public class CircularLayout : LayoutGroup
     {
+      // This section sets up user/proctor display aspects of the layout.
+      // fDistance is the distance between bins, the value constraint by Unity’s
+      // limits. Likewise, the user/proctor can set the layout's minimum angle,
+      // maximum angle, and starting angle as any value between 0 and 360. The
+      // user/proctor can also set the layout to be the only viable one, however
+      // this feature is obsolete due to the nature of our interface's design. I
+      // left it in the file, in the event that this not obsolete when it comes
+      // to the CalculateCircular function assigning the letter bin's positions
+      // around the circular layout.
 
 
         public float fDistance;
         [Range(0f, 360f)]
         public float MinAngle, MaxAngle, StartAngle;
         public bool OnlyLayoutVisible = false;
+
+        // The following functions, depending on their name, call the
+        // CaclualeCirlcle function
 
         protected override void OnEnable()
         {
@@ -67,25 +87,34 @@ namespace UnityEngine.UI
         }
 #endif
 
+// When the file calls this function, it checks if the layout has any children,
+// then assigns the number of children to the integer variable,
+// ChildrenToFormat. Next, the function sets the angle offset value; the layout
+// uses the angle offset value to evenly spaced in the bins. Then, the function
+// sets the initial value of the current angle, fAngle, equaled to the start
+// angle. Next the function looks for the virtual stylus and assigns its
+// position as described below. Lastly, the function runs through the bins,
+// assigning their positions and rotation values along the layout.
+
         void CalculateCircular()
         {
             m_Tracker.Clear();
             if (transform.childCount == 0)
                 return;
             int ChildrenToFormat = 0;
-            if (OnlyLayoutVisible)
-            {
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    RectTransform child = (RectTransform)transform.GetChild(i);
-                    if ((child != null) && child.gameObject.activeSelf)
-                        ++ChildrenToFormat;
-                }
-            }
-            else
-            {
+            // if (OnlyLayoutVisible)
+            // {
+            //     for (int i = 0; i < transform.childCount; i++)
+            //     {
+            //         RectTransform child = (RectTransform)transform.GetChild(i);
+            //         if ((child != null) && child.gameObject.activeSelf)
+            //             ++ChildrenToFormat;
+            //     }
+            // }
+            // else
+            // {
                 ChildrenToFormat = transform.childCount;
-            }
+            // }
 
             float fOffsetAngle = (MaxAngle - MinAngle) / (transform.childCount - 1);
 
@@ -94,6 +123,11 @@ namespace UnityEngine.UI
 
             for (int i = 0; i < transform.childCount; i++)
             {
+              // Because the first child of the layout is a virtual stylus, the
+              // function finds and assigns the game object to this child. Then,
+              // the function sets the child's position to be the center of the
+              // circular layout.
+
                 if (i == 0)
                 {
                     // Debug.LogWarning("Child is Stylus");
@@ -103,9 +137,19 @@ namespace UnityEngine.UI
                 else
                 {
                     RectTransform child = (RectTransform)transform.GetChild(i);
-                    if ((child != null) && (!OnlyLayoutVisible || child.gameObject.activeSelf))
+                    // if ((child != null) && (!OnlyLayoutVisible || child.gameObject.activeSelf))
+                    if ((child != null) && (child.gameObject.activeSelf))
                     {
-                        //Adding the elements to the tracker stops the user from modifiying their positions via the editor.
+                        // Adding the elements to the tracker stops the user
+                        // from modifying their positions via the editor.
+
+
+                        // This also sets the bins up so that they are at an
+                        // angle around the layout. For example, on the middle
+                        // bin, the function sets the z rotation so that it
+                        // appears horizontal along the z axis, making it
+                        // parallel with the virtual stylus’s starting position.
+
                         m_Tracker.Add(this, child,
                         DrivenTransformProperties.Anchors |
                         DrivenTransformProperties.AnchoredPosition |
@@ -115,7 +159,9 @@ namespace UnityEngine.UI
                         Quaternion vRot = Quaternion.Euler(0, 0, fAngle - 90);
                         child.localRotation = vRot;
 
-                        //Force objects to be center aligned, this can be changed however I'd suggest you keep all of the objects with the same anchor points.
+                        //Force objects to be center aligned, this can be
+                        // changed however I'd suggest you keep all of the
+                        // objects with the same anchor points.
                         child.anchorMin = child.anchorMax = child.pivot = new Vector2(0.5f, 0.5f);
                         fAngle += fOffsetAngle;
                     }

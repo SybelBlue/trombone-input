@@ -44,13 +44,13 @@ public class Main : MonoBehaviour, VREventGenerator
     private LayoutManager layoutManager;
 
     [SerializeField]
-    private Stylus stylus;
+    private Stylus stylus;   // Instantiates the Stylus gameObject (ZMS)
 
     [SerializeField]
-    private GameObject ground;
+    private GameObject ground;   // Instantiates the ground game object (ZMS)
 
     [SerializeField]
-    public GameObject buttonBackground;
+    public GameObject buttonBackground; // Instantiates the start button game object(ZMS)
 
     // The transform of the indicator
     [SerializeField]
@@ -72,9 +72,11 @@ public class Main : MonoBehaviour, VREventGenerator
     private bool strialsIsLoaded;
     #endregion
 
-    public Button backToLobby;
+    public Button backToLobby; // Instantiates the back to lobby button (ZMS)
 
-    public GameObject laserPointerObject;
+    public GameObject laserPointerObject; // Instantiates the raycast line game object (ZMS)
+
+
 
     // The most up-to-date value reported by the InputFieldController
     private uint? lastReportedValue;
@@ -102,10 +104,12 @@ public class Main : MonoBehaviour, VREventGenerator
     #region UnityMessages
     private void Start()
     {
+      // This assigns the gameObject instances to their respected gameObjects. (ZMS)
         ground = GameObject.FindWithTag("GroundFloorTag");
         buttonBackground = GameObject.FindWithTag("ButtonBackgroundTag");
         backToLobby = GameObject.FindWithTag("JumbBackToLobbyTag").GetComponent<Button>();
         laserPointerObject = GameObject.FindWithTag("LaserPointerTag");
+
         if (Instance)
         {
             Debug.LogWarning("A second Main script has been created while another exists! This instance will not be saved!");
@@ -149,9 +153,13 @@ public class Main : MonoBehaviour, VREventGenerator
 
         RunNextTrial();
 
+// This section ensures that the stylus, the ground, and the start button art
+// not destroyed when the user/proctor switches between the Lobby and Trial
+// scenes. (ZMS)
         DontDestroyOnLoad(stylus.gameObject);
         DontDestroyOnLoad(ground.gameObject);
         DontDestroyOnLoad(buttonBackground.gameObject);
+        DontDestroyOnLoad(backToLobby.gameObject);
 
         SceneManager.sceneLoaded += OnSceneChange;
     }
@@ -189,7 +197,11 @@ public class Main : MonoBehaviour, VREventGenerator
             stylus.angleProvider = layout.StylusRotationBounds;
             layout.UpdateState(new InputData(lastReportedValue, stylus));
         }
-
+        // Each time the update function is ran, this section checks to see
+        // whether the program has loaded the _LOBBY scene or _STRIALS scene.
+        // When the active scene is the _LOBBY, the program sets the start
+        // button and the ray cast line as active, making them visible to the
+        // user and proctor. (ZMS)
         if(!strialsIsLoaded)
         {
           laserPointerObject.SetActive(true);
@@ -290,15 +302,17 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnShiftUp()
     { /*isShiftDown = false;*/ }
 
-// When OnSceneAdvance is called, the fucntion checks to see if a trial scene,
-// _STRIALS, is active. When the _STRIALS is not loaded, the fucntion annouces
-// to the user that they are progressing to the trial scene, then loads the
-// scene additively. Then it deactivates the start button, hidding it from the
-// users view.
-// If the _STRIALS scene is loaded when OnSceneAdvance is called, the function
-// annouces that the user is advacnign to the Lobby, where they started. Next,
-// the function invokes the onClick functions of the backToLobby button. Lastly,
-// the fucntion off-loads the trial scene.
+// When the program calls OnSceneAdvance, the function first checks to see which
+// scene is active If the user is in the Lobby scene, the function announces to
+// the user/proctor that they are progressing to the trial scene, then loads
+// _STRIALS additively. Then the function deactivates the start button, hiding
+// it from the users view.
+// If the user is in the _STRIALS scenes, the function announces that the
+// user/proctor is advancing to the Lobby, where they started. Next, the
+// function invokes the onClick functions of the backToLobby button. Lastly, the
+// function off-loads the trial scene.
+// -ZMS
+
     public void OnSceneAdvance()
     {
         if (strialsIsLoaded)
@@ -313,7 +327,7 @@ public class Main : MonoBehaviour, VREventGenerator
             Debug.LogWarning("Scene Advancing to Trial");
             SceneManager.LoadScene("_STRIALS", LoadSceneMode.Additive);
             buttonBackground.SetActive(false);
-            
+
         }
 
         strialsIsLoaded = !strialsIsLoaded;
