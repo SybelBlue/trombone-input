@@ -61,7 +61,12 @@ namespace CustomInput
         public static readonly KeyCode[] _layout_switch_bindings
             = new KeyCode[] { Alpha7, Alpha8, Alpha9, Alpha0 };
 
-        public static readonly KeyCode _scene_advance_key = Return;
+        public static readonly KeyCode 
+            _scene_advance_key = Return,
+            _skip_trial_key = D,
+            _restart_trial_key = T,
+            _skip_challenge_key = S,
+            _restart_challenge_key = R;
 
         public static bool _left_handed = false;
 
@@ -225,17 +230,22 @@ namespace CustomInput
             }
         }
 
-        public static void AddMinVRSandRKeyHandlers(VRMain.OnVRButtonDownEventDelegate onSDown, VRMain.OnVRButtonDownEventDelegate onRDown, VRMain.OnVRButtonDownEventDelegate onDDown, VRMain.OnVRButtonDownEventDelegate onTDown, VRMain.OnVRButtonDownEventDelegate onShiftDown, VRMain.OnVRButtonUpEventDelegate onShiftUp)
+        public static void AddMinVRChallengeAndTrialCallbacks(
+            VRMain.OnVRButtonDownEventDelegate onTrialSkip, 
+            VRMain.OnVRButtonDownEventDelegate onTrialRestart, 
+            VRMain.OnVRButtonDownEventDelegate onChallengeSkip, 
+            VRMain.OnVRButtonDownEventDelegate onChallengeRestart
+            )
         {
-            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(LeftShift), onShiftDown);
-            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(RightShift), onShiftDown);
-            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(S), onSDown);
-            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(R), onRDown);
-            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(D), onDDown);
-            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(T), onTDown);
+            VRMain.Instance.vrDevice.unityKeysToVREvents.Add(_skip_trial_key);
+            VRMain.Instance.vrDevice.unityKeysToVREvents.Add(_restart_trial_key);
+            VRMain.Instance.vrDevice.unityKeysToVREvents.Add(_skip_challenge_key);
+            VRMain.Instance.vrDevice.unityKeysToVREvents.Add(_restart_challenge_key);
 
-            VRMain.Instance.AddOnVRButtonUpCallback(KeyCodeToMinVRButtonUpName(LeftShift), onShiftUp);
-            VRMain.Instance.AddOnVRButtonUpCallback(KeyCodeToMinVRButtonUpName(RightShift), onShiftUp);
+            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(_skip_trial_key), onTrialSkip);
+            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(_restart_trial_key), onTrialRestart);
+            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(_skip_challenge_key), onChallengeSkip);
+            VRMain.Instance.AddOnVRButtonDownCallback(KeyCodeToMinVRButtonDownName(_restart_challenge_key), onChallengeRestart);
         }
 
         public static string KeyCodeToMinVRButtonDownName(KeyCode binding)

@@ -128,24 +128,16 @@ public class Main : MonoBehaviour, VREventGenerator
 
         VRMain.Instance.AddVRButtonCallbacks(_front_button, OnFrontButtonUp, OnFrontButtonDown);
         VRMain.Instance.AddVRButtonCallbacks(_back_button, OnBackButtonUp, OnBackButtonDown);
+        
+        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(Bindings._scene_advance_key);
 
         Bindings.AddSceneAdvanceCallback(OnSceneAdvance);
-
-        // ISSUE#49 //
-        //TODO: hacking this in here since we have the server object to also initialize the other button events
-        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(Return);
-        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(S);
-        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(R);
-        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(D);
-        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(T);
-        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(LeftShift);
-        VRMain.Instance.vrDevice.unityKeysToVREvents.Add(RightShift);
 
         Bindings.InitializeMinVRLayoutSwitching(server);
 
         Bindings.AddMinVRLayoutSwitchingHandlers(i => delegate { layoutManager.DropdownValueSelected(i); });
 
-        Bindings.AddMinVRSandRKeyHandlers(OnSDown, OnRDown, OnDDown, OnTDown, OnShiftDown, OnShiftUp);
+        Bindings.AddMinVRChallengeAndTrialCallbacks(SkipTrial, RestartTrial, SkipChallenge, RestartChallenge);
 
         outputDisplay?.ResetText();
 
@@ -153,9 +145,9 @@ public class Main : MonoBehaviour, VREventGenerator
 
         RunNextTrial();
 
-// This section ensures that the stylus, the ground, and the start button art
-// not destroyed when the user/proctor switches between the Lobby and Trial
-// scenes. (ZMS)
+        // This section ensures that the stylus, the ground, and the start button art
+        // not destroyed when the user/proctor switches between the Lobby and Trial
+        // scenes. (ZMS)
         DontDestroyOnLoad(stylus.gameObject);
         DontDestroyOnLoad(ground.gameObject);
         DontDestroyOnLoad(buttonBackground.gameObject);
@@ -284,34 +276,28 @@ public class Main : MonoBehaviour, VREventGenerator
     }
 
     #region Callbacks
-    public void OnSDown()
+    public void SkipChallenge()
         => (outputDisplay as Proctor).AdvanceChallenge();
 
-    public void OnRDown()
+    public void RestartChallenge()
         => (outputDisplay as Proctor).RestartChallenge();
 
-    public void OnDDown()
+    public void SkipTrial()
         => (outputDisplay as Proctor).FinishTrial();
 
-    public void OnTDown()
+    public void RestartTrial()
         => (outputDisplay as Proctor).RestartTrial();
 
-    public void OnShiftDown()
-    { /*isShiftDown = true;*/ }
-
-    public void OnShiftUp()
-    { /*isShiftDown = false;*/ }
-
-// When the program calls OnSceneAdvance, the function first checks to see which
-// scene is active If the user is in the Lobby scene, the function announces to
-// the user/proctor that they are progressing to the trial scene, then loads
-// _STRIALS additively. Then the function deactivates the start button, hiding
-// it from the users view.
-// If the user is in the _STRIALS scenes, the function announces that the
-// user/proctor is advancing to the Lobby, where they started. Next, the
-// function invokes the onClick functions of the backToLobby button. Lastly, the
-// function off-loads the trial scene.
-// -ZMS
+    // When the program calls OnSceneAdvance, the function first checks to see which
+    // scene is active If the user is in the Lobby scene, the function announces to
+    // the user/proctor that they are progressing to the trial scene, then loads
+    // _STRIALS additively. Then the function deactivates the start button, hiding
+    // it from the users view.
+    // If the user is in the _STRIALS scenes, the function announces that the
+    // user/proctor is advancing to the Lobby, where they started. Next, the
+    // function invokes the onClick functions of the backToLobby button. Lastly, the
+    // function off-loads the trial scene.
+    // -ZMS
 
     public void OnSceneAdvance()
     {
