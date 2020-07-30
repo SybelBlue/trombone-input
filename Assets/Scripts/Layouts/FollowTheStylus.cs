@@ -1,7 +1,7 @@
 // This file gives has the virtual stylus follow and mimic the movements of the
-// user's stylus. This is implemented on the Arc-Type layout, making it easier
-// for the user to see which bin they are pointing to, and how the angle they
-// are holding the stylus relates to the bin they are pointing to.
+// user's stylus. Used in tangent with the Arc-Type layout, this file makes it
+// easier for the user to see which bin they are pointing to, and how the angle
+// they are holding the stylus relates to the bin they are pointing to.
 // Written by Zahara M. Spilka
 // Date Created:
 // Date Last Updated: 07/29/2020
@@ -25,7 +25,7 @@ namespace Utils
             stylusTransform = GameObject.FindWithTag("StylusTag").transform;
         }
 
-        // Update is called once per frame
+        // The file calls Update once per frame.
         // When this file updates, it first finds the virtual stylus' rotation
         // transform data. Then, it updates the virtual stylus' rotation using
         // the physical stylus’s x rotation and the virtual stylus' y and z

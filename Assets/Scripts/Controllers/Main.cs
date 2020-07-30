@@ -153,8 +153,9 @@ public class Main : MonoBehaviour, VREventGenerator
 
         RunNextTrial();
 
-// This ensures that the gameObjects stylus, ground, and buttonBackground will
-// not be destroyed when switching between scenes. (ZMS)
+// This section ensures that the stylus, the ground, and the start button art
+// not destroyed when the user/proctor switches between the Lobby and Trial
+// scenes. (ZMS)
         DontDestroyOnLoad(stylus.gameObject);
         DontDestroyOnLoad(ground.gameObject);
         DontDestroyOnLoad(buttonBackground.gameObject);
@@ -197,8 +198,10 @@ public class Main : MonoBehaviour, VREventGenerator
             layout.UpdateState(new InputData(lastReportedValue, stylus));
         }
         // Each time the update function is ran, this section checks to see
-        // whether or not the _STRIALS scene is loaded. When the scene is not
-        // loaded, the start button and the ray cast line are activated. (ZMS)
+        // whether the program has loaded the _LOBBY scene or _STRIALS scene.
+        // When the active scene is the _LOBBY, the program sets the start
+        // button and the ray cast line as active, making them visible to the
+        // user and proctor. (ZMS)
         if(!strialsIsLoaded)
         {
           laserPointerObject.SetActive(true);
@@ -299,15 +302,15 @@ public class Main : MonoBehaviour, VREventGenerator
     public void OnShiftUp()
     { /*isShiftDown = false;*/ }
 
-// When OnSceneAdvance is called, the function checks to see if a trial scene,
-// _STRIALS, is active. When the _STRIALS is not loaded, the function announces
-// to the user/proctor that they are progressing to the trial scene, then loads the
-// scene additively. Then it deactivates the start button, hiding it from the
-// users view.
-// If the _STRIALS scene is loaded when OnSceneAdvance is called, the function
-// announces that the user/proctor is advancing to the Lobby, where they started. Next,
-// the function invokes the onClick functions of the backToLobby button. Lastly,
-// the function off-loads the trial scene.
+// When the program calls OnSceneAdvance, the function first checks to see which
+// scene is active If the user is in the Lobby scene, the function announces to
+// the user/proctor that they are progressing to the trial scene, then loads
+// _STRIALS additively. Then the function deactivates the start button, hiding
+// it from the users view.
+// If the user is in the _STRIALS scenes, the function announces that the
+// user/proctor is advancing to the Lobby, where they started. Next, the
+// function invokes the onClick functions of the backToLobby button. Lastly, the
+// function off-loads the trial scene.
 // -ZMS
 
     public void OnSceneAdvance()

@@ -41,14 +41,14 @@ namespace UnityEngine.UI
     public class CircularLayout : LayoutGroup
     {
       // This section sets up user/proctor display aspects of the layout.
-      // fDistance is the distance between bins
-      // The user/proctor can set the layout's minimum angle, maximum angle, and
-      // starting angle as any value between 0 and 360.
-      // The user/proctor can also set the layout to be the only viable one,
-      // however this feature is obsolete due to the nature of our interface's
-      // design. I left it in the file, in the event that this not obsolete when
-       // it comes to the CalculateCircular function assigning the letter bin's
-       // positions around the circular layout.
+      // fDistance is the distance between bins, the value constraint by Unity’s
+      // limits. Likewise, the user/proctor can set the layout's minimum angle,
+      // maximum angle, and starting angle as any value between 0 and 360. The
+      // user/proctor can also set the layout to be the only viable one, however
+      // this feature is obsolete due to the nature of our interface's design. I
+      // left it in the file, in the event that this not obsolete when it comes
+      // to the CalculateCircular function assigning the letter bin's positions
+      // around the circular layout.
 
 
         public float fDistance;
@@ -56,7 +56,7 @@ namespace UnityEngine.UI
         public float MinAngle, MaxAngle, StartAngle;
         public bool OnlyLayoutVisible = false;
 
-        //The following functions, depending on their name, call the
+        // The following functions, depending on their name, call the
         // CaclualeCirlcle function
 
         protected override void OnEnable()
@@ -87,21 +87,14 @@ namespace UnityEngine.UI
         }
 #endif
 
-// When this function is called it checks if the layout has any children, then
-// assigns the amount of children to the int variable, ChildrenToFormat.
-// Next, the function sets the offset angles value so that the children, when
-// assigned positions are evenly spaced out in the layout.
-// Then, the function sets the value of the current angle to the start angle;
-// the function does this so that when it begins assigning the bins' positions,
-// the first bin is placed at the start of the layout. For instance, if the
-// start angle was 90 degrees, the first child of the layout is placed at the 90
-// degree angle.
-// Next the function looks for the virtual stylus and assigns its position.
-// Lastly, the function runs through the key-bins and assigns them positions
-// along the layout in relation to the order they assigned. For example, the
-// ABCD bin is assigned the first position, then the EFGH is assigned the next
-// position, and so on and so forth until all the layouts children are placed
-// in/along the Arc layout.
+// When the file calls this function, it checks if the layout has any children,
+// then assigns the number of children to the integer variable,
+// ChildrenToFormat. Next, the function sets the angle offset value; the layout
+// uses the angle offset value to evenly spaced in the bins. Then, the function
+// sets the initial value of the current angle, fAngle, equaled to the start
+// angle. Next the function looks for the virtual stylus and assigns its
+// position as described below. Lastly, the function runs through the bins,
+// assigning their positions and rotation values along the layout.
 
         void CalculateCircular()
         {
@@ -147,14 +140,15 @@ namespace UnityEngine.UI
                     // if ((child != null) && (!OnlyLayoutVisible || child.gameObject.activeSelf))
                     if ((child != null) && (child.gameObject.activeSelf))
                     {
-                        //Adding the elements to the tracker stops the user from
-                        // modifying their positions via the editor.
+                        // Adding the elements to the tracker stops the user
+                        // from modifying their positions via the editor.
 
 
                         // This also sets the bins up so that they are at an
-                        // angle around the layout. For example, the middle bin
-                        // is turned 90 degrees so that it appears horizontal
-                        // rather than vertical.
+                        // angle around the layout. For example, on the middle
+                        // bin, the function sets the z rotation so that it
+                        // appears horizontal along the z axis, making it
+                        // parallel with the virtual stylus’s starting position.
 
                         m_Tracker.Add(this, child,
                         DrivenTransformProperties.Anchors |
