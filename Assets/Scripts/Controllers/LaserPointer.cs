@@ -2,7 +2,8 @@
 using Utils.UnityExtensions;
 
 namespace Controller
-{
+{ 
+    // The controller for the laser pointer coming off the stylus
 #pragma warning disable 108
 #pragma warning disable 649
     public class LaserPointer : MonoBehaviour

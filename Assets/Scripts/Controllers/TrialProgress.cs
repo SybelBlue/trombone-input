@@ -2,6 +2,7 @@
 
 namespace Controller
 {
+    // tracks and displays trial progress
 #pragma warning disable 649
     public class TrialProgress : MonoBehaviour
     {

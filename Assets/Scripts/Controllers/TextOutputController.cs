@@ -6,6 +6,7 @@ using Utils.UnityExtensions;
 
 namespace Controller
 {
+    // a class to manage live text i/o, base class of Proctor
 #pragma warning disable 649
     public class TextOutputDisplay : MonoBehaviour
     {

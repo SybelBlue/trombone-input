@@ -235,6 +235,7 @@ namespace Controller
         private struct Highlighting
         { public bool front, back; }
 
+        // used to track the last write to disk
         private struct SaveData
         { 
             public string path;
@@ -247,6 +248,7 @@ namespace Controller
             }
         }
 
+        // used to memoize data on Raycast results
         private struct Found 
         {
             public int? frame;

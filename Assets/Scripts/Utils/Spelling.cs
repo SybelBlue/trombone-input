@@ -27,6 +27,7 @@ namespace Auto
 
         public bool dictionaryLoaded => trie != null;
 
+        // Takes a frequency dictionary and the word/frequency separator and initializes it
         public void InitDictionary(TextAsset frequencyDict, char separator)
         {
             trie = new PruningRadixTrie();
@@ -37,6 +38,7 @@ namespace Auto
             Debug.LogWarning($"Trie Loaded! ({trie.termCountLoaded} nodes)");
         }
 
+        // provides auto completions for the string prefix if a the dictionary has been initialized
         public List<string> Completions(string prefix)
         {
             long _termFreqCount;
@@ -47,9 +49,9 @@ namespace Auto
                     .ToList()
                 ?? new List<string>();
         }
-
     }
 
+    // designed to match the options that shipped with SymSpell
     [Serializable]
     public enum DictionarySize
     {
@@ -151,6 +153,7 @@ namespace Auto
             }
         }
 
+        // provides the term frequency if present and the dictionary is initialized
         public static int? DictionaryValue(string word)
         {
             long value = -1;
@@ -176,6 +179,7 @@ namespace Auto
             // return symSpell.Lookup(inputTerm, verbosity, maxEditDistanceLookup);
         }
 
+        // Looks up the term with the given verbosity and returns a list of non-inputTerm strings
         public List<string> Suggestions(string inputTerm, Verbosity verbosity)
             => Lookup(inputTerm, verbosity).Select(suggestion => suggestion.term).Where(s => !s.ToUpper().Equals(inputTerm)).ToList();
     }

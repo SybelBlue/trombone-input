@@ -25,6 +25,7 @@ namespace CustomEvent
 
 namespace Controller
 {
+    // A class to orchestrate the behavior during a trial and record challenge data
 #pragma warning disable 649
     public class Proctor : TextOutputDisplay
     {

@@ -1,12 +1,15 @@
-﻿namespace Controller
+﻿using UnityEngine;
+
+namespace Controller
 {
+    // Defines the behavior of a raycastable button
 #pragma warning disable 649
     public class RaycastableButton : Utils.IRaycastable
     {
-        [UnityEngine.SerializeField]
+        [SerializeField]
         private UnityEngine.UI.Image background;
 
-        private UnityEngine.Color prev;
+        private Color prev;
 
         private bool highlighted = false;
 
@@ -16,7 +19,7 @@
             {
                 highlighted = true;
                 prev = background.color;
-                background.color = UnityEngine.Color.gray;
+                background.color = Color.gray;
             }
             else if (!value && highlighted)
             {

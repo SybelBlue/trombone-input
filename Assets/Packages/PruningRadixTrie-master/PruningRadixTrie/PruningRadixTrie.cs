@@ -2,12 +2,9 @@
 using System.Diagnostics;
 using System.Collections.Generic;
 
+// Written by wolf Garbe in PruningRadixTrie on Github, designd for autocomplete
 namespace Auto
 {
-
-    /// <summary>
-    /// Summary description for Trie
-    /// </summary>
     public class PruningRadixTrie
     {
         public long termCount = 0;

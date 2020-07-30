@@ -31,7 +31,7 @@ namespace Controller.Key
     // The base component for all GameObjects that are meant to represent
     // a key in a Layout's GUI.
     //
-    // See Layouts/LayoutKets.cs for usage
+    // See Layouts/LayoutKeys.cs for usage
     public abstract class Key<T> : IKey
         where T : AbstractData
     {
