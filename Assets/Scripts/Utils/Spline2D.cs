@@ -201,7 +201,6 @@ namespace Utils.SignalProcessing
             lenSampleDirty = true;
         }
 
-        // ISSUE#51 //
         // TODO: add more efficient 'scrolling' curve of N length where we add one &
         // drop the earliest for effcient non-closed curves that continuously extend
 

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Utils
 {
 #pragma warning disable 649
-    public class Flasher : MonoBehaviour
+    public class Pulser : MonoBehaviour
     {
         public Color flashColor;
         public float flashDuration;

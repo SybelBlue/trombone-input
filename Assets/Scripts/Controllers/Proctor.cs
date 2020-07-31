@@ -31,7 +31,7 @@ namespace Controller
     {
         #region EditorSet
         [SerializeField]
-        private Utils.Flasher backspaceDown;
+        private Utils.Pulser backspaceDown;
 
         [SerializeField]
         private Button practiceEndButton;
